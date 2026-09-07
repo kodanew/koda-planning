@@ -256,7 +256,7 @@
     border: 1px solid var(--border-color);
     border-radius: 6px;
     padding: 11px 1px; 
-    font-size: 0.7rem; 
+    font-size: 0.65rem; 
     font-weight: 700;
     color: var(--text-dark);
     text-align: center;
@@ -803,7 +803,7 @@
 <div class="app-container" id="appRoot">
   <div class="header">
     <button class="refresh-btn" onclick="manualRefresh()">새로고침</button>
-    <img src="스크린샷 2026-08-12 140547.png" alt="KODA 로고">
+    <img src="koda-lpgp-re.png" alt="KODA 로고">
     <div class="header-right">
       <button id="installBtn" class="install-btn" style="display: none;">앱설치</button>
       <button id="logoutBtn" class="logout-btn" onclick="logoutUser()">로그아웃</button>
@@ -1654,10 +1654,10 @@
     const btn = document.getElementById('pastScheduleBtn');
     if (list.style.display === 'none') {
       list.style.display = 'flex';
-      btn.innerText = '지나간 일정 닫기';
+      btn.innerText = '전체 일정 닫기';
     } else {
       list.style.display = 'none';
-      btn.innerText = '지나간 일정 다시보기';
+      btn.innerText = '전체 일정 보기';
     }
   }
 
@@ -1689,7 +1689,7 @@
     });
 
     const hasUpcoming = todayEvents.length > 0 || futureEvents.length > 0;
-    const titleText = todayEvents.length > 0 ? "<오늘 일정>" : "<다가오는 일정>";
+    const titleText = todayEvents.length > 0 ? "<오늘 일정>" : "<예정 일정>";
 
     // 헤더 생성
     const header = document.createElement('div');
@@ -1737,13 +1737,13 @@
       scheduleContainer.appendChild(pastList);
     }
 
-    // 오늘 + 다가오는 일정 목록 영역
+    // 오늘 + 예정 일정 목록 영역
     const upcomingList = document.createElement('div');
     upcomingList.className = 'schedule-list-wrapper';
     
     if (!hasUpcoming) {
-      // 다가오는 일정이 없는데 지나간 일정만 있을 경우의 처리
-      upcomingList.innerHTML = `<div class="no-data" style="padding: 10px;">다가오는 일정이 없습니다.</div>`;
+      // 예정 일정이 없는데 지나간 일정만 있을 경우의 처리
+      upcomingList.innerHTML = `<div class="no-data" style="padding: 10px;">예정 일정이 없습니다.</div>`;
     } else {
       // 오늘 일정이 위에, 그 이후가 아래로 나열
       todayEvents.forEach(event => upcomingList.appendChild(createEventCard(event)));
