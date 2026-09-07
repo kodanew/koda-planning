@@ -68,11 +68,9 @@
 
   /* 헤더 영역 */
   .header {
-    background-color: var(--card-bg);
+    background-color: transparent;
     padding: 10px 12px;
     text-align: center;
-    border-bottom: 1px solid var(--border-color);
-    box-shadow: 0 2px 10px rgba(0,0,0,0.02);
     display: flex;
     justify-content: center;
     align-items: center;
@@ -88,30 +86,53 @@
   
   .refresh-btn {
     position: absolute;
-    left: 10px;
+    left: 20px;
     background-color: transparent;
-    color: #cbd5e0;
-    border: none;
-    padding: 4px 0;
-    font-size: 0.6rem;
-    font-weight: 500;
-    cursor: pointer;
-  }
-  .refresh-btn:active {
     color: #718096;
-  }
-
-  .install-btn {
-    position: absolute;
-    right: 10px;
-    background-color: transparent;
-    color: #a0aec0;
     border: 1px solid #e2e8f0;
     padding: 3px 6px;
     border-radius: 6px;
     font-size: 0.6rem;
     font-weight: 600;
     cursor: pointer;
+  }
+  .refresh-btn:active {
+    color: #1a202c;
+  }
+
+  .header-right {
+    position: absolute;
+    right: 20px;
+    top: 50%;
+    transform: translateY(-50%);
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+
+  .install-btn {
+    background-color: transparent;
+    color: #718096;
+    border: 1px solid #e2e8f0;
+    padding: 3px 6px;
+    border-radius: 6px;
+    font-size: 0.6rem;
+    font-weight: 600;
+    cursor: pointer;
+  }
+
+  .logout-btn {
+    background-color: transparent;
+    color: #718096;
+    border: 1px solid #e2e8f0;
+    padding: 3px 6px;
+    border-radius: 6px;
+    font-size: 0.6rem;
+    font-weight: 600;
+    cursor: pointer;
+  }
+  .logout-btn:active {
+    color: #1a202c;
   }
 
   /* 달력 영역 */
@@ -235,7 +256,7 @@
     border: 1px solid var(--border-color);
     border-radius: 6px;
     padding: 11px 1px; 
-    font-size: 0.58rem; 
+    font-size: 0.7rem; 
     font-weight: 700;
     color: var(--text-dark);
     text-align: center;
@@ -304,6 +325,71 @@
     width: 100%;
   }
 
+  /* 일정 헤더 영역 */
+  .schedule-section-header {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: baseline; /* 텍스트 하단 정렬 */
+    padding: 5px 5px 10px 5px;
+    margin-top: 10px;
+    margin-bottom: 0px;
+    /* border-bottom: 2px solid var(--text-dark); <- 검은줄 제거 */
+    width: 100%;
+    row-gap: 4px;
+  }
+  
+  .schedule-title-wrapper {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    gap: clamp(4px, 2vw, 8px); /* 타이틀과 서브 문구 사이 간격 */
+    margin-left: clamp(4px, 3vw, 12px); /*텍스트를 왼쪽에서 2칸 정도 우측으로 밀기 */
+    min-width: 0;
+  }
+
+  .schedule-section-title {
+    font-size: clamp(0.95rem, 4.2vw, 1.15rem);
+    font-weight: 800;
+    color: var(--text-dark);
+    white-space: nowrap;
+  }
+
+  .schedule-section-subtitle {
+    font-size: clamp(0.68rem, 3vw, 0.85rem); /* 제목보다 약 1.5~2pt 작은 사이즈 */
+    color: #a0aec0; /* 옅은 회색 */
+    font-weight: 500;
+  }
+
+  .past-schedule-btn {
+    background: none;
+    border: none;
+    font-size: clamp(0.62rem, 2.8vw, 0.75rem);
+    color: var(--text-muted);
+    text-decoration: none; /* 밑줄 제거 */
+    cursor: pointer;
+    padding: 0 2px 2px 0;
+    font-weight: 600;
+    white-space: nowrap;
+    flex-shrink: 0;
+  }
+  .past-schedule-btn:hover {
+    color: var(--text-dark);
+  }
+
+  .schedule-list-wrapper {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    width: 100%;
+  }
+  #pastScheduleList {
+    margin-bottom: 20px;
+    padding-bottom: 15px;
+    border-bottom: 1px dashed var(--border-color);
+  }
+
+  /* 이벤트 카드 */
   .event-card {
     background: var(--card-bg);
     border-radius: 10px;
@@ -311,6 +397,11 @@
     border: 1px solid rgba(0,0,0,0.04);
     overflow: hidden;
     position: relative;
+  }
+
+  /* 오늘 일정 카드 전용 스타일 (주황색 테두리 변경) */
+  .event-card.today-card {
+    border: 2.5px solid #ed8936;
   }
 
   .event-header {
@@ -324,7 +415,7 @@
     text-align: left;
   }
 
-  /* 카드 우측 상단 액션 버튼 그룹 (공유 + 즐겨찾기, 같은 라인 배치) */
+  /* 카드 우측 상단 액션 버튼 그룹 */
   .card-actions {
     position: absolute;
     top: 10px;
@@ -335,12 +426,12 @@
     gap: 2px;
   }
 
-  /* 공통 아이콘 버튼 스타일 (모든 아이콘을 동일한 정사각 박스에 중앙 정렬해 라인을 맞춤) */
+  /* 공통 아이콘 버튼 스타일 */
   .icon-btn {
     background: none;
     border: none;
     cursor: pointer;
-    color: #cbd5e0; /* 옅은 회색 적용 */
+    color: #cbd5e0;
     width: 28px;
     height: 28px;
     padding: 0;
@@ -610,15 +701,113 @@
     color: var(--text-muted);
     font-size: 0.85rem;
   }
+
+  /* 로그인(입장) 화면 */
+  #appRoot {
+    display: none;
+  }
+  .login-screen {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: var(--bg-color);
+    z-index: 2000;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+  }
+  .login-box {
+    background: var(--card-bg);
+    width: 100%;
+    max-width: 340px;
+    border-radius: 14px;
+    padding: 32px 24px;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.08);
+    text-align: center;
+  }
+  .login-logo {
+    height: 30px;
+    margin-bottom: 16px;
+  }
+  .login-title {
+    font-size: 1.05rem;
+    font-weight: 800;
+    color: var(--text-dark);
+    margin-bottom: 4px;
+  }
+  .login-subtitle {
+    font-size: 0.78rem;
+    color: var(--text-muted);
+    margin-bottom: 20px;
+    line-height: 1.4;
+  }
+  .login-btn {
+    width: 100%;
+    background-color: var(--primary-color);
+    color: #ffffff;
+    border: none;
+    border-radius: 8px;
+    padding: 12px;
+    font-size: 0.95rem;
+    font-weight: 700;
+    cursor: pointer;
+    margin-bottom: 16px;
+  }
+  .login-btn:disabled {
+    background-color: #a0aec0;
+    cursor: not-allowed;
+  }
+  .login-input {
+    width: 100%;
+    padding: 11px 12px;
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    font-size: 0.85rem;
+    margin-bottom: 10px;
+    outline: none;
+    box-sizing: border-box;
+    font-family: inherit;
+  }
+  .login-input:focus {
+    border-color: var(--primary-color);
+  }
+  .login-error {
+    color: var(--today-color);
+    font-size: 0.75rem;
+    margin-top: 4px;
+    line-height: 1.45;
+    display: none;
+  }
 </style>
 </head>
 <body>
 
-<div class="app-container">
+<div class="login-screen" id="loginScreen">
+  <div class="login-box">
+    <img src="스크린샷 2026-08-12 140547.png" alt="KODA 로고" class="login-logo">
+    <div class="login-title">KODA 일정 안내</div>
+    <div class="login-subtitle">등록된 회원만 이용하실 수 있습니다.<br>이름과 핸드폰 번호를 입력해주세요.</div>
+
+    <button type="button" id="loginBtn" class="login-btn" onclick="attemptLogin()">입장하기</button>
+
+    <input type="text" id="loginName" class="login-input" placeholder="이름" autocomplete="name">
+    <input type="tel" id="loginPhone" class="login-input" placeholder="핸드폰 번호 (- 없이 입력)" autocomplete="tel" onkeydown="if(event.key==='Enter'){attemptLogin();}">
+
+    <div class="login-error" id="loginError"></div>
+  </div>
+</div>
+
+<div class="app-container" id="appRoot">
   <div class="header">
     <button class="refresh-btn" onclick="manualRefresh()">새로고침</button>
     <img src="스크린샷 2026-08-12 140547.png" alt="KODA 로고">
-    <button id="installBtn" class="install-btn" style="display: none;">앱설치</button>
+    <div class="header-right">
+      <button id="installBtn" class="install-btn" style="display: none;">앱설치</button>
+      <button id="logoutBtn" class="logout-btn" onclick="logoutUser()">로그아웃</button>
+    </div>
   </div>
 
   <div class="calendar-wrapper" id="calendarWrapper">
@@ -640,7 +829,7 @@
     
     <div class="search-box-wrapper">
       <span class="search-icon">🔍</span>
-      <input type="text" id="searchInput" class="search-input" placeholder="검색" oninput="handleSearchInput(event)">
+      <input type="text" id="searchInput" class="search-input" placeholder="일정검색" oninput="handleSearchInput(event)">
     </div>
   </div>
 
@@ -728,11 +917,11 @@
 
 <script>
   const GOOGLE_SHEET_CSV_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vQEbM8YAc7jQes9oX6_-aVsVib2H40avHQkL6TkRRI2cYmw7nYG29F_1lGGz-2gL0nve4Q91MBM02Q-/pub?output=csv";
-
-  // ▼▼▼ 회의자료 보고용 "시트2" CSV 링크입니다.
-  // 구글시트에서 시트2를 만든 뒤 [파일] > [공유] > [웹에 게시]에서
-  // "시트2" 탭과 "쉼표로 구분된 값(.csv)"을 선택해 게시하고, 생성된 링크로 아래 값을 교체하세요.
   const MATERIALS_SHEET_CSV_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vQEbM8YAc7jQes9oX6_-aVsVib2H40avHQkL6TkRRI2cYmw7nYG29F_1lGGz-2gL0nve4Q91MBM02Q-/pub?gid=260414665&single=true&output=csv";
+
+  // ⚠️ 아래 URL을 "시트3"를 게시(웹에 게시 > 시트3 선택 > csv)해서 나온 링크로 교체하세요.
+  // 예: https://docs.google.com/spreadsheets/d/e/2PACX-.../pub?gid=여기에시트3의gid&single=true&output=csv
+  const MEMBERS_SHEET_CSV_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vQEbM8YAc7jQes9oX6_-aVsVib2H40avHQkL6TkRRI2cYmw7nYG29F_1lGGz-2gL0nve4Q91MBM02Q-/pub?gid=1551080131&single=true&output=csv";
 
   let scheduleData = [];
   let materialsData = [];
@@ -752,18 +941,9 @@
   let calMonth = currentMonth; 
 
   const holidays2026 = [
-    "01-01", 
-    "02-16", "02-17", "02-18", 
-    "03-01", "03-02", 
-    "05-05", 
-    "05-24", "05-25", 
-    "06-03", 
-    "06-06", 
-    "08-15", "08-17", 
-    "09-24", "09-25", "09-26", 
-    "10-03", "10-05", 
-    "10-09", 
-    "12-25"  
+    "01-01", "02-16", "02-17", "02-18", "03-01", "03-02", "05-05", 
+    "05-24", "05-25", "06-03", "06-06", "08-15", "08-17", 
+    "09-24", "09-25", "09-26", "10-03", "10-05", "10-09", "12-25"  
   ];
 
   function parseCSV(csv) {
@@ -846,7 +1026,154 @@
     return dataArr;
   }
 
-  // 구글드라이브 공유링크(.../file/d/파일ID/view?usp=sharing)에서 파일ID만 추출합니다.
+  // ===== 시트3 기반 회원 인증 =====
+  let membersData = []; // [{name, phone}] 형태로 저장
+
+  function normalizePhone(str) {
+    return (str || '').replace(/[^0-9]/g, ''); // 숫자만 남겨서 비교 (하이픈/공백 무시)
+  }
+
+  function parseMembersCSV(csv) {
+    const rows = [];
+    let row = [], curr = '';
+    let insideQuote = false;
+
+    for (let i = 0; i < csv.length; i++) {
+      const char = csv[i];
+      const nextChar = csv[i + 1];
+
+      if (char === '"' && insideQuote && nextChar === '"') {
+        curr += '"';
+        i++;
+      } else if (char === '"') {
+        insideQuote = !insideQuote;
+      } else if (char === ',' && !insideQuote) {
+        row.push(curr);
+        curr = '';
+      } else if ((char === '\n' || char === '\r') && !insideQuote) {
+        if (char === '\r' && nextChar === '\n') i++;
+        row.push(curr);
+        rows.push(row);
+        row = [];
+        curr = '';
+      } else {
+        curr += char;
+      }
+    }
+    if (curr || row.length > 0) {
+      row.push(curr);
+      rows.push(row);
+    }
+
+    // 1행은 헤더로 간주하고 건너뜀. A열=이름, B열=핸드폰번호
+    const list = [];
+    for (let i = 1; i < rows.length; i++) {
+      const r = rows[i];
+      const name = r[0] ? r[0].trim() : '';
+      const phone = r[1] ? normalizePhone(r[1]) : '';
+      if (name && phone) list.push({ name, phone });
+    }
+    return list;
+  }
+
+  async function loadMembersData() {
+    try {
+      const response = await fetch(MEMBERS_SHEET_CSV_URL + "&t=" + new Date().getTime());
+      const csvText = await response.text();
+      membersData = parseMembersCSV(csvText);
+    } catch (error) {
+      console.error("회원 명단 연동 실패:", error);
+      membersData = [];
+    }
+  }
+
+  function isAuthorizedMember(name, phone) {
+    const normName = (name || '').trim();
+    const normPhone = normalizePhone(phone);
+    return membersData.some(m => m.name === normName && m.phone === normPhone);
+  }
+
+  window.attemptLogin = async function() {
+    const nameInput = document.getElementById('loginName');
+    const phoneInput = document.getElementById('loginPhone');
+    const errorEl = document.getElementById('loginError');
+    const btn = document.getElementById('loginBtn');
+
+    const name = nameInput.value.trim();
+    const phone = phoneInput.value.trim();
+
+    if (!name || !phone) {
+      errorEl.innerText = '이름과 핸드폰 번호를 모두 입력해주세요.';
+      errorEl.style.display = 'block';
+      return;
+    }
+
+    btn.disabled = true;
+    btn.innerText = '확인 중...';
+    errorEl.style.display = 'none';
+
+    if (membersData.length === 0) {
+      await loadMembersData(); // 아직 명단을 못 불러왔다면 한번 더 시도
+    }
+
+    if (isAuthorizedMember(name, phone)) {
+      localStorage.setItem('koda_auth', JSON.stringify({ name: name, phone: normalizePhone(phone) }));
+      enterApp();
+    } else {
+      errorEl.innerText = '등록된 회원 정보와 일치하지 않습니다. 이름과 핸드폰 번호를 다시 확인해주세요.';
+      errorEl.style.display = 'block';
+      btn.disabled = false;
+      btn.innerText = '입장하기';
+    }
+  };
+
+  function enterApp() {
+    document.getElementById('loginScreen').style.display = 'none';
+    document.getElementById('appRoot').style.display = 'block';
+    document.body.style.overflow = 'auto';
+    loadData();
+  }
+
+  window.logoutUser = function() {
+    if (!confirm('로그아웃 하시겠습니까?')) return;
+    localStorage.removeItem('koda_auth');
+    document.getElementById('appRoot').style.display = 'none';
+    document.getElementById('loginScreen').style.display = 'flex';
+    document.body.style.overflow = 'hidden';
+
+    const nameInput = document.getElementById('loginName');
+    const phoneInput = document.getElementById('loginPhone');
+    const errorEl = document.getElementById('loginError');
+    const btn = document.getElementById('loginBtn');
+    if (nameInput) nameInput.value = '';
+    if (phoneInput) phoneInput.value = '';
+    if (errorEl) errorEl.style.display = 'none';
+    if (btn) { btn.disabled = false; btn.innerText = '입장하기'; }
+  };
+
+  async function initAuth() {
+    const loginScreen = document.getElementById('loginScreen');
+    const errorEl = document.getElementById('loginError');
+
+    await loadMembersData();
+
+    // 이전에 인증에 성공한 기록이 있고, 명단에서도 여전히 확인되면 자동 입장
+    const saved = JSON.parse(localStorage.getItem('koda_auth') || 'null');
+    if (saved && isAuthorizedMember(saved.name, saved.phone)) {
+      enterApp();
+      return;
+    }
+
+    if (membersData.length === 0) {
+      errorEl.innerText = '회원 명단을 불러오지 못했습니다. 잠시 후 다시 시도해주세요.';
+      errorEl.style.display = 'block';
+    }
+
+    loginScreen.style.display = 'flex';
+    document.body.style.overflow = 'hidden';
+  }
+  // ===== 회원 인증 끝 =====
+
   function getDriveFileId(url) {
     if (!url) return null;
     const match = url.match(/https:\/\/drive\.google\.com\/file\/d\/([^\/]+)/)
@@ -886,7 +1213,6 @@
       rows.push(row);
     }
 
-    // 시트2 열 구성: A=날짜(예: 26.08.24)  B=제목  C=파일링크(구글드라이브 공유링크)  D=파일타입(pdf 또는 jpg)
     const dataArr = [];
     for (let i = 1; i < rows.length; i++) {
       const r = rows[i];
@@ -897,7 +1223,6 @@
       const rawUrlsStr = r[2] ? r[2].trim() : '';
       const fileType = (r[3] ? r[3].trim().toLowerCase() : 'pdf');
 
-      // C열에 쉼표(,)로 여러 링크를 구분해서 넣으면 여러 페이지(장)로 처리됩니다.
       const rawUrls = rawUrlsStr.split(',').map(s => s.trim()).filter(s => s);
       const images = rawUrls.map(u => {
         const fileId = getDriveFileId(u);
@@ -913,11 +1238,10 @@
         date: dateStr,
         title: title,
         fileType: fileType,
-        images: images // jpg: 여러 장 지원 / pdf: images[0]만 사용
+        images: images
       });
     }
 
-    // 최신 날짜(YY.MM.DD 형식 기준)가 위로 오도록 정렬
     dataArr.sort((a, b) => {
       const toNum = (s) => {
         const p = s.split('.').map(v => parseInt(v, 10));
@@ -1007,7 +1331,7 @@
 
   window.closePdfViewer = function(goBack = true) {
     document.getElementById('pdfViewerModal').style.display = 'none';
-    document.getElementById('pdfViewerFrame').src = ''; // 로딩 중단
+    document.getElementById('pdfViewerFrame').src = '';
     if (goBack) history.back();
   };
 
@@ -1216,7 +1540,7 @@
     grid.innerHTML = '';
     display.innerText = `${calYear}년 ${calMonth}월`;
 
-    const days = ['일', '월', '화', '수', '목', '금', '토'];
+    const days = ['SUN', 'MON', 'TUE', 'WED', 'THU', 'FRI', 'SAT'];
     days.forEach((day, index) => {
       let dayClass = "cal-day-name";
       if (index === 0) dayClass += " text-red";
@@ -1284,7 +1608,62 @@
     updateView();
   };
 
+  // 개별 카드 생성 로직 분리 함수
+  function createEventCard(event) {
+    const globalIndex = scheduleData.indexOf(event);
+    const isChairman = event.note.includes("회장님 참석");
+    const titleClass = isChairman ? "event-title chairman" : "event-title";
+    const isStarred = bookmarks.includes(event.id);
+    
+    // 오늘 일정인지 확인
+    const isToday = event.dday === "D-day";
+
+    const card = document.createElement('div');
+    // 오늘 일정이면 'today-card' 클래스 추가
+    card.className = 'event-card' + (isToday ? ' today-card' : '');
+
+    card.innerHTML = `
+      <div class="card-actions">
+        <button class="icon-btn share-btn" onclick="shareEvent(event, ${globalIndex})">
+          <svg viewBox="0 0 24 24" fill="currentColor">
+            <path d="M18,16.08c-0.76,0-1.44,0.3-1.96,0.77L8.91,12.7C8.96,12.47,9,12.24,9,12s-0.04-0.47-0.09-0.7l7.05-4.11 c0.54,0.5,1.25,0.81,2.04,0.81c1.66,0,3-1.34,3-3c0-1.66-1.34-3-3-3s-3,1.34-3,3c0,0.24,0.04,0.47,0.09,0.7L8.04,9.81 C7.5,9.31,6.79,9,6,9c-1.66,0-3,1.34-3,3s1.34,3,3,3c0.79,0,1.5-0.31,2.04-0.81l7.12,4.15c-0.05,0.21-0.08,0.43-0.08,0.66 c0,1.61,1.31,2.92,2.92,2.92c1.61,0,2.92-1.31,2.92-2.92C20.92,17.39,19.61,16.08,18,16.08z"></path>
+          </svg>
+        </button>
+        <button class="icon-btn star-btn ${isStarred ? 'starred' : ''}" onclick="toggleBookmark(event, '${event.id}')">
+          ${isStarred
+            ? '<svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"></path></svg>'
+            : '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round" stroke-linecap="round"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"></path></svg>'
+          }
+        </button>
+      </div>
+      <button class="event-header" onclick="openModal(${globalIndex})">
+        <div class="event-meta">
+          <div class="event-date">${event.date}</div>
+          <div class="event-divider">/</div>
+          <div class="event-location">${event.location}&nbsp;(${event.dday})</div>
+        </div>
+        <div class="${titleClass}">${event.title}</div>
+      </button>
+    `;
+    return card;
+  }
+
+  // 지나간 일정 열기/닫기 토글
+  window.togglePastSchedules = function() {
+    const list = document.getElementById('pastScheduleList');
+    const btn = document.getElementById('pastScheduleBtn');
+    if (list.style.display === 'none') {
+      list.style.display = 'flex';
+      btn.innerText = '지나간 일정 닫기';
+    } else {
+      list.style.display = 'none';
+      btn.innerText = '지나간 일정 다시보기';
+    }
+  }
+
+  // 일정 렌더링 함수
   function renderSchedules() {
+    const scheduleContainer = document.getElementById('scheduleContainer');
     scheduleContainer.innerHTML = '';
     
     const currentFilteredData = getFilteredData();
@@ -1294,41 +1673,83 @@
       return;
     }
 
+    const pastEvents = [];
+    const todayEvents = [];
+    const futureEvents = [];
+
+    // dday 값에 따라 오늘/다가오는일정/지나간일정 분류
     currentFilteredData.forEach(event => {
-      const globalIndex = scheduleData.indexOf(event);
-      const isChairman = event.note.includes("회장님 참석");
-      const titleClass = isChairman ? "event-title chairman" : "event-title";
-      const isStarred = bookmarks.includes(event.id);
-
-      const card = document.createElement('div');
-      card.className = 'event-card';
-
-      // 공유 버튼: 네이버 뉴스에서 쓰는 공유(노드) 아이콘으로 대체, 별표 버튼과 같은 라인에 그룹핑
-      card.innerHTML = `
-        <div class="card-actions">
-          <button class="icon-btn share-btn" onclick="shareEvent(event, ${globalIndex})">
-            <svg viewBox="0 0 24 24" fill="currentColor">
-              <path d="M18,16.08c-0.76,0-1.44,0.3-1.96,0.77L8.91,12.7C8.96,12.47,9,12.24,9,12s-0.04-0.47-0.09-0.7l7.05-4.11 c0.54,0.5,1.25,0.81,2.04,0.81c1.66,0,3-1.34,3-3c0-1.66-1.34-3-3-3s-3,1.34-3,3c0,0.24,0.04,0.47,0.09,0.7L8.04,9.81 C7.5,9.31,6.79,9,6,9c-1.66,0-3,1.34-3,3s1.34,3,3,3c0.79,0,1.5-0.31,2.04-0.81l7.12,4.15c-0.05,0.21-0.08,0.43-0.08,0.66 c0,1.61,1.31,2.92,2.92,2.92c1.61,0,2.92-1.31,2.92-2.92C20.92,17.39,19.61,16.08,18,16.08z"></path>
-            </svg>
-          </button>
-          <button class="icon-btn star-btn ${isStarred ? 'starred' : ''}" onclick="toggleBookmark(event, '${event.id}')">
-            ${isStarred
-              ? '<svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"></path></svg>'
-              : '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round" stroke-linecap="round"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"></path></svg>'
-            }
-          </button>
-        </div>
-        <button class="event-header" onclick="openModal(${globalIndex})">
-          <div class="event-meta">
-            <div class="event-date">${event.date}</div>
-            <div class="event-divider">/</div>
-            <div class="event-location">${event.location}&nbsp;(${event.dday})</div>
-          </div>
-          <div class="${titleClass}">${event.title}</div>
-        </button>
-      `;
-      scheduleContainer.appendChild(card);
+      if (event.dday === "D-day") {
+        todayEvents.push(event);
+      } else if (event.dday.startsWith("D+")) {
+        pastEvents.push(event);
+      } else {
+        futureEvents.push(event);
+      }
     });
+
+    const hasUpcoming = todayEvents.length > 0 || futureEvents.length > 0;
+    const titleText = todayEvents.length > 0 ? "<오늘 일정>" : "<다가오는 일정>";
+
+    // 헤더 생성
+    const header = document.createElement('div');
+    header.className = 'schedule-section-header';
+    
+    // 타이틀과 서브 문구를 감싸는 래퍼
+    const titleWrapper = document.createElement('div');
+    titleWrapper.className = 'schedule-title-wrapper';
+
+    const titleEl = document.createElement('div');
+    titleEl.className = 'schedule-section-title';
+    titleEl.innerText = titleText;
+    
+    titleWrapper.appendChild(titleEl);
+
+    // 오늘 일정이 1개 이상 있을 때만 안내 문구를 생성하고 추가합니다.
+    if (todayEvents.length > 0) {
+      const subtitleEl = document.createElement('div');
+      subtitleEl.className = 'schedule-section-subtitle';
+      subtitleEl.innerText = "오늘 일정부터 이후 일정까지.";
+      titleWrapper.appendChild(subtitleEl);
+    }
+
+    header.appendChild(titleWrapper);
+
+    // 지나간 일정이 있을 경우 오른쪽에 버튼 생성
+    if (pastEvents.length > 0) {
+      const pastBtn = document.createElement('button');
+      pastBtn.className = 'past-schedule-btn';
+      pastBtn.id = 'pastScheduleBtn';
+      pastBtn.innerText = '전체 일정 보기';
+      pastBtn.onclick = togglePastSchedules;
+      header.appendChild(pastBtn);
+    }
+
+    scheduleContainer.appendChild(header);
+
+    // 숨김 처리된 지나간 일정 목록 영역
+    if (pastEvents.length > 0) {
+      const pastList = document.createElement('div');
+      pastList.className = 'schedule-list-wrapper';
+      pastList.id = 'pastScheduleList';
+      pastList.style.display = 'none'; // 기본 숨김
+      pastEvents.forEach(event => pastList.appendChild(createEventCard(event)));
+      scheduleContainer.appendChild(pastList);
+    }
+
+    // 오늘 + 다가오는 일정 목록 영역
+    const upcomingList = document.createElement('div');
+    upcomingList.className = 'schedule-list-wrapper';
+    
+    if (!hasUpcoming) {
+      // 다가오는 일정이 없는데 지나간 일정만 있을 경우의 처리
+      upcomingList.innerHTML = `<div class="no-data" style="padding: 10px;">다가오는 일정이 없습니다.</div>`;
+    } else {
+      // 오늘 일정이 위에, 그 이후가 아래로 나열
+      todayEvents.forEach(event => upcomingList.appendChild(createEventCard(event)));
+      futureEvents.forEach(event => upcomingList.appendChild(createEventCard(event)));
+    }
+    scheduleContainer.appendChild(upcomingList);
   }
   
   window.addEventListener('popstate', function(event) {
@@ -1340,8 +1761,6 @@
     hideModalDOM();
   });
 
-  // 날짜를 클릭하면 그 날짜의 일정들을 먼저 보여줍니다.
-  // 일정이 1개면 바로 상세 화면, 2개 이상이면 선택 목록을 표시합니다.
   window.openDayEventsModal = function(year, month, day) {
     const dayEvents = scheduleData.filter(eventData =>
       Number(eventData.month) === Number(month) &&
@@ -1506,7 +1925,7 @@
     }
   }
 
-  loadData();
+  initAuth();
 
 </script>
 </body>
