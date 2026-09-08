@@ -272,6 +272,7 @@
     line-height: 1.15;
     transition: all 0.2s;
     white-space: nowrap;
+    cursor: pointer;
   }
   .quick-btn:hover {
     background-color: #f7fafc;
@@ -319,6 +320,15 @@
     pointer-events: none;
   }
 
+  /* 서브 메뉴 컨테이너 */
+  .sub-menu-container {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 4px;
+    padding: 0 10px 10px 10px;
+    width: 100%;
+  }
+
   /* 일정 리스트 영역 */
   .schedule-container {
     padding: 0 10px 30px 10px;
@@ -328,16 +338,14 @@
     width: 100%;
   }
 
-  /* 일정 헤더 영역 */
   .schedule-section-header {
     display: flex;
     flex-wrap: wrap;
     justify-content: space-between;
-    align-items: baseline; /* 텍스트 하단 정렬 */
+    align-items: baseline;
     padding: 5px 5px 10px 5px;
     margin-top: 10px;
     margin-bottom: 0px;
-    /* border-bottom: 2px solid var(--text-dark); <- 검은줄 제거 */
     width: 100%;
     row-gap: 4px;
   }
@@ -346,8 +354,8 @@
     display: flex;
     flex-wrap: wrap;
     align-items: baseline;
-    gap: clamp(4px, 2vw, 8px); /* 타이틀과 서브 문구 사이 간격 */
-    margin-left: clamp(4px, 3vw, 12px); /*텍스트를 왼쪽에서 2칸 정도 우측으로 밀기 */
+    gap: clamp(4px, 2vw, 8px);
+    margin-left: clamp(4px, 3vw, 12px);
     min-width: 0;
   }
 
@@ -359,8 +367,8 @@
   }
 
   .schedule-section-subtitle {
-    font-size: clamp(0.68rem, 3vw, 0.85rem); /* 제목보다 약 1.5~2pt 작은 사이즈 */
-    color: #a0aec0; /* 옅은 회색 */
+    font-size: clamp(0.68rem, 3vw, 0.85rem); 
+    color: #a0aec0; 
     font-weight: 500;
   }
 
@@ -369,7 +377,7 @@
     border: none;
     font-size: clamp(0.62rem, 2.8vw, 0.75rem);
     color: var(--text-muted);
-    text-decoration: none; /* 밑줄 제거 */
+    text-decoration: none; 
     cursor: pointer;
     padding: 0 2px 2px 0;
     font-weight: 600;
@@ -402,7 +410,6 @@
     position: relative;
   }
 
-  /* 오늘 일정 카드 전용 스타일 (주황색 테두리 변경) */
   .event-card.today-card {
     border: 2.5px solid #ed8936;
   }
@@ -418,7 +425,6 @@
     text-align: left;
   }
 
-  /* 카드 우측 상단 액션 버튼 그룹 */
   .card-actions {
     position: absolute;
     top: 10px;
@@ -429,7 +435,6 @@
     gap: 2px;
   }
 
-  /* 공통 아이콘 버튼 스타일 */
   .icon-btn {
     background: none;
     border: none;
@@ -479,7 +484,6 @@
     font-weight: 700;
   }
 
-  /* 장소명과 D-day가 함께 표시되는 영역 */
   .event-location {
     font-size: 0.8rem;
     color: var(--text-muted);
@@ -547,11 +551,12 @@
     z-index: 10;
   }
   
-  /* 날짜 클릭 시 해당 날짜의 여러 일정을 선택하는 목록 */
   .day-events-modal-content { max-width: 400px; }
   .day-events-title { font-size: 1.05rem; font-weight: 800; margin-bottom: 4px; }
   .day-events-subtitle { font-size: 0.72rem; color: var(--text-muted); margin-bottom: 12px; }
   .day-event-list { display: flex; flex-direction: column; gap: 7px; }
+  
+  /* 리스트 공통(일정, 자료, 직원) 버튼 아이템 */
   .day-event-item {
     width: 100%; text-align: left; background: #ffffff;
     border: 1px solid #e5e7eb; border-radius: 9px;
@@ -567,8 +572,25 @@
     color: #c08a22;
     font-weight: 800;
   }
-  .day-event-item-meta { margin-top: 4px; font-size: 0.68rem; color: var(--text-muted); }
+  .day-event-item-meta { margin-top: 4px; font-size: 0.68rem; color: var(--text-muted); line-height: 1.3; }
   .day-event-item.chairman { border-color: #d0e1fd; background: #f5f9ff; }
+
+  /* 직원 목록용 뱃지 스타일 */
+  .staff-badge {
+    display: inline-block;
+    background: #e2e8f0;
+    color: #4a5568;
+    font-size: 0.6rem;
+    padding: 2px 6px;
+    border-radius: 4px;
+    margin-right: 6px;
+    font-weight: 700;
+    vertical-align: middle;
+  }
+  .staff-badge.executive {
+    background: #ebf8ff;
+    color: #3182ce;
+  }
 
   .modal-title-area {
     display: flex;
@@ -620,7 +642,147 @@
     word-break: keep-all;
   }
 
-  /* 회의자료 보고 - 이미지(JPG) 뷰어 */
+  /* 버튼 그룹 (상세 모달용) */
+  .action-btn-group {
+    display: flex; gap: 8px; margin-top: 15px; padding-top: 15px; border-top: 1px dashed var(--border-color);
+  }
+  .action-btn {
+    flex: 1; padding: 10px 0; text-align: center; border-radius: 8px;
+    font-weight: 700; color: #fff; text-decoration: none; font-size: 0.75rem;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1); display: block;
+  }
+  .action-btn:active { opacity: 0.8; }
+  .btn-call { background-color: #38a169; }
+  .btn-sms { background-color: #3182ce; }
+  .btn-email { background-color: #d69e2e; }
+
+  /* 나만의 메모 영역 */
+  .memo-container {
+    display: flex;
+    flex-direction: column;
+    margin-top: 10px;
+    padding-top: 10px;
+    border-top: 1px dashed var(--border-color);
+  }
+  
+  .memo-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+  }
+
+  .memo-input {
+    width: 100%;
+    min-height: 60px;
+    border: 1px solid var(--border-color);
+    border-radius: 6px;
+    padding: 8px;
+    font-family: inherit;
+    font-size: 0.8rem;
+    resize: vertical;
+    margin-top: 6px;
+    box-sizing: border-box;
+    background-color: #fafafa;
+  }
+  .memo-input:focus {
+    border-color: var(--primary-color);
+    outline: none;
+    background-color: #ffffff;
+  }
+
+  /* 메모 저장 버튼 */
+  .memo-save-btn {
+    background: #3182ce; 
+    color: white;
+    border: none;
+    border-radius: 6px;
+    padding: 6px 12px;
+    font-size: 0.7rem;
+    font-weight: bold;
+    cursor: pointer;
+  }
+  .memo-save-btn:active {
+    background: #2b6cb0;
+  }
+
+  /* 풀스크린 전용 페이지 */
+  .fullscreen-screen {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: var(--bg-color);
+    z-index: 1500;
+    display: none;
+    flex-direction: column;
+    overflow-y: auto;
+  }
+  
+  .fullscreen-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 12px 15px;
+    background: #ffffff;
+    border-bottom: 1px solid var(--border-color);
+    flex-shrink: 0;
+  }
+  
+  .fullscreen-back-btn {
+    background: none;
+    border: none;
+    font-size: 0.95rem;
+    font-weight: 700;
+    color: var(--text-dark);
+    cursor: pointer;
+    padding: 0;
+  }
+
+  .fullscreen-title {
+    font-size: 1.1rem;
+    font-weight: 800;
+    color: var(--text-dark);
+  }
+  
+  .fullscreen-dummy { width: 60px; } 
+
+  /* 가로 스크롤 탭 영역 */
+  .fullscreen-tabs {
+    display: flex;
+    gap: 8px;
+    padding: 12px 15px 4px 15px;
+    overflow-x: auto;
+    white-space: nowrap;
+    -webkit-overflow-scrolling: touch; 
+  }
+  .fullscreen-tabs::-webkit-scrollbar { display: none; }
+  .fullscreen-tabs { -ms-overflow-style: none; scrollbar-width: none; }
+
+  .month-tab {
+    padding: 7px 16px;
+    border-radius: 20px;
+    border: 1px solid #cbd5e0;
+    background: #ffffff;
+    color: #4a5568;
+    font-weight: 700;
+    font-size: 0.8rem;
+    cursor: pointer;
+    flex-shrink: 0;
+  }
+  .month-tab.active {
+    background: var(--primary-color);
+    color: #ffffff;
+    border-color: var(--primary-color);
+  }
+
+  .fullscreen-content {
+    padding: 10px 15px 30px 15px;
+    flex-grow: 1;
+  }
+
+  /* 이미지(JPG) 뷰어 */
   .material-viewer-content {
     max-width: 480px;
     padding: 14px;
@@ -705,7 +867,7 @@
     font-size: 0.85rem;
   }
 
-  /* 로그인(입장) 화면 */
+  /* 로그인 화면 */
   #appRoot {
     display: none;
   }
@@ -784,6 +946,17 @@
     line-height: 1.45;
     display: none;
   }
+
+  /* 직원현황 컴팩트 카드형 디자인 */
+  #staffList { display:grid !important; grid-template-columns:repeat(2,minmax(0,1fr)); gap:8px; }
+  #staffList .day-event-item { min-height:0 !important; padding:10px 10px !important; border-radius:10px !important; text-align:left; }
+  #staffList .day-event-item-title { font-size:.82rem !important; line-height:1.25 !important; }
+  #staffList .day-event-item-meta { font-size:.68rem !important; line-height:1.3 !important; margin-top:4px; }
+  #staffList .staff-badge { font-size:.55rem !important; padding:1px 4px !important; margin-right:3px !important; }
+  #staffList .staff-phone { font-size:.68rem !important; }
+  #staffList .staff-detail-label { font-size:.62rem !important; }
+  @media (min-width:700px){ #staffList{grid-template-columns:repeat(3,minmax(0,1fr));} }
+  #noticeDetailModal, #staffDetailModal, #materialViewerModal, #pdfViewerModal, #dayEventsModal { z-index:1700 !important; }
 </style>
 </head>
 <body>
@@ -826,14 +999,22 @@
   <div class="quick-menu-container">
     <a href="https://www.koda.or.kr/main/" target="_blank" class="quick-btn">KODA 홈페이지</a>
     <a href="https://search.naver.com/search.naver?ssc=tab.news.all&where=news&sm=tab_jum&query=%EB%94%94%EB%B2%A8%EB%A1%9C%ED%8D%BC%ED%98%91%ED%9A%8C" target="_blank" class="quick-btn">언론보도 현황</a>
-    <button class="quick-btn" id="materialsBtn" onclick="openMaterialsScreen()">회의자료 보고</button>
+    <button class="quick-btn disabled">준비중</button>
     <a href="https://www.youtube.com/@kodatv9717" target="_blank" class="quick-btn">KODA-TV</a>
-    <button class="quick-btn" id="bookmarkFilterBtn" onclick="toggleBookmarksOnly()">MY 관심 일정</button>
+    <a href="https://www.wehago.com/" target="_blank" class="quick-btn">WEHAGO</a>
     
     <div class="search-box-wrapper">
       <span class="search-icon">🔍</span>
       <input type="text" id="searchInput" class="search-input" placeholder="일정검색" oninput="handleSearchInput(event)">
     </div>
+  </div>
+
+  <!-- 서브 메뉴 컨테이너 -->
+  <div class="sub-menu-container">
+    <button class="quick-btn" onclick="openNoticesScreen()">협회 중요 공지</button>
+    <button class="quick-btn" onclick="openStaffScreen()">KODA 직원현황</button>
+    <button class="quick-btn" onclick="openMaterialsScreen()">사무국 회의자료</button>
+    <button class="quick-btn" id="bookmarkFilterBtn" onclick="toggleBookmarksOnly()">MY 관심 일정</button>
   </div>
 
   <div class="schedule-container" id="scheduleContainer">
@@ -850,12 +1031,116 @@
   </div>
 </div>
 
-<div class="modal-overlay" id="materialsModal" onclick="closeMaterialsOnOutsideClick(event)">
-  <div class="modal-content day-events-modal-content">
-    <button class="modal-close" onclick="closeMaterialsModal()">×</button>
-    <div class="day-events-title">회의자료 보고</div>
-    <div class="day-events-subtitle" id="materialsSubtitle">확인하실 자료를 선택하세요.</div>
+<!-- ✨ 회의자료 보고 페이지 ✨ -->
+<div class="fullscreen-screen" id="materialsScreen">
+  <div class="fullscreen-header">
+    <button class="fullscreen-back-btn" onclick="closeMaterialsScreen()">← 뒤로가기</button>
+    <div class="fullscreen-title">사무국 월간/주간 회의자료</div>
+    <div class="fullscreen-dummy"></div> 
+  </div>
+  
+  <div class="fullscreen-tabs" id="materialTabs">
+    <button class="month-tab active" data-month="all" onclick="filterMaterials('all')">전체</button>
+    <button class="month-tab" data-month="8" onclick="filterMaterials('8')">8월</button>
+    <button class="month-tab" data-month="9" onclick="filterMaterials('9')">9월</button>
+    <button class="month-tab" data-month="10" onclick="filterMaterials('10')">10월</button>
+    <button class="month-tab" data-month="11" onclick="filterMaterials('11')">11월</button>
+    <button class="month-tab" data-month="12" onclick="filterMaterials('12')">12월</button>
+    <button class="month-tab" data-month="1" onclick="filterMaterials('1')">27년 1월</button>
+    <button class="month-tab" data-month="2" onclick="filterMaterials('2')">2월</button>
+  </div>
+
+  <div class="fullscreen-content">
+    <div class="day-events-subtitle" id="materialsSubtitle" style="margin-bottom:12px;">확인하실 자료를 선택하세요.</div>
     <div class="day-event-list" id="materialsList"></div>
+  </div>
+</div>
+
+<!-- ✨ 협회 중요 공지(시트5) 전용 페이지 ✨ -->
+<div class="fullscreen-screen" id="noticesScreen">
+  <div class="fullscreen-header">
+    <button class="fullscreen-back-btn" onclick="closeNoticesScreen()">← 뒤로가기</button>
+    <div class="fullscreen-title">협회 중요 공지</div>
+    <div class="fullscreen-dummy"></div>
+  </div>
+  <div class="fullscreen-content">
+    <div class="day-events-subtitle" style="margin-bottom:12px;">협회의 새로운 소식과 안내를 확인하세요.</div>
+    <div class="day-event-list" id="noticeList"></div>
+  </div>
+</div>
+
+<!-- ✨ 중요 공지 상세 모달 ✨ -->
+<div class="modal-overlay" id="noticeDetailModal" onclick="closeNoticeDetailModalOnOutsideClick(event)">
+  <div class="modal-content">
+    <button class="modal-close" onclick="closeNoticeDetailModal()">×</button>
+    <div class="modal-title" id="noticeDetailTitle" style="margin-bottom: 5px;"></div>
+    <div class="day-events-subtitle" id="noticeDetailDate" style="margin-bottom: 15px; color:var(--primary-color); font-weight:bold;"></div>
+    <div class="modal-value" id="noticeDetailContent" style="white-space: pre-wrap; font-size:0.85rem; line-height:1.6;"></div>
+  </div>
+</div>
+
+
+<!-- ✨ KODA 직원현황 전용 페이지 ✨ -->
+<div class="fullscreen-screen" id="staffScreen">
+  <div class="fullscreen-header">
+    <button class="fullscreen-back-btn" onclick="closeStaffScreen()">← 뒤로가기</button>
+    <div class="fullscreen-title">KODA 직원현황</div>
+    <div class="fullscreen-dummy"></div>
+  </div>
+  
+  <div class="fullscreen-tabs" id="staffTabs">
+    <button class="month-tab active" data-cat="all" onclick="filterStaff('all')">전체</button>
+    <button class="month-tab" data-cat="7대 임원" onclick="filterStaff('7대 임원')">7대 임원</button>
+    <button class="month-tab" data-cat="사무국" onclick="filterStaff('사무국')">사무국</button>
+  </div>
+
+  <div class="fullscreen-content">
+    <div class="day-events-subtitle" style="margin-bottom:12px;">확인하실 직원을 선택하세요.</div>
+    <div class="day-event-list" id="staffList"></div>
+  </div>
+</div>
+
+<!-- ✨ 직원 상세정보 모달 ✨ -->
+<div class="modal-overlay" id="staffDetailModal" onclick="closeStaffDetailModalOnOutsideClick(event)">
+  <div class="modal-content">
+    <button class="modal-close" onclick="closeStaffDetailModal()">×</button>
+    <div class="modal-title" style="margin-bottom: 15px; font-size:1.15rem;">직원 상세정보</div>
+
+    <div class="modal-detail-row">
+      <span class="modal-label">성명</span>
+      <span class="modal-value" id="staffDetailName"></span>
+    </div>
+    <div class="modal-detail-row">
+      <span class="modal-label">소속</span>
+      <span class="modal-value" id="staffDetailAffiliation"></span>
+    </div>
+    <div class="modal-detail-row">
+      <span class="modal-label">직위</span>
+      <span class="modal-value" id="staffDetailPosition"></span>
+    </div>
+    <div class="modal-detail-row">
+      <span class="modal-label">KODA</span>
+      <span class="modal-value" id="staffDetailKoda"></span>
+    </div>
+    <div class="modal-detail-row">
+      <span class="modal-label">연락처</span>
+      <span class="modal-value" id="staffDetailPhone"></span>
+    </div>
+    <div class="modal-detail-row">
+      <span class="modal-label">이메일</span>
+      <span class="modal-value" id="staffDetailEmail"></span>
+    </div>
+    <div class="modal-detail-row">
+      <span class="modal-label">비고</span>
+      <span class="modal-value" id="staffDetailNote"></span>
+    </div>
+
+    <!-- 전화, 문자, 이메일 버튼 그룹 -->
+    <div class="action-btn-group">
+      <a href="#" class="action-btn btn-call" id="staffBtnCall">📞 전화걸기</a>
+      <a href="#" class="action-btn btn-sms" id="staffBtnSms">💬 문자발송</a>
+      <a href="#" class="action-btn btn-email" id="staffBtnEmail">✉️ 이메일</a>
+    </div>
   </div>
 </div>
 
@@ -884,13 +1169,16 @@
   </div>
 </div>
 
+<!-- 일정 상세 모달 -->
 <div class="modal-overlay" id="eventModal" onclick="closeModalOnOutsideClick(event)">
   <div class="modal-content">
     <button class="modal-close" onclick="closeModalAction()">×</button>
+    
     <div class="modal-title-area">
       <div class="modal-title" id="modalTitle"></div>
       <button class="modal-star" id="modalStarBtn" onclick="toggleBookmarkModal()">★</button>
     </div>
+
     <div class="modal-detail-row">
       <span class="modal-label">일시</span>
       <span class="modal-value" id="modalDate"></span>
@@ -915,20 +1203,32 @@
       <span class="modal-label">비고</span>
       <span class="modal-value" id="modalNote"></span>
     </div>
+
+    <div class="memo-container">
+      <div class="memo-header">
+        <span class="modal-label" style="width:auto; color:var(--primary-color);">나만의 메모 (내 기기에만 저장)</span>
+        <button class="memo-save-btn" onclick="saveEventMemo()">메모 저장</button>
+      </div>
+      <textarea id="modalMemo" class="memo-input" placeholder="필요한 메모를 자유롭게 작성하세요..."></textarea>
+    </div>
   </div>
 </div>
 
 <script>
+  // 기본 시트 정보
   const GOOGLE_SHEET_CSV_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vQEbM8YAc7jQes9oX6_-aVsVib2H40avHQkL6TkRRI2cYmw7nYG29F_1lGGz-2gL0nve4Q91MBM02Q-/pub?output=csv";
   const MATERIALS_SHEET_CSV_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vQEbM8YAc7jQes9oX6_-aVsVib2H40avHQkL6TkRRI2cYmw7nYG29F_1lGGz-2gL0nve4Q91MBM02Q-/pub?gid=260414665&single=true&output=csv";
-
-  // ⚠️ 아래 URL을 "시트3"를 게시(웹에 게시 > 시트3 선택 > csv)해서 나온 링크로 교체하세요.
-  // 예: https://docs.google.com/spreadsheets/d/e/2PACX-.../pub?gid=여기에시트3의gid&single=true&output=csv
   const MEMBERS_SHEET_CSV_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vQEbM8YAc7jQes9oX6_-aVsVib2H40avHQkL6TkRRI2cYmw7nYG29F_1lGGz-2gL0nve4Q91MBM02Q-/pub?gid=1551080131&single=true&output=csv";
+  const STAFF_SHEET_CSV_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vQEbM8YAc7jQes9oX6_-aVsVib2H40avHQkL6TkRRI2cYmw7nYG29F_1lGGz-2gL0nve4Q91MBM02Q-/pub?gid=2094790194&single=true&output=csv";
+  const NOTICE_SHEET_CSV_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vQEbM8YAc7jQes9oX6_-aVsVib2H40avHQkL6TkRRI2cYmw7nYG29F_1lGGz-2gL0nve4Q91MBM02Q-/pub?gid=1511131931&single=true&output=csv";
 
   let scheduleData = [];
   let materialsData = [];
+  let staffData = [];
+  let noticeData = [];
+  
   let bookmarks = JSON.parse(localStorage.getItem('koda_bookmarks') || '[]');
+  let memos = JSON.parse(localStorage.getItem('koda_memos') || '{}');
   
   let showBookmarksOnly = false;
   let searchQuery = '';
@@ -949,38 +1249,28 @@
     "09-24", "09-25", "09-26", "10-03", "10-05", "10-09", "12-25"  
   ];
 
-  function parseCSV(csv) {
+  // CSV 파싱 공통 함수
+  function splitCSV(csv) {
     const rows = [];
     let row = [], curr = '';
     let insideQuote = false;
-    
     for (let i = 0; i < csv.length; i++) {
       const char = csv[i];
       const nextChar = csv[i + 1];
-      
-      if (char === '"' && insideQuote && nextChar === '"') {
-        curr += '"';
-        i++; 
-      } else if (char === '"') {
-        insideQuote = !insideQuote;
-      } else if (char === ',' && !insideQuote) {
-        row.push(curr);
-        curr = '';
-      } else if ((char === '\n' || char === '\r') && !insideQuote) {
-        if (char === '\r' && nextChar === '\n') i++; 
-        row.push(curr);
-        rows.push(row);
-        row = [];
-        curr = '';
-      } else {
-        curr += char;
-      }
+      if (char === '"' && insideQuote && nextChar === '"') { curr += '"'; i++; }
+      else if (char === '"') { insideQuote = !insideQuote; }
+      else if (char === ',' && !insideQuote) { row.push(curr); curr = ''; }
+      else if ((char === '\n' || char === '\r') && !insideQuote) {
+        if (char === '\r' && nextChar === '\n') i++;
+        row.push(curr); rows.push(row); row = []; curr = '';
+      } else { curr += char; }
     }
-    if (curr || row.length > 0) {
-      row.push(curr);
-      rows.push(row);
-    }
+    if (curr || row.length > 0) { row.push(curr); rows.push(row); }
+    return rows;
+  }
 
+  function parseCSV(csv) {
+    const rows = splitCSV(csv);
     const dataArr = [];
     for(let i = 1; i < rows.length; i++) {
       const r = rows[i];
@@ -1000,14 +1290,9 @@
       if(match) {
           const diffTime = eventDateObj.getTime() - todayDateObj.getTime();
           const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24)); 
-          
-          if (diffDays === 0) {
-              ddayStr = "D-day";
-          } else if (diffDays > 0) {
-              ddayStr = `D-${diffDays}`;
-          } else {
-              ddayStr = `D+${Math.abs(diffDays)}`;
-          }
+          if (diffDays === 0) ddayStr = "D-day";
+          else if (diffDays > 0) ddayStr = `D-${diffDays}`;
+          else ddayStr = `D+${Math.abs(diffDays)}`;
       }
 
       const id = `${dateStr}_${r[2] ? r[2].trim() : ''}`;
@@ -1029,46 +1314,12 @@
     return dataArr;
   }
 
-  // ===== 시트3 기반 회원 인증 =====
-  let membersData = []; // [{name, phone}] 형태로 저장
-
-  function normalizePhone(str) {
-    return (str || '').replace(/[^0-9]/g, ''); // 숫자만 남겨서 비교 (하이픈/공백 무시)
-  }
+  // ===== 시트3 회원 로그인 연동 부분 =====
+  let membersData = []; 
+  function normalizePhone(str) { return (str || '').replace(/[^0-9]/g, ''); }
 
   function parseMembersCSV(csv) {
-    const rows = [];
-    let row = [], curr = '';
-    let insideQuote = false;
-
-    for (let i = 0; i < csv.length; i++) {
-      const char = csv[i];
-      const nextChar = csv[i + 1];
-
-      if (char === '"' && insideQuote && nextChar === '"') {
-        curr += '"';
-        i++;
-      } else if (char === '"') {
-        insideQuote = !insideQuote;
-      } else if (char === ',' && !insideQuote) {
-        row.push(curr);
-        curr = '';
-      } else if ((char === '\n' || char === '\r') && !insideQuote) {
-        if (char === '\r' && nextChar === '\n') i++;
-        row.push(curr);
-        rows.push(row);
-        row = [];
-        curr = '';
-      } else {
-        curr += char;
-      }
-    }
-    if (curr || row.length > 0) {
-      row.push(curr);
-      rows.push(row);
-    }
-
-    // 1행은 헤더로 간주하고 건너뜀. A열=이름, B열=핸드폰번호
+    const rows = splitCSV(csv);
     const list = [];
     for (let i = 1; i < rows.length; i++) {
       const r = rows[i];
@@ -1082,12 +1333,8 @@
   async function loadMembersData() {
     try {
       const response = await fetch(MEMBERS_SHEET_CSV_URL + "&t=" + new Date().getTime());
-      const csvText = await response.text();
-      membersData = parseMembersCSV(csvText);
-    } catch (error) {
-      console.error("회원 명단 연동 실패:", error);
-      membersData = [];
-    }
+      membersData = parseMembersCSV(await response.text());
+    } catch (error) { membersData = []; }
   }
 
   function isAuthorizedMember(name, phone) {
@@ -1102,10 +1349,7 @@
     const errorEl = document.getElementById('loginError');
     const btn = document.getElementById('loginBtn');
 
-    const name = nameInput.value.trim();
-    const phone = phoneInput.value.trim();
-
-    if (!name || !phone) {
+    if (!nameInput.value.trim() || !phoneInput.value.trim()) {
       errorEl.innerText = '이름과 핸드폰 번호를 모두 입력해주세요.';
       errorEl.style.display = 'block';
       return;
@@ -1115,15 +1359,13 @@
     btn.innerText = '확인 중...';
     errorEl.style.display = 'none';
 
-    if (membersData.length === 0) {
-      await loadMembersData(); // 아직 명단을 못 불러왔다면 한번 더 시도
-    }
+    if (membersData.length === 0) await loadMembersData(); 
 
-    if (isAuthorizedMember(name, phone)) {
-      localStorage.setItem('koda_auth', JSON.stringify({ name: name, phone: normalizePhone(phone) }));
+    if (isAuthorizedMember(nameInput.value.trim(), phoneInput.value.trim())) {
+      localStorage.setItem('koda_auth', JSON.stringify({ name: nameInput.value.trim(), phone: normalizePhone(phoneInput.value.trim()) }));
       enterApp();
     } else {
-      errorEl.innerText = '등록된 회원 정보와 일치하지 않습니다. 이름과 핸드폰 번호를 다시 확인해주세요.';
+      errorEl.innerText = '등록된 회원 정보와 일치하지 않습니다. 다시 확인해주세요.';
       errorEl.style.display = 'block';
       btn.disabled = false;
       btn.innerText = '입장하기';
@@ -1143,79 +1385,29 @@
     document.getElementById('appRoot').style.display = 'none';
     document.getElementById('loginScreen').style.display = 'flex';
     document.body.style.overflow = 'hidden';
-
-    const nameInput = document.getElementById('loginName');
-    const phoneInput = document.getElementById('loginPhone');
-    const errorEl = document.getElementById('loginError');
-    const btn = document.getElementById('loginBtn');
-    if (nameInput) nameInput.value = '';
-    if (phoneInput) phoneInput.value = '';
-    if (errorEl) errorEl.style.display = 'none';
-    if (btn) { btn.disabled = false; btn.innerText = '입장하기'; }
+    document.getElementById('loginName').value = '';
+    document.getElementById('loginPhone').value = '';
   };
 
   async function initAuth() {
-    const loginScreen = document.getElementById('loginScreen');
-    const errorEl = document.getElementById('loginError');
-
     await loadMembersData();
-
-    // 이전에 인증에 성공한 기록이 있고, 명단에서도 여전히 확인되면 자동 입장
     const saved = JSON.parse(localStorage.getItem('koda_auth') || 'null');
     if (saved && isAuthorizedMember(saved.name, saved.phone)) {
-      enterApp();
-      return;
+      enterApp(); return;
     }
-
-    if (membersData.length === 0) {
-      errorEl.innerText = '회원 명단을 불러오지 못했습니다. 잠시 후 다시 시도해주세요.';
-      errorEl.style.display = 'block';
-    }
-
-    loginScreen.style.display = 'flex';
+    document.getElementById('loginScreen').style.display = 'flex';
     document.body.style.overflow = 'hidden';
   }
-  // ===== 회원 인증 끝 =====
 
+  // ===== 시트2: 회의 자료 파싱 및 로직 =====
   function getDriveFileId(url) {
     if (!url) return null;
-    const match = url.match(/https:\/\/drive\.google\.com\/file\/d\/([^\/]+)/)
-               || url.match(/[?&]id=([^&]+)/);
+    const match = url.match(/https:\/\/drive\.google\.com\/file\/d\/([^\/]+)/) || url.match(/[?&]id=([^&]+)/);
     return match ? match[1] : null;
   }
 
   function parseMaterialsCSV(csv) {
-    const rows = [];
-    let row = [], curr = '';
-    let insideQuote = false;
-
-    for (let i = 0; i < csv.length; i++) {
-      const char = csv[i];
-      const nextChar = csv[i + 1];
-
-      if (char === '"' && insideQuote && nextChar === '"') {
-        curr += '"';
-        i++;
-      } else if (char === '"') {
-        insideQuote = !insideQuote;
-      } else if (char === ',' && !insideQuote) {
-        row.push(curr);
-        curr = '';
-      } else if ((char === '\n' || char === '\r') && !insideQuote) {
-        if (char === '\r' && nextChar === '\n') i++;
-        row.push(curr);
-        rows.push(row);
-        row = [];
-        curr = '';
-      } else {
-        curr += char;
-      }
-    }
-    if (curr || row.length > 0) {
-      row.push(curr);
-      rows.push(row);
-    }
-
+    const rows = splitCSV(csv);
     const dataArr = [];
     for (let i = 1; i < rows.length; i++) {
       const r = rows[i];
@@ -1225,6 +1417,14 @@
       const title = r[1] ? r[1].trim() : '';
       const rawUrlsStr = r[2] ? r[2].trim() : '';
       const fileType = (r[3] ? r[3].trim().toLowerCase() : 'pdf');
+      
+      let exactMonth = '';
+      const dateParts = dateStr.split('.').map(s => s.trim());
+      if (dateParts.length >= 3) {
+        exactMonth = parseInt(dateParts[1], 10).toString();
+      } else if (dateParts.length === 2) {
+        exactMonth = parseInt(dateParts[0], 10).toString();
+      }
 
       const rawUrls = rawUrlsStr.split(',').map(s => s.trim()).filter(s => s);
       const images = rawUrls.map(u => {
@@ -1239,9 +1439,11 @@
 
       dataArr.push({
         date: dateStr,
+        month: exactMonth,
         title: title,
         fileType: fileType,
-        images: images
+        images: images,
+        globalIndex: i - 1 
       });
     }
 
@@ -1261,25 +1463,33 @@
     list.innerHTML = `<div class="loading-msg">자료를 불러오는 중입니다...⏳</div>`;
     try {
       const response = await fetch(MATERIALS_SHEET_CSV_URL + "&t=" + new Date().getTime());
-      const csvText = await response.text();
-      materialsData = parseMaterialsCSV(csvText);
-      renderMaterialsList();
+      materialsData = parseMaterialsCSV(await response.text());
+      renderMaterialsList('all'); 
     } catch (error) {
-      console.error("회의자료 연동 실패:", error);
       list.innerHTML = `<div class="no-data">자료를 불러오지 못했습니다. 네트워크 상태를 확인해주세요.</div>`;
     }
   }
 
-  function renderMaterialsList() {
+  window.filterMaterials = function(month) {
+    document.querySelectorAll('#materialTabs .month-tab').forEach(btn => {
+      if (btn.dataset.month === month) btn.classList.add('active');
+      else btn.classList.remove('active');
+    });
+    renderMaterialsList(month);
+  };
+
+  function renderMaterialsList(monthFilter) {
     const list = document.getElementById('materialsList');
     list.innerHTML = '';
 
-    if (materialsData.length === 0) {
-      list.innerHTML = `<div class="no-data">등록된 회의자료가 없습니다.</div>`;
+    const filteredData = materialsData.filter(item => monthFilter === 'all' || item.month === monthFilter);
+
+    if (filteredData.length === 0) {
+      list.innerHTML = `<div class="no-data">해당 월에 등록된 회의자료가 없습니다.</div>`;
       return;
     }
 
-    materialsData.forEach((item, index) => {
+    filteredData.forEach(item => {
       const btn = document.createElement('button');
       btn.type = 'button';
       btn.className = 'day-event-item';
@@ -1290,13 +1500,12 @@
 
       const meta = document.createElement('div');
       meta.className = 'day-event-item-meta';
-      meta.innerText = item.fileType === 'pdf'
-        ? 'PDF 바로 보기'
-        : (item.images.length > 1 ? `이미지 ${item.images.length}장 바로 확인` : '이미지 바로 확인');
+      meta.innerText = item.fileType === 'pdf' ? 'PDF 바로 보기' : (item.images.length > 1 ? `이미지 ${item.images.length}장 바로 확인` : '이미지 바로 확인');
 
       btn.appendChild(title);
       btn.appendChild(meta);
-      btn.onclick = () => openMaterial(index);
+      const indexInOriginal = materialsData.findIndex(d => d === item);
+      btn.onclick = () => openMaterial(indexInOriginal);
 
       list.appendChild(btn);
     });
@@ -1310,7 +1519,11 @@
     if (!item || !item.images || item.images.length === 0) return;
 
     if (item.fileType === 'pdf') {
-      openPdfViewer(item.images[0]);
+      document.getElementById('pdfViewerFrame').src = item.images[0].previewUrl;
+      document.getElementById('pdfViewerDownload').href = item.images[0].downloadUrl;
+      document.getElementById('pdfViewerOpenNewTab').href = item.images[0].openUrl;
+      document.getElementById('pdfViewerModal').style.display = 'flex';
+      history.pushState({ pdfViewerOpen: true }, "", "");
       return;
     }
 
@@ -1323,100 +1536,267 @@
     history.pushState({ materialViewerOpen: true }, "", "");
   };
 
-  function openPdfViewer(fileInfo) {
-    document.getElementById('pdfViewerFrame').src = fileInfo.previewUrl;
-    document.getElementById('pdfViewerDownload').href = fileInfo.downloadUrl;
-    document.getElementById('pdfViewerOpenNewTab').href = fileInfo.openUrl;
-    document.getElementById('pdfViewerModal').style.display = 'flex';
-    document.body.style.overflow = 'hidden';
-    history.pushState({ pdfViewerOpen: true }, "", "");
-  }
-
-  window.closePdfViewer = function(goBack = true) {
-    document.getElementById('pdfViewerModal').style.display = 'none';
-    document.getElementById('pdfViewerFrame').src = '';
-    if (goBack) history.back();
-  };
-
-  window.closePdfViewerOnOutsideClick = function(e) {
-    if (e.target.id === 'pdfViewerModal') history.back();
-  };
-
   function renderMaterialImage() {
     const img = document.getElementById('materialViewerImg');
     const fallback = document.getElementById('materialViewerFallback');
     const nav = document.getElementById('materialViewerNav');
-    const indicator = document.getElementById('materialViewerPageIndicator');
-    const prevBtn = document.getElementById('materialViewerPrevBtn');
-    const nextBtn = document.getElementById('materialViewerNextBtn');
-
+    
     const total = currentMaterialImages.length;
     const current = currentMaterialImages[currentMaterialImageIndex];
 
-    img.style.display = 'block';
-    fallback.style.display = 'none';
+    img.style.display = 'block'; fallback.style.display = 'none';
     img.src = current.viewSrc;
 
     img.onerror = function() {
-      img.style.display = 'none';
-      fallback.style.display = 'inline-block';
-      fallback.href = current.openUrl;
+      img.style.display = 'none'; fallback.style.display = 'inline-block'; fallback.href = current.openUrl;
     };
 
     document.getElementById('materialViewerDownload').href = current.downloadUrl;
 
     if (total > 1) {
       nav.style.display = 'flex';
-      indicator.innerText = `${currentMaterialImageIndex + 1} / ${total}`;
-      prevBtn.disabled = currentMaterialImageIndex === 0;
-      nextBtn.disabled = currentMaterialImageIndex === total - 1;
+      document.getElementById('materialViewerPageIndicator').innerText = `${currentMaterialImageIndex + 1} / ${total}`;
+      document.getElementById('materialViewerPrevBtn').disabled = currentMaterialImageIndex === 0;
+      document.getElementById('materialViewerNextBtn').disabled = currentMaterialImageIndex === total - 1;
     } else {
       nav.style.display = 'none';
     }
   }
 
-  window.showPrevMaterialImage = function() {
-    if (currentMaterialImageIndex > 0) {
-      currentMaterialImageIndex--;
-      renderMaterialImage();
-    }
-  };
+  window.showPrevMaterialImage = function() { if (currentMaterialImageIndex > 0) { currentMaterialImageIndex--; renderMaterialImage(); } };
+  window.showNextMaterialImage = function() { if (currentMaterialImageIndex < currentMaterialImages.length - 1) { currentMaterialImageIndex++; renderMaterialImage(); } };
 
-  window.showNextMaterialImage = function() {
-    if (currentMaterialImageIndex < currentMaterialImages.length - 1) {
-      currentMaterialImageIndex++;
-      renderMaterialImage();
-    }
-  };
-
-  window.closeMaterialViewer = function(goBack = true) {
-    document.getElementById('materialViewerModal').style.display = 'none';
-    if (goBack) history.back();
-  };
-
-  window.closeMaterialViewerOnOutsideClick = function(e) {
-    if (e.target.id === 'materialViewerModal') history.back();
-  };
+  window.closePdfViewer = function(goBack=true) { document.getElementById('pdfViewerModal').style.display = 'none'; document.getElementById('pdfViewerFrame').src = ''; if(goBack) history.back(); };
+  window.closePdfViewerOnOutsideClick = function(e) { if(e.target.id === 'pdfViewerModal') history.back(); };
+  
+  window.closeMaterialViewer = function(goBack=true) { document.getElementById('materialViewerModal').style.display = 'none'; if(goBack) history.back(); };
+  window.closeMaterialViewerOnOutsideClick = function(e) { if(e.target.id === 'materialViewerModal') history.back(); };
 
   window.openMaterialsScreen = function() {
-    document.getElementById('materialsModal').style.display = 'flex';
+    document.getElementById('materialsScreen').style.display = 'flex';
     document.body.style.overflow = 'hidden';
     history.pushState({ materialsOpen: true }, "", "");
-    if (materialsData.length === 0) {
-      loadMaterialsData();
-    } else {
-      renderMaterialsList();
+    if (materialsData.length === 0) loadMaterialsData(); else filterMaterials('all'); 
+  };
+  window.closeMaterialsScreen = function(goBack=true) { document.getElementById('materialsScreen').style.display = 'none'; if(goBack) history.back(); };
+
+
+  // ===== ✨ 시트5: 협회 중요 공지 ✨ =====
+  function parseNoticeCSV(csv) {
+    const rows = splitCSV(csv);
+    const dataArr = [];
+    if (rows.length < 2) return dataArr;
+
+    const headers = rows[0].map(h => h ? h.trim().replace(/\s+/g, '') : "");
+    let idx = {
+      date: headers.indexOf("작성일자"),
+      title: headers.indexOf("제목"),
+      content: headers.indexOf("내용")
+    };
+    if (idx.title === -1) idx = { date: 0, title: 1, content: 2 }; 
+
+    for (let i = 1; i < rows.length; i++) {
+      const r = rows[i];
+      if (r.length <= idx.title || !r[idx.title]) continue; 
+      dataArr.push({
+        date: idx.date !== -1 && r[idx.date] ? r[idx.date].trim() : "",
+        title: idx.title !== -1 && r[idx.title] ? r[idx.title].trim() : "",
+        content: idx.content !== -1 && r[idx.content] ? r[idx.content].trim() : "",
+      });
     }
-  };
+    return dataArr.reverse();
+  }
 
-  window.closeMaterialsModal = function(goBack = true) {
-    document.getElementById('materialsModal').style.display = 'none';
-    if (goBack) history.back();
-  };
+  async function loadNoticeData() {
+    const list = document.getElementById('noticeList');
+    list.innerHTML = `<div class="loading-msg">공지를 불러오는 중입니다...⏳</div>`;
+    
+    if (NOTICE_SHEET_CSV_URL.includes("여기에_시트5")) {
+      list.innerHTML = `<div class="no-data">협회 중요 공지(시트5) 주소가 연동되지 않았습니다.<br>소스코드 상단의 링크를 수정해주세요.</div>`;
+      return;
+    }
 
-  window.closeMaterialsOnOutsideClick = function(e) {
-    if (e.target.id === 'materialsModal') history.back();
+    try {
+      const response = await fetch(NOTICE_SHEET_CSV_URL + "&t=" + new Date().getTime());
+      noticeData = parseNoticeCSV(await response.text());
+      renderNoticeList();
+    } catch (error) {
+      list.innerHTML = `<div class="no-data">데이터를 불러오지 못했습니다. 네트워크 상태를 확인해주세요.</div>`;
+    }
+  }
+
+  function getNoticeKey(item, index) { return 'koda_notice_read_' + btoa(unescape(encodeURIComponent((item.date||'')+'|'+(item.title||'')+'|'+index))).replace(/=/g,''); }
+  function isNoticeRead(item,index){ return localStorage.getItem(getNoticeKey(item,index)) === '1'; }
+  function markNoticeRead(item,index){ localStorage.setItem(getNoticeKey(item,index),'1'); }
+  function isNoticeNew(item){
+    const d = new Date(String(item.date||'').replace(/\./g,'-').replace(/\//g,'-'));
+    if (isNaN(d)) return false;
+    const today = new Date(); today.setHours(0,0,0,0); d.setHours(0,0,0,0);
+    return Math.floor((today-d)/86400000) >= 0 && Math.floor((today-d)/86400000) <= 7;
+  }
+
+  function renderNoticeList() {
+    const list = document.getElementById('noticeList'); list.innerHTML = '';
+    if (!noticeData.length) { list.innerHTML = '<div class="no-data">등록된 공지가 없습니다.</div>'; return; }
+    noticeData.forEach((item,index)=>{
+      const btn=document.createElement('button'); btn.type='button';
+      btn.className='day-event-item notice-item '+(isNoticeRead(item,index)?'notice-read':'notice-unread');
+      const top=document.createElement('div'); top.className='notice-item-top';
+      const title=document.createElement('div'); title.className='day-event-item-title';
+      title.innerText=item.title;
+      const badges=document.createElement('span'); badges.className='notice-badges';
+      if(isNoticeNew(item)){ const n=document.createElement('span'); n.className='notice-new'; n.innerText='NEW'; badges.appendChild(n); }
+      const r=document.createElement('span'); r.className='notice-read-badge'; r.innerText=isNoticeRead(item,index)?'읽음':'미읽음'; badges.appendChild(r);
+      top.appendChild(title); top.appendChild(badges);
+      const meta=document.createElement('div'); meta.className='day-event-item-meta'; meta.innerText=item.date||'';
+      btn.appendChild(top); btn.appendChild(meta);
+      btn.onclick=()=>openNoticeDetailModal(index); list.appendChild(btn);
+    });
+  }
+
+  window.openNoticesScreen = function() {
+    document.getElementById('noticesScreen').style.display = 'flex';
+    document.body.style.overflow = 'hidden';
+    history.pushState({ noticesOpen: true }, "", "");
+    if (noticeData.length === 0) loadNoticeData();
   };
+  window.closeNoticesScreen = function(goBack=true) { document.getElementById('noticesScreen').style.display = 'none'; if(goBack) history.back(); };
+
+  window.openNoticeDetailModal = function(index) {
+    const item = noticeData[index];
+    markNoticeRead(item,index);
+    document.getElementById('noticeDetailTitle').innerText = item.title;
+    document.getElementById('noticeDetailDate').innerText = item.date;
+    document.getElementById('noticeDetailContent').innerText = item.content;
+    
+    document.getElementById('noticeDetailModal').style.display = 'flex';
+    renderNoticeList();
+    history.pushState({ noticeDetailOpen: true }, "", "");
+  };
+  window.closeNoticeDetailModal = function(goBack=true) { document.getElementById('noticeDetailModal').style.display = 'none'; if(goBack) history.back(); };
+  window.closeNoticeDetailModalOnOutsideClick = function(e) { if(e.target.id === 'noticeDetailModal') history.back(); };
+
+
+  // ===== ✨ 시트4 KODA 직원현황 로직 ✨ =====
+  function parseStaffCSV(csv) {
+    const rows = splitCSV(csv);
+    const dataArr = [];
+    if (rows.length < 2) return dataArr;
+
+    const headers = rows[0].map(h => h ? h.trim().replace(/\s+/g, '') : "");
+    let idx = {
+      cat: headers.indexOf("구분"),
+      no: headers.indexOf("NO"),
+      name: headers.indexOf("성명"),
+      affil: headers.indexOf("소속"),
+      pos: headers.indexOf("직위"),
+      dept: headers.findIndex(h => h.includes("부서") || h.includes("KODA")), 
+      phone: headers.indexOf("연락처"),
+      email: headers.indexOf("이메일"),
+      note: headers.indexOf("비고")
+    };
+    if (idx.name === -1) idx = { cat: 0, no: 1, name: 2, affil: 3, pos: 4, dept: 5, phone: 6, email: 7, note: 8 };
+
+    for (let i = 1; i < rows.length; i++) {
+      const r = rows[i];
+      if (r.length <= idx.name || !r[idx.name]) continue; 
+      dataArr.push({
+        category: idx.cat !== -1 && r[idx.cat] ? r[idx.cat].trim() : "분류없음",
+        no: idx.no !== -1 && r[idx.no] ? r[idx.no].trim() : "",
+        name: idx.name !== -1 && r[idx.name] ? r[idx.name].trim() : "",
+        affiliation: idx.affil !== -1 && r[idx.affil] ? r[idx.affil].trim() : "",
+        position: idx.pos !== -1 && r[idx.pos] ? r[idx.pos].trim() : "",
+        department: idx.dept !== -1 && r[idx.dept] ? r[idx.dept].trim() : "",
+        phone: idx.phone !== -1 && r[idx.phone] ? r[idx.phone].trim() : "",
+        email: idx.email !== -1 && r[idx.email] ? r[idx.email].trim() : "",
+        note: idx.note !== -1 && r[idx.note] ? r[idx.note].trim() : ""
+      });
+    }
+    return dataArr;
+  }
+
+  async function loadStaffData() {
+    const list = document.getElementById('staffList');
+    list.innerHTML = `<div class="loading-msg">직원 정보를 불러오는 중입니다...⏳</div>`;
+    try {
+      const response = await fetch(STAFF_SHEET_CSV_URL + "&t=" + new Date().getTime());
+      staffData = parseStaffCSV(await response.text());
+      renderStaffList('all');
+    } catch (error) {
+      list.innerHTML = `<div class="no-data">데이터를 불러오지 못했습니다. 네트워크 상태를 확인해주세요.</div>`;
+    }
+  }
+
+  window.filterStaff = function(category) {
+    document.querySelectorAll('#staffTabs .month-tab').forEach(btn => {
+      if (btn.dataset.cat === category) btn.classList.add('active');
+      else btn.classList.remove('active');
+    });
+    renderStaffList(category);
+  }
+
+  function renderStaffList(categoryFilter) {
+    const list=document.getElementById('staffList'); list.innerHTML='';
+    const filteredData=staffData.filter(item=>categoryFilter==='all'||item.category===categoryFilter);
+    if(!filteredData.length){list.innerHTML='<div class="no-data">해당되는 인원이 없습니다.</div>';return;}
+    filteredData.forEach(item=>{
+      const indexInOriginal=staffData.indexOf(item);
+      const btn=document.createElement('button'); btn.type='button'; btn.className='day-event-item staff-card-compact';
+      const badgeClass=item.category.includes('임원')?'staff-badge executive':'staff-badge';
+      const role=[item.department,item.position].filter(Boolean).join(' · ');
+      btn.innerHTML=`<div class="day-event-item-title"><span class="${badgeClass}">${item.category}</span><strong>${item.name||'-'}</strong></div><div class="day-event-item-meta">${role||item.affiliation||'-'}</div><div class="staff-phone">${item.phone||''}</div>`;
+      btn.onclick=()=>openStaffDetailModal(indexInOriginal); list.appendChild(btn);
+    });
+  }
+
+  window.openStaffScreen = function() {
+    document.getElementById('staffScreen').style.display = 'flex';
+    document.body.style.overflow = 'hidden';
+    history.pushState({ staffOpen: true }, "", "");
+    if (staffData.length === 0) loadStaffData(); else filterStaff('all'); 
+  };
+  window.closeStaffScreen = function(goBack=true) { document.getElementById('staffScreen').style.display = 'none'; if(goBack) history.back(); };
+
+  window.openStaffDetailModal = function(index) {
+    const staff = staffData[index];
+    
+    document.getElementById('staffDetailName').innerText = staff.name || '-';
+    document.getElementById('staffDetailAffiliation').innerText = staff.affiliation || '-';
+    document.getElementById('staffDetailPosition').innerText = staff.position || '-';
+    document.getElementById('staffDetailKoda').innerText = staff.department || '-'; 
+    document.getElementById('staffDetailPhone').innerText = staff.phone || '-';
+    document.getElementById('staffDetailEmail').innerText = staff.email || '-';
+    document.getElementById('staffDetailNote').innerText = staff.note || '-';
+
+    const normPhone = (staff.phone || '').replace(/[^0-9]/g, '');
+    const callBtn = document.getElementById('staffBtnCall');
+    const smsBtn = document.getElementById('staffBtnSms');
+    const emailBtn = document.getElementById('staffBtnEmail');
+
+    if(normPhone) {
+      callBtn.href = `tel:${normPhone}`;
+      smsBtn.href = `sms:${normPhone}`;
+      callBtn.style.display = 'block';
+      smsBtn.style.display = 'block';
+    } else {
+      callBtn.style.display = 'none';
+      smsBtn.style.display = 'none';
+    }
+
+    if(staff.email) {
+      emailBtn.href = `mailto:${staff.email}`;
+      emailBtn.style.display = 'block';
+    } else {
+      emailBtn.style.display = 'none';
+    }
+
+    document.getElementById('staffDetailModal').style.display = 'flex';
+    history.pushState({ staffDetailOpen: true }, "", "");
+  }
+
+  window.closeStaffDetailModal = function(goBack=true) { document.getElementById('staffDetailModal').style.display = 'none'; if(goBack) history.back(); };
+  window.closeStaffDetailModalOnOutsideClick = function(e) { if(e.target.id === 'staffDetailModal') history.back(); };
+
 
   window.toggleBookmark = function(event, id) {
     event.stopPropagation(); 
@@ -1431,19 +1811,12 @@
   
   window.shareEvent = function(event, globalIndex) {
       event.stopPropagation(); 
-      
       const schedule = scheduleData[globalIndex];
       const shareTitle = `[KODA 일정] ${schedule.title}`;
       const shareText = `📅 일시: ${schedule.date}\n📍 장소: ${schedule.location}\n\n자세한 일정은 앱을 통해 확인하세요!`;
       const shareUrl = window.location.href; 
-
       if (navigator.share) {
-          navigator.share({
-              title: shareTitle,
-              text: shareText,
-              url: shareUrl,
-          })
-          .then(() => console.log('공유 성공'))
+          navigator.share({ title: shareTitle, text: shareText, url: shareUrl })
           .catch((error) => console.log('공유 실패', error));
       } else {
           alert("현재 브라우저에서는 공유 기능이 지원되지 않습니다.\n\n" + shareTitle + "\n" + shareText);
@@ -1454,30 +1827,21 @@
   window.toggleBookmarkModal = function() {
     if (currentModalGlobalIndex === null) return;
     const event = scheduleData[currentModalGlobalIndex];
-    if (bookmarks.includes(event.id)) {
-      bookmarks = bookmarks.filter(item => item !== event.id);
-    } else {
-      bookmarks.push(event.id);
-    }
+    if (bookmarks.includes(event.id)) bookmarks = bookmarks.filter(item => item !== event.id);
+    else bookmarks.push(event.id);
     localStorage.setItem('koda_bookmarks', JSON.stringify(bookmarks));
     
     const modalStar = document.getElementById('modalStarBtn');
-    if (bookmarks.includes(event.id)) {
-      modalStar.classList.add('starred');
-    } else {
-      modalStar.classList.remove('starred');
-    }
+    if (bookmarks.includes(event.id)) modalStar.classList.add('starred');
+    else modalStar.classList.remove('starred');
     updateView();
   }
 
   window.toggleBookmarksOnly = function() {
     showBookmarksOnly = !showBookmarksOnly;
     const btn = document.getElementById('bookmarkFilterBtn');
-    if (showBookmarksOnly) {
-      btn.classList.add('active-bookmark');
-    } else {
-      btn.classList.remove('active-bookmark');
-    }
+    if (showBookmarksOnly) btn.classList.add('active-bookmark');
+    else btn.classList.remove('active-bookmark');
     updateView();
   }
 
@@ -1488,11 +1852,7 @@
 
   function getFilteredData() {
     let data = scheduleData;
-
-    if (showBookmarksOnly) {
-      data = data.filter(event => bookmarks.includes(event.id));
-    }
-
+    if (showBookmarksOnly) data = data.filter(event => bookmarks.includes(event.id));
     if (searchQuery !== '') {
       data = data.filter(event => 
         event.title.toLowerCase().includes(searchQuery) ||
@@ -1502,28 +1862,24 @@
         event.host.toLowerCase().includes(searchQuery)
       );
     }
-
     if (!showBookmarksOnly && searchQuery === '') {
       data = data.filter(event => event.month == calMonth);
     }
-
     return data;
   }
 
   async function manualRefresh() {
-    scheduleContainer.innerHTML = `<div class="loading-msg">최신 일정을 새로고침 중입니다...⏳</div>`;
+    document.getElementById('scheduleContainer').innerHTML = `<div class="loading-msg">최신 일정을 새로고침 중입니다...⏳</div>`;
     await loadData();
   }
 
   async function loadData() {
     try {
       const response = await fetch(GOOGLE_SHEET_CSV_URL + "&t=" + new Date().getTime());
-      const csvText = await response.text();
-      scheduleData = parseCSV(csvText);
+      scheduleData = parseCSV(await response.text());
       updateView();
     } catch (error) {
-      console.error("데이터 연동 실패:", error);
-      scheduleContainer.innerHTML = `<div class="no-data">일정을 불러오지 못했습니다. 네트워크 상태를 확인해주세요.</div>`;
+      document.getElementById('scheduleContainer').innerHTML = `<div class="no-data">일정을 불러오지 못했습니다. 네트워크 상태를 확인해주세요.</div>`;
     }
   }
 
@@ -1536,10 +1892,7 @@
     const grid = document.getElementById('calendarGrid');
     const display = document.getElementById('calMonthDisplay');
     
-    grid.style.animation = 'none';
-    grid.offsetHeight; 
-    grid.style.animation = 'fadeIn 0.3s ease-out';
-    
+    grid.style.animation = 'none'; grid.offsetHeight; grid.style.animation = 'fadeIn 0.3s ease-out';
     grid.innerHTML = '';
     display.innerText = `${calYear}년 ${calMonth}월`;
 
@@ -1554,24 +1907,17 @@
     const firstDayIndex = new Date(calYear, calMonth - 1, 1).getDay();
     const lastDay = new Date(calYear, calMonth, 0).getDate();
 
-    for(let i = 0; i < firstDayIndex; i++) {
-      grid.innerHTML += `<div class="cal-cell empty"></div>`;
-    }
+    for(let i = 0; i < firstDayIndex; i++) grid.innerHTML += `<div class="cal-cell empty"></div>`;
 
     for(let d = 1; d <= lastDay; d++) {
       let monthBaseData = scheduleData.filter(e => e.month === calMonth && e.day === d);
-      if (showBookmarksOnly) {
-        monthBaseData = monthBaseData.filter(e => bookmarks.includes(e.id));
-      }
+      if (showBookmarksOnly) monthBaseData = monthBaseData.filter(e => bookmarks.includes(e.id));
 
       let eventsHtml = '';
       monthBaseData.forEach(e => {
-        const globalIndex = scheduleData.indexOf(e);
         const isChairman = e.note.includes("회장님 참석");
-        
         let chipClass = "cal-event-chip";
         if (isChairman) chipClass += " chairman";
-
         const shortTitle = e.title.length > 7 ? e.title.substring(0, 7) + '..' : e.title;
         eventsHtml += `<div class="${chipClass}" onclick="openDayEventsModal(${calYear}, ${calMonth}, ${d}); event.stopPropagation();">${shortTitle}</div>`;
       });
@@ -1584,15 +1930,10 @@
       const mmdd = String(calMonth).padStart(2, '0') + '-' + String(d).padStart(2, '0');
       let dateNumClass = "cal-date-num";
       
-      if (currentDayOfWeek === 0 || holidays2026.includes(mmdd)) {
-        dateNumClass += " text-red";
-      } else if (currentDayOfWeek === 6) {
-        dateNumClass += " text-blue";
-      }
+      if (currentDayOfWeek === 0 || holidays2026.includes(mmdd)) dateNumClass += " text-red";
+      else if (currentDayOfWeek === 6) dateNumClass += " text-blue";
 
-      const dateClick = monthBaseData.length > 0
-        ? `onclick="openDayEventsModal(${calYear}, ${calMonth}, ${d})"`
-        : "";
+      const dateClick = monthBaseData.length > 0 ? `onclick="openDayEventsModal(${calYear}, ${calMonth}, ${d})"` : "";
 
       grid.innerHTML += `
         <div class="${cellClass}" ${dateClick} style="${monthBaseData.length > 0 ? 'cursor:pointer;' : ''}">
@@ -1607,22 +1948,17 @@
     calMonth += offset;
     if(calMonth > 12) { calMonth = 1; calYear++; }
     else if(calMonth < 1) { calMonth = 12; calYear--; }
-
     updateView();
   };
 
-  // 개별 카드 생성 로직 분리 함수
   function createEventCard(event) {
     const globalIndex = scheduleData.indexOf(event);
     const isChairman = event.note.includes("회장님 참석");
     const titleClass = isChairman ? "event-title chairman" : "event-title";
     const isStarred = bookmarks.includes(event.id);
-    
-    // 오늘 일정인지 확인
     const isToday = event.dday === "D-day";
 
     const card = document.createElement('div');
-    // 오늘 일정이면 'today-card' 클래스 추가
     card.className = 'event-card' + (isToday ? ' today-card' : '');
 
     card.innerHTML = `
@@ -1651,193 +1987,153 @@
     return card;
   }
 
-  // 지나간 일정 열기/닫기 토글
   window.togglePastSchedules = function() {
     const list = document.getElementById('pastScheduleList');
     const btn = document.getElementById('pastScheduleBtn');
     if (list.style.display === 'none') {
-      list.style.display = 'flex';
-      btn.innerText = '전체 일정 닫기';
+      list.style.display = 'flex'; btn.innerText = '지난 일정 닫기';
     } else {
-      list.style.display = 'none';
-      btn.innerText = '전체 일정 보기';
+      list.style.display = 'none'; btn.innerText = '지난 일정 보기';
     }
   }
 
-  // 일정 렌더링 함수
   function renderSchedules() {
     const scheduleContainer = document.getElementById('scheduleContainer');
     scheduleContainer.innerHTML = '';
-    
     const currentFilteredData = getFilteredData();
 
     if (currentFilteredData.length === 0) {
-      scheduleContainer.innerHTML = `<div class="no-data">등록된 일정이 없습니다.</div>`;
-      return;
+      scheduleContainer.innerHTML = `<div class="no-data">등록된 일정이 없습니다.</div>`; return;
     }
 
-    const pastEvents = [];
-    const todayEvents = [];
-    const futureEvents = [];
-
-    // dday 값에 따라 오늘/다가오는일정/지나간일정 분류
+    const pastEvents = [], todayEvents = [], futureEvents = [];
     currentFilteredData.forEach(event => {
-      if (event.dday === "D-day") {
-        todayEvents.push(event);
-      } else if (event.dday.startsWith("D+")) {
-        pastEvents.push(event);
-      } else {
-        futureEvents.push(event);
-      }
+      if (event.dday === "D-day") todayEvents.push(event);
+      else if (event.dday.startsWith("D+")) pastEvents.push(event);
+      else futureEvents.push(event);
     });
 
-    const hasUpcoming = todayEvents.length > 0 || futureEvents.length > 0;
-    const titleText = todayEvents.length > 0 ? "<오늘 일정>" : "<예정 일정>";
+    const isPastMonthView = (!showBookmarksOnly && searchQuery === '' && ((calYear < currentYear) || (calYear === currentYear && calMonth < currentMonth)));
 
-    // 헤더 생성
-    const header = document.createElement('div');
-    header.className = 'schedule-section-header';
+    const header = document.createElement('div'); header.className = 'schedule-section-header';
+    const titleWrapper = document.createElement('div'); titleWrapper.className = 'schedule-title-wrapper';
+    const titleEl = document.createElement('div'); titleEl.className = 'schedule-section-title'; 
     
-    // 타이틀과 서브 문구를 감싸는 래퍼
-    const titleWrapper = document.createElement('div');
-    titleWrapper.className = 'schedule-title-wrapper';
-
-    const titleEl = document.createElement('div');
-    titleEl.className = 'schedule-section-title';
+    let titleText = "";
+    if (isPastMonthView) {
+        titleText = "<지난 일정>";
+    } else if (todayEvents.length > 0) {
+        titleText = "<오늘 일정>";
+    } else {
+        titleText = "<예정 일정>";
+    }
     titleEl.innerText = titleText;
-    
     titleWrapper.appendChild(titleEl);
 
-    // 오늘 일정이 1개 이상 있을 때만 안내 문구를 생성하고 추가합니다.
-    if (todayEvents.length > 0) {
-      const subtitleEl = document.createElement('div');
-      subtitleEl.className = 'schedule-section-subtitle';
-      subtitleEl.innerText = "오늘 일정부터 이후 일정까지.";
-      titleWrapper.appendChild(subtitleEl);
+    if (todayEvents.length > 0 && !isPastMonthView) {
+      const subtitleEl = document.createElement('div'); subtitleEl.className = 'schedule-section-subtitle';
+      subtitleEl.innerText = "오늘 일정부터 이후 일정까지."; titleWrapper.appendChild(subtitleEl);
+    } else if (isPastMonthView) {
+      const subtitleEl = document.createElement('div'); subtitleEl.className = 'schedule-section-subtitle';
+      subtitleEl.innerText = `${calMonth}월의 지난 일정입니다.`; titleWrapper.appendChild(subtitleEl);
     }
-
     header.appendChild(titleWrapper);
 
-    // 지나간 일정이 있을 경우 오른쪽에 버튼 생성
-    if (pastEvents.length > 0) {
-      const pastBtn = document.createElement('button');
-      pastBtn.className = 'past-schedule-btn';
-      pastBtn.id = 'pastScheduleBtn';
-      pastBtn.innerText = '전체 일정 보기';
-      pastBtn.onclick = togglePastSchedules;
+    if (!isPastMonthView && pastEvents.length > 0) {
+      const pastBtn = document.createElement('button'); pastBtn.className = 'past-schedule-btn';
+      pastBtn.id = 'pastScheduleBtn'; pastBtn.innerText = '지난 일정 보기'; pastBtn.onclick = togglePastSchedules;
       header.appendChild(pastBtn);
     }
-
+    
     scheduleContainer.appendChild(header);
 
-    // 숨김 처리된 지나간 일정 목록 영역
-    if (pastEvents.length > 0) {
-      const pastList = document.createElement('div');
-      pastList.className = 'schedule-list-wrapper';
-      pastList.id = 'pastScheduleList';
-      pastList.style.display = 'none'; // 기본 숨김
-      pastEvents.forEach(event => pastList.appendChild(createEventCard(event)));
-      scheduleContainer.appendChild(pastList);
-    }
-
-    // 오늘 + 예정 일정 목록 영역
-    const upcomingList = document.createElement('div');
-    upcomingList.className = 'schedule-list-wrapper';
-    
-    if (!hasUpcoming) {
-      // 예정 일정이 없는데 지나간 일정만 있을 경우의 처리
-      upcomingList.innerHTML = `<div class="no-data" style="padding: 10px;">예정 일정이 없습니다.</div>`;
+    if (isPastMonthView) {
+        const pastList = document.createElement('div'); pastList.className = 'schedule-list-wrapper';
+        pastEvents.forEach(event => pastList.appendChild(createEventCard(event)));
+        scheduleContainer.appendChild(pastList);
     } else {
-      // 오늘 일정이 위에, 그 이후가 아래로 나열
-      todayEvents.forEach(event => upcomingList.appendChild(createEventCard(event)));
-      futureEvents.forEach(event => upcomingList.appendChild(createEventCard(event)));
+        if (pastEvents.length > 0) {
+          const pastList = document.createElement('div'); pastList.className = 'schedule-list-wrapper';
+          pastList.id = 'pastScheduleList'; pastList.style.display = 'none'; 
+          pastEvents.forEach(event => pastList.appendChild(createEventCard(event)));
+          scheduleContainer.appendChild(pastList);
+        }
+
+        const upcomingList = document.createElement('div'); upcomingList.className = 'schedule-list-wrapper';
+        const hasUpcoming = todayEvents.length > 0 || futureEvents.length > 0;
+        if (!hasUpcoming) upcomingList.innerHTML = `<div class="no-data" style="padding: 10px;">예정 일정이 없습니다.</div>`;
+        else {
+          todayEvents.forEach(event => upcomingList.appendChild(createEventCard(event)));
+          futureEvents.forEach(event => upcomingList.appendChild(createEventCard(event)));
+        }
+        scheduleContainer.appendChild(upcomingList);
     }
-    scheduleContainer.appendChild(upcomingList);
   }
   
+  // 화면별 뒤로가기 상태 관리: 상세보기 → 목록 → 메인 순서로 자연스럽게 이동
+  if (!history.state || !history.state.kodaBase) { history.replaceState({kodaBase:true}, '', location.href); }
   window.addEventListener('popstate', function(event) {
-    document.getElementById('dayEventsModal').style.display = 'none';
-    document.getElementById('materialsModal').style.display = 'none';
-    document.getElementById('materialViewerModal').style.display = 'none';
-    document.getElementById('pdfViewerModal').style.display = 'none';
+    const st = event.state || {};
+    const ids = ['dayEventsModal','materialsScreen','staffScreen','noticesScreen','materialViewerModal','pdfViewerModal','staffDetailModal','noticeDetailModal'];
+    ids.forEach(id => { const el=document.getElementById(id); if(el) el.style.display='none'; });
     document.getElementById('pdfViewerFrame').src = '';
     hideModalDOM();
+    document.body.style.overflow = 'auto';
+
+    // 뒤로 이동한 목적지 상태만 다시 표시
+    if (st.noticesOpen) document.getElementById('noticesScreen').style.display='flex';
+    else if (st.staffOpen) document.getElementById('staffScreen').style.display='flex';
+    else if (st.materialsOpen) document.getElementById('materialsScreen').style.display='flex';
+    else if (st.noticeDetailOpen) document.getElementById('noticeDetailModal').style.display='flex';
+    else if (st.staffDetailOpen) document.getElementById('staffDetailModal').style.display='flex';
+    else if (st.materialViewerOpen) document.getElementById('materialViewerModal').style.display='flex';
+    else if (st.pdfViewerOpen) document.getElementById('pdfViewerModal').style.display='flex';
+    else if (st.dayEventsModalOpen) document.getElementById('dayEventsModal').style.display='flex';
+
+    if (st.noticesOpen || st.staffOpen || st.materialsOpen || st.noticeDetailOpen || st.staffDetailOpen || st.materialViewerOpen || st.pdfViewerOpen || st.dayEventsModalOpen) {
+      document.body.style.overflow='hidden';
+    }
   });
 
   window.openDayEventsModal = function(year, month, day) {
-    const dayEvents = scheduleData.filter(eventData =>
-      Number(eventData.month) === Number(month) &&
-      Number(eventData.day) === Number(day) &&
-      (!showBookmarksOnly || bookmarks.includes(eventData.id))
-    );
-
+    const dayEvents = scheduleData.filter(eventData => Number(eventData.month) === Number(month) && Number(eventData.day) === Number(day) && (!showBookmarksOnly || bookmarks.includes(eventData.id)));
     if (dayEvents.length === 0) return;
 
-    document.getElementById('dayEventsTitle').innerText =
-      `${year}년 ${month}월 ${day}일 일정`;
-    document.getElementById('dayEventsSubtitle').innerText =
-      `총 ${dayEvents.length}개의 일정이 있습니다. 확인할 일정을 선택하세요.`;
-
-    const list = document.getElementById('dayEventList');
-    list.innerHTML = '';
+    document.getElementById('dayEventsTitle').innerText = `${year}년 ${month}월 ${day}일 일정`;
+    document.getElementById('dayEventsSubtitle').innerText = `총 ${dayEvents.length}개의 일정이 있습니다. 확인할 일정을 선택하세요.`;
+    const list = document.getElementById('dayEventList'); list.innerHTML = '';
 
     dayEvents.forEach(eventData => {
       const index = scheduleData.indexOf(eventData);
-      const item = document.createElement('button');
-      item.type = 'button';
-      item.className = 'day-event-item' +
-        (eventData.note.includes("회장님 참석") ? ' chairman' : '');
+      const item = document.createElement('button'); item.type = 'button';
+      item.className = 'day-event-item' + (eventData.note.includes("회장님 참석") ? ' chairman' : '');
 
-      const title = document.createElement('div');
-      title.className = 'day-event-item-title';
-      title.innerHTML = '';
-      const titleText = document.createTextNode(eventData.title);
-      title.appendChild(titleText);
-
+      const title = document.createElement('div'); title.className = 'day-event-item-title';
+      title.appendChild(document.createTextNode(eventData.title));
       if (eventData.note.includes("회장님 참석")) {
-        const chairmanMark = document.createElement('sup');
-        chairmanMark.className = 'chairman-mark';
-        chairmanMark.innerText = '★';
-        title.appendChild(chairmanMark);
+        const chairmanMark = document.createElement('sup'); chairmanMark.className = 'chairman-mark'; chairmanMark.innerText = '★'; title.appendChild(chairmanMark);
       }
+      const meta = document.createElement('div'); meta.className = 'day-event-item-meta'; meta.innerText = `${eventData.location} · ${eventData.dday}`;
 
-      const meta = document.createElement('div');
-      meta.className = 'day-event-item-meta';
-      meta.innerText = `${eventData.location} · ${eventData.dday}`;
-
-      item.appendChild(title);
-      item.appendChild(meta);
-
-      item.onclick = function() {
-        closeDayEventsModal(false);
-        openModal(index);
-      };
-
+      item.appendChild(title); item.appendChild(meta);
+      item.onclick = function() { closeDayEventsModal(false); openModal(index); };
       list.appendChild(item);
     });
-
     document.getElementById('dayEventsModal').style.display = 'flex';
     document.body.style.overflow = 'hidden';
     history.pushState({ dayEventsModalOpen: true }, "", "");
   };
 
-  window.closeDayEventsModal = function(goBack = true) {
-    document.getElementById('dayEventsModal').style.display = 'none';
-    if (goBack) history.back();
-  };
-
-  window.closeDayEventsModalOnOutsideClick = function(e) {
-    if (e.target.id === 'dayEventsModal') history.back();
-  };
+  window.closeDayEventsModal = function(goBack=true) { document.getElementById('dayEventsModal').style.display = 'none'; if(goBack) history.back(); };
+  window.closeDayEventsModalOnOutsideClick = function(e) { if(e.target.id === 'dayEventsModal') history.back(); };
 
   window.openModal = function(globalIndex) {
     currentModalGlobalIndex = globalIndex;
     const event = scheduleData[globalIndex];
-    const isChairman = event.note.includes("회장님 참석");
     
     const titleEl = document.getElementById('modalTitle');
     titleEl.innerText = event.title;
-    titleEl.className = isChairman ? "modal-title chairman" : "modal-title";
+    titleEl.className = event.note.includes("회장님 참석") ? "modal-title chairman" : "modal-title";
 
     document.getElementById('modalDate').innerText = event.date;
     document.getElementById('modalLocation').innerText = event.location;
@@ -1845,88 +2141,55 @@
     document.getElementById('modalContent').innerText = event.content;
     document.getElementById('modalHost').innerText = event.host;
     document.getElementById('modalNote').innerText = event.note;
+    document.getElementById('modalMemo').value = memos[event.id] || '';
 
     const modalStar = document.getElementById('modalStarBtn');
-    if (bookmarks.includes(event.id)) {
-      modalStar.innerText = '★';
-      modalStar.classList.add('starred');
-    } else {
-      modalStar.innerText = '☆';
-      modalStar.classList.remove('starred');
-    }
+    if (bookmarks.includes(event.id)) { modalStar.innerText = '★'; modalStar.classList.add('starred'); } 
+    else { modalStar.innerText = '☆'; modalStar.classList.remove('starred'); }
 
     document.getElementById('eventModal').style.display = 'flex';
     document.body.style.overflow = 'hidden';
-
     history.pushState({ modalOpen: true }, "", "");
   };
 
-  function hideModalDOM() {
-    document.getElementById('eventModal').style.display = 'none';
-    document.body.style.overflow = 'auto';
-  }
-
-  window.closeModalAction = function() {
-    history.back(); 
+  window.saveEventMemo = function() {
+    if (currentModalGlobalIndex === null) return;
+    const event = scheduleData[currentModalGlobalIndex];
+    const memoText = document.getElementById('modalMemo').value.trim();
+    if (memoText === '') delete memos[event.id]; else memos[event.id] = memoText; 
+    localStorage.setItem('koda_memos', JSON.stringify(memos));
+    alert('메모가 기기에 안전하게 저장되었습니다.');
   };
 
-  window.closeModalOnOutsideClick = function(e) {
-    if(e.target.id === 'eventModal') {
-      history.back();
-    }
-  };
+  function hideModalDOM() { document.getElementById('eventModal').style.display = 'none'; document.body.style.overflow = 'auto'; }
+  window.closeModalAction = function() { history.back(); };
+  window.closeModalOnOutsideClick = function(e) { if(e.target.id === 'eventModal') history.back(); };
 
   let deferredPrompt;
   const installBtn = document.getElementById('installBtn');
-
   window.addEventListener('beforeinstallprompt', (e) => {
-    e.preventDefault();
-    deferredPrompt = e;
-    installBtn.style.display = 'inline-block'; 
-
+    e.preventDefault(); deferredPrompt = e; installBtn.style.display = 'inline-block'; 
     installBtn.addEventListener('click', () => {
-      installBtn.style.display = 'none';
-      deferredPrompt.prompt();
-      deferredPrompt.userChoice.then((choiceResult) => {
-        deferredPrompt = null;
-      });
+      installBtn.style.display = 'none'; deferredPrompt.prompt();
+      deferredPrompt.userChoice.then((choiceResult) => { deferredPrompt = null; });
     });
   });
 
-  const isIos = () => {
-    const ua = window.navigator.userAgent.toLowerCase();
-    return /iphone|ipad|ipod/.test(ua);
-  };
+  const isIos = () => /iphone|ipad|ipod/.test(window.navigator.userAgent.toLowerCase());
   const isInStandaloneMode = () => ('standalone' in window.navigator) && (window.navigator.standalone);
-
   if (isIos() && !isInStandaloneMode()) {
     installBtn.style.display = 'inline-block';
-    installBtn.addEventListener('click', () => {
-      alert("아이폰 화면 맨 아래의 '공유(내보내기) [↑]' 버튼을 누른 후,\n'홈 화면에 추가 [+]'를 선택해주세요!");
-    });
+    installBtn.addEventListener('click', () => alert("아이폰 화면 맨 아래의 '공유(내보내기) [↑]' 버튼을 누른 후,\n'홈 화면에 추가 [+]'를 선택해주세요!"));
   }
 
   const calendarWrapper = document.getElementById('calendarWrapper');
-  let startX = 0;
-  let endX = 0;
-
-  calendarWrapper.addEventListener('touchstart', (e) => {
-    startX = e.changedTouches[0].screenX;
-  }, {passive: true});
-
+  let startX = 0, endX = 0;
+  calendarWrapper.addEventListener('touchstart', (e) => { startX = e.changedTouches[0].screenX; }, {passive: true});
   calendarWrapper.addEventListener('touchend', (e) => {
     endX = e.changedTouches[0].screenX;
-    handleSwipe();
+    if (startX - endX > 50) changeMonth(1);
+    else if (endX - startX > 50) changeMonth(-1);
   }, {passive: true});
-
-  function handleSwipe() {
-    const swipeThreshold = 50; 
-    if (startX - endX > swipeThreshold) {
-      changeMonth(1);
-    } else if (endX - startX > swipeThreshold) {
-      changeMonth(-1);
-    }
-  }
 
   initAuth();
 
