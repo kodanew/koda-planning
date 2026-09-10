@@ -319,7 +319,7 @@
     display: inline-flex;
     align-items: center;
     gap: 7px;
-    margin-bottom: 9px;
+    margin-bottom: 4px;
   }
   .banner-kicker {
     display: inline-flex;
@@ -360,7 +360,7 @@
   .banner-event-line2 {
     display:block;
     width:100%;
-    margin-top:4px;
+    margin-top:3px;
     overflow:hidden;
     text-overflow:ellipsis;
     white-space:nowrap;
@@ -481,7 +481,7 @@
     justify-content: space-between;
     align-items: baseline;
     padding: 5px 5px 10px 5px;
-    margin-top: 10px;
+    margin-top: 5px;
     margin-bottom: 0px;
     width: 100%;
     row-gap: 4px;
@@ -1738,7 +1738,7 @@ button,.nav-btn,.action-btn{min-height:44px;}
 .banner-heading{
   display:flex!important;
   align-items:center!important;
-  gap:8px!important;
+  gap:3px!important;
   margin-bottom:5px!important;
   min-height:21px!important;
   white-space:nowrap!important;
@@ -1844,6 +1844,178 @@ button,.nav-btn,.action-btn{min-height:44px;}
     font-size:.94rem!important;
   }
 }
+</style>
+
+<!-- 🔥 새로 추가/수정된 사용자 맞춤 스타일 🔥 -->
+<style id="custom-modifications-applied">
+  /* 1. <오늘 일정> 라인과 목록 간격 축소 */
+  .schedule-section-header {
+    padding-bottom: 0px !important;
+    margin-bottom: 0px !important;
+  }
+  .schedule-container {
+    gap: 1px !important;
+    padding-top: 5px !important; 
+  }
+  #pastScheduleList {
+    margin-bottom: 5px !important;
+    padding-bottom: 5px !important;
+  }
+
+  /* 2. 5개 버튼아이콘과 <오늘 일정> 사이 그라데이션 라인 */
+  .schedule-container::before {
+    content: '';
+    display: block;
+    width: 94%;
+    height: 0.5px;
+    margin: 0 auto 15px auto;
+    background: linear-gradient(90deg, transparent, #a0aec0, transparent);
+  }
+
+  /* 3. 배너 안 Pause 기호 수정 및 위치 조정 */
+  .banner-pause-btn {
+    border: none !important;
+    background: transparent !important;
+    box-shadow: none !important;
+    backdrop-filter: none !important;
+    width: 14px !important;
+    height: 14px !important;
+    min-width: 14px !important;
+    max-width: 14px !important;
+    flex-basis: 14px !important;
+    font-size: 0.65rem !important;
+    line-height: 14px !important;
+    right: 22px !important; /* 동그라미들 바로 옆에 위치 */
+    bottom: 5.5px !important;
+    color: rgba(255, 255, 255, 0.7) !important;
+    padding: 0 !important;
+  }
+  .banner-pause-btn.paused {
+    background: transparent !important;
+    color: #ffffff !important;
+  }
+  .banner-dots {
+    right: 38px !important; /* Pause 버튼 옆으로 점들 위치 이동 */
+  }
+  @media(max-width:360px){
+    .banner-pause-btn { right: 18px !important; }
+    .banner-dots { right: 34px !important; }
+  }
+
+  /* 4. 관심일정 터치 시 활성화 배경 */
+  .active-bookmark .quick-icon {
+    background-color: #e6f2ff !important;
+    border-color: #cce0ff !important;
+  }
+</style>
+
+<style id="layout-spacing-fixes">
+  /* 1. <지난 일정>, <예정 일정>, <오늘 일정> 과 아래 목록 사이의 간격을 동일하게 맞춤 */
+  .schedule-section-header {
+    padding-bottom: 4px !important;
+    margin-bottom: 4px !important;
+  }
+  .schedule-list-wrapper {
+    margin-top: 0 !important;
+  }
+  
+  /* 만약 .schedule-container의 gap 때문에 간격이 달라진다면 일관되게 고정 */
+  .schedule-container {
+    gap: 0 !important; 
+  }
+  .schedule-list-wrapper {
+    display: flex;
+    flex-direction: column;
+    gap: 8px !important; /* 목록 카드들 사이의 간격 유지 */
+  }
+
+  /* 2. 배너 내부 "배지/일시/장소" 와 "행사명" 사이의 줄간격 축소 */
+  .banner-heading {
+    margin-bottom: 0px !important; /* 기존 2~5px 이었던 하단 여백 제거 */
+    min-height: 18px !important;
+  }
+  .banner-event-line2 {
+    margin-top: 0px !important; /* 행사명 위쪽 여백 제거 */
+    line-height: 0.85 !important; /* 줄간격(높이) 미세 축소 */
+  }
+
+  /* 모바일 화면에서도 좁혀진 줄간격 유지 */
+  @media(max-width:360px) {
+    .banner-heading {
+      margin-bottom: 0px !important; 
+    }
+    .banner-event-line2 {
+      margin-top: 0px !important;
+    }
+  }
+</style>
+
+<style id="past-schedule-spacing-fix">
+  /* 지난 달력 이동 시 나오는 <지난 일정> 타이틀과 목록 사이의 간격 조정 */
+  .schedule-section-header + .schedule-list-wrapper {
+    margin-top: 4px !important; /* 위와 동일한 값으로 맞추시면 깔끔합니다 */
+  }
+</style>
+
+<style id="upcoming-schedule-spacing-fix">
+  /* <예정 일정> 및 <오늘 일정> 타이틀 아래 본 일정 목록과의 간격 조정 */
+  #scheduleContainer > .schedule-list-wrapper:last-child {
+    margin-top: 4px !important; /* 숫자를 줄이면 간격이 좁아지고, 늘리면 넓어집니다 (예: 0px ~ 10px) */
+  }
+</style>
+
+<style id="today-header-spacing-fix">
+  /* 1. 헤더 내부 높이를 팽창시키는 정렬 방식 변경 및 하단 여백 완전 제거 */
+  .schedule-section-header {
+    align-items: flex-end !important; /* baseline 대신 하단 끝선에 맞춰 들뜨는 현상 방지 */
+    padding-bottom: 0px !important;   
+    margin-bottom: 2px !important; /* 필요시 이 값을 0px로 줄이시면 더 바짝 붙습니다 */
+  }
+  
+  /* 2. "지난 일정 보기" 버튼이 차지하는 잉여 투명 공간 압축 */
+  .past-schedule-btn {
+    line-height: 1 !important;
+    padding: 0 !important;
+    margin-bottom: 2px !important; /* 글씨 하단 선 시각적 맞춤용 */
+  }
+  
+  /* 3. 부제목의 텍스트 줄간격 압축 */
+  .schedule-section-subtitle {
+    line-height: 1.1 !important;
+  }
+</style>
+
+<style id="card-today-badge-style">
+  /* 목록형 '오늘 일정' 카드 우측 하단의 TODAY 뱃지 */
+  .card-today-badge {
+    position: absolute;
+    bottom: 0px;  /* 바닥 테두리에 완전 밀착 (기존 12px) */
+    right: 0px;   /* 오른쪽 테두리에 완전 밀착 (기존 12px) */
+    background-color: #e53e3e; 
+    color: #ffffff;
+    font-size: 0.55rem;
+    font-weight: 800;
+    padding: 3px 7px;
+    
+    /* 카드 모서리 둥글기(10px)와 자연스럽게 이어지도록 반경 설정 (좌측상단 우측상단 우측하단 좌측하단) */
+    border-radius: 8px 0 8px 0; 
+    
+    z-index: 5;
+    line-height: 1.1;
+    pointer-events: none; 
+    box-shadow: -1px -1px 4px rgba(229, 62, 62, 0.15); /* 안쪽으로 살짝 그림자 */
+  }
+  
+  /* 모바일 화면 맞춤 미세조정 */
+  @media(max-width:360px) {
+    .card-today-badge {
+      bottom: 0px;
+      right: 0px;
+      font-size: 0.5rem;
+      padding: 2px 5px;
+      border-radius: 6px 0 10px 0; /* 모바일 카드 모서리에 맞춤 */
+    }
+  }
 </style>
 
 </head>
@@ -2778,7 +2950,7 @@ button,.nav-btn,.action-btn{min-height:44px;}
     updateView();
   };
 
-  function createEventCard(event) {
+function createEventCard(event) {
     const globalIndex = scheduleData.indexOf(event);
     const isChairman = event.note.includes("회장님 참석");
     const titleClass = isChairman ? "event-title chairman" : "event-title";
@@ -2788,7 +2960,11 @@ button,.nav-btn,.action-btn{min-height:44px;}
     const card = document.createElement('div');
     card.className = 'event-card' + (isToday ? ' today-card' : '');
 
+    // 💡 오늘 일정인 경우 우측 하단에 들어갈 뱃지 태그 추가
+    const todayBadgeHtml = isToday ? `<div class="card-today-badge">TODAY</div>` : '';
+
     card.innerHTML = `
+      ${todayBadgeHtml}
       <div class="card-actions">
         <button class="icon-btn share-btn" onclick="shareEvent(event, ${globalIndex})">
           <svg viewBox="0 0 24 24" fill="currentColor">
@@ -2830,9 +3006,11 @@ button,.nav-btn,.action-btn{min-height:44px;}
     const currentFilteredData = getFilteredData();
 
     if (currentFilteredData.length === 0) {
-      scheduleContainer.innerHTML = `<div class="no-data">등록된 일정이 없습니다.</div>`; return;
+      scheduleContainer.innerHTML = `<div class="no-data">등록된 일정이 없습니다.</div>`; 
+      return;
     }
 
+    // 1. 이벤트 분류 (오늘, 예정, 지난 일정)
     const pastEvents = [], todayEvents = [], futureEvents = [];
     currentFilteredData.forEach(event => {
       if (event.dday === "D-day") todayEvents.push(event);
@@ -2842,59 +3020,44 @@ button,.nav-btn,.action-btn{min-height:44px;}
 
     const isPastMonthView = (!showBookmarksOnly && searchQuery === '' && ((calYear < currentYear) || (calYear === currentYear && calMonth < currentMonth)));
 
-    const header = document.createElement('div'); header.className = 'schedule-section-header';
-    const titleWrapper = document.createElement('div'); titleWrapper.className = 'schedule-title-wrapper';
-    const titleEl = document.createElement('div'); titleEl.className = 'schedule-section-title'; 
-    
-    let titleText = "";
-    if (isPastMonthView) {
-        titleText = "<지난 일정>";
-    } else if (todayEvents.length > 0) {
-        titleText = "<오늘 일정>";
-    } else {
-        titleText = "<예정 일정>";
-    }
-    titleEl.innerText = titleText;
-    titleWrapper.appendChild(titleEl);
-
-    if (todayEvents.length > 0 && !isPastMonthView) {
-      const subtitleEl = document.createElement('div'); subtitleEl.className = 'schedule-section-subtitle';
-      subtitleEl.innerText = "오늘 일정부터 이후 일정까지."; titleWrapper.appendChild(subtitleEl);
-    } else if (isPastMonthView) {
-      const subtitleEl = document.createElement('div'); subtitleEl.className = 'schedule-section-subtitle';
-      subtitleEl.innerText = `${calMonth}월의 지난 일정입니다.`; titleWrapper.appendChild(subtitleEl);
-    }
-    header.appendChild(titleWrapper);
-
-    if (!isPastMonthView && pastEvents.length > 0) {
-      const pastBtn = document.createElement('button'); pastBtn.className = 'past-schedule-btn';
-      pastBtn.id = 'pastScheduleBtn'; pastBtn.innerText = '지난 일정 보기'; pastBtn.onclick = togglePastSchedules;
-      header.appendChild(pastBtn);
-    }
-    
-    scheduleContainer.appendChild(header);
+    // 2. 일정을 담을 단일 리스트 래퍼 생성
+    const listWrapper = document.createElement('div'); 
+    listWrapper.className = 'schedule-list-wrapper';
 
     if (isPastMonthView) {
-        const pastList = document.createElement('div'); pastList.className = 'schedule-list-wrapper';
-        pastEvents.forEach(event => pastList.appendChild(createEventCard(event)));
-        scheduleContainer.appendChild(pastList);
+        // 지난 달 달력을 볼 때는 바로 지난 일정들만 나열
+        pastEvents.forEach(event => listWrapper.appendChild(createEventCard(event)));
     } else {
+        // 이번 달(또는 미래) 달력을 볼 때의 정렬 순서
+        
+        // ① 오늘의 일정 (가장 맨 위에 배치)
+        todayEvents.forEach(event => listWrapper.appendChild(createEventCard(event)));
+        
+        // ② 예정 일정 (오늘 이후부터 이번 달 마지막 날까지)
+        futureEvents.forEach(event => listWrapper.appendChild(createEventCard(event)));
+        
+        // ③ 지나간 일정 (검은 점선 아래에 배치)
         if (pastEvents.length > 0) {
-          const pastList = document.createElement('div'); pastList.className = 'schedule-list-wrapper';
-          pastList.id = 'pastScheduleList'; pastList.style.display = 'none'; 
-          pastEvents.forEach(event => pastList.appendChild(createEventCard(event)));
-          scheduleContainer.appendChild(pastList);
+            // 앞에 오늘이나 예정 일정이 있을 경우에만 구분선을 그어줌
+            if (todayEvents.length > 0 || futureEvents.length > 0) {
+                const divider = document.createElement('div');
+                divider.style.borderTop = '1.5px dashed #1a202c'; // 검은 점선 스타일
+                divider.style.margin = '15px 5px'; // 점선 위아래 간격
+                divider.style.opacity = '0.5'; // 점선이 너무 진하지 않게 약간 투명도 적용
+                listWrapper.appendChild(divider);
+            }
+            // 점선 아래로 지난 일정들 추가
+            pastEvents.forEach(event => listWrapper.appendChild(createEventCard(event)));
         }
 
-        const upcomingList = document.createElement('div'); upcomingList.className = 'schedule-list-wrapper';
-        const hasUpcoming = todayEvents.length > 0 || futureEvents.length > 0;
-        if (!hasUpcoming) upcomingList.innerHTML = `<div class="no-data" style="padding: 10px;">예정 일정이 없습니다.</div>`;
-        else {
-          todayEvents.forEach(event => upcomingList.appendChild(createEventCard(event)));
-          futureEvents.forEach(event => upcomingList.appendChild(createEventCard(event)));
+        // 혹시라도 데이터가 아무것도 표시되지 않을 때의 예외 처리
+        if (todayEvents.length === 0 && futureEvents.length === 0 && pastEvents.length === 0) {
+            listWrapper.innerHTML = `<div class="no-data" style="padding: 10px;">예정 일정이 없습니다.</div>`;
         }
-        scheduleContainer.appendChild(upcomingList);
     }
+    
+    // 3. 컨테이너에 최종 리스트 추가
+    scheduleContainer.appendChild(listWrapper);
   }
   
   // 화면별 뒤로가기 상태 관리: 상세보기 → 목록 → 메인 순서로 자연스럽게 이동
