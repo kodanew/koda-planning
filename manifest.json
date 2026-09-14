@@ -3,7 +3,7 @@
   "short_name": "KODA 일정",
   "start_url": "./index.html",
   "display": "standalone",
-  "background_color": "f4f6f9",
+  "background_color": "#f4f6f9",
   "theme_color": "#f4f6f9",
   "icons": [
     {
