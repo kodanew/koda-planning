@@ -2307,6 +2307,25 @@ button,.nav-btn,.action-btn{min-height:44px;}
     font-weight:650 !important;
   }
 
+  /* ARP / ARPY 기수 바로가기 */
+  #arpCohortFilters{display:none;grid-template-columns:repeat(6,minmax(0,1fr));gap:6px;margin:0 0 12px;}
+  #arpCohortFilters.show{display:grid;}
+  #arpCohortFilters .arp-cohort-btn{
+    appearance:none;border:1px solid #d7e4f3;background:#f7fbff;color:#315b8d;
+    border-radius:9px;height:34px;padding:0 4px;font-size:.72rem;font-weight:800;cursor:pointer;
+  }
+  #arpCohortFilters .arp-cohort-btn:hover,#arpCohortFilters .arp-cohort-btn:active{background:#eaf3ff;border-color:#a9c9ed;}
+  #staffList.arp-list{display:block !important;}
+  #staffList.arp-list .arp-cohort-group{margin:2px 0 13px;scroll-margin-top:12px;}
+  #staffList.arp-list .arp-cohort-title{
+    display:flex;align-items:center;gap:8px;margin:2px 0 7px;font-size:.72rem;font-weight:850;color:#315b8d;
+  }
+  #staffList.arp-list .arp-cohort-title::after{content:"";flex:1;height:1px;background:#d9e6f4;}
+  #staffList.arp-list .arp-cohort-title .staff-badge{margin:0 !important;}
+  #staffList.arp-list .arp-cohort-cards{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;}
+  #staffList.arp-list .arp-cohort-cards .staff-card-compact{width:100% !important;min-width:0;box-sizing:border-box;}
+  @media(max-width:520px){#arpCohortFilters{gap:5px;}#arpCohortFilters .arp-cohort-btn{height:32px;font-size:.68rem;}#staffList.arp-list .arp-cohort-cards{gap:6px;}}
+
   #staffList.executive-list{display:block !important;}
   #staffList.executive-list .executive-badge-group{margin-bottom:12px;}
   #staffList.executive-list .executive-badge-group:last-child{margin-bottom:0;}
@@ -2491,7 +2510,7 @@ button,.nav-btn,.action-btn{min-height:44px;}
     <button class="month-tab" data-cat="7대 임원" onclick="filterStaff('7대 임원')">7대 임원 <em class="tab-count">(0)</em></button>
     <button class="month-tab" data-cat="회원사" onclick="filterStaff('회원사')">회원사 <em class="tab-count">(0)</em></button>
     <button class="month-tab" data-cat="ARP" onclick="filterStaff('ARP')">ARP <em class="tab-count">(0)</em></button>
-    <button class="month-tab" data-cat="등록사" onclick="filterStaff('등록사')">등록사 <em class="tab-count">(0)</em></button>
+    <button class="month-tab" data-cat="ARPY" onclick="filterStaff('ARPY')">ARPY <em class="tab-count">(0)</em></button>
   </div>
 
   <div class="fullscreen-content">
@@ -2500,6 +2519,7 @@ button,.nav-btn,.action-btn{min-height:44px;}
       <input type="search" id="staffSearchInput" class="staff-search" placeholder="회사명 또는 이름으로 검색" autocomplete="off">
       <button type="button" id="staffSearchClear" class="staff-search-clear" aria-label="검색어 지우기">×</button>
     </div>
+    <div id="arpCohortFilters" aria-label="ARP 기수 바로가기"></div>
     <div class="day-event-list" id="staffList"></div>
   </div>
 </div>
@@ -2510,34 +2530,7 @@ button,.nav-btn,.action-btn{min-height:44px;}
     <button class="modal-close" onclick="closeStaffDetailModal()">×</button>
     <div class="modal-title" style="margin-bottom: 15px; font-size:1.15rem;">직원 상세정보</div>
 
-    <div class="modal-detail-row">
-      <span class="modal-label">성명</span>
-      <span class="modal-value" id="staffDetailName"></span>
-    </div>
-    <div class="modal-detail-row">
-      <span class="modal-label">소속</span>
-      <span class="modal-value" id="staffDetailAffiliation"></span>
-    </div>
-    <div class="modal-detail-row">
-      <span class="modal-label">직위</span>
-      <span class="modal-value" id="staffDetailPosition"></span>
-    </div>
-    <div class="modal-detail-row">
-      <span class="modal-label">KODA</span>
-      <span class="modal-value" id="staffDetailKoda"></span>
-    </div>
-    <div class="modal-detail-row">
-      <span class="modal-label">연락처</span>
-      <span class="modal-value" id="staffDetailPhone"></span>
-    </div>
-    <div class="modal-detail-row">
-      <span class="modal-label">이메일</span>
-      <span class="modal-value" id="staffDetailEmail"></span>
-    </div>
-    <div class="modal-detail-row">
-      <span class="modal-label">비고</span>
-      <span class="modal-value" id="staffDetailNote"></span>
-    </div>
+    <div id="staffDetailRows"></div>
 
     <!-- 전화, 문자, 이메일 버튼 그룹 -->
     <div class="action-btn-group">
@@ -2631,7 +2624,12 @@ button,.nav-btn,.action-btn{min-height:44px;}
     <div id="newsDetailTitle" class="modal-title" style="font-size: 1.25rem; margin-bottom: 8px;"></div>
     <div id="newsDetailDate" class="modal-detail-row" style="color: var(--text-muted); margin-bottom: 18px; padding-bottom: 14px; border-bottom: 1px solid var(--border-color);"></div>
 
-    <div id="newsDetailContent" class="modal-value" style="font-size: 0.92rem; line-height: 1.65; white-space: pre-wrap; margin-bottom: 32px;"></div>
+    <div id="newsDetailContent" class="modal-value" style="font-size: 0.92rem; line-height: 1.65; white-space: pre-wrap; margin-bottom: 20px;"></div>
+
+    <div id="newsDetailRelatedLinkArea" style="display:none; margin: 0 0 28px; padding: 14px 15px; border: 1px solid #e4ebf3; border-radius: 10px; background: #f8fbff;">
+      <div style="font-size:.75rem; font-weight:800; color:#55718f; margin-bottom:7px;">관련링크</div>
+      <a id="newsDetailRelatedLink" href="#" target="_blank" rel="noopener noreferrer" style="display:block; color:#2563eb; text-decoration:underline; font-size:.84rem; line-height:1.5; word-break:break-all;"></a>
+    </div>
 
     <div id="newsDetailThumbnailArea">
       <a id="newsDetailThumbnailLink" href="#" target="_blank" rel="noopener noreferrer">
@@ -2647,10 +2645,14 @@ button,.nav-btn,.action-btn{min-height:44px;}
   const MEMBERS_SHEET_CSV_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vQEbM8YAc7jQes9oX6_-aVsVib2H40avHQkL6TkRRI2cYmw7nYG29F_1lGGz-2gL0nve4Q91MBM02Q-/pub?gid=1551080131&single=true&output=csv";
   const STAFF_SHEET_CSV_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vQEbM8YAc7jQes9oX6_-aVsVib2H40avHQkL6TkRRI2cYmw7nYG29F_1lGGz-2gL0nve4Q91MBM02Q-/pub?gid=2094790194&single=true&output=csv";
   const MEMBER_COMPANIES_SHEET_CSV_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vQEbM8YAc7jQes9oX6_-aVsVib2H40avHQkL6TkRRI2cYmw7nYG29F_1lGGz-2gL0nve4Q91MBM02Q-/pub?gid=320441592&single=true&output=csv";
+  const ARP_SHEET_CSV_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vQEbM8YAc7jQes9oX6_-aVsVib2H40avHQkL6TkRRI2cYmw7nYG29F_1lGGz-2gL0nve4Q91MBM02Q-/pub?gid=1991351371&single=true&output=csv";
 
   let scheduleData = [];
   let staffData = [];
   let memberCompanyData = [];
+  let arpData = [];
+  let arpLoaded = false;
+  let arpLoading = false;
   let memberCompanyLoading = false;
   let memberCompanyLoaded = false;
   let memberCompanyFetchedFresh = false; 
@@ -2943,7 +2945,7 @@ button,.nav-btn,.action-btn{min-height:44px;}
   let currentStaffCategory = '사무국';
 
   window.filterStaff = function(category) {
-    const validCategories = ['사무국','7대 임원','회원사','ARP','등록사'];
+    const validCategories = ['사무국','7대 임원','회원사','ARP','ARPY'];
     if (!validCategories.includes(category)) category = '사무국';
     currentStaffCategory = category;
     const tabs = document.querySelectorAll('#staffTabs .month-tab');
@@ -2991,8 +2993,8 @@ button,.nav-btn,.action-btn{min-height:44px;}
       '사무국': staffData.filter(item => normalizeStaffText(item.category) === '사무국').length,
       '7대 임원': staffData.filter(item => { const c = normalizeStaffText(item.category).replace(/\s/g,''); return c === '7대임원' || executiveBadgeRank(item.koda) < 99; }).length,
       '회원사': memberCompanyData.length,
-      'ARP': staffData.filter(item => normalizeStaffText(item.category) === 'ARP').length,
-      '등록사': 0
+      'ARP': arpData.filter(item => normalizeStaffText(item.category) === 'ARP').length,
+      'ARPY': arpData.filter(item => normalizeStaffText(item.category) === 'ARPY').length
     };
     document.querySelectorAll('#staffTabs .month-tab').forEach(btn => {
       const cat = btn.dataset.cat;
@@ -3134,9 +3136,196 @@ button,.nav-btn,.action-btn{min-height:44px;}
     }
   }
 
+
+  // ===== Sheet8 : ARP / ARPY 데이터 =====
+  function normalizeHeaderName(v) {
+    return String(v || '').replace(/\s+/g,'').replace(/[()（）]/g,'').trim();
+  }
+
+  function findHeaderIndex(headers, candidates) {
+    const hs = headers.map(normalizeHeaderName);
+    for (const c of candidates) {
+      const idx = hs.indexOf(normalizeHeaderName(c));
+      if (idx !== -1) return idx;
+    }
+    return -1;
+  }
+
+  function parseArpCSV(csv) {
+    const rows = splitCSV(csv);
+    if (rows.length < 2) return [];
+    const headers = (rows[0] || []).map(v => String(v || '').trim());
+    const bToMHeaders = headers.slice(1, 13);
+    const idx = {
+      category: findHeaderIndex(headers, ['구분']),
+      cohort: findHeaderIndex(headers, ['기수','기수(회차)','회차']),
+      name: findHeaderIndex(headers, ['성명','이름','대표자']),
+      affiliation: findHeaderIndex(headers, ['소속','회사명','법인명']),
+      position: findHeaderIndex(headers, ['직위','직책']),
+      phone: findHeaderIndex(headers, ['휴대폰','휴대전화','연락처','전화번호','핸드폰']),
+      email: findHeaderIndex(headers, ['이메일','E-mail','Email'])
+    };
+    return rows.slice(1).map(r => ({
+      category: idx.category >= 0 ? String(r[idx.category] || '').trim() : '',
+      cohort: idx.cohort >= 0 ? String(r[idx.cohort] || '').trim() : '',
+      name: idx.name >= 0 ? String(r[idx.name] || '').trim() : '',
+      affiliation: idx.affiliation >= 0 ? String(r[idx.affiliation] || '').trim() : '',
+      position: idx.position >= 0 ? String(r[idx.position] || '').trim() : '',
+      phone: idx.phone >= 0 ? String(r[idx.phone] || '').trim() : '',
+      email: idx.email >= 0 ? String(r[idx.email] || '').trim() : '',
+      headers: bToMHeaders,
+      values: r.slice(1, 13).map(v => String(v || '').trim())
+    })).filter(item => item.name || item.affiliation || item.phone);
+  }
+
+  async function loadArpData() {
+    if (arpLoading) return;
+    arpLoading = true;
+    const list = document.getElementById('staffList');
+    if (list && (currentStaffCategory === 'ARP' || currentStaffCategory === 'ARPY')) {
+      list.innerHTML = `<div class="loading-msg">ARP 정보를 불러오는 중입니다...⏳</div>`;
+    }
+    try {
+      const response = await fetch(ARP_SHEET_CSV_URL + '&t=' + Date.now(), {cache:'no-store'});
+      if (!response.ok) throw new Error('Sheet8 CSV response error');
+      arpData = parseArpCSV(await response.text());
+      arpLoaded = true;
+      updateStaffTabCounts();
+      if (currentStaffCategory === 'ARP' || currentStaffCategory === 'ARPY') renderArpList(currentStaffCategory);
+    } catch (e) {
+      arpData = [];
+      if (list && (currentStaffCategory === 'ARP' || currentStaffCategory === 'ARPY')) {
+        list.innerHTML = `<div class="no-data">Sheet8(ARP) 정보를 불러오지 못했습니다.</div>`;
+      }
+    } finally {
+      arpLoading = false;
+    }
+  }
+
+  function setupArpCohortFilters(categoryFilter) {
+    const wrap = document.getElementById('arpCohortFilters');
+    if (!wrap) return;
+    // 기수 버튼은 ARP 또는 ARPY를 선택했을 때만 표시합니다.
+    const isArp = categoryFilter === 'ARP' || categoryFilter === 'ARPY';
+    wrap.classList.toggle('show', isArp);
+    wrap.setAttribute('aria-hidden', isArp ? 'false' : 'true');
+    if (!isArp) { wrap.innerHTML = ''; return; }
+
+    // ARP = 1~12기(2행×6열), ARPY = 1~6기(1행×6열)
+    const maxCohort = categoryFilter === 'ARPY' ? 6 : 12;
+    wrap.dataset.category = categoryFilter;
+    wrap.innerHTML = '';
+    for (let i = 1; i <= maxCohort; i++) {
+      const btn = document.createElement('button');
+      btn.type = 'button';
+      btn.className = 'arp-cohort-btn';
+      btn.textContent = `${i}기`;
+      btn.dataset.cohort = String(i);
+      btn.addEventListener('click', () => scrollToArpCohort(i));
+      wrap.appendChild(btn);
+    }
+  }
+
+  function cohortNumber(value) {
+    const m = String(value || '').match(/(\d{1,2})/);
+    return m ? Number(m[1]) : 99;
+  }
+
+  function scrollToArpCohort(cohort) {
+    const target = document.getElementById(`arp-cohort-${cohort}`);
+    if (!target) return;
+    const screen = document.getElementById('staffScreen');
+    const content = screen?.querySelector('.fullscreen-content');
+    if (content) {
+      const top = target.getBoundingClientRect().top - content.getBoundingClientRect().top + content.scrollTop - 8;
+      content.scrollTo({top: Math.max(0, top), behavior:'smooth'});
+    } else {
+      target.scrollIntoView({behavior:'smooth', block:'start'});
+    }
+  }
+
+  function renderArpList(categoryFilter) {
+    const list = document.getElementById('staffList');
+    if (!list) return;
+    setupArpCohortFilters(categoryFilter);
+    list.classList.remove('member-company-list','executive-list');
+    list.classList.add('arp-list');
+    const q = (document.getElementById('staffSearchInput')?.value || '').trim().toLowerCase();
+    let filtered = arpData.filter(item =>
+      normalizeStaffText(item.category) === normalizeStaffText(categoryFilter)
+    );
+    if (q) {
+      filtered = filtered.filter(item =>
+        [item.name,item.affiliation,item.position,item.phone,item.cohort]
+          .filter(Boolean).join(' ').toLowerCase().includes(q)
+      );
+    }
+    const countEl = document.getElementById('staffResultCount');
+    if (countEl) countEl.textContent = `${filtered.length}명`;
+    if (!filtered.length) {
+      list.innerHTML = `<div class="no-data">${arpLoaded ? (q ? '검색 결과가 없습니다.' : '해당되는 인원이 없습니다.') : 'Sheet8 정보를 불러오는 중입니다.'}</div>`;
+      return;
+    }
+
+    // 기수 숫자순으로 정렬하고, 같은 기수 안에서는 가나다순으로 표시
+    filtered.sort((a,b) => {
+      const ca = cohortNumber(a.cohort), cb = cohortNumber(b.cohort);
+      if (ca !== cb) return ca - cb;
+      return String(a.name || '').localeCompare(String(b.name || ''), 'ko');
+    });
+
+    list.innerHTML = '';
+    const groups = new Map();
+    filtered.forEach(item => {
+      const n = cohortNumber(item.cohort);
+      const key = n >= 1 && n <= 12 ? n : 'etc';
+      if (!groups.has(key)) groups.set(key, []);
+      groups.get(key).push(item);
+    });
+
+    [...groups.keys()].sort((a,b) => a === 'etc' ? 1 : b === 'etc' ? -1 : a-b).forEach(cohort => {
+      const items = groups.get(cohort);
+      const group = document.createElement('section');
+      group.className = 'arp-cohort-group';
+      group.id = cohort === 'etc' ? 'arp-cohort-etc' : `arp-cohort-${cohort}`;
+      const title = document.createElement('div');
+      title.className = 'arp-cohort-title';
+      const label = cohort === 'etc' ? '기타' : `${cohort}기`;
+      title.innerHTML = `<span class="staff-badge executive">${label} <em>(${items.length})</em></span>`;
+      group.appendChild(title);
+      const cards = document.createElement('div');
+      cards.className = 'arp-cohort-cards';
+      items.forEach(item => {
+        const btn = document.createElement('button');
+        btn.type = 'button';
+        btn.className = 'day-event-item staff-card-compact';
+        btn.innerHTML = `
+          <div class="staff-main-line">
+            <span class="staff-badge executive">${item.cohort || '-'}</span>
+            <div class="staff-info-block">
+              <div class="staff-name-role">
+                <strong>${item.name || '-'}</strong>
+                <span class="staff-org-role">${[item.affiliation,item.position].filter(Boolean).join(' ') || '-'}</span>
+              </div>
+              <div class="staff-phone">${item.phone || ''}</div>
+            </div>
+          </div>`;
+        btn.onclick = () => openArpDetailModal(item);
+        cards.appendChild(btn);
+      });
+      group.appendChild(cards);
+      list.appendChild(group);
+    });
+  }
+
   function renderStaffList(categoryFilter) {
     const list = document.getElementById('staffList');
     if (!list) return;
+
+    // 기수 바로가기 버튼은 ARP/ARPY 화면에서만 표시하고,
+    // 사무국·7대 임원·회원사로 이동하면 즉시 숨깁니다.
+    setupArpCohortFilters(categoryFilter);
+
     list.innerHTML = '';
     list.classList.remove('member-company-list', 'executive-list');
 
@@ -3147,11 +3336,9 @@ button,.nav-btn,.action-btn{min-height:44px;}
       return;
     }
 
-    if (categoryFilter === '등록사') {
-      updateStaffTabCounts();
-      const countEl = document.getElementById('staffResultCount');
-      if (countEl) countEl.textContent = '0명';
-      list.innerHTML = `<div class="no-data">등록사 정보를 준비 중입니다.</div>`;
+    if (categoryFilter === 'ARP' || categoryFilter === 'ARPY') {
+      if (!arpLoaded && !arpLoading) loadArpData();
+      renderArpList(categoryFilter);
       return;
     }
 
@@ -3388,6 +3575,7 @@ button,.nav-btn,.action-btn{min-height:44px;}
     const clear = document.getElementById('staffSearchClear');
     if(clear) clear.classList.remove('show');
     if (staffData.length === 0) loadStaffData(); else renderStaffList('사무국');
+    if (!arpLoaded && !arpLoading) loadArpData();
   };
 
   document.addEventListener('DOMContentLoaded',()=>{
@@ -3407,42 +3595,74 @@ button,.nav-btn,.action-btn{min-height:44px;}
   });
   window.closeStaffScreen = function(goBack=true) { document.getElementById('staffScreen').style.display = 'none'; if(goBack) history.back(); };
 
-  window.openStaffDetailModal = function(index) {
-    const staff = staffData[index];
-    
-    document.getElementById('staffDetailName').innerText = staff.name || '-';
-    document.getElementById('staffDetailAffiliation').innerText = staff.affiliation || '-';
-    document.getElementById('staffDetailPosition').innerText = staff.position || '-';
-    document.getElementById('staffDetailKoda').innerText = staff.koda || '-'; 
-    document.getElementById('staffDetailPhone').innerText = staff.phone || '-';
-    document.getElementById('staffDetailEmail').innerText = staff.email || '-';
-    document.getElementById('staffDetailNote').innerText = staff.note || '-';
+  window.openArpDetailModal = function(item) {
+    if (!item) return;
+    const modal = document.getElementById('staffDetailModal');
+    const title = modal?.querySelector('.modal-title');
+    const rows = document.getElementById('staffDetailRows');
+    if (!modal || !title || !rows) return;
 
-    const normPhone = (staff.phone || '').replace(/[^0-9]/g, '');
+    title.textContent = `${item.category || 'ARP'} 상세정보`;
+    rows.innerHTML = '';
+    (item.headers || []).forEach((label, i) => {
+      const row = document.createElement('div');
+      row.className = 'modal-detail-row';
+      const l = document.createElement('span');
+      l.className = 'modal-label';
+      l.textContent = label || `열 ${String.fromCharCode(66+i)}`;
+      const v = document.createElement('span');
+      v.className = 'modal-value';
+      v.textContent = item.values?.[i] || '-';
+      row.appendChild(l); row.appendChild(v); rows.appendChild(row);
+    });
+
+    const normPhone = (item.phone || '').replace(/[^0-9]/g, '');
     const callBtn = document.getElementById('staffBtnCall');
     const smsBtn = document.getElementById('staffBtnSms');
     const emailBtn = document.getElementById('staffBtnEmail');
-
     if(normPhone) {
-      callBtn.href = `tel:${normPhone}`;
-      smsBtn.href = `sms:${normPhone}`;
-      callBtn.style.display = 'block';
-      smsBtn.style.display = 'block';
+      callBtn.href=`tel:${normPhone}`; smsBtn.href=`sms:${normPhone}`;
+      callBtn.style.display='block'; smsBtn.style.display='block';
     } else {
-      callBtn.style.display = 'none';
-      smsBtn.style.display = 'none';
+      callBtn.style.display='none'; smsBtn.style.display='none';
     }
+    if(item.email) { emailBtn.href=`mailto:${item.email}`; emailBtn.style.display='block'; }
+    else emailBtn.style.display='none';
 
-    if(staff.email) {
-      emailBtn.href = `mailto:${staff.email}`;
-      emailBtn.style.display = 'block';
-    } else {
-      emailBtn.style.display = 'none';
-    }
+    modal.style.display='flex';
+    document.body.style.overflow='hidden';
+    history.pushState({arpDetailOpen:true},"","");
+  };
 
-    document.getElementById('staffDetailModal').style.display = 'flex';
-    history.pushState({ staffDetailOpen: true }, "", "");
-  }
+  window.openStaffDetailModal = function(index) {
+    const staff = staffData[index];
+    if (!staff) return;
+    const modal = document.getElementById('staffDetailModal');
+    const title = modal?.querySelector('.modal-title');
+    const rows = document.getElementById('staffDetailRows');
+    if (!modal || !title || !rows) return;
+
+    title.textContent='직원 상세정보';
+    rows.innerHTML='';
+    [
+      ['성명',staff.name],['소속',staff.affiliation],['직위',staff.position],
+      ['KODA',staff.koda],['연락처',staff.phone],['이메일',staff.email],['비고',staff.note]
+    ].forEach(([label,value])=>{
+      const row=document.createElement('div'); row.className='modal-detail-row';
+      const l=document.createElement('span'); l.className='modal-label'; l.textContent=label;
+      const v=document.createElement('span'); v.className='modal-value'; v.textContent=value||'-';
+      row.appendChild(l); row.appendChild(v); rows.appendChild(row);
+    });
+
+    const normPhone=(staff.phone||'').replace(/[^0-9]/g,'');
+    const callBtn=document.getElementById('staffBtnCall'), smsBtn=document.getElementById('staffBtnSms'), emailBtn=document.getElementById('staffBtnEmail');
+    if(normPhone){callBtn.href=`tel:${normPhone}`;smsBtn.href=`sms:${normPhone}`;callBtn.style.display='block';smsBtn.style.display='block';}
+    else{callBtn.style.display='none';smsBtn.style.display='none';}
+    if(staff.email){emailBtn.href=`mailto:${staff.email}`;emailBtn.style.display='block';}
+    else emailBtn.style.display='none';
+    modal.style.display='flex'; document.body.style.overflow='hidden';
+    history.pushState({staffDetailOpen:true},"","");
+  };
 
   window.closeStaffDetailModal = function(goBack=true) { document.getElementById('staffDetailModal').style.display = 'none'; if(goBack) history.back(); };
   window.closeStaffDetailModalOnOutsideClick = function(e) { if(e.target.id === 'staffDetailModal') history.back(); };
@@ -3977,11 +4197,12 @@ function createEventCard(event) {
 
   function parseNewsDate(str) {
     if (!str) return new Date(0);
-    const parts = str.trim().split(/[.\-\/]/).map(s => s.trim()).filter(Boolean);
-    if (parts.length < 3) return new Date(0);
-    let [y, m, d] = parts.map(Number);
-    if (y < 100) y += 2000; 
-    return new Date(y, (m || 1) - 1, d || 1);
+    const raw = String(str).trim();
+    const m = raw.match(/(\d{2,4})[.\-\/](\d{1,2})[.\-\/](\d{1,2})(?:\s+(\d{1,2}):?(\d{2})?)?/);
+    if (!m) return new Date(0);
+    let y = Number(m[1]);
+    if (y < 100) y += 2000;
+    return new Date(y, Number(m[2]) - 1, Number(m[3]), Number(m[4] || 0), Number(m[5] || 0));
   }
 
   function normalizeNewsCategory(category) {
@@ -4048,11 +4269,14 @@ function createEventCard(event) {
     const list = document.getElementById('newsList');
     list.innerHTML = '';
 
-    const filteredData = category === '전체'
-      ? newsData
+    const filteredData = (category === '전체'
+      ? newsData.slice()
       : newsData.filter(item => category === '견본주택'
           ? String(item.category || '').trim() === '견본주택 오픈'
-          : normalizeNewsCategory(item.category) === category);
+          : normalizeNewsCategory(item.category) === category))
+      .map((item, order) => ({ item, order, sortDate: parseNewsDate(item.date).getTime() }))
+      .sort((a, b) => (b.sortDate - a.sortDate) || (a.order - b.order))
+      .map(x => x.item);
 
     if (filteredData.length === 0) {
       list.innerHTML = `<div class="no-data">등록된 소식이 없습니다.</div>`;
@@ -4146,6 +4370,23 @@ function createEventCard(event) {
     });
   }
 
+  function setNewsDetailRelatedLink(item) {
+    const area = document.getElementById('newsDetailRelatedLinkArea');
+    const link = document.getElementById('newsDetailRelatedLink');
+    if (!area || !link) return;
+
+    const url = String(item.linkUrl || '').trim();
+    area.style.display = 'none';
+    link.removeAttribute('href');
+    link.textContent = '';
+
+    // 구글 시트6 F열 = 관련링크
+    if (!/^https?:\/\//i.test(url)) return;
+    link.href = url;
+    link.textContent = url;
+    area.style.display = 'block';
+  }
+
   window.openNewsDetailScreen = function(index) {
     const item = newsData[index];
     const catEl = document.getElementById('newsDetailCategory');
@@ -4155,6 +4396,8 @@ function createEventCard(event) {
     document.getElementById('newsDetailDate').innerText = `작성일: ${item.date}`;
     document.getElementById('newsDetailContent').innerHTML = linkifyNewsContent(item.content);
 
+    // 본문 하단에 Sheet6 F열(관련링크)을 표시
+    setNewsDetailRelatedLink(item);
     setNewsDetailThumbnail(item);
 
     document.getElementById('newsDetailScreen').style.display = 'flex';
