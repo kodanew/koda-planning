@@ -18,7 +18,7 @@
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
 <meta name="apple-mobile-web-app-title" content="KODA 일정">
-<link rel="apple-touch-icon" href="logoT.png">
+<link rel="apple-touch-icon" href="로고.png">
 <link rel="manifest" href="manifest.json">
 
 <!-- 카카오톡 인앱 브라우저 강제 탈출 스크립트 -->
@@ -110,8 +110,10 @@
     align-items: center;
     gap: 6px;
   }
-
-  .install-btn {
+.notify-btn:active {
+    color: #718096;
+  }
+.install-btn {
     top: 25px;
     background-color: transparent;
     color: #718096;
@@ -729,6 +731,44 @@
     color: #3182ce;
   }
 
+  /* 협회공지 목록/상세용 뱃지 (임직원현황 뱃지와 동일한 디자인 언어) */
+  .news-badge {
+    display: inline-block;
+    vertical-align: middle;
+    font-size: 0.62rem;
+    font-weight: 800;
+    padding: 2px 7px;
+    border-radius: 999px;
+    margin-right: 6px;
+    background: #edf2f7;
+    color: #4a5568;
+  }
+  .news-badge-sale { background: #ebf8ff; color: #3182ce; }
+  .news-badge-wedding { background: #fff5f7; color: #d53f8c; }
+  .news-badge-obituary { background: #edf1f5; color: #4a5568; }
+  .news-badge-etc { background: #f7fafc; color: #718096; }
+
+  .day-event-item.news-card-item {
+    display:flex;
+    flex-direction:row;
+    align-items:center;
+    justify-content:space-between;
+    gap:10px;
+  }
+  .news-card-item .day-event-item-title {
+    display:block;
+    flex:1 1 auto;
+    min-width:0;
+    line-height:1.35;
+  }
+  .news-card-item .day-event-item-meta {
+    flex:0 0 auto;
+    margin-top:0;
+    margin-left:auto;
+    text-align:right;
+    white-space:nowrap;
+  }
+
   .modal-title-area {
     display: flex;
     justify-content: space-between;
@@ -1093,7 +1133,7 @@
     display: none;
   }
 
-  /* 직원현황 컴팩트 카드형 디자인 */
+  /* 임직원현황 컴팩트 카드형 디자인 */
   #staffList { display:grid !important; grid-template-columns:repeat(2,minmax(0,1fr)); gap:8px; }
   #staffList .day-event-item { min-height:0 !important; padding:10px 10px !important; border-radius:10px !important; text-align:left; }
   #staffList .day-event-item-title { font-size:.82rem !important; line-height:1.25 !important; }
@@ -1196,7 +1236,6 @@ button,.nav-btn,.action-btn{min-height:44px;}
 .association-coming-soon .association-card-icon{background:#eef2f7!important;filter:grayscale(.2)!important;}
 .association-preview,.association-card-head{display:none!important;}
 
-
 /* 2026-09-09 mobile polish: calendar + association news */
 .cal-header{
   position:relative!important;
@@ -1260,7 +1299,7 @@ button,.nav-btn,.action-btn{min-height:44px;}
 .schedule-container{padding-top:0!important;gap:5px!important;}
 .schedule-section-header{margin-top:6px!important;padding-top:3px!important;padding-bottom:6px!important;}
 
-/* 협회소식: 실제 휴대폰 화면에 맞춘 카드형 전체 화면 */
+/* 협회공지: 실제 휴대폰 화면에 맞춘 카드형 전체 화면 */
   /* ===== KODA 임직원현황 : 기존 헤더 유지 + 모바일 최적화 ===== */
   #staffScreen{
     display:none; position:fixed; inset:0; z-index:1500;
@@ -1384,7 +1423,6 @@ button,.nav-btn,.action-btn{min-height:44px;}
     #staffList .staff-badge{font-size:.5rem !important;padding:2px 4px !important;}
   }
 
-
   /* 메인 헤더: 한국디벨로퍼협회 2줄 + 초소형 도시 실루엣 */
   .app-container > .header .header-left-brand{left:29px;top:10px;gap:1px;}
   .app-container > .header .brand-title-ko{color:#173f70;font-size:.72rem;font-weight:900;letter-spacing:-.055em;line-height:1.2;}
@@ -1394,7 +1432,6 @@ button,.nav-btn,.action-btn{min-height:44px;}
   .app-container > .header .city-silhouette i{display:block;width:5px;background:linear-gradient(180deg,#b8cee5,#e2ebf5);border-radius:1px 1px 0 0;}
   .app-container > .header .city-silhouette i:nth-child(1){height:5px;width:4px}.app-container > .header .city-silhouette i:nth-child(2){height:8px;width:6px}.app-container > .header .city-silhouette i:nth-child(3){height:4px;width:8px}.app-container > .header .city-silhouette i:nth-child(4){height:10px;width:6px}.app-container > .header .city-silhouette i:nth-child(5){height:6px;width:9px}.app-container > .header .city-silhouette i:nth-child(6){height:9px;width:5px}.app-container > .header .city-silhouette i:nth-child(7){height:4px;width:7px}
   @media(max-width:360px){.app-container > .header .header-left-brand{left:24px}.app-container > .header .brand-title-ko{font-size:.68rem}.app-container > .header .brand-title-en{font-size:.35rem}.app-container > .header .city-silhouette{width:92px;transform:scale(.9);transform-origin:left bottom}}
-
 
   /* 임직원 미리보기: 이름 아래 전화번호, 오른쪽 소속·직위 */
   #staffScreen #staffTabs .month-tab{height:42px!important;min-height:42px!important;padding:0 3px!important;}
@@ -1493,7 +1530,6 @@ button,.nav-btn,.action-btn{min-height:44px;}
     .app-container > .today-weather-bar .today-weather{font-size:.7rem;}
   }
 
-
   /* 최종 요청 반영 */
   .app-container > .header .header-right{
     flex-direction:column!important; align-items:flex-end!important; justify-content:center!important;
@@ -1530,6 +1566,33 @@ button,.nav-btn,.action-btn{min-height:44px;}
     #staffList .staff-org-role{font-size:.59rem!important;}
   }
 
+#newsDetailContent a{color:#2563eb;text-decoration:underline;word-break:break-all}
+#newsDetailThumbnailLink{display:block}
+#newsDetailThumbnail{display:block;max-width:100%;height:auto}
+
+  /* 사무국/회원사 그룹 구분선 및 뱃지 수량 */
+  #staffList.executive-list .executive-group-title em,
+  #staffList.member-company-list .member-group-title em{
+    font-style:normal;font-weight:800;opacity:.9;
+  }
+  #staffList.member-company-list{display:block !important;}
+  #staffList.member-company-list .member-badge-group{margin-bottom:12px;}
+  #staffList.member-company-list .member-badge-group:last-child{margin-bottom:0;}
+  #staffList.member-company-list .member-group-title{
+    display:flex;align-items:center;gap:8px;margin:2px 0 7px;
+    font-size:.72rem;font-weight:850;color:#315b8d;
+  }
+  #staffList.member-company-list .member-group-title::after{
+    content:"";flex:1;height:1px;background:#d9e6f4;
+  }
+  #staffList.member-company-list .member-group-title .staff-badge{margin:0 !important;}
+  #staffList.member-company-list .member-group-cards{display:grid;grid-template-columns:1fr;gap:8px;}
+
+  /* 임직원현황 탭 인원수: 본문보다 한 포인트 작게 */
+  #staffTabs .month-tab .tab-count{font-size:.78em;font-weight:700;opacity:.9;margin-left:2px;}
+  /* 사무국도 7대 임원처럼 이름 왼쪽에 KODA 뱃지 복원 */
+  #staffList.executive-list .office-badge-group .staff-main-line{display:grid!important;grid-template-columns:auto minmax(0,1fr)!important;align-items:start!important;column-gap:5px!important;}
+  #staffList.executive-list .office-badge-group .staff-main-line > .staff-badge{display:inline-block!important;}
 </style>
 
 <style id="final-staff-header-fixes">
@@ -1885,7 +1948,7 @@ button,.nav-btn,.action-btn{min-height:44px;}
     flex-basis: 14px !important;
     font-size: 0.65rem !important;
     line-height: 14px !important;
-    right: 22px !important; /* 동그라미들 바로 옆에 위치 */
+    right: 22px !important; 
     bottom: 5.5px !important;
     color: rgba(255, 255, 255, 0.7) !important;
     padding: 0 !important;
@@ -1895,7 +1958,7 @@ button,.nav-btn,.action-btn{min-height:44px;}
     color: #ffffff !important;
   }
   .banner-dots {
-    right: 38px !important; /* Pause 버튼 옆으로 점들 위치 이동 */
+    right: 38px !important; 
   }
   @media(max-width:360px){
     .banner-pause-btn { right: 18px !important; }
@@ -1904,13 +1967,12 @@ button,.nav-btn,.action-btn{min-height:44px;}
 
   /* 4. 관심일정 터치 시 활성화 배경 */
   .active-bookmark .quick-icon {
-    background-color: #e6f2ff !important;
-    border-color: #cce0ff !important;
+    background-color: #FFF1E6 !important;
+    border-color: #F2C6A0 !important;
   }
 </style>
 
 <style id="layout-spacing-fixes">
-  /* 1. <지난 일정>, <예정 일정>, <오늘 일정> 과 아래 목록 사이의 간격을 동일하게 맞춤 */
   .schedule-section-header {
     padding-bottom: 4px !important;
     margin-bottom: 4px !important;
@@ -1918,28 +1980,22 @@ button,.nav-btn,.action-btn{min-height:44px;}
   .schedule-list-wrapper {
     margin-top: 0 !important;
   }
-  
-  /* 만약 .schedule-container의 gap 때문에 간격이 달라진다면 일관되게 고정 */
   .schedule-container {
     gap: 0 !important; 
   }
   .schedule-list-wrapper {
     display: flex;
     flex-direction: column;
-    gap: 8px !important; /* 목록 카드들 사이의 간격 유지 */
+    gap: 8px !important; 
   }
-
-  /* 2. 배너 내부 "배지/일시/장소" 와 "행사명" 사이의 줄간격 축소 */
   .banner-heading {
-    margin-bottom: 0px !important; /* 기존 2~5px 이었던 하단 여백 제거 */
+    margin-bottom: 0px !important; 
     min-height: 18px !important;
   }
   .banner-event-line2 {
-    margin-top: 0px !important; /* 행사명 위쪽 여백 제거 */
-    line-height: 0.85 !important; /* 줄간격(높이) 미세 축소 */
+    margin-top: 0px !important; 
+    line-height: 0.85 !important; 
   }
-
-  /* 모바일 화면에서도 좁혀진 줄간격 유지 */
   @media(max-width:360px) {
     .banner-heading {
       margin-bottom: 0px !important; 
@@ -1951,73 +2007,353 @@ button,.nav-btn,.action-btn{min-height:44px;}
 </style>
 
 <style id="past-schedule-spacing-fix">
-  /* 지난 달력 이동 시 나오는 <지난 일정> 타이틀과 목록 사이의 간격 조정 */
   .schedule-section-header + .schedule-list-wrapper {
-    margin-top: 4px !important; /* 위와 동일한 값으로 맞추시면 깔끔합니다 */
+    margin-top: 4px !important; 
   }
 </style>
 
 <style id="upcoming-schedule-spacing-fix">
-  /* <예정 일정> 및 <오늘 일정> 타이틀 아래 본 일정 목록과의 간격 조정 */
   #scheduleContainer > .schedule-list-wrapper:last-child {
-    margin-top: 4px !important; /* 숫자를 줄이면 간격이 좁아지고, 늘리면 넓어집니다 (예: 0px ~ 10px) */
+    margin-top: 4px !important; 
   }
 </style>
 
 <style id="today-header-spacing-fix">
-  /* 1. 헤더 내부 높이를 팽창시키는 정렬 방식 변경 및 하단 여백 완전 제거 */
   .schedule-section-header {
-    align-items: flex-end !important; /* baseline 대신 하단 끝선에 맞춰 들뜨는 현상 방지 */
+    align-items: flex-end !important; 
     padding-bottom: 0px !important;   
-    margin-bottom: 2px !important; /* 필요시 이 값을 0px로 줄이시면 더 바짝 붙습니다 */
+    margin-bottom: 2px !important; 
   }
-  
-  /* 2. "지난 일정 보기" 버튼이 차지하는 잉여 투명 공간 압축 */
   .past-schedule-btn {
     line-height: 1 !important;
     padding: 0 !important;
-    margin-bottom: 2px !important; /* 글씨 하단 선 시각적 맞춤용 */
+    margin-bottom: 2px !important; 
   }
-  
-  /* 3. 부제목의 텍스트 줄간격 압축 */
   .schedule-section-subtitle {
     line-height: 1.1 !important;
   }
 </style>
 
 <style id="card-today-badge-style">
-  /* 목록형 '오늘 일정' 카드 우측 하단의 TODAY 뱃지 */
   .card-today-badge {
     position: absolute;
-    bottom: 0px;  /* 바닥 테두리에 완전 밀착 (기존 12px) */
-    right: 0px;   /* 오른쪽 테두리에 완전 밀착 (기존 12px) */
+    bottom: 0px;  
+    right: 0px;   
     background-color: #e53e3e; 
     color: #ffffff;
     font-size: 0.55rem;
     font-weight: 800;
     padding: 3px 7px;
-    
-    /* 카드 모서리 둥글기(10px)와 자연스럽게 이어지도록 반경 설정 (좌측상단 우측상단 우측하단 좌측하단) */
     border-radius: 8px 0 8px 0; 
-    
     z-index: 5;
     line-height: 1.1;
     pointer-events: none; 
-    box-shadow: -1px -1px 4px rgba(229, 62, 62, 0.15); /* 안쪽으로 살짝 그림자 */
+    box-shadow: -1px -1px 4px rgba(229, 62, 62, 0.15); 
   }
-  
-  /* 모바일 화면 맞춤 미세조정 */
   @media(max-width:360px) {
     .card-today-badge {
       bottom: 0px;
       right: 0px;
       font-size: 0.5rem;
       padding: 2px 5px;
-      border-radius: 6px 0 10px 0; /* 모바일 카드 모서리에 맞춤 */
+      border-radius: 6px 0 10px 0; 
     }
   }
 </style>
 
+<style id="news-screen-staff-style-match">
+/* 협회공지(newsScreen / newsDetailScreen) 스타일 */
+#newsScreen, #newsDetailScreen{
+  display:none; position:fixed; inset:0; z-index:1500;
+  overflow-y:auto; -webkit-overflow-scrolling:touch;
+  background:#f4f7fb; padding:0 10px 18px; box-sizing:border-box;
+}
+#newsDetailScreen{ z-index:1600; }
+#newsScreen::after, #newsDetailScreen::after{content:'';display:block;min-height:18px;}
+#newsScreen .staff-mobile-header,
+#newsScreen .fullscreen-tabs,
+#newsScreen .fullscreen-content,
+#newsDetailScreen .staff-mobile-header,
+#newsDetailScreen .fullscreen-content{
+  width:100%; max-width:430px; margin-left:auto; margin-right:auto; box-sizing:border-box;
+}
+#newsScreen .staff-mobile-header,
+#newsDetailScreen .staff-mobile-header{
+  position:sticky!important; top:0!important; z-index:30;
+  flex:0 0 auto!important; height:54px!important; min-height:54px!important;
+  display:flex!important; align-items:center!important; padding:0 15px!important;
+  background:#fff; border-bottom:1px solid #edf2f7;
+  box-shadow:0 3px 14px rgba(25,67,110,.055);
+}
+#newsScreen .fullscreen-back-btn,
+#newsDetailScreen .fullscreen-back-btn{
+  position:relative!important; z-index:3;
+  width:42px; height:42px; min-height:42px; padding:0;
+  display:flex; align-items:center; justify-content:center;
+  border:0; border-radius:14px; background:#f1f6fd; color:#1769d2;
+  font-size:1.4rem; font-weight:700; line-height:1;
+}
+#newsScreen .fullscreen-title,
+#newsDetailScreen .fullscreen-title{
+  position:absolute!important; left:50%!important; top:50%!important;
+  transform:translate(-50%,-50%)!important; width:max-content!important; margin:0!important;
+  text-align:center; color:#173f70; font-size:1.12rem; font-weight:850;
+  letter-spacing:-.045em; white-space:nowrap; z-index:2;
+}
+#newsScreen #newsTabs{
+  position:relative!important; top:auto!important; flex:0 0 54px!important;
+  height:54px!important; min-height:54px!important; width:100%!important;
+  display:grid!important; grid-template-columns:repeat(5,minmax(0,1fr))!important;
+  gap:5px!important; padding:7px 0!important; margin:0!important;
+}
+#newsScreen .month-tab{
+  min-width:0; width:100%; height:100%; padding:0 2px;
+  border:1px solid #dce6f2; border-radius:14px; background:#fff;
+  color:#5d7089; font-size:.78rem; font-weight:850; letter-spacing:-.05em;
+  box-shadow:0 3px 11px rgba(24,71,120,.05); white-space:nowrap;
+  display:flex; align-items:center; justify-content:center;
+}
+#newsScreen .month-tab.active{
+  color:#fff; border-color:#1769d2;
+  background:linear-gradient(135deg,#1769d2,#3182ce);
+  box-shadow:0 5px 13px rgba(23,105,210,.18);
+}
+#newsScreen .fullscreen-content{
+  flex:1 1 auto!important; min-height:0; padding:12px 0 30px!important; overflow-y:visible;
+}
+#newsDetailScreen .fullscreen-content{
+  padding:20px 6px 40px!important;
+}
+#newsList{ display:flex; flex-direction:column; gap:9px; width:100%; box-sizing:border-box; }
+#newsList .day-event-item{
+  min-width:0; box-sizing:border-box;
+  padding:13px 12px!important; border:1px solid #e2eaf4!important;
+  border-radius:15px!important; background:#fff;
+  box-shadow:0 4px 12px rgba(28,70,120,.055);
+}
+#newsList .day-event-item:active{ transform:scale(.985); background:#f8fbff; }
+#newsList .day-event-item-title{ font-size:.9rem!important; line-height:1.4!important; color:#17385f; }
+#newsList .day-event-item-meta{ margin-top:6px!important; color:#657a96; font-size:.72rem!important; }
+#newsScreen .loading-msg, #newsScreen .no-data{
+  padding:30px 12px; text-align:center; color:#7a8da7; font-size:.78rem;
+  background:#fff; border-radius:15px; border:1px solid #e2eaf4;
+}
+.news-badge{
+  font-size:.6rem!important; font-weight:800; padding:2px 6px!important;
+  border-radius:999px; margin-right:5px!important; background:#edf5ff; color:#1769d2;
+}
+#newsDetailScreen #newsDetailTitle{ color:#17385f; }
+#newsDetailScreen #newsDetailDate{ font-size:.78rem!important; }
+#newsDetailScreen #newsDetailLink.day-event-item{
+  border-radius:15px!important; border:1px solid #e2eaf4!important;
+  box-shadow:0 4px 12px rgba(28,70,120,.055);
+}
+@media(max-width:360px){
+  #newsScreen .staff-mobile-header, #newsDetailScreen .staff-mobile-header{ height:52px!important; min-height:52px!important; }
+  #newsScreen #newsTabs{ flex-basis:50px!important; height:50px!important; min-height:50px!important; gap:3px!important; }
+  #newsScreen .month-tab{ font-size:.73rem; }
+}
+</style>
+
+<style id="final-news-menu-fix">
+  #newsScreen #newsTabs{
+    width:100%!important;
+    max-width:none!important;
+    box-sizing:border-box!important;
+    display:grid!important;
+    grid-template-columns:repeat(5,minmax(0,1fr))!important;
+    gap:5px!important;
+    padding:7px 0!important;
+    margin:0!important;
+    justify-items:stretch!important;
+    align-items:stretch!important;
+  }
+  #newsScreen #newsTabs .month-tab{
+    width:100%!important;
+    min-width:0!important;
+    max-width:none!important;
+    margin:0!important;
+    box-sizing:border-box!important;
+    display:flex!important;
+    align-items:center!important;
+    justify-content:center!important;
+  }
+  .news-quick-icon svg{
+    width:31px!important;
+    height:31px!important;
+    display:block!important;
+  }
+  .news-quick-icon{
+    background:#ffffff!important;
+    border-color:#e2e8f0!important;
+  }
+</style>
+
+<style id="final-news-ui-fix">
+  #newsScreen #newsTabs{
+    width:100%!important;
+    max-width:430px!important;
+    padding:8px 0!important;
+    margin:0 auto!important;
+    display:grid!important;
+    grid-template-columns:repeat(5,minmax(0,1fr))!important;
+    gap:4px!important;
+    overflow:visible!important;
+    white-space:normal!important;
+  }
+  #newsScreen #newsTabs .month-tab{
+    width:100%!important;
+    min-width:0!important;
+    max-width:none!important;
+    margin:0!important;
+    padding:7px 2px!important;
+    font-size:clamp(10px,2.8vw,12px)!important;
+    line-height:1.2!important;
+    white-space:nowrap!important;
+    overflow:hidden!important;
+    text-overflow:clip!important;
+  }
+  @media(max-width:360px){
+    #newsScreen #newsTabs{gap:3px!important;padding-left:0!important;padding-right:0!important;}
+    #newsScreen #newsTabs .month-tab{padding:7px 1px!important;font-size:10px!important;}
+  }
+  #newsDetailThumbnailArea{
+    display:none;
+    margin-top:28px;
+    padding-top:18px;
+    border-top:1px dashed var(--border-color);
+  }
+  #newsDetailThumbnailLink{
+    display:block;
+    width:100%;
+    text-decoration:none;
+    border-radius:12px;
+    overflow:hidden;
+    background:#f7fafc;
+    border:1px solid #edf2f7;
+  }
+  #newsDetailThumbnail{
+    display:block;
+    width:100%;
+    height:auto;
+    max-height:360px;
+    object-fit:contain;
+    background:#f7fafc;
+  }
+
+  /* ===== 2026-09-15 회원사 목록 한 줄 텍스트 표시 고정 CSS ===== */
+  #staffList.member-company-list{
+    display:grid !important;
+    grid-template-columns:1fr !important;
+    gap:9px !important;
+  }
+  #staffList.member-company-list .staff-card-compact{
+    width:100% !important; min-height:0 !important; box-sizing:border-box !important;
+    padding:11px 12px !important;
+  }
+  #staffList.member-company-list .member-company-main{width:100%;text-align:left;}
+  
+  /* 한 줄 배치 설정 */
+  #staffList.member-company-list .member-company-head{
+    display:flex !important;
+    align-items:baseline !important;
+    min-width:0 !important;
+    gap:5px !important;
+    line-height:1.25 !important;
+    white-space:nowrap !important;
+  }
+  #staffList.member-company-list .member-company-head .staff-badge{
+    flex:0 0 auto !important; margin:0 !important;
+  }
+  #staffList.member-company-list .member-company-slash{
+    flex:0 0 auto !important;color:#47698f !important;font-weight:700 !important;
+  }
+  
+  /* 법인명 */
+  #staffList.member-company-list .member-company-head strong{
+    min-width:0 !important;
+    flex:0 1 auto !important;
+    color:#1769d2 !important;
+    font-size:.9rem !important;
+    font-weight:850 !important;
+    overflow:hidden !important;
+    text-overflow:ellipsis !important;
+  }
+  /* 지정대표자 */
+  #staffList.member-company-list .member-company-representative-inline{
+    flex:0 1 auto !important;
+    min-width:0 !important;
+    color:#47698f !important;
+    font-size:.76rem !important;
+    font-weight:700 !important;
+    overflow:hidden !important;
+    text-overflow:ellipsis !important;
+  }
+  /* 지역 (주소 첫단어) */
+  #staffList.member-company-list .member-company-region-inline{
+    flex:0 1 auto !important;
+    min-width:0 !important;
+    color:#47698f !important;
+    font-size:.76rem !important;
+    font-weight:700 !important;
+    overflow:hidden !important;
+    text-overflow:ellipsis !important;
+  }
+  /* 가입일자 */
+  #staffList.member-company-list .member-company-join{
+    flex:0 0 auto !important;
+    color:#7d91a9 !important;
+    font-size:.67rem !important;
+    font-weight:650 !important;
+  }
+
+  #staffList.executive-list{display:block !important;}
+  #staffList.executive-list .executive-badge-group{margin-bottom:12px;}
+  #staffList.executive-list .executive-badge-group:last-child{margin-bottom:0;}
+  #staffList.executive-list .executive-group-title{
+    display:flex;align-items:center;gap:8px;margin:2px 0 7px;
+    font-size:.72rem;font-weight:850;color:#315b8d;
+  }
+  #staffList.executive-list .executive-group-title::after{
+    content:"";flex:1;height:1px;background:#d9e6f4;
+  }
+  #staffList.executive-list .executive-group-title .staff-badge{margin:0 !important;}
+  #staffList.executive-list .executive-group-cards{
+    display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;
+  }
+  #staffList.executive-list .executive-group-cards .staff-card-compact{
+    width:100% !important;min-width:0;min-height:0 !important;box-sizing:border-box !important;
+  }
+  #staffList.executive-list .staff-main-line{
+    display:grid !important;grid-template-columns:auto minmax(0,1fr) !important;
+    align-items:start !important;column-gap:5px !important;white-space:normal !important;overflow:visible !important;
+  }
+  #staffList.executive-list .staff-main-line > .staff-badge{display:inline-block !important;}
+  #staffList.executive-list .staff-info-block{flex:1 1 auto !important;min-width:0 !important;}
+
+  #memberCompanyDetailModal{z-index:2100 !important;}
+  #memberCompanyDetailModal .modal-content{max-width:400px;}
+  #memberCompanyDetailModal .member-detail-title{color:#173f70;font-size:1.12rem;font-weight:850;line-height:1.35;margin-bottom:14px;padding-right:28px;}
+  #memberCompanyDetailModal .member-detail-badge{margin-right:6px;vertical-align:middle;}
+  #memberCompanyDetailModal .member-detail-row{display:flex;align-items:flex-start;margin-bottom:7px;font-size:.8rem;line-height:1.45;}
+  #memberCompanyDetailModal .member-detail-label{width:76px;flex:0 0 76px;color:#718096;font-weight:750;}
+  #memberCompanyDetailModal .member-detail-value{flex:1;min-width:0;color:#1a202c;word-break:break-all;}
+
+  @media(max-width:360px){
+    #staffList.member-company-list{gap:6px !important;}
+    #staffList.member-company-list .member-company-head strong{font-size:.82rem !important;}
+    #staffList.member-company-list .member-company-region-inline{font-size:.76rem !important;}
+    #staffList.member-company-list .member-company-join{font-size:.59rem !important;}
+    #staffList.member-company-list .member-company-representative-inline{font-size:.64rem !important;}
+    #staffList.executive-list .executive-group-cards{gap:6px;}
+    #staffList.executive-list .staff-badge{font-size:.5rem !important;padding:2px 4px !important;}
+  }
+</style>
+
+<style id="koda-member-final-fixes">
+#staffList.member-company-list .member-company-head{margin-bottom:0!important;}
+#staffScreen #staffTabs .tab-count{font-size:calc(.9em - 1pt)!important;font-weight:650!important;margin-left:2px!important;opacity:.82!important;}
+</style>
 </head>
 <body>
 
@@ -2055,7 +2391,6 @@ button,.nav-btn,.action-btn{min-height:44px;}
     </div>
   </div>
 
-  <!-- ✨ 예정 일정 배너 캐러셀 ✨ -->
   <section class="schedule-banner" id="scheduleBanner" aria-label="예정 일정 배너">
     <div class="schedule-banner-track" id="scheduleBannerTrack"></div>
     <div class="banner-dots" id="bannerDots"></div>
@@ -2079,8 +2414,27 @@ button,.nav-btn,.action-btn{min-height:44px;}
     <a href="https://www.koda.or.kr/main/" target="_blank" class="quick-btn">
       <span class="quick-icon koda-brand-icon"><img src="koda-logo-re.png" alt="KODA"></span><span class="quick-label">홈페이지</span>
     </a>
+    <button class="quick-btn" onclick="openNewsScreen()">
+      <span class="quick-icon news-quick-icon">
+        <svg viewBox="0 0 52 52" aria-hidden="true">
+          <rect x="7" y="6" width="38" height="40" rx="8" fill="#f6c344"/>
+          <path d="M14 14h24v4H14zm0 8h18v3H14zm0 7h24v3H14zm0 7h15v3H14z" fill="#fff"/>
+        </svg>
+      </span>
+      <span class="quick-label">협회공지</span>
+    </button>
     <button class="quick-btn" onclick="openStaffScreen()">
-      <span class="quick-icon"><svg viewBox="0 0 52 52" aria-hidden="true"><rect x="7" y="8" width="38" height="36" rx="7" fill="#1267d6"/><rect x="12" y="13" width="28" height="5" rx="2.5" fill="#fff"/><rect x="12" y="22" width="18" height="4" rx="2" fill="#dbeaff"/><rect x="12" y="29" width="24" height="4" rx="2" fill="#dbeaff"/><circle cx="37" cy="24" r="5" fill="#fff"/><path d="M34.5 24l1.7 1.7 3.3-3.5" fill="none" stroke="#1267d6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span><span class="quick-label">임직원현황</span>
+      <span class="quick-icon">
+  <svg viewBox="0 0 52 52" aria-hidden="true">
+    <circle cx="26" cy="17" r="7" fill="#1267d6"/>
+    <path d="M12 40
+           C12 31.5 18 27 26 27
+           C34 27 40 31.5 40 40
+           Z"
+        fill="#1267d6"/>
+  </svg>
+</span>
+<span class="quick-label">임직원현황</span>
     </button>
     <a href="https://search.naver.com/search.naver?ssc=tab.news.all&where=news&sm=tab_jum&query=%EB%94%94%EB%B2%A8%EB%A1%9C%ED%8D%BC%ED%98%91%ED%9A%8C" target="_blank" class="quick-btn">
       <span class="quick-icon"><svg viewBox="0 0 52 52" aria-hidden="true"><rect x="5" y="5" width="42" height="42" rx="12" fill="#03C75A"/><path d="M16 14h7.5l6.5 10.5V14H36v24h-7l-7-10.8V38h-6z" fill="#fff"/></svg></span><span class="quick-label">언론보도</span>
@@ -2088,8 +2442,26 @@ button,.nav-btn,.action-btn{min-height:44px;}
     <a href="https://www.youtube.com/@kodatv9717" target="_blank" class="quick-btn">
       <span class="quick-icon"><svg viewBox="0 0 64 44" aria-hidden="true"><rect x="2" y="2" width="60" height="40" rx="11" fill="#FF0033"/><path d="M27 12.5 46 22 27 31.5z" fill="#fff"/></svg></span><span class="quick-label">KODA-TV</span>
     </a>
+  </div>
+  <div class="sub-menu-container">
+    <button class="quick-btn" style="opacity:0.5; cursor:default;">
+      <span class="quick-icon" style="background:#f7fafc;"><span style="font-size:1.2rem; filter:grayscale(1);">🔒</span></span>
+      <span class="quick-label">준비중</span>
+    </button>
+    <button class="quick-btn" style="opacity:0.5; cursor:default;">
+      <span class="quick-icon" style="background:#f7fafc;"><span style="font-size:1.2rem; filter:grayscale(1);">🔒</span></span>
+      <span class="quick-label">준비중</span>
+    </button>
+    <button class="quick-btn" style="opacity:0.5; cursor:default;">
+      <span class="quick-icon" style="background:#f7fafc;"><span style="font-size:1.2rem; filter:grayscale(1);">🔒</span></span>
+      <span class="quick-label">준비중</span>
+    </button>
+    <button class="quick-btn" style="opacity:0.5; cursor:default;">
+      <span class="quick-icon" style="background:#f7fafc;"><span style="font-size:1.2rem; filter:grayscale(1);">🔒</span></span>
+      <span class="quick-label">준비중</span>
+    </button>
     <button class="quick-btn" id="bookmarkFilterBtn" onclick="toggleBookmarksOnly()">
-      <span class="quick-icon"><svg viewBox="0 0 52 52" aria-hidden="true"><path d="M13 8h26v37L26 38l-13 7z" fill="#1267d6"/><path d="m26 15 2.5 5.2 5.8.8-4.2 4.1 1 5.8-5.1-2.7-5.1 2.7 1-5.8-4.2-4.1 5.8-.8z" fill="#fff"/></svg></span><span class="quick-label">관심일정</span>
+      <span class="quick-icon"><svg viewBox="0 0 52 52" aria-hidden="true"><path d="M13 8h26v37L26 38l-13 7z" fill="#D35400"/><path d="m26 15 2.5 5.2 5.8.8-4.2 4.1 1 5.8-5.1-2.7-5.1 2.7 1-5.8-4.2-4.1 5.8-.8z" fill="#fff"/></svg></span><span class="quick-label">관심일정</span>
     </button>
   </div>
 
@@ -2115,11 +2487,11 @@ button,.nav-btn,.action-btn{min-height:44px;}
   </div>
 
   <div class="fullscreen-tabs" id="staffTabs">
-    <button class="month-tab active" data-cat="전체" onclick="filterStaff('전체')">전체</button>
-    <button class="month-tab" data-cat="사무국" onclick="filterStaff('사무국')">사무국</button>
-    <button class="month-tab" data-cat="7대 임원" onclick="filterStaff('7대 임원')">7대 임원</button>
-    <button class="month-tab" data-cat="회원사" onclick="filterStaff('회원사')">회원사</button>
-    <button class="month-tab" data-cat="ARP" onclick="filterStaff('ARP')">ARP</button>
+    <button class="month-tab active" data-cat="사무국" onclick="filterStaff('사무국')">사무국 <em class="tab-count">(0)</em></button>
+    <button class="month-tab" data-cat="7대 임원" onclick="filterStaff('7대 임원')">7대 임원 <em class="tab-count">(0)</em></button>
+    <button class="month-tab" data-cat="회원사" onclick="filterStaff('회원사')">회원사 <em class="tab-count">(0)</em></button>
+    <button class="month-tab" data-cat="ARP" onclick="filterStaff('ARP')">ARP <em class="tab-count">(0)</em></button>
+    <button class="month-tab" data-cat="등록사" onclick="filterStaff('등록사')">등록사 <em class="tab-count">(0)</em></button>
   </div>
 
   <div class="fullscreen-content">
@@ -2176,6 +2548,15 @@ button,.nav-btn,.action-btn{min-height:44px;}
   </div>
 </div>
 
+<!-- ✨ 회원사 상세정보 모달 ✨ -->
+<div class="modal-overlay" id="memberCompanyDetailModal" onclick="closeMemberCompanyDetailModalOnOutsideClick(event)">
+  <div class="modal-content">
+    <button class="modal-close" onclick="closeMemberCompanyDetailModal()">×</button>
+    <div class="member-detail-title" id="memberCompanyDetailTitle"></div>
+    <div id="memberCompanyDetailRows"></div>
+  </div>
+</div>
+
 <!-- 일정 상세 모달 -->
 <div class="modal-overlay" id="eventModal" onclick="closeModalOnOutsideClick(event)">
   <div class="modal-content">
@@ -2221,14 +2602,75 @@ button,.nav-btn,.action-btn{min-height:44px;}
   </div>
 </div>
 
+<!-- ✨ 1. 협회공지 목록 페이지 ✨ -->
+<div class="fullscreen-screen" id="newsScreen">
+  <div class="staff-mobile-header">
+    <button class="fullscreen-back-btn" onclick="closeNewsScreen()" aria-label="뒤로가기">←</button>
+    <div class="fullscreen-title">협회공지</div>
+  </div>
+  <div class="fullscreen-tabs" id="newsTabs">
+    <button class="month-tab active" data-cat="전체" onclick="filterNews('전체')">전체</button>
+    <button class="month-tab" data-cat="협회소식" onclick="filterNews('협회소식')">협회소식</button>
+    <button class="month-tab" data-cat="견본주택" onclick="filterNews('견본주택')">견본주택</button>
+    <button class="month-tab" data-cat="결혼" onclick="filterNews('결혼')">결혼</button>
+    <button class="month-tab" data-cat="부고" onclick="filterNews('부고')">부고</button>
+  </div>
+  <div class="fullscreen-content" style="padding-top: 15px;">
+    <div class="day-event-list" id="newsList"></div>
+  </div>
+</div>
+
+<!-- ✨ 2. 협회공지 상세보기 페이지 (팝업 아님) ✨ -->
+<div class="fullscreen-screen" id="newsDetailScreen" style="z-index: 1600; background: #ffffff;">
+  <div class="staff-mobile-header" style="border-bottom: 1px solid #edf2f7;">
+    <button class="fullscreen-back-btn" onclick="closeNewsDetailScreen()" aria-label="뒤로가기">←</button>
+    <div class="fullscreen-title">소식 상세보기</div>
+  </div>
+  <div class="fullscreen-content" style="padding: 20px 16px; text-align: left;">
+    <div style="margin-bottom: 8px;"><span id="newsDetailCategory" class="news-badge"></span></div>
+    <div id="newsDetailTitle" class="modal-title" style="font-size: 1.25rem; margin-bottom: 8px;"></div>
+    <div id="newsDetailDate" class="modal-detail-row" style="color: var(--text-muted); margin-bottom: 18px; padding-bottom: 14px; border-bottom: 1px solid var(--border-color);"></div>
+
+    <div id="newsDetailContent" class="modal-value" style="font-size: 0.92rem; line-height: 1.65; white-space: pre-wrap; margin-bottom: 32px;"></div>
+
+    <div id="newsDetailThumbnailArea">
+      <a id="newsDetailThumbnailLink" href="#" target="_blank" rel="noopener noreferrer">
+        <img id="newsDetailThumbnail" src="" alt="협회공지 썸네일 이미지">
+      </a>
+    </div>
+  </div>
+</div>
+
 <script>
   // 기본 시트 정보
   const GOOGLE_SHEET_CSV_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vQEbM8YAc7jQes9oX6_-aVsVib2H40avHQkL6TkRRI2cYmw7nYG29F_1lGGz-2gL0nve4Q91MBM02Q-/pub?output=csv";
   const MEMBERS_SHEET_CSV_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vQEbM8YAc7jQes9oX6_-aVsVib2H40avHQkL6TkRRI2cYmw7nYG29F_1lGGz-2gL0nve4Q91MBM02Q-/pub?gid=1551080131&single=true&output=csv";
   const STAFF_SHEET_CSV_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vQEbM8YAc7jQes9oX6_-aVsVib2H40avHQkL6TkRRI2cYmw7nYG29F_1lGGz-2gL0nve4Q91MBM02Q-/pub?gid=2094790194&single=true&output=csv";
+  const MEMBER_COMPANIES_SHEET_CSV_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vQEbM8YAc7jQes9oX6_-aVsVib2H40avHQkL6TkRRI2cYmw7nYG29F_1lGGz-2gL0nve4Q91MBM02Q-/pub?gid=320441592&single=true&output=csv";
 
   let scheduleData = [];
   let staffData = [];
+  let memberCompanyData = [];
+  let memberCompanyLoading = false;
+  let memberCompanyLoaded = false;
+  let memberCompanyFetchedFresh = false; 
+  const MEMBER_COMPANIES_CACHE_KEY = 'koda_member_companies_cache_v3';
+
+  function loadMemberCompanyCache() {
+    try {
+      const cached = JSON.parse(localStorage.getItem(MEMBER_COMPANIES_CACHE_KEY) || 'null');
+      if (Array.isArray(cached) && cached.length) {
+        memberCompanyData = cached;
+        memberCompanyLoaded = true;
+        return true;
+      }
+    } catch (e) {}
+    return false;
+  }
+
+  function saveMemberCompanyCache(data) {
+    try { localStorage.setItem(MEMBER_COMPANIES_CACHE_KEY, JSON.stringify(data)); } catch (e) {}
+  }
   
   let bookmarks = JSON.parse(localStorage.getItem('koda_bookmarks') || '[]');
   let memos = JSON.parse(localStorage.getItem('koda_memos') || '{}');
@@ -2236,7 +2678,6 @@ button,.nav-btn,.action-btn{min-height:44px;}
   let showBookmarksOnly = false;
   let searchQuery = '';
 
-  // ===== 오늘 날짜 / 요일 / 날씨 =====
   function renderTodayDate(){
     const now=new Date();
     const weekdays=['일요일','월요일','화요일','수요일','목요일','금요일','토요일'];
@@ -2289,7 +2730,6 @@ button,.nav-btn,.action-btn{min-height:44px;}
     "09-24", "09-25", "09-26", "10-03", "10-05", "10-09", "12-25"  
   ];
 
-  // CSV 파싱 공통 함수
   function splitCSV(csv) {
     const rows = [];
     let row = [], curr = '';
@@ -2364,7 +2804,6 @@ button,.nav-btn,.action-btn{min-height:44px;}
     return dataArr;
   }
 
-  // ===== 시트3 회원 로그인 연동 부분 =====
   let membersData = []; 
   function normalizePhone(str) { return (str || '').replace(/[^0-9]/g, ''); }
 
@@ -2449,7 +2888,6 @@ button,.nav-btn,.action-btn{min-height:44px;}
     document.body.style.overflow = 'hidden';
   }
 
-  // ===== ✨ 시트4 KODA 직원현황 로직 ✨ =====
   function parseStaffCSV(csv) {
     const rows = splitCSV(csv);
     const dataArr = [];
@@ -2469,7 +2907,6 @@ button,.nav-btn,.action-btn{min-height:44px;}
       note: headers.indexOf("비고")
     };
     if (idx.name === -1) idx = { cat: 0, no: 1, name: 2, affil: 3, pos: 4, dept: -1, koda: 6, phone: 7, email: 8, note: 9 };
-    // 시트4의 G열이 KODA입니다. 헤더가 인식되지 않는 경우에도 G열(인덱스 6)을 사용합니다.
     if (idx.koda === -1) idx.koda = 6;
 
     for (let i = 1; i < rows.length; i++) {
@@ -2497,18 +2934,17 @@ button,.nav-btn,.action-btn{min-height:44px;}
     try {
       const response = await fetch(STAFF_SHEET_CSV_URL + "&t=" + new Date().getTime());
       staffData = parseStaffCSV(await response.text());
-      filterStaff('전체');
+      filterStaff('사무국');
     } catch (error) {
       list.innerHTML = `<div class="no-data">데이터를 불러오지 못했습니다. 네트워크 상태를 확인해주세요.</div>`;
     }
   }
 
-  let currentStaffCategory = '전체';
+  let currentStaffCategory = '사무국';
 
   window.filterStaff = function(category) {
-    // 분류 버튼은 항상 유지하고, 선택된 버튼만 활성화합니다.
-    const validCategories = ['전체','사무국','7대 임원','회원사','ARP'];
-    if (!validCategories.includes(category)) category = '전체';
+    const validCategories = ['사무국','7대 임원','회원사','ARP','등록사'];
+    if (!validCategories.includes(category)) category = '사무국';
     currentStaffCategory = category;
     const tabs = document.querySelectorAll('#staffTabs .month-tab');
     tabs.forEach(btn => {
@@ -2520,7 +2956,6 @@ button,.nav-btn,.action-btn{min-height:44px;}
     if(search) search.value='';
     const clear=document.getElementById('staffSearchClear');
     if(clear) clear.classList.remove('show');
-    // 버튼 클릭 시 브라우저의 자동 포커스/스크롤 이동을 차단합니다.
     if(document.activeElement && typeof document.activeElement.blur === 'function') document.activeElement.blur();
     const staffScreen = document.getElementById('staffScreen');
     const staffContent = staffScreen?.querySelector('.fullscreen-content');
@@ -2533,30 +2968,405 @@ button,.nav-btn,.action-btn{min-height:44px;}
     });
   }
 
+  function normalizeStaffText(v) {
+    return String(v || '').replace(/\s+/g,'').toUpperCase();
+  }
+
+  function executiveBadgeRank(v) {
+    const t = String(v || '').replace(/\s+/g,'');
+    if (t.includes('협회장')) return 1;
+    if (t.includes('수석부회장')) return 2;
+    if (t.includes('부회장')) return 3;
+    if (t.includes('이사')) return 4;
+    if (t.includes('감사')) return 5;
+    return 99;
+  }
+
+  function stripAssociationWord(text) {
+    return String(text || '').replace(/협회/g, '').replace(/\s{2,}/g, ' ').trim();
+  }
+
+  function updateStaffTabCounts() {
+    const counts = {
+      '사무국': staffData.filter(item => normalizeStaffText(item.category) === '사무국').length,
+      '7대 임원': staffData.filter(item => { const c = normalizeStaffText(item.category).replace(/\s/g,''); return c === '7대임원' || executiveBadgeRank(item.koda) < 99; }).length,
+      '회원사': memberCompanyData.length,
+      'ARP': staffData.filter(item => normalizeStaffText(item.category) === 'ARP').length,
+      '등록사': 0
+    };
+    document.querySelectorAll('#staffTabs .month-tab').forEach(btn => {
+      const cat = btn.dataset.cat;
+      const em = btn.querySelector('.tab-count');
+      if (em) em.textContent = `(${counts[cat] ?? 0})`;
+    });
+  }
+
+  function firstWordOfRegion(region) {
+    const trimmed = String(region || '').trim();
+    if (!trimmed) return '-';
+    return trimmed.split(/\s+/)[0];
+  }
+
+  function renderMemberCompanyList() {
+    updateStaffTabCounts();
+    const list = document.getElementById('staffList');
+    if (!list) return;
+    list.classList.add('member-company-list');
+    list.classList.remove('executive-list');
+    if (!list.dataset.memberClickBound) {
+      list.dataset.memberClickBound = '1';
+      list.addEventListener('click', (e) => {
+        const card = e.target.closest('.member-company-card');
+        if (!card) return;
+        const index = Number(card.dataset.memberIndex);
+        const item = memberCompanyData[index];
+        if (item) openMemberCompanyDetailModal(item);
+      });
+    }
+
+    const q = (document.getElementById('staffSearchInput')?.value || '').trim().toLowerCase();
+    let filtered = [...memberCompanyData];
+    if (q) {
+      filtered = filtered.filter(item =>
+        [item.company, item.category, item.representative, item.region]
+          .filter(Boolean).join(' ').toLowerCase().includes(q)
+      );
+    }
+    const countEl = document.getElementById('staffResultCount');
+    if (countEl) countEl.textContent = `${filtered.length}개사`;
+    if (!filtered.length) {
+      list.innerHTML = `<div class="no-data">${q ? '검색 결과가 없습니다.' : (memberCompanyLoading ? '회원사 정보를 불러오는 중입니다.' : '등록된 회원사가 없습니다.')}</div>`;
+      return;
+    }
+
+    const categoryOrder = ['정회원', '준회원'];
+    const groups = [];
+    categoryOrder.forEach(label => {
+      const items = filtered.filter(item => normalizeStaffText(item.category) === normalizeStaffText(label));
+      if (items.length) groups.push({ label, items });
+    });
+    const others = filtered.filter(item => !categoryOrder.some(label => normalizeStaffText(item.category) === normalizeStaffText(label)));
+    if (others.length) groups.push({ label:'기타', items:others });
+
+    groups.forEach(group => {
+      const section = document.createElement('section');
+      section.className = 'member-badge-group';
+      const title = document.createElement('div');
+      title.className = 'member-group-title';
+      title.innerHTML = `<span class="staff-badge">${group.label} <em>(${group.items.length})</em></span>`;
+      section.appendChild(title);
+
+      const cards = document.createElement('div');
+      cards.className = 'member-group-cards';
+      group.items.forEach(item => {
+        const btn = document.createElement('button');
+        btn.type = 'button';
+        btn.className = 'day-event-item staff-card-compact member-company-card';
+        btn.innerHTML = `
+          <div class="member-company-main">
+            <div class="member-company-head">
+              <span class="staff-badge">${item.category || '-'}</span>
+              <strong>${item.company || '-'}</strong>
+              <span class="member-company-slash">/</span>
+              <span class="member-company-representative-inline">${item.representative || '-'}</span>
+              <span class="member-company-slash">/</span>
+              <span class="member-company-region-inline">${firstWordOfRegion(item.region)}</span>
+              <span class="member-company-slash">/</span>
+              <span class="member-company-join">${item.joinDate || '-'}</span>
+            </div>
+          </div>`;
+        btn.dataset.memberIndex = String(memberCompanyData.indexOf(item));
+        cards.appendChild(btn);
+      });
+      section.appendChild(cards);
+      list.appendChild(section);
+    });
+  }
+
+  async function loadMemberCompanyData(forceRefresh = false) {
+    if (memberCompanyLoading) return;
+
+    if (!forceRefresh && !memberCompanyData.length) loadMemberCompanyCache();
+    if (memberCompanyData.length && !forceRefresh && currentStaffCategory === '회원사') {
+      renderMemberCompanyList();
+    }
+    if (memberCompanyFetchedFresh && !forceRefresh) return;
+
+    memberCompanyLoading = true;
+    const list = document.getElementById('staffList');
+    if (list && currentStaffCategory === '회원사' && !memberCompanyData.length) {
+      list.innerHTML = `<div class="loading-msg">회원사 정보를 불러오는 중입니다...⏳</div>`;
+    }
+    try {
+      const url = MEMBER_COMPANIES_SHEET_CSV_URL + '&t=' + Date.now();
+      const response = await fetch(url, { cache: 'no-store' });
+      if (!response.ok) throw new Error('Sheet7 CSV response error');
+      const csv = await response.text();
+      const rows = splitCSV(csv);
+      const data = [];
+      const headers = rows[0] || [];
+      for (let i = 1; i < rows.length; i++) {
+        const r = rows[i] || [];
+        const company = (r[1] || '').trim(); // B
+        if (!company) continue;
+        data.push({
+          company,
+          category: (r[2] || '').trim(),        // C
+          representative: (r[7] || '').trim(), // H 지정대표자
+          region: (r[5] || '').trim(),         // F 광역시도
+          joinDate: (r[8] || '').trim(),       // I 가입일자
+          all: r.slice(1, 9).map(v => (v || '').trim()),
+          headers: headers.slice(1, 9).map(v => (v || '').trim())
+        });
+      }
+      memberCompanyData = data;
+      memberCompanyLoaded = true;
+      memberCompanyFetchedFresh = true;
+      saveMemberCompanyCache(data);
+      updateStaffTabCounts();
+      if (currentStaffCategory === '회원사') renderMemberCompanyList();
+    } catch (error) {
+      if (!memberCompanyData.length && list && currentStaffCategory === '회원사') {
+        list.innerHTML = `<div class="no-data">회원사 정보를 불러오지 못했습니다.</div>`;
+      }
+    } finally {
+      memberCompanyLoading = false;
+    }
+  }
+
   function renderStaffList(categoryFilter) {
-    const list=document.getElementById('staffList'); if(!list) return; list.innerHTML='';
-    const normalizeCategory = v => String(v||'').replace(/\s+/g,'').toUpperCase();
-    const q=(document.getElementById('staffSearchInput')?.value||'').trim().toLowerCase();
-    let filteredData=(categoryFilter==='전체') ? [...staffData] : staffData.filter(item=>normalizeCategory(item.category)===normalizeCategory(categoryFilter));
-    if(q){
-      filteredData=filteredData.filter(item=>{
-        const hay=[item.name,item.affiliation,item.position,item.department,item.phone].filter(Boolean).join(' ').toLowerCase();
+    const list = document.getElementById('staffList');
+    if (!list) return;
+    list.innerHTML = '';
+    list.classList.remove('member-company-list', 'executive-list');
+
+    if (categoryFilter === '회원사') {
+      if (!memberCompanyData.length) loadMemberCompanyCache();
+      renderMemberCompanyList();
+      if (!memberCompanyLoaded && !memberCompanyLoading) loadMemberCompanyData();
+      return;
+    }
+
+    if (categoryFilter === '등록사') {
+      updateStaffTabCounts();
+      const countEl = document.getElementById('staffResultCount');
+      if (countEl) countEl.textContent = '0명';
+      list.innerHTML = `<div class="no-data">등록사 정보를 준비 중입니다.</div>`;
+      return;
+    }
+
+    const q = (document.getElementById('staffSearchInput')?.value || '').trim().toLowerCase();
+    let filteredData = staffData.filter(item => normalizeStaffText(item.category) === normalizeStaffText(categoryFilter));
+
+    if (q) {
+      filteredData = filteredData.filter(item => {
+        const hay = [item.name, item.affiliation, item.position, item.department, item.phone, item.koda].filter(Boolean).join(' ').toLowerCase();
         return hay.includes(q);
       });
     }
-    const countEl=document.getElementById('staffResultCount');
-    if(countEl) countEl.textContent=`${filteredData.length}명`;
-    if(!filteredData.length){list.innerHTML=`<div class="no-data">${q?'검색 결과가 없습니다.':'해당되는 인원이 없습니다.'}</div>`;return;}
-    filteredData.forEach(item=>{
-      const indexInOriginal=staffData.indexOf(item);
-      const btn=document.createElement('button'); btn.type='button'; btn.className='day-event-item staff-card-compact';
-      const badgeClass=item.category.includes('임원')?'staff-badge executive':'staff-badge';
-      const kodaLabel=item.koda || '';
-      const orgRole=[item.affiliation,item.position].filter(Boolean).join(' ');
-      btn.innerHTML=`<div class="staff-main-line"><span class="${badgeClass}">${kodaLabel}</span><div class="staff-info-block"><div class="staff-name-role"><strong>${item.name||'-'}</strong><span class="staff-org-role">${orgRole||'-'}</span></div><div class="staff-phone">${item.phone||''}</div></div></div>`;
-      btn.onclick=()=>openStaffDetailModal(indexInOriginal); list.appendChild(btn);
+
+    const countEl = document.getElementById('staffResultCount');
+    if (countEl) countEl.textContent = `${filteredData.length}명`;
+
+    if (!filteredData.length) {
+      list.innerHTML = `<div class="no-data">${q ? '검색 결과가 없습니다.' : '해당되는 인원이 없습니다.'}</div>`;
+      return;
+    }
+
+    if (categoryFilter === '사무국') {
+      list.classList.add('executive-list');
+      const officeGroups = [
+        { label:'전무', match:['전무'] },
+        { label:'실장', match:['기획운영실장','정책연구실장','실장'] },
+        { label:'팀장', match:['팀장'] },
+        { label:'파트장', match:['파트장'] },
+        { label:'대리', match:['대리'] },
+        { label:'책임연구원', match:['책임연구원'] }
+      ];
+      officeGroups.forEach(group => {
+        const items = filteredData.filter(item => {
+          const pos = stripAssociationWord(item.position || '');
+          return group.match.some(m => normalizeStaffText(pos).includes(normalizeStaffText(m)));
+        }).sort((a,b) => String(a.name||'').localeCompare(String(b.name||''), 'ko'));
+        if (!items.length) return;
+        const section = document.createElement('section');
+        section.className = 'executive-badge-group office-badge-group';
+        const title = document.createElement('div');
+        title.className = 'executive-group-title';
+        title.innerHTML = `<span class="staff-badge">${group.label} <em>(${items.length})</em></span>`;
+        section.appendChild(title);
+        const cards = document.createElement('div');
+        cards.className = 'executive-group-cards';
+        items.forEach(item => {
+          const indexInOriginal = staffData.indexOf(item);
+          const btn = document.createElement('button');
+          btn.type = 'button';
+          btn.className = 'day-event-item staff-card-compact';
+          const affiliation = stripAssociationWord(item.affiliation);
+          const position = stripAssociationWord(item.position);
+          const orgRole = [affiliation, position].filter(Boolean).join(' ');
+          btn.innerHTML = `
+            <div class="staff-main-line">
+              <span class="staff-badge">${item.koda || ''}</span>
+              <div class="staff-info-block">
+                <div class="staff-name-role">
+                  <strong>${item.name || '-'}</strong>
+                  <span class="staff-org-role">${orgRole || '-'}</span>
+                </div>
+                <div class="staff-phone">${item.phone || ''}</div>
+              </div>
+            </div>`;
+          btn.onclick = () => openStaffDetailModal(indexInOriginal);
+          cards.appendChild(btn);
+        });
+        section.appendChild(cards);
+        list.appendChild(section);
+      });
+      return;
+    }
+
+    if (categoryFilter === '7대 임원') {
+      list.classList.add('executive-list');
+
+      const badgeOrder = [
+        { key:'협회장', rank:1 },
+        { key:'수석부회장', rank:2 },
+        { key:'부회장', rank:3 },
+        { key:'이사', rank:4 },
+        { key:'감사', rank:5 }
+      ];
+      const groups = [];
+      badgeOrder.forEach(b => {
+        const items = filteredData.filter(item => {
+          const k = normalizeStaffText(item.koda);
+          return b.key === '부회장' ? (k.includes('부회장') && !k.includes('수석부회장')) : k.includes(b.key);
+        });
+        if (items.length) groups.push({ label:b.key, items });
+      });
+      const groupedOthers = filteredData.filter(item => !badgeOrder.some(b => normalizeStaffText(item.koda).includes(b.key)));
+      if (groupedOthers.length) groups.push({ label:'기타', items:groupedOthers });
+
+      groups.forEach(group => {
+        const section = document.createElement('section');
+        section.className = 'executive-badge-group';
+        const title = document.createElement('div');
+        title.className = 'executive-group-title';
+        title.innerHTML = `<span class="staff-badge executive">${group.label} <em>(${group.items.length})</em></span>`;
+        section.appendChild(title);
+
+        const cards = document.createElement('div');
+        cards.className = 'executive-group-cards';
+
+        group.items.forEach(item => {
+          const indexInOriginal = staffData.indexOf(item);
+          const btn = document.createElement('button');
+          btn.type = 'button';
+          btn.className = 'day-event-item staff-card-compact';
+
+          const orgRole = [item.affiliation, item.position].filter(Boolean).join(' ');
+          btn.innerHTML = `
+            <div class="staff-main-line">
+              <span class="staff-badge executive">${item.koda || group.label || '-'}</span>
+              <div class="staff-info-block">
+                <div class="staff-name-role">
+                  <strong>${item.name || '-'}</strong>
+                  <span class="staff-org-role">${orgRole || '-'}</span>
+                </div>
+                <div class="staff-phone">${item.phone || ''}</div>
+              </div>
+            </div>`;
+          btn.onclick = () => openStaffDetailModal(indexInOriginal);
+          cards.appendChild(btn);
+        });
+        section.appendChild(cards);
+        list.appendChild(section);
+      });
+      return;
+    }
+
+    filteredData.forEach(item => {
+      const indexInOriginal = staffData.indexOf(item);
+      const btn = document.createElement('button');
+      btn.type = 'button';
+      btn.className = 'day-event-item staff-card-compact';
+
+      const isOffice = normalizeStaffText(item.category) === '사무국';
+      const badgeClass = String(item.category || '').includes('임원') ? 'staff-badge executive' : 'staff-badge';
+      const kodaLabel = item.koda || '';
+
+      let orgRole;
+      if (isOffice) {
+        const affiliation = stripAssociationWord(item.affiliation);
+        const position = stripAssociationWord(item.position);
+        orgRole = [affiliation, position].filter(Boolean).join(' ');
+      } else {
+        orgRole = [item.affiliation, item.position].filter(Boolean).join(' ');
+      }
+
+      btn.innerHTML = `
+        <div class="staff-main-line">
+          <span class="${badgeClass}">${kodaLabel}</span>
+          <div class="staff-info-block">
+            <div class="staff-name-role">
+              <strong>${item.name || '-'}</strong>
+              <span class="staff-org-role">${orgRole || '-'}</span>
+            </div>
+            <div class="staff-phone">${item.phone || ''}</div>
+          </div>
+        </div>`;
+      btn.onclick = () => openStaffDetailModal(indexInOriginal);
+      list.appendChild(btn);
     });
   }
+
+  window.openMemberCompanyDetailModal = function(item) {
+    if (!item) return;
+    const modal = document.getElementById('memberCompanyDetailModal');
+    const title = document.getElementById('memberCompanyDetailTitle');
+    const rowsEl = document.getElementById('memberCompanyDetailRows');
+    if (!modal || !title || !rowsEl) return;
+
+    modal.style.display = 'flex';
+    document.body.style.overflow = 'hidden';
+    if (rowsEl) rowsEl.innerHTML = '<div class="loading-msg" style="padding:8px 0">상세정보를 표시하는 중...</div>';
+
+    const fallbackLabels = ['회사명','회원사 구분','C열','D열','E열','F열','지정대표자','가입일자'];
+    const labels = Array.isArray(item.headers) ? item.headers.slice(0, 8) : [];
+    const values = Array.isArray(item.all) ? item.all.slice(0, 8) : [];
+
+    title.innerHTML = '';
+    const badge = document.createElement('span');
+    badge.className = 'staff-badge member-detail-badge';
+    badge.textContent = item.category || '-';
+    title.appendChild(badge);
+    const companyText = document.createTextNode(item.company || '-');
+    title.appendChild(companyText);
+
+    rowsEl.innerHTML = '';
+      for (let i = 0; i < 8; i++) {
+      const row = document.createElement('div');
+      row.className = 'member-detail-row';
+      const label = document.createElement('span');
+      label.className = 'member-detail-label';
+      label.textContent = (labels[i] || '').trim() || fallbackLabels[i] || `${String.fromCharCode(66+i)}열`;
+      const value = document.createElement('span');
+      value.className = 'member-detail-value';
+      value.textContent = (values[i] ?? '').toString().trim() || '-';
+      row.appendChild(label);
+      row.appendChild(value);
+        rowsEl.appendChild(row);
+      }
+      history.pushState({ memberCompanyDetailOpen:true }, '', '');
+  };
+
+  window.closeMemberCompanyDetailModal = function(goBack=true) {
+    const modal=document.getElementById('memberCompanyDetailModal');
+    if(modal) modal.style.display='none';
+    if(goBack) history.back();
+  };
+  window.closeMemberCompanyDetailModalOnOutsideClick = function(e) {
+    if(e.target.id === 'memberCompanyDetailModal') history.back();
+  };
 
   window.openStaffScreen = function() {
     const staffScreenEl = document.getElementById('staffScreen');
@@ -2566,19 +3376,18 @@ button,.nav-btn,.action-btn{min-height:44px;}
     if(staffContentEl) staffContentEl.scrollTop = 0;
     document.body.style.overflow = 'hidden';
     history.pushState({ staffOpen: true }, "", "");
-    // 임직원현황에 들어올 때마다 반드시 '전체'로 시작합니다.
-    currentStaffCategory = '전체';
+    currentStaffCategory = '사무국';
     const staffTabs = document.querySelectorAll('#staffTabs .month-tab');
     staffTabs.forEach(btn => {
       btn.hidden = false;
       btn.style.display = 'flex';
-      btn.classList.toggle('active', btn.dataset.cat === '전체');
+      btn.classList.toggle('active', btn.dataset.cat === '사무국');
     });
     const search = document.getElementById('staffSearchInput');
     if(search) search.value = '';
     const clear = document.getElementById('staffSearchClear');
     if(clear) clear.classList.remove('show');
-    if (staffData.length === 0) loadStaffData(); else renderStaffList('전체');
+    if (staffData.length === 0) loadStaffData(); else renderStaffList('사무국');
   };
 
   document.addEventListener('DOMContentLoaded',()=>{
@@ -2723,8 +3532,7 @@ button,.nav-btn,.action-btn{min-height:44px;}
       document.getElementById('scheduleContainer').innerHTML = `<div class="no-data">일정을 불러오지 못했습니다. 네트워크 상태를 확인해주세요.</div>`;
     }
   }
-
-  // ===== ✨ 모던 일정 배너 캐러셀 =====
+  
   let currentBannerIndex = 0;
   let bannerTimer = null;
   let bannerPaused = false;
@@ -2960,7 +3768,6 @@ function createEventCard(event) {
     const card = document.createElement('div');
     card.className = 'event-card' + (isToday ? ' today-card' : '');
 
-    // 💡 오늘 일정인 경우 우측 하단에 들어갈 뱃지 태그 추가
     const todayBadgeHtml = isToday ? `<div class="card-today-badge">TODAY</div>` : '';
 
     card.innerHTML = `
@@ -3010,7 +3817,6 @@ function createEventCard(event) {
       return;
     }
 
-    // 1. 이벤트 분류 (오늘, 예정, 지난 일정)
     const pastEvents = [], todayEvents = [], futureEvents = [];
     currentFilteredData.forEach(event => {
       if (event.dday === "D-day") todayEvents.push(event);
@@ -3020,61 +3826,51 @@ function createEventCard(event) {
 
     const isPastMonthView = (!showBookmarksOnly && searchQuery === '' && ((calYear < currentYear) || (calYear === currentYear && calMonth < currentMonth)));
 
-    // 2. 일정을 담을 단일 리스트 래퍼 생성
     const listWrapper = document.createElement('div'); 
     listWrapper.className = 'schedule-list-wrapper';
 
     if (isPastMonthView) {
-        // 지난 달 달력을 볼 때는 바로 지난 일정들만 나열
         pastEvents.forEach(event => listWrapper.appendChild(createEventCard(event)));
     } else {
-        // 이번 달(또는 미래) 달력을 볼 때의 정렬 순서
-        
-        // ① 오늘의 일정 (가장 맨 위에 배치)
         todayEvents.forEach(event => listWrapper.appendChild(createEventCard(event)));
         
-        // ② 예정 일정 (오늘 이후부터 이번 달 마지막 날까지)
         futureEvents.forEach(event => listWrapper.appendChild(createEventCard(event)));
         
-        // ③ 지나간 일정 (검은 점선 아래에 배치)
         if (pastEvents.length > 0) {
-            // 앞에 오늘이나 예정 일정이 있을 경우에만 구분선을 그어줌
             if (todayEvents.length > 0 || futureEvents.length > 0) {
                 const divider = document.createElement('div');
-                divider.style.borderTop = '1.5px dashed #1a202c'; // 검은 점선 스타일
-                divider.style.margin = '15px 5px'; // 점선 위아래 간격
-                divider.style.opacity = '0.5'; // 점선이 너무 진하지 않게 약간 투명도 적용
+                divider.style.borderTop = '1.5px dashed #1a202c'; 
+                divider.style.margin = '15px 5px'; 
+                divider.style.opacity = '0.5'; 
                 listWrapper.appendChild(divider);
             }
-            // 점선 아래로 지난 일정들 추가
             pastEvents.forEach(event => listWrapper.appendChild(createEventCard(event)));
         }
 
-        // 혹시라도 데이터가 아무것도 표시되지 않을 때의 예외 처리
         if (todayEvents.length === 0 && futureEvents.length === 0 && pastEvents.length === 0) {
             listWrapper.innerHTML = `<div class="no-data" style="padding: 10px;">예정 일정이 없습니다.</div>`;
         }
     }
     
-    // 3. 컨테이너에 최종 리스트 추가
     scheduleContainer.appendChild(listWrapper);
   }
   
-  // 화면별 뒤로가기 상태 관리: 상세보기 → 목록 → 메인 순서로 자연스럽게 이동
   if (!history.state || !history.state.kodaBase) { history.replaceState({kodaBase:true}, '', location.href); }
   window.addEventListener('popstate', function(event) {
     const st = event.state || {};
-    const ids = ['dayEventsModal','staffScreen','staffDetailModal'];
+    const ids = ['dayEventsModal', 'staffScreen', 'staffDetailModal', 'memberCompanyDetailModal', 'newsScreen', 'newsDetailScreen'];
     ids.forEach(id => { const el=document.getElementById(id); if(el) el.style.display='none'; });
     hideModalDOM();
     document.body.style.overflow = 'auto';
 
-    // 뒤로 이동한 목적지 상태만 다시 표시
     if (st.staffOpen) document.getElementById('staffScreen').style.display='flex';
     else if (st.staffDetailOpen) document.getElementById('staffDetailModal').style.display='flex';
+    else if (st.memberCompanyDetailOpen) { document.getElementById('memberCompanyDetailModal').style.display='flex'; document.body.style.overflow='hidden'; }
     else if (st.dayEventsModalOpen) document.getElementById('dayEventsModal').style.display='flex';
+    else if (st.newsOpen) document.getElementById('newsScreen').style.display = 'flex';
+      else if (st.newsDetailOpen) document.getElementById('newsDetailScreen').style.display = 'flex';
 
-    if (st.staffOpen || st.staffDetailOpen || st.dayEventsModalOpen) {
+    if (st.staffOpen || st.staffDetailOpen || st.dayEventsModalOpen || st.newsOpen || st.newsDetailOpen) {
       document.body.style.overflow='hidden';
     }
   });
@@ -3174,6 +3970,197 @@ function createEventCard(event) {
     if (startX - endX > 50) changeMonth(1);
     else if (endX - startX > 50) changeMonth(-1);
   }, {passive: true});
+
+  const NEWS_SHEET_CSV_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vQEbM8YAc7jQes9oX6_-aVsVib2H40avHQkL6TkRRI2cYmw7nYG29F_1lGGz-2gL0nve4Q91MBM02Q-/pub?gid=1026643170&single=true&output=csv";
+  let newsData = [];
+  let currentNewsCategory = '전체';
+
+  function parseNewsDate(str) {
+    if (!str) return new Date(0);
+    const parts = str.trim().split(/[.\-\/]/).map(s => s.trim()).filter(Boolean);
+    if (parts.length < 3) return new Date(0);
+    let [y, m, d] = parts.map(Number);
+    if (y < 100) y += 2000; 
+    return new Date(y, (m || 1) - 1, d || 1);
+  }
+
+  function normalizeNewsCategory(category) {
+    const c = String(category || '').trim();
+    if (c === '분양일정') return '견본주택 오픈';
+    return c || '기타';
+  }
+
+  function parseNewsCSV(csv) {
+    const rows = splitCSV(csv);
+    const dataArr = [];
+    for (let i = 1; i < rows.length; i++) {
+      const r = rows[i];
+      const dateRaw = r[2] ? r[2].trim() : "";
+      const titleRaw = r[3] ? r[3].trim() : "";
+      if (!dateRaw && !titleRaw) continue; 
+
+      dataArr.push({
+        category: normalizeNewsCategory(r[1] ? r[1].trim() : "기타"), 
+        date: dateRaw,                          
+        title: titleRaw,                        
+        content: r[4] ? r[4].trim() : "",       
+        linkUrl: (r.length > 5 && r[5]) ? r[5].trim() : "", 
+        thumbnailUrl: (r.length > 6 && r[6]) ? r[6].trim() : "" 
+      });
+    }
+    dataArr.sort((a, b) => parseNewsDate(b.date) - parseNewsDate(a.date));
+    return dataArr;
+  }
+
+  async function loadNewsData() {
+    const list = document.getElementById('newsList');
+    list.innerHTML = `<div class="loading-msg">협회 소식을 불러오는 중입니다...⏳</div>`;
+    try {
+      const response = await fetch(NEWS_SHEET_CSV_URL + "&t=" + new Date().getTime());
+      newsData = parseNewsCSV(await response.text());
+      filterNews('전체');
+    } catch (error) {
+      list.innerHTML = `<div class="no-data">데이터를 불러오지 못했습니다. 네트워크 상태를 확인해주세요.</div>`;
+    }
+  }
+
+  function newsBadgeClass(category) {
+    const c = String(category || '');
+    if (c.includes('분양') || c.includes('견본주택')) return 'news-badge-sale';
+    if (c.includes('결혼')) return 'news-badge-wedding';
+    if (c.includes('부고')) return 'news-badge-obituary';
+    return 'news-badge-etc';
+  }
+
+  window.filterNews = function(category) {
+    currentNewsCategory = category;
+    const tabs = document.querySelectorAll('#newsTabs .month-tab');
+    tabs.forEach(btn => {
+      btn.classList.toggle('active', btn.dataset.cat === category);
+    });
+    if (document.activeElement && typeof document.activeElement.blur === 'function') document.activeElement.blur();
+
+    const newsScreen = document.getElementById('newsScreen');
+    const newsContent = newsScreen?.querySelector('.fullscreen-content');
+    if (newsScreen) newsScreen.scrollTop = 0;
+    if (newsContent) newsContent.scrollTop = 0;
+
+    const list = document.getElementById('newsList');
+    list.innerHTML = '';
+
+    const filteredData = category === '전체'
+      ? newsData
+      : newsData.filter(item => category === '견본주택'
+          ? String(item.category || '').trim() === '견본주택 오픈'
+          : normalizeNewsCategory(item.category) === category);
+
+    if (filteredData.length === 0) {
+      list.innerHTML = `<div class="no-data">등록된 소식이 없습니다.</div>`;
+      return;
+    }
+
+    filteredData.forEach(item => {
+      const globalIndex = newsData.indexOf(item);
+      const card = document.createElement('button');
+      card.type = 'button';
+      card.className = 'day-event-item news-card-item';
+      card.innerHTML = `
+        <div class="day-event-item-title"><span class="news-badge ${newsBadgeClass(item.category)}">${normalizeNewsCategory(item.category)}</span>${item.title}</div>
+        <div class="day-event-item-meta">작성일: ${item.date}</div>
+      `;
+      card.onclick = () => openNewsDetailScreen(globalIndex);
+      list.appendChild(card);
+    });
+    requestAnimationFrame(() => {
+      if (newsScreen) newsScreen.scrollTop = 0;
+      if (newsContent) newsContent.scrollTop = 0;
+    });
+  }
+
+  window.openNewsScreen = function() {
+    const newsScreenEl = document.getElementById('newsScreen');
+    newsScreenEl.style.display = 'flex';
+    document.body.style.overflow = 'hidden';
+    history.pushState({ newsOpen: true }, "", "");
+    if (newsData.length === 0) { loadNewsData(); }
+    else { filterNews('전체'); }
+  };
+
+  window.closeNewsScreen = function() { history.back(); };
+  window.closeNewsDetailScreen = function() { history.back(); };
+
+  function setNewsDetailThumbnail(item) {
+    const area = document.getElementById('newsDetailThumbnailArea');
+    const img = document.getElementById('newsDetailThumbnail');
+    const link = document.getElementById('newsDetailThumbnailLink');
+
+    area.style.display = 'none';
+    img.removeAttribute('src');
+    link.removeAttribute('href');
+    link.style.pointerEvents = 'none';
+
+    let thumbUrl = String(item.thumbnailUrl || '').trim();
+    const linkUrl = String(item.linkUrl || '').trim();
+
+    if (!thumbUrl || !/^https?:\/\//i.test(thumbUrl)) return;
+
+    let driveMatch = thumbUrl.match(/\/file\/d\/([a-zA-Z0-9_-]+)/);
+    if (driveMatch) {
+      thumbUrl = `https://drive.google.com/uc?export=view&id=${driveMatch[1]}`;
+    } else {
+      let idMatch = thumbUrl.match(/id=([a-zA-Z0-9_-]+)/);
+      if (thumbUrl.includes('drive.google.com') && idMatch) {
+        thumbUrl = `https://drive.google.com/uc?export=view&id=${idMatch[1]}`;
+      }
+    }
+
+    img.src = thumbUrl;
+    if (/^https?:\/\//i.test(linkUrl)) {
+      link.href = linkUrl;
+      link.style.pointerEvents = 'auto';
+    } else {
+      link.removeAttribute('href');
+      link.style.pointerEvents = 'none';
+    }
+    img.onerror = function(){
+      area.style.display = 'none';
+      img.removeAttribute('src');
+    };
+    area.style.display = 'block';
+  }
+
+  function escapeNewsHtml(str) {
+    return String(str || '')
+      .replace(/&/g, '&amp;')
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;');
+  }
+
+  function linkifyNewsContent(content) {
+    const escaped = escapeNewsHtml(content);
+    const urlRegex = /(https?:\/\/[^\s<]+)/g;
+    return escaped.replace(urlRegex, (url) => {
+      const cleanUrl = url.replace(/[.,)]+$/, '');
+      const trail = url.slice(cleanUrl.length);
+      return `<a href="${cleanUrl}" target="_blank" rel="noopener noreferrer">${cleanUrl}</a>${trail}`;
+    });
+  }
+
+  window.openNewsDetailScreen = function(index) {
+    const item = newsData[index];
+    const catEl = document.getElementById('newsDetailCategory');
+    catEl.innerText = normalizeNewsCategory(item.category);
+    catEl.className = `news-badge ${newsBadgeClass(item.category)}`;
+    document.getElementById('newsDetailTitle').innerText = item.title;
+    document.getElementById('newsDetailDate').innerText = `작성일: ${item.date}`;
+    document.getElementById('newsDetailContent').innerHTML = linkifyNewsContent(item.content);
+
+    setNewsDetailThumbnail(item);
+
+    document.getElementById('newsDetailScreen').style.display = 'flex';
+    document.body.style.overflow = 'hidden';
+    history.pushState({ newsDetailOpen: true }, "", "");
+  };
 
   initAuth();
 
