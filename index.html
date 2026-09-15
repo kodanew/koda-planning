@@ -3545,20 +3545,57 @@ button,.nav-btn,.action-btn{min-height:44px;}
     title.appendChild(companyText);
 
     rowsEl.innerHTML = '';
-      for (let i = 0; i < 8; i++) {
+    for (let i = 0; i < 8; i++) {
       const row = document.createElement('div');
       row.className = 'member-detail-row';
       const label = document.createElement('span');
       label.className = 'member-detail-label';
       label.textContent = (labels[i] || '').trim() || fallbackLabels[i] || `${String.fromCharCode(66+i)}열`;
+      
       const value = document.createElement('span');
       value.className = 'member-detail-value';
-      value.textContent = (values[i] ?? '').toString().trim() || '-';
+      
+      let valText = (values[i] ?? '').toString().trim() || '-';
+      
+      // E열(i === 3)과 G열(i === 5) 처리 로직
+      if (i === 3 || i === 5) {
+        // 정규식을 사용해 텍스트 내의 모든 링크 추출
+        const urlRegex = /(https?:\/\/[^\s]+)/g;
+        if (urlRegex.test(valText)) {
+          // 텍스트 안에 구글 드라이브 링크가 포함되어 있다면 이미지 태그로 변환
+          valText = valText.replace(urlRegex, function(url) {
+            let fileId = '';
+            // 구글 드라이브 파일 ID 추출
+            const matchId = url.match(/\/d\/([a-zA-Z0-9_-]+)/) || url.match(/[?&]id=([a-zA-Z0-9_-]+)/);
+            if (matchId) fileId = matchId[1];
+            
+            if (fileId) {
+              // 1차 시도: uc?export=view (가장 확실한 출력 방식)
+              // 2차 시도: 오류(onerror) 발생 시 thumbnail API 방식으로 우회
+              const imgSrc = `https://drive.google.com/uc?export=view&id=${fileId}`;
+              const fallbackSrc = `https://drive.google.com/thumbnail?id=${fileId}&sz=w1000`;
+              return `<img src="${imgSrc}" alt="첨부 이미지" style="max-width:100%; height:auto; border-radius:8px; margin-top:6px; display:block; border:1px solid #e2e8f0;" onerror="this.onerror=null; this.src='${fallbackSrc}';">`;
+            } else if (/\.(png|jpe?g|gif|webp)$/i.test(url)) {
+              // 일반 웹 이미지 링크인 경우
+              return `<img src="${url}" alt="첨부 이미지" style="max-width:100%; height:auto; border-radius:8px; margin-top:6px; display:block; border:1px solid #e2e8f0;">`;
+            } else {
+              // 일반 웹사이트 링크인 경우
+              return `<a href="${url}" target="_blank" style="color:#1769d2; text-decoration:underline; word-break:break-all;">${url}</a>`;
+            }
+          });
+          value.innerHTML = valText;
+        } else {
+          value.textContent = valText;
+        }
+      } else {
+        value.textContent = valText;
+      }
+      
       row.appendChild(label);
       row.appendChild(value);
-        rowsEl.appendChild(row);
-      }
-      history.pushState({ memberCompanyDetailOpen:true }, '', '');
+      rowsEl.appendChild(row);
+    }
+    history.pushState({ memberCompanyDetailOpen:true }, '', '');
   };
 
   window.closeMemberCompanyDetailModal = function(goBack=true) {
