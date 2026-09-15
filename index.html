@@ -2604,7 +2604,7 @@ button,.nav-btn,.action-btn{min-height:44px;}
   <div class="fullscreen-tabs" id="newsTabs">
     <button class="month-tab active" data-cat="전체" onclick="filterNews('전체')">전체</button>
     <button class="month-tab" data-cat="협회활동" onclick="filterNews('협회활동')">협회활동</button>
-    <button class="month-tab" data-cat="교육·강의" onclick="filterNews('교육·강의')">교육·강의</button>
+    <button class="month-tab" data-cat="교육·ARP" onclick="filterNews('교육·ARP')">교육·ARP</button>
     <button class="month-tab" data-cat="회원사소식" onclick="filterNews('회원사소식')">회원사소식</button>
     <button class="month-tab" data-cat="경조사" onclick="filterNews('경조사')">경조사</button>
   </div>
@@ -3538,7 +3538,26 @@ button,.nav-btn,.action-btn{min-height:44px;}
       label.textContent = (labels[i] || '').trim() || fallbackLabels[i] || `${String.fromCharCode(66+i)}열`;
       const value = document.createElement('span');
       value.className = 'member-detail-value';
-      value.textContent = (values[i] ?? '').toString().trim() || '-';
+      
+      const valText = (values[i] ?? '').toString().trim() || '-';
+      
+      // E열(i === 3)과 G열(i === 5)에 포함된 구글 드라이브 이미지 링크를 화면에 표시
+      if ((i === 3 || i === 5) && /^https?:\/\/drive\.google\.com/.test(valText)) {
+        let thumbUrl = valText;
+        let driveMatch = thumbUrl.match(/\/file\/d\/([a-zA-Z0-9_-]+)/);
+        if (driveMatch) {
+          thumbUrl = `https://drive.google.com/uc?export=view&id=${driveMatch[1]}`;
+        } else {
+          let idMatch = thumbUrl.match(/id=([a-zA-Z0-9_-]+)/);
+          if (idMatch) {
+            thumbUrl = `https://drive.google.com/uc?export=view&id=${idMatch[1]}`;
+          }
+        }
+        value.innerHTML = `<img src="${thumbUrl}" alt="이미지" style="max-width:100%; height:auto; border-radius:8px; margin-top:4px; display:block;">`;
+      } else {
+        value.textContent = valText;
+      }
+      
       row.appendChild(label);
       row.appendChild(value);
         rowsEl.appendChild(row);
