@@ -818,6 +818,21 @@
     flex-grow: 1;
     word-break: keep-all;
   }
+  .modal-inline-image {
+    display: block;
+    max-width: 100%;
+    width: 100%;
+    height: auto;
+    border-radius: 8px;
+    margin: 6px 0;
+    border: 1px solid var(--border-color);
+    background: #f4f6f9;
+    cursor: zoom-in;
+  }
+  .modal-value a {
+    color: var(--primary-color);
+    word-break: break-all;
+  }
 
   /* 버튼 그룹 (상세 모달용) */
   .action-btn-group {
@@ -3538,26 +3553,7 @@ button,.nav-btn,.action-btn{min-height:44px;}
       label.textContent = (labels[i] || '').trim() || fallbackLabels[i] || `${String.fromCharCode(66+i)}열`;
       const value = document.createElement('span');
       value.className = 'member-detail-value';
-      
-      const valText = (values[i] ?? '').toString().trim() || '-';
-      
-      // E열(i === 3)과 G열(i === 5)에 포함된 구글 드라이브 이미지 링크를 화면에 표시
-      if ((i === 3 || i === 5) && /^https?:\/\/drive\.google\.com/.test(valText)) {
-        let thumbUrl = valText;
-        let driveMatch = thumbUrl.match(/\/file\/d\/([a-zA-Z0-9_-]+)/);
-        if (driveMatch) {
-          thumbUrl = `https://drive.google.com/uc?export=view&id=${driveMatch[1]}`;
-        } else {
-          let idMatch = thumbUrl.match(/id=([a-zA-Z0-9_-]+)/);
-          if (idMatch) {
-            thumbUrl = `https://drive.google.com/uc?export=view&id=${idMatch[1]}`;
-          }
-        }
-        value.innerHTML = `<img src="${thumbUrl}" alt="이미지" style="max-width:100%; height:auto; border-radius:8px; margin-top:4px; display:block;">`;
-      } else {
-        value.textContent = valText;
-      }
-      
+      value.textContent = (values[i] ?? '').toString().trim() || '-';
       row.appendChild(label);
       row.appendChild(value);
         rowsEl.appendChild(row);
@@ -4146,6 +4142,82 @@ function createEventCard(event) {
   window.closeDayEventsModal = function(goBack=true) { document.getElementById('dayEventsModal').style.display = 'none'; if(goBack) history.back(); };
   window.closeDayEventsModalOnOutsideClick = function(e) { if(e.target.id === 'dayEventsModal') history.back(); };
 
+  // 구글 드라이브 공유링크 등에서 파일 ID를 추출합니다.
+  function extractDriveFileId(url) {
+    let m = url.match(/\/file\/d\/([a-zA-Z0-9_-]+)/);
+    if (m) return m[1];
+    m = url.match(/[?&]id=([a-zA-Z0-9_-]+)/);
+    if (m) return m[1];
+    m = url.match(/\/d\/([a-zA-Z0-9_-]+)/);
+    if (m) return m[1];
+    return null;
+  }
+
+  // 구글 드라이브 링크를 실제 이미지로 바로 표시 가능한 썸네일 URL로 변환합니다.
+  function toDisplayableImageUrl(url) {
+    if (/drive\.google\.com/i.test(url)) {
+      const id = extractDriveFileId(url);
+      if (id) return `https://drive.google.com/thumbnail?id=${id}&sz=w1000`;
+    }
+    return url;
+  }
+
+  function isLikelyImageUrl(url) {
+    if (/drive\.google\.com/i.test(url)) return true;
+    return /\.(png|jpe?g|gif|webp|bmp|svg)(\?.*)?$/i.test(url);
+  }
+
+  // 이벤트 내용/비고(E열, G열) 안의 URL을 감지해 이미지는 <img>로, 나머지 링크는 <a>로, 그 외 텍스트는 그대로 렌더링합니다.
+  function renderTextWithImages(el, text) {
+    el.innerHTML = '';
+    const str = String(text == null ? '' : text);
+    if (!str || str === 'ㅡ') { el.innerText = str; return; }
+
+    const urlRegex = /(https?:\/\/[^\s]+)/g;
+    let lastIndex = 0;
+    let match;
+    let found = false;
+
+    while ((match = urlRegex.exec(str)) !== null) {
+      found = true;
+      let url = match[0];
+      const trailMatch = url.match(/[.,)]+$/);
+      const trail = trailMatch ? trailMatch[0] : '';
+      if (trail) url = url.slice(0, url.length - trail.length);
+
+      const before = str.slice(lastIndex, match.index);
+      if (before) el.appendChild(document.createTextNode(before));
+
+      if (isLikelyImageUrl(url)) {
+        const img = document.createElement('img');
+        img.className = 'modal-inline-image';
+        img.loading = 'lazy';
+        img.alt = '첨부 이미지';
+        img.src = toDisplayableImageUrl(url);
+        img.onclick = () => window.open(url, '_blank', 'noopener,noreferrer');
+        img.onerror = function () {
+          const link = document.createElement('a');
+          link.href = url; link.target = '_blank'; link.rel = 'noopener noreferrer';
+          link.textContent = url;
+          img.replaceWith(link);
+        };
+        el.appendChild(img);
+      } else {
+        const link = document.createElement('a');
+        link.href = url; link.target = '_blank'; link.rel = 'noopener noreferrer';
+        link.textContent = url;
+        el.appendChild(link);
+      }
+
+      if (trail) el.appendChild(document.createTextNode(trail));
+      lastIndex = match.index + match[0].length;
+    }
+
+    const rest = str.slice(lastIndex);
+    if (rest) el.appendChild(document.createTextNode(rest));
+    if (!found) el.innerText = str;
+  }
+
   window.openModal = function(globalIndex) {
     currentModalGlobalIndex = globalIndex;
     const event = scheduleData[globalIndex];
@@ -4157,9 +4229,9 @@ function createEventCard(event) {
     document.getElementById('modalDate').innerText = event.date;
     document.getElementById('modalLocation').innerText = event.location;
     document.getElementById('modalAttendees').innerText = event.attendees;
-    document.getElementById('modalContent').innerText = event.content;
+    renderTextWithImages(document.getElementById('modalContent'), event.content);
     document.getElementById('modalHost').innerText = event.host;
-    document.getElementById('modalNote').innerText = event.note;
+    renderTextWithImages(document.getElementById('modalNote'), event.note);
     document.getElementById('modalMemo').value = memos[event.id] || '';
 
     const modalStar = document.getElementById('modalStarBtn');
