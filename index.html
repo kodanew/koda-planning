@@ -2603,10 +2603,10 @@ button,.nav-btn,.action-btn{min-height:44px;}
   </div>
   <div class="fullscreen-tabs" id="newsTabs">
     <button class="month-tab active" data-cat="전체" onclick="filterNews('전체')">전체</button>
-    <button class="month-tab" data-cat="협회소식" onclick="filterNews('협회소식')">협회소식</button>
-    <button class="month-tab" data-cat="견본주택" onclick="filterNews('견본주택')">견본주택</button>
-    <button class="month-tab" data-cat="결혼" onclick="filterNews('결혼')">결혼</button>
-    <button class="month-tab" data-cat="부고" onclick="filterNews('부고')">부고</button>
+    <button class="month-tab" data-cat="협회활동" onclick="filterNews('협회활동')">협회활동</button>
+    <button class="month-tab" data-cat="교육·강의" onclick="filterNews('교육·강의')">교육·강의</button>
+    <button class="month-tab" data-cat="회원사소식" onclick="filterNews('회원사소식')">회원사소식</button>
+    <button class="month-tab" data-cat="경조사" onclick="filterNews('경조사')">경조사</button>
   </div>
   <div class="fullscreen-content" style="padding-top: 15px;">
     <div class="day-event-list" id="newsList"></div>
@@ -4207,7 +4207,7 @@ function createEventCard(event) {
 
   function normalizeNewsCategory(category) {
     const c = String(category || '').trim();
-    if (c === '분양일정') return '견본주택 오픈';
+    if (c === '경조사') return '경조사';
     return c || '기타';
   }
 
@@ -4247,9 +4247,9 @@ function createEventCard(event) {
 
   function newsBadgeClass(category) {
     const c = String(category || '');
-    if (c.includes('분양') || c.includes('견본주택')) return 'news-badge-sale';
-    if (c.includes('결혼')) return 'news-badge-wedding';
-    if (c.includes('부고')) return 'news-badge-obituary';
+    if (c.includes('경조사') || c.includes('경조사')) return 'news-badge-sale';
+    if (c.includes('경조사')) return 'news-badge-wedding';
+    if (c.includes('경조사')) return 'news-badge-obituary';
     return 'news-badge-etc';
   }
 
@@ -4271,8 +4271,8 @@ function createEventCard(event) {
 
     const filteredData = (category === '전체'
       ? newsData.slice()
-      : newsData.filter(item => category === '견본주택'
-          ? String(item.category || '').trim() === '견본주택 오픈'
+      : newsData.filter(item => category === '회원사 소식'
+          ? String(item.category || '').trim() === '회원사 소식'
           : normalizeNewsCategory(item.category) === category))
       .map((item, order) => ({ item, order, sortDate: parseNewsDate(item.date).getTime() }))
       .sort((a, b) => (b.sortDate - a.sortDate) || (a.order - b.order))
