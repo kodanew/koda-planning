@@ -2594,6 +2594,55 @@ button,.nav-btn,.action-btn{min-height:44px;}
 #staffList.member-company-list .member-company-head{margin-bottom:0!important;}
 #staffScreen #staffTabs .tab-count{font-size:calc(.9em - 1pt)!important;font-weight:650!important;margin-left:2px!important;opacity:.82!important;}
 </style>
+
+<style id="user-request-final-ui-fix">
+/* KODA 임직원현황 5개 버튼 글자 크기 = 협회공지 버튼 */
+#staffScreen #staffTabs .month-tab{
+  font-size:0.8rem !important;
+}
+
+/* 회의자료 제목 헤더 높이/상하 여백 = 협회공지 */
+#meetingScreen .staff-mobile-header{
+  height:76px !important;
+  min-height:76px !important;
+  padding:0 16px !important;
+  box-sizing:border-box !important;
+}
+
+/* 회의자료 5개 버튼: 1열 5개 */
+#meetingScreen .fullscreen-tabs{
+  display:grid !important;
+  grid-template-columns:repeat(5,minmax(0,1fr)) !important;
+  gap:5px !important;
+  padding:12px 0 0 !important;
+  overflow:visible !important;
+  white-space:normal !important;
+}
+#meetingScreen .fullscreen-tabs .month-tab{
+  width:100% !important;
+  min-width:0 !important;
+  height:56px !important;
+  min-height:56px !important;
+  padding:0 2px !important;
+  font-size:0.8rem !important;
+  border-radius:15px !important;
+  white-space:nowrap !important;
+}
+
+/* 좁은 화면에서도 5개 한 줄 */
+@media(max-width:360px){
+  #meetingScreen .fullscreen-tabs{
+    grid-template-columns:repeat(5,minmax(0,1fr)) !important;
+    gap:4px !important;
+  }
+  #meetingScreen .fullscreen-tabs .month-tab{
+    font-size:0.7rem !important;
+    padding:0 1px !important;
+    letter-spacing:-.07em !important;
+  }
+}
+</style>
+
 </head>
 <body>
 
@@ -2703,7 +2752,7 @@ button,.nav-btn,.action-btn{min-height:44px;}
     <a class="quick-btn"
        href="https://www.law.go.kr/LSW/lsSc.do?dt=20201211&subMenuId=15&menuId=1&query=%EB%B6%80%EB%8F%99%EC%82%B0%EA%B0%9C%EB%B0%9C%EC%97%85"
        target="_blank" rel="noopener noreferrer" aria-label="개발업법">
-      <span class="quick-icon" style="background:#fff;"><span class="quick-icon" style="background:#fff;">
+      <span class="quick-icon" style="background:#fff;">
           <svg viewBox="0 0 64 64" aria-hidden="true">
             <g fill="none" stroke="#3f4650" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
               <path d="M32 13v38"/>
