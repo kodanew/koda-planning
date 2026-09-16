@@ -1608,6 +1608,134 @@ button,.nav-btn,.action-btn{min-height:44px;}
   /* 사무국도 7대 임원처럼 이름 왼쪽에 KODA 뱃지 복원 */
   #staffList.executive-list .office-badge-group .staff-main-line{display:grid!important;grid-template-columns:auto minmax(0,1fr)!important;align-items:start!important;column-gap:5px!important;}
   #staffList.executive-list .office-badge-group .staff-main-line > .staff-badge{display:inline-block!important;}
+
+/* ===== 2026-09-16 회의자료 UI : KODA 임직원현황과 동일한 버튼/헤더 규격 ===== */
+#meetingScreen{
+  display:none;
+  position:fixed;
+  inset:0;
+  z-index:1500;
+  overflow-y:auto;
+  -webkit-overflow-scrolling:touch;
+  background:#f4f7fb;
+  padding:0 10px 18px;
+  box-sizing:border-box;
+}
+#meetingScreen::after{content:'';display:block;min-height:18px;}
+#meetingScreen .staff-mobile-header,
+#meetingScreen .fullscreen-tabs,
+#meetingScreen .fullscreen-content{
+  width:100%;
+  max-width:430px;
+  margin-left:auto;
+  margin-right:auto;
+}
+#meetingScreen .staff-mobile-header{
+  height:76px;
+  position:sticky;
+  top:0;
+  z-index:30;
+  background:#fff;
+  border-bottom:1px solid #edf2f7;
+  box-shadow:0 3px 14px rgba(25,67,110,.055);
+  display:grid;
+  grid-template-columns:54px minmax(0,1fr) 72px;
+  align-items:center;
+  padding:0 16px;
+  box-sizing:border-box;
+}
+#meetingScreen .fullscreen-back-btn{
+  width:42px;
+  height:42px;
+  min-height:42px;
+  padding:0;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  border:0;
+  border-radius:14px;
+  background:#f1f6fd;
+  color:#1769d2;
+  font-size:1.55rem;
+  font-weight:700;
+  line-height:1;
+}
+#meetingScreen .fullscreen-title{
+  display:block;
+  text-align:center;
+  color:#173f70;
+  font-size:1.12rem;
+  font-weight:850;
+  letter-spacing:-.045em;
+  white-space:nowrap;
+}
+#meetingScreen .fullscreen-tabs{
+  display:grid;
+  grid-template-columns:repeat(5,minmax(0,1fr));
+  gap:5px;
+  padding:12px 0 0;
+  box-sizing:border-box;
+  overflow:visible;
+}
+#meetingScreen .month-tab{
+  min-width:0;
+  width:100%;
+  height:56px;
+  min-height:56px;
+  padding:0 2px;
+  border:1px solid #dce6f2;
+  border-radius:15px;
+  background:#fff;
+  color:#5d7089;
+  font-size:.88rem;
+  font-weight:850;
+  letter-spacing:-.055em;
+  box-shadow:0 3px 11px rgba(24,71,120,.05);
+  white-space:nowrap;
+}
+#meetingScreen .month-tab.active{
+  color:#fff;
+  border-color:#1769d2;
+  background:linear-gradient(135deg,#1769d2,#3182ce);
+  box-shadow:0 5px 13px rgba(23,105,210,.18);
+}
+#meetingScreen .fullscreen-content{
+  box-sizing:border-box;
+  padding:15px 0 26px !important;
+}
+/* 임직원현황과 같은 제목/상하 여백 */
+#meetingScreen .meeting-content-heading{
+  display:flex;
+  align-items:flex-end;
+  justify-content:space-between;
+  gap:10px;
+  margin:2px 4px 10px;
+}
+#meetingScreen #meetingList{
+  width:100%;
+}
+#meetingScreen .meeting-empty{
+  background:#fff;
+  border:1px dashed #dce6f2;
+  border-radius:14px;
+  padding:24px 14px;
+  text-align:center;
+  color:#8a9aaf;
+  font-size:.82rem;
+  line-height:1.55;
+}
+/* 화면 폭이 좁아도 5개 버튼이 임직원현황과 동일한 한 줄 규격을 유지 */
+@media(max-width:360px){
+  #meetingScreen .staff-mobile-header{padding:0 12px;}
+  #meetingScreen .fullscreen-tabs{gap:4px;}
+  #meetingScreen .month-tab{
+    font-size:.76rem;
+    letter-spacing:-.07em;
+    padding:0 1px;
+    border-radius:13px;
+  }
+}
+
 </style>
 
 <style id="final-staff-header-fixes">
@@ -2575,15 +2703,25 @@ button,.nav-btn,.action-btn{min-height:44px;}
     <a class="quick-btn"
        href="https://www.law.go.kr/LSW/lsSc.do?dt=20201211&subMenuId=15&menuId=1&query=%EB%B6%80%EB%8F%99%EC%82%B0%EA%B0%9C%EB%B0%9C%EC%97%85"
        target="_blank" rel="noopener noreferrer" aria-label="개발업법">
-      <span class="quick-icon" style="background:#fff;">
-        <svg viewBox="0 0 52 52" aria-hidden="true">
-          <!-- 법제처 느낌의 둥근 법령 아이콘 -->
-          <circle cx="26" cy="26" r="18" fill="#3f4650"/>
-          <circle cx="26" cy="26" r="13" fill="#fff"/>
-          <path d="M19 18h14v3H19zm0 6h14v3H19zm0 6h10v3H19z" fill="#3f4650"/>
-          <circle cx="34.5" cy="35" r="2.3" fill="#3f4650"/>
-        </svg>
-      </span>
+      <span class="quick-icon" style="background:#fff;"><span class="quick-icon" style="background:#fff;">
+          <svg viewBox="0 0 64 64" aria-hidden="true">
+            <g fill="none" stroke="#3f4650" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M32 13v38"/>
+              <path d="M21 51h22"/>
+              <path d="M15 18h34"/>
+              <path d="M32 13l-17 5"/>
+              <path d="M32 13l17 5"/>
+              <path d="M15 18l-8 15h16z"/>
+              <path d="M49 18l-8 15h16z"/>
+              <path d="M7 33h16"/>
+              <path d="M41 33h16"/>
+              <path d="M12 37c2 3 5 4 8 0"/>
+              <path d="M44 37c2 3 5 4 8 0"/>
+              <path d="M42 46l13-13"/>
+              <path d="M50 29l6 6"/>
+              <path d="M39 49l6 6"/>
+            </g>
+          </svg></span>
       <span class="quick-label">개발업법</span>
     </a>
     <button class="quick-btn" style="opacity:0.5; cursor:default;">
@@ -2738,7 +2876,8 @@ button,.nav-btn,.action-btn{min-height:44px;}
   <div class="fullscreen-tabs" id="meetingTabs">
     <button class="month-tab active" data-cat="전체" onclick="filterMeeting('전체')">전체</button>
     <button class="month-tab" data-cat="사무국 회의" onclick="filterMeeting('사무국 회의')">사무국 회의</button>
-    <button class="month-tab" data-cat="임원, 운영위 회의" onclick="filterMeeting('임원, 운영위 회의')">임원·운영위 회의</button>
+    <button class="month-tab" data-cat="임원회의" onclick="filterMeeting('임원회의')">임원회의</button>
+    <button class="month-tab" data-cat="일일동향" onclick="filterMeeting('일일동향')">일일동향</button>
     <button class="month-tab" data-cat="기타자료" onclick="filterMeeting('기타자료')">기타자료</button>
   </div>
 
