@@ -818,10 +818,6 @@
     flex-grow: 1;
     word-break: keep-all;
   }
-  .modal-inline-image-wrap {
-    display: block;
-    width: 100%;
-  }
   .modal-inline-image {
     display: block;
     max-width: 100%;
@@ -832,23 +828,6 @@
     border: 1px solid var(--border-color);
     background: #f4f6f9;
     cursor: zoom-in;
-  }
-  .modal-image-fail {
-    font-size: 0.72rem;
-    color: var(--text-muted);
-    background: #f4f6f9;
-    border: 1px dashed var(--border-color);
-    border-radius: 8px;
-    padding: 10px;
-    margin: 6px 0 2px;
-    line-height: 1.5;
-  }
-  .modal-image-fail-link {
-    display: inline-block;
-    font-size: 0.75rem;
-    font-weight: 700;
-    color: var(--primary-color);
-    margin-bottom: 6px;
   }
   .modal-value a {
     color: var(--primary-color);
@@ -3566,20 +3545,31 @@ button,.nav-btn,.action-btn{min-height:44px;}
     title.appendChild(companyText);
 
     rowsEl.innerHTML = '';
-      for (let i = 0; i < 8; i++) {
+    for (let i = 0; i < 8; i++) {
       const row = document.createElement('div');
       row.className = 'member-detail-row';
+      
       const label = document.createElement('span');
       label.className = 'member-detail-label';
       label.textContent = (labels[i] || '').trim() || fallbackLabels[i] || `${String.fromCharCode(66+i)}열`;
+      
       const value = document.createElement('span');
       value.className = 'member-detail-value';
-      value.textContent = (values[i] ?? '').toString().trim() || '-';
+      
+      let valText = (values[i] ?? '').toString().trim();
+      
+      // E열(i === 3)과 G열(i === 5)은 일정 팝업에서 사용하는 이미지 변환 함수(renderTextWithImages)를 재활용
+      if (i === 3 || i === 5) {
+        renderTextWithImages(value, valText || '-');
+      } else {
+        value.textContent = valText || '-';
+      }
+      
       row.appendChild(label);
       row.appendChild(value);
-        rowsEl.appendChild(row);
-      }
-      history.pushState({ memberCompanyDetailOpen:true }, '', '');
+      rowsEl.appendChild(row);
+    }
+    history.pushState({ memberCompanyDetailOpen:true }, '', '');
   };
 
   window.closeMemberCompanyDetailModal = function(goBack=true) {
@@ -4174,14 +4164,14 @@ function createEventCard(event) {
     return null;
   }
 
-  // 구글 드라이브 파일 ID로 시도해볼 여러 이미지 표시용 URL 후보를 만듭니다.
-  // (드라이브 쪽 정책이 자주 바뀌기 때문에, 한 방식이 막히면 다음 방식을 순서대로 시도합니다)
-  function driveImageCandidates(id) {
-    return [
-      `https://lh3.googleusercontent.com/d/${id}=w1000`,
-      `https://drive.google.com/thumbnail?id=${id}&sz=w1000`,
-      `https://drive.google.com/uc?export=view&id=${id}`
-    ];
+  // 구글 드라이브 링크를 실제 이미지로 바로 표시 가능한 썸네일 URL로 변환합니다.
+  function toDisplayableImageUrl(url) {
+    if (/drive\.google\.com/i.test(url)) {
+      const id = extractDriveFileId(url);
+      // thumbnail API 대신 가장 안정적인 uc?export=view를 기본으로 사용합니다.
+      if (id) return `https://drive.google.com/uc?export=view&id=${id}`;
+    }
+    return url;
   }
 
   function isLikelyImageUrl(url) {
@@ -4211,42 +4201,45 @@ function createEventCard(event) {
       if (before) el.appendChild(document.createTextNode(before));
 
       if (isLikelyImageUrl(url)) {
-        const wrap = document.createElement('div');
-        wrap.className = 'modal-inline-image-wrap';
-
+        const driveId = extractDriveFileId(url);
         const img = document.createElement('img');
         img.className = 'modal-inline-image';
         img.loading = 'lazy';
         img.alt = '첨부 이미지';
-        img.referrerPolicy = 'no-referrer';
+        
+        if (driveId) {
+          // 1순위: 가장 호환성이 좋은 uc URL
+          img.src = `https://drive.google.com/uc?export=view&id=${driveId}`;
+          
+          // 2순위: 로드 실패(권한 문제 등) 시 우회 로직
+          img.onerror = function () {
+            if (img.src.includes('uc?export=view')) {
+              // uc 방식이 막혔다면 thumbnail 방식으로 한 번 더 재시도
+              img.src = `https://drive.google.com/thumbnail?id=${driveId}&sz=w1000`;
+            } else {
+              // 두 방식 모두 실패 시, 단순 텍스트가 아닌 알림 형태의 링크로 변환 (원인 파악용)
+              const link = document.createElement('a');
+              link.href = url; link.target = '_blank'; link.rel = 'noopener noreferrer';
+              link.style.display = 'block';
+              link.style.padding = '8px';
+              link.style.background = '#f7fafc';
+              link.style.borderRadius = '6px';
+              link.style.border = '1px solid #e2e8f0';
+              link.innerHTML = `🖼️ <span style="font-weight:700; color:#e53e3e;">이미지 권한 제한됨</span><br><span style="font-size:0.75rem; color:#718096; text-decoration:underline;">클릭하여 구글 드라이브에서 원본 보기</span>`;
+              img.replaceWith(link);
+            }
+          };
+        } else {
+          img.src = url;
+          img.onerror = function () {
+            const link = document.createElement('a');
+            link.href = url; link.target = '_blank'; link.rel = 'noopener noreferrer';
+            link.textContent = url;
+            img.replaceWith(link);
+          };
+        }
         img.onclick = () => window.open(url, '_blank', 'noopener,noreferrer');
-
-        const driveId = /drive\.google\.com/i.test(url) ? extractDriveFileId(url) : null;
-        const candidates = driveId ? driveImageCandidates(driveId) : [url];
-        let candidateIdx = 0;
-        img.src = candidates[0];
-
-        img.onerror = function () {
-          candidateIdx++;
-          if (candidateIdx < candidates.length) {
-            img.src = candidates[candidateIdx];
-            return;
-          }
-          // 모든 후보가 실패하면: 이미지가 비공개(권한 없음)일 가능성이 가장 높습니다.
-          wrap.innerHTML = '';
-          const fail = document.createElement('div');
-          fail.className = 'modal-image-fail';
-          fail.innerHTML = '이미지를 불러올 수 없습니다.<br>(구글 드라이브 공유 설정이 "링크가 있는 모든 사용자"인지 확인해주세요)';
-          const link = document.createElement('a');
-          link.href = url; link.target = '_blank'; link.rel = 'noopener noreferrer';
-          link.textContent = '원본 링크 열기 →';
-          link.className = 'modal-image-fail-link';
-          wrap.appendChild(fail);
-          wrap.appendChild(link);
-        };
-
-        wrap.appendChild(img);
-        el.appendChild(wrap);
+        el.appendChild(img);
       } else {
         const link = document.createElement('a');
         link.href = url; link.target = '_blank'; link.rel = 'noopener noreferrer';
@@ -4451,8 +4444,20 @@ function createEventCard(event) {
 
   function setNewsDetailThumbnail(item) {
     const area = document.getElementById('newsDetailThumbnailArea');
-    const img = document.getElementById('newsDetailThumbnail');
     const link = document.getElementById('newsDetailThumbnailLink');
+    
+    // 만약 이전 에러로 인해 img 태그가 사라졌다면 다시 생성
+    let img = document.getElementById('newsDetailThumbnail');
+    if (!img) {
+      img = document.createElement('img');
+      img.id = 'newsDetailThumbnail';
+      img.style.display = 'block';
+      img.style.maxWidth = '100%';
+      img.style.height = 'auto';
+      img.style.objectFit = 'contain';
+      img.style.background = '#f7fafc';
+      link.appendChild(img);
+    }
 
     area.style.display = 'none';
     img.removeAttribute('src');
@@ -4464,64 +4469,53 @@ function createEventCard(event) {
 
     if (!thumbUrl || !/^https?:\/\//i.test(thumbUrl)) return;
 
-    let driveMatch = thumbUrl.match(/\/file\/d\/([a-zA-Z0-9_-]+)/);
-    if (driveMatch) {
-      thumbUrl = `https://drive.google.com/uc?export=view&id=${driveMatch[1]}`;
+    // 공통 드라이브 ID 추출 함수 재사용
+    const driveId = extractDriveFileId(thumbUrl);
+
+    if (driveId) {
+      // 1순위 시도: uc?export=view
+      img.src = `https://drive.google.com/uc?export=view&id=${driveId}`;
+      img.onerror = function() {
+        if (img.src.includes('uc?export=view')) {
+          // 2순위 시도: thumbnail 우회
+          img.src = `https://drive.google.com/thumbnail?id=${driveId}&sz=w1000`;
+        } else {
+          // 최종 실패 시 숨기지 않고 원인 출력 (권한 문제 확인용)
+          const errLink = document.createElement('div');
+          errLink.id = 'newsDetailThumbnail';
+          errLink.style.padding = '15px';
+          errLink.style.textAlign = 'center';
+          errLink.style.background = '#fdf2f2';
+          errLink.style.border = '1px solid #fbd5d5';
+          errLink.style.borderRadius = '8px';
+          errLink.innerHTML = `🖼️ <span style="font-weight:700; color:#e53e3e;">썸네일 권한 제한됨</span><br><span style="font-size:0.75rem; color:#718096;">구글 드라이브 파일 권한을 '링크가 있는 모든 사용자 공개'로 변경해주세요.</span><br><br><a href="${thumbUrl}" target="_blank" style="color:#1769d2; text-decoration:underline;">원본 링크 열기</a>`;
+          img.replaceWith(errLink);
+        }
+      };
     } else {
-      let idMatch = thumbUrl.match(/id=([a-zA-Z0-9_-]+)/);
-      if (thumbUrl.includes('drive.google.com') && idMatch) {
-        thumbUrl = `https://drive.google.com/uc?export=view&id=${idMatch[1]}`;
-      }
+      // 일반 이미지 URL인 경우
+      img.src = thumbUrl;
+      img.onerror = function(){
+        area.style.display = 'none';
+        img.removeAttribute('src');
+      };
     }
 
-    img.src = thumbUrl;
+    // F열 관련 링크 처리
     if (/^https?:\/\//i.test(linkUrl)) {
       link.href = linkUrl;
       link.style.pointerEvents = 'auto';
     } else {
-      link.removeAttribute('href');
-      link.style.pointerEvents = 'none';
+      // 관련링크가 없다면 이미지를 클릭했을 때 원본 이미지가 새 창에서 열리도록 설정
+      link.href = thumbUrl;
+      link.target = '_blank';
+      link.style.pointerEvents = 'auto';
     }
-    img.onerror = function(){
-      area.style.display = 'none';
-      img.removeAttribute('src');
-    };
+    
     area.style.display = 'block';
   }
 
-  function escapeNewsHtml(str) {
-    return String(str || '')
-      .replace(/&/g, '&amp;')
-      .replace(/</g, '&lt;')
-      .replace(/>/g, '&gt;');
-  }
-
-  function linkifyNewsContent(content) {
-    const escaped = escapeNewsHtml(content);
-    const urlRegex = /(https?:\/\/[^\s<]+)/g;
-    return escaped.replace(urlRegex, (url) => {
-      const cleanUrl = url.replace(/[.,)]+$/, '');
-      const trail = url.slice(cleanUrl.length);
-      return `<a href="${cleanUrl}" target="_blank" rel="noopener noreferrer">${cleanUrl}</a>${trail}`;
-    });
-  }
-
-  function setNewsDetailRelatedLink(item) {
-    const area = document.getElementById('newsDetailRelatedLinkArea');
-    const link = document.getElementById('newsDetailRelatedLink');
-    if (!area || !link) return;
-
-    const url = String(item.linkUrl || '').trim();
-    area.style.display = 'none';
-    link.removeAttribute('href');
-    link.textContent = '';
-
-    // 구글 시트6 F열 = 관련링크
-    if (!/^https?:\/\//i.test(url)) return;
-    link.href = url;
-    link.textContent = url;
-    area.style.display = 'block';
-  }
+  // 더 이상 쓰이지 않는 옛날 링크 변환 함수(linkifyNewsContent, escapeNewsHtml 등)는 무시하셔도 됩니다.
 
   window.openNewsDetailScreen = function(index) {
     const item = newsData[index];
@@ -4530,9 +4524,11 @@ function createEventCard(event) {
     catEl.className = `news-badge ${newsBadgeClass(item.category)}`;
     document.getElementById('newsDetailTitle').innerText = item.title;
     document.getElementById('newsDetailDate').innerText = `작성일: ${item.date}`;
-    document.getElementById('newsDetailContent').innerHTML = linkifyNewsContent(item.content);
+    
+    // 🔥 핵심 수정: E열(본문 내용)을 URL 텍스트가 아닌 이미지 변환기(renderTextWithImages)로 렌더링
+    renderTextWithImages(document.getElementById('newsDetailContent'), item.content);
 
-    // 본문 하단에 Sheet6 F열(관련링크)을 표시
+    // 본문 하단에 Sheet6 F열(관련링크) 및 G열(썸네일) 표시
     setNewsDetailRelatedLink(item);
     setNewsDetailThumbnail(item);
 
