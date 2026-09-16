@@ -2810,7 +2810,7 @@ button,.nav-btn,.action-btn{min-height:44px;}
           <path d="M12 40 C12 31.5 18 27 26 27 C34 27 40 31.5 40 40 Z" fill="#1267d6"/>
         </svg>
       </span>
-      <span class="quick-label">임직원현황</span>
+      <span class="quick-label">코다피플</span>
     </button>
 
     <!-- 4. 언론보도 -->
@@ -2849,7 +2849,7 @@ button,.nav-btn,.action-btn{min-height:44px;}
           <path d="M11 40h4v5h-4zm26 0h4v5h-4z" fill="#173f70"/>
         </svg>
       </span>
-      <span class="quick-label">회의자료</span>
+      <span class="quick-label">코다자료</span>
     </button>
 
     <!-- 7. 준비중 -->
@@ -2926,7 +2926,7 @@ button,.nav-btn,.action-btn{min-height:44px;}
 <div class="fullscreen-screen" id="staffScreen">
   <div class="staff-mobile-header">
     <button class="fullscreen-back-btn" onclick="closeStaffScreen()" aria-label="뒤로가기">←</button>
-    <div class="fullscreen-title">KODA 임직원현황</div>
+    <div class="fullscreen-title">KODA 임직원, 회원사 현황</div>
   </div>
 
   <div class="fullscreen-tabs" id="staffTabs">
@@ -3041,7 +3041,7 @@ button,.nav-btn,.action-btn{min-height:44px;}
 <div class="fullscreen-screen" id="meetingScreen">
   <div class="staff-mobile-header">
     <button class="fullscreen-back-btn" onclick="closeMeetingScreen()" aria-label="뒤로가기">←</button>
-    <div class="fullscreen-title">회의자료</div>
+    <div class="fullscreen-title">KODA 회의 및 동향 자료</div>
   </div>
 
   <div class="fullscreen-tabs" id="meetingTabs">
@@ -5099,3 +5099,14 @@ function createEventCard(event) {
 </script>
 </body>
 </html>
+<style id="holiday-label-small-fix">
+/* 달력 공휴일/명절 문구는 날짜보다 작고 은은하게 표시 */
+.calendar-holiday, .holiday-label, .holiday-name, .cal-holiday, .calendar-day-holiday {
+  font-size: .52rem !important;
+  line-height: 1.05 !important;
+  font-weight: 600 !important;
+  white-space: nowrap !important;
+  overflow: hidden !important;
+  text-overflow: ellipsis !important;
+}
+</style>
