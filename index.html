@@ -4168,7 +4168,8 @@ function createEventCard(event) {
   function toDisplayableImageUrl(url) {
     if (/drive\.google\.com/i.test(url)) {
       const id = extractDriveFileId(url);
-      if (id) return `https://drive.google.com/thumbnail?id=${id}&sz=w1000`;
+      // thumbnail API 대신 가장 안정적인 uc?export=view를 기본으로 사용합니다.
+      if (id) return `https://drive.google.com/uc?export=view&id=${id}`;
     }
     return url;
   }
@@ -4200,18 +4201,44 @@ function createEventCard(event) {
       if (before) el.appendChild(document.createTextNode(before));
 
       if (isLikelyImageUrl(url)) {
+        const driveId = extractDriveFileId(url);
         const img = document.createElement('img');
         img.className = 'modal-inline-image';
         img.loading = 'lazy';
         img.alt = '첨부 이미지';
-        img.src = toDisplayableImageUrl(url);
+        
+        if (driveId) {
+          // 1순위: 가장 호환성이 좋은 uc URL
+          img.src = `https://drive.google.com/uc?export=view&id=${driveId}`;
+          
+          // 2순위: 로드 실패(권한 문제 등) 시 우회 로직
+          img.onerror = function () {
+            if (img.src.includes('uc?export=view')) {
+              // uc 방식이 막혔다면 thumbnail 방식으로 한 번 더 재시도
+              img.src = `https://drive.google.com/thumbnail?id=${driveId}&sz=w1000`;
+            } else {
+              // 두 방식 모두 실패 시, 단순 텍스트가 아닌 알림 형태의 링크로 변환 (원인 파악용)
+              const link = document.createElement('a');
+              link.href = url; link.target = '_blank'; link.rel = 'noopener noreferrer';
+              link.style.display = 'block';
+              link.style.padding = '8px';
+              link.style.background = '#f7fafc';
+              link.style.borderRadius = '6px';
+              link.style.border = '1px solid #e2e8f0';
+              link.innerHTML = `🖼️ <span style="font-weight:700; color:#e53e3e;">이미지 권한 제한됨</span><br><span style="font-size:0.75rem; color:#718096; text-decoration:underline;">클릭하여 구글 드라이브에서 원본 보기</span>`;
+              img.replaceWith(link);
+            }
+          };
+        } else {
+          img.src = url;
+          img.onerror = function () {
+            const link = document.createElement('a');
+            link.href = url; link.target = '_blank'; link.rel = 'noopener noreferrer';
+            link.textContent = url;
+            img.replaceWith(link);
+          };
+        }
         img.onclick = () => window.open(url, '_blank', 'noopener,noreferrer');
-        img.onerror = function () {
-          const link = document.createElement('a');
-          link.href = url; link.target = '_blank'; link.rel = 'noopener noreferrer';
-          link.textContent = url;
-          img.replaceWith(link);
-        };
         el.appendChild(img);
       } else {
         const link = document.createElement('a');
