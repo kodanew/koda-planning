@@ -4442,6 +4442,24 @@ function createEventCard(event) {
   window.closeNewsScreen = function() { history.back(); };
   window.closeNewsDetailScreen = function() { history.back(); };
 
+  // 복구된 관련링크 처리 함수
+  function setNewsDetailRelatedLink(item) {
+    const area = document.getElementById('newsDetailRelatedLinkArea');
+    const link = document.getElementById('newsDetailRelatedLink');
+    if (!area || !link) return;
+
+    const url = String(item.linkUrl || '').trim();
+    area.style.display = 'none';
+    link.removeAttribute('href');
+    link.textContent = '';
+
+    // 구글 시트6 F열 = 관련링크
+    if (!/^https?:\/\//i.test(url)) return;
+    link.href = url;
+    link.textContent = url;
+    area.style.display = 'block';
+  }
+
   function setNewsDetailThumbnail(item) {
     const area = document.getElementById('newsDetailThumbnailArea');
     const link = document.getElementById('newsDetailThumbnailLink');
@@ -4469,8 +4487,8 @@ function createEventCard(event) {
 
     if (!thumbUrl || !/^https?:\/\//i.test(thumbUrl)) return;
 
-    // 공통 드라이브 ID 추출 함수 재사용
-    const driveId = extractDriveFileId(thumbUrl);
+    // 공통 드라이브 ID 추출 (에러 방지 처리)
+    const driveId = (typeof extractDriveFileId === 'function') ? extractDriveFileId(thumbUrl) : null;
 
     if (driveId) {
       // 1순위 시도: uc?export=view
@@ -4515,8 +4533,6 @@ function createEventCard(event) {
     area.style.display = 'block';
   }
 
-  // 더 이상 쓰이지 않는 옛날 링크 변환 함수(linkifyNewsContent, escapeNewsHtml 등)는 무시하셔도 됩니다.
-
   window.openNewsDetailScreen = function(index) {
     const item = newsData[index];
     const catEl = document.getElementById('newsDetailCategory');
@@ -4525,8 +4541,12 @@ function createEventCard(event) {
     document.getElementById('newsDetailTitle').innerText = item.title;
     document.getElementById('newsDetailDate').innerText = `작성일: ${item.date}`;
     
-    // 🔥 핵심 수정: E열(본문 내용)을 URL 텍스트가 아닌 이미지 변환기(renderTextWithImages)로 렌더링
-    renderTextWithImages(document.getElementById('newsDetailContent'), item.content);
+    // 🔥 E열(본문 내용)을 URL 텍스트가 아닌 이미지 변환기로 렌더링
+    if (typeof renderTextWithImages === 'function') {
+      renderTextWithImages(document.getElementById('newsDetailContent'), item.content);
+    } else {
+      document.getElementById('newsDetailContent').innerText = item.content;
+    }
 
     // 본문 하단에 Sheet6 F열(관련링크) 및 G열(썸네일) 표시
     setNewsDetailRelatedLink(item);
