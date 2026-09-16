@@ -2641,23 +2641,93 @@ button,.nav-btn,.action-btn{min-height:44px;}
     letter-spacing:-.07em !important;
   }
 }
-  /* ===== 회의자료 = 협회공지 목록 스타일 ===== */
-  #meetingScreen #meetingList{display:flex;flex-direction:column;gap:9px;width:100%;box-sizing:border-box;}
-  #meetingScreen #meetingList .meeting-news-item{
-    min-width:0; box-sizing:border-box; padding:13px 12px!important;
-    border:1px solid #e2eaf4!important; border-radius:15px!important;
-    background:#fff; box-shadow:0 4px 12px rgba(28,70,120,.055);
-    display:flex; flex-direction:row; align-items:center; justify-content:space-between; gap:10px;
-    cursor:pointer; text-align:left;
-  }
-  #meetingScreen #meetingList .meeting-news-item:active{transform:scale(.985);background:#f8fbff;}
-  #meetingScreen #meetingList .meeting-news-item:disabled{opacity:.7;cursor:default;}
-  #meetingScreen #meetingList .meeting-news-item .day-event-item-title{display:block;flex:1 1 auto;min-width:0;font-size:.9rem!important;line-height:1.4!important;color:#17385f;}
-  #meetingScreen #meetingList .meeting-news-item .day-event-item-meta{flex:0 0 auto;margin-top:0;margin-left:auto;text-align:right;white-space:nowrap;color:#657a96;font-size:.72rem!important;}
-  #meetingScreen #meetingList .meeting-news-item .news-badge{margin-right:6px;}
-  #meetingScreen .loading-msg,#meetingScreen .no-data{padding:30px 12px;text-align:center;color:#7a8da7;font-size:.78rem;background:#fff;border-radius:15px;border:1px solid #e2eaf4;}
 </style>
 
+
+<style id="meeting-news-wrap-fix">
+/* 회의자료 5개 버튼이 항상 한 줄에 모두 표시되도록 고정 */
+#meetingTabs {
+  display:grid !important;
+  grid-template-columns:repeat(5,minmax(0,1fr)) !important;
+  gap:4px !important;
+  width:100% !important;
+  box-sizing:border-box !important;
+  overflow:visible !important;
+  white-space:normal !important;
+  padding-left:0 !important; padding-right:0 !important;
+}
+#meetingTabs .month-tab {
+  min-width:0 !important; width:100% !important;
+  padding:8px 2px !important;
+  font-size:.68rem !important;
+  white-space:nowrap !important;
+  overflow:hidden !important;
+  text-overflow:ellipsis !important;
+}
+
+/* 협회공지: 뱃지와 제목을 별도 열로 분리하여 제목 줄바꿈이 제목 첫 글자 아래에서 시작 */
+#newsList .news-card-item {
+  display:grid !important;
+  grid-template-columns:minmax(0,1fr) auto !important;
+  align-items:start !important;
+  column-gap:10px !important;
+}
+#newsList .news-title-row {
+  display:grid !important;
+  grid-template-columns:auto minmax(0,1fr) !important;
+  align-items:start !important;
+  column-gap:6px !important;
+  min-width:0 !important;
+}
+#newsList .news-title-row .news-badge {
+  margin-right:0 !important;
+  white-space:nowrap !important;
+}
+#newsList .news-title-text {
+  min-width:0 !important;
+  overflow-wrap:anywhere !important;
+  word-break:keep-all !important;
+}
+#newsList .news-card-item .day-event-item-meta {
+  margin:0 !important;
+  white-space:nowrap !important;
+  text-align:right !important;
+  align-self:start !important;
+}
+
+/* 회의자료도 동일한 줄 정리 */
+.meeting-card {
+  display:grid !important;
+  grid-template-columns:minmax(0,1fr) auto !important;
+  align-items:start !important;
+  column-gap:10px !important;
+}
+.meeting-title-row {
+  display:grid !important;
+  grid-template-columns:auto minmax(0,1fr) !important;
+  align-items:start !important;
+  column-gap:6px !important;
+  min-width:0 !important;
+}
+.meeting-title-row .news-badge {
+  margin-right:0 !important;
+  white-space:nowrap !important;
+}
+.meeting-title-text {
+  min-width:0 !important;
+  overflow-wrap:anywhere !important;
+  word-break:keep-all !important;
+}
+.meeting-card-meta {
+  margin:0 !important;
+  white-space:nowrap !important;
+  text-align:right !important;
+  align-self:start !important;
+}
+@media (max-width:360px){
+  #meetingTabs .month-tab { font-size:.62rem !important; padding-left:1px !important; padding-right:1px !important; }
+}
+</style>
 </head>
 <body>
 
@@ -4778,7 +4848,7 @@ function createEventCard(event) {
       card.type = 'button';
       card.className = 'day-event-item news-card-item';
       card.innerHTML = `
-        <div class="day-event-item-title"><span class="news-badge ${newsBadgeClass(item.category)}">${normalizeNewsCategory(item.category)}</span>${item.title}</div>
+        <div class="day-event-item-title news-title-row"><span class="news-badge ${newsBadgeClass(item.category)}">${normalizeNewsCategory(item.category)}</span><span class="news-title-text">${item.title}</span></div>
         <div class="day-event-item-meta">작성일: ${item.date}</div>
       `;
       card.onclick = () => openNewsDetailScreen(globalIndex);
@@ -4918,135 +4988,106 @@ function createEventCard(event) {
   };
 
 
-  /* ===== 회의자료 화면 : Google Sheets 시트9 연동 =====
-     B열=구분 / C열=등록일자 / D열=뱃지 / E열=제목 / F열=파일링크
+  /* ===== 회의자료 화면 =====
+     현재는 UI/카테고리 구조만 준비하고,
+     추후 Google Sheets / Google Drive 연동 시 meetingData를 교체합니다.
   */
   const MEETING_SHEET_CSV_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vQEbM8YAc7jQes9oX6_-aVsVib2H40avHQkL6TkRRI2cYmw7nYG29F_1lGGz-2gL0nve4Q91MBM02Q-/pub?gid=1693506650&single=true&output=csv";
   let meetingData = [];
   let currentMeetingCategory = '전체';
 
-  function escapeMeetingHtml(value){
-    return String(value ?? '').replace(/[&<>'"]/g, ch => ({'&':'&amp;','<':'&lt;','>':'&gt;',"'":'&#39;','"':'&quot;'}[ch]));
-  }
-
-  function normalizeMeetingDate(str){
-    const raw = String(str || '').trim();
-    if (!raw) return '';
-    const m = raw.match(/^(\d{2,4})[.\-/](\d{1,2})[.\-/](\d{1,2})/);
-    if (!m) return raw;
-    let y = Number(m[1]);
-    if (y < 100) y += 2000;
-    return `${y}.${String(Number(m[2])).padStart(2,'0')}.${String(Number(m[3])).padStart(2,'0')}`;
-  }
-
-  function parseMeetingCSV(csv){
+  function parseMeetingCSV(csv) {
     const rows = splitCSV(csv);
     const data = [];
-    for(let i=1; i<rows.length; i++){
+    for (let i = 1; i < rows.length; i++) {
       const r = rows[i] || [];
-      const category = String(r[1] || '').trim(); // B열 구분
-      const date = String(r[2] || '').trim();     // C열 등록일자
-      const badge = String(r[3] || '').trim();    // D열 뱃지
-      const title = String(r[4] || '').trim();    // E열 제목
-      const fileUrl = String(r[5] || '').trim();  // F열 파일링크
-      if(!category && !date && !badge && !title && !fileUrl) continue;
-      data.push({category, date, badge, title, fileUrl});
+      const category = String(r[1] || '').trim();   // B열 구분
+      const date = String(r[2] || '').trim();       // C열 등록일자
+      const badge = String(r[3] || '').trim();      // D열 뱃지
+      const title = String(r[4] || '').trim();      // E열 제목
+      const rawLink = String(r[5] || '').trim();    // F열 파일링크
+      if (!category && !title && !rawLink) continue;
+      let fileUrl = rawLink;
+      const driveMatch = rawLink.match(/drive\.google\.com\/(?:file\/d\/|open\?id=|uc\?.*?id=)([A-Za-z0-9_-]+)/i);
+      if (driveMatch) fileUrl = `https://drive.google.com/file/d/${driveMatch[1]}/preview`;
+      data.push({ category: category || '기타자료', date, badge: badge || category || '기타자료', title, fileUrl });
     }
-    return data;
+    return data.sort((a,b) => parseNewsDate(b.date) - parseNewsDate(a.date));
   }
 
-  function meetingDateValue(str){
-    const m = String(str || '').match(/(\d{2,4})[.\-/](\d{1,2})[.\-/](\d{1,2})/);
-    if(!m) return 0;
-    let y = Number(m[1]); if(y < 100) y += 2000;
-    return new Date(y, Number(m[2])-1, Number(m[3])).getTime();
-  }
-
-  function buildMeetingTabs(){
-    const tabs = document.getElementById('meetingTabs');
-    if(!tabs) return;
-    const categories = [];
-    meetingData.forEach(item => {
-      const c = String(item.category || '').trim();
-      if(c && !categories.includes(c)) categories.push(c);
-    });
-    const wanted = ['사무국 회의','임원회의','일일동향','기타자료'];
-    const ordered = wanted.filter(c => categories.includes(c));
-    categories.forEach(c => { if(!ordered.includes(c)) ordered.push(c); });
-    const visible = ordered.slice(0, 4);
-    tabs.innerHTML = `<button class="month-tab active" data-cat="전체" onclick="filterMeeting('전체')">전체</button>` +
-      visible.map(c => `<button class="month-tab" data-cat="${escapeMeetingHtml(c)}" onclick="filterMeeting(${JSON.stringify(c).replace(/</g,'\\u003c')})">${escapeMeetingHtml(c)}</button>`).join('');
-  }
-
-  function openMeetingPdf(url){
-    const raw = String(url || '').trim();
-    if(!/^https?:\/\//i.test(raw)) return;
-    let target = raw;
-    const driveMatch = raw.match(/drive\.google\.com\/(?:file\/d\/|open\?id=|uc\?id=)([A-Za-z0-9_-]+)/i);
-    if(driveMatch) target = `https://drive.google.com/file/d/${driveMatch[1]}/preview`;
-    window.open(target, '_blank', 'noopener,noreferrer');
-  }
-
-  function renderMeetingList(category){
+  async function loadMeetingData() {
     const list = document.getElementById('meetingList');
-    if(!list) return;
+    if (!list) return;
+    list.innerHTML = '<div class="meeting-empty-text" style="padding:30px;text-align:center;">회의자료를 불러오는 중입니다...⏳</div>';
+    try {
+      const response = await fetch(MEETING_SHEET_CSV_URL + '&t=' + Date.now());
+      if (!response.ok) throw new Error('회의자료 CSV 응답 오류');
+      meetingData = parseMeetingCSV(await response.text());
+      renderMeetingList(currentMeetingCategory);
+    } catch (error) {
+      list.innerHTML = '<div class="meeting-empty-text" style="padding:30px;text-align:center;">회의자료를 불러오지 못했습니다.<br>시트9가 웹에 게시되어 있는지 확인해주세요.</div>';
+    }
+  }
+
+  function renderMeetingList(category) {
+    const list = document.getElementById('meetingList');
+    if (!list) return;
+
     document.querySelectorAll('#meetingTabs .month-tab').forEach(btn => {
       btn.classList.toggle('active', btn.dataset.cat === category);
     });
 
-    const filtered = (category === '전체' ? meetingData.slice() : meetingData.filter(item => String(item.category || '').trim() === category))
-      .sort((a,b) => meetingDateValue(b.date) - meetingDateValue(a.date));
+    const filtered = category === '전체'
+      ? meetingData.slice()
+      : meetingData.filter(item => String(item.category || '').trim() === category);
 
-    if(!filtered.length){
-      list.innerHTML = `<div class="meeting-empty"><div class="meeting-empty-title">등록된 회의자료가 없습니다.</div><div class="meeting-empty-text">선택한 구분의 자료가 없습니다.</div></div>`;
+    if (!filtered.length) {
+      list.innerHTML = `
+        <div class="meeting-empty">
+          <svg class="meeting-empty-icon" viewBox="0 0 52 52" aria-hidden="true">
+            <path d="M9 35h34v5H9z" fill="#173f70"/>
+            <path d="M13 31h26v4H13z" fill="#173f70"/>
+            <path d="M16 10h20c1.7 0 3 1.3 3 3v14H13V13c0-1.7 1.3-3 3-3z" fill="#173f70"/>
+            <path d="M19 14h14v3H19zm0 6h10v3H19z" fill="#fff"/>
+          </svg>
+          <div class="meeting-empty-title">등록된 회의자료가 없습니다.</div>
+          <div class="meeting-empty-text">추후 Google Sheets 및 Google Drive와 연동하여<br>회의자료를 등록할 수 있도록 구성할 예정입니다.</div>
+        </div>`;
       return;
     }
 
     list.innerHTML = '';
     filtered.forEach(item => {
-      const card = document.createElement('button');
+      const card = document.createElement('div');
+      card.className = 'meeting-card';
       card.type = 'button';
-      card.className = 'day-event-item news-card-item meeting-news-item';
-      card.disabled = !/^https?:\/\//i.test(item.fileUrl);
+      card.style.cursor = item.fileUrl ? 'pointer' : 'default';
+      card.onclick = () => { if (item.fileUrl) window.open(item.fileUrl, '_blank', 'noopener,noreferrer'); };
       card.innerHTML = `
-        <div class="day-event-item-title">
-          <span class="news-badge news-badge-etc">${escapeMeetingHtml(item.badge || item.category || '회의자료')}</span>${escapeMeetingHtml(item.title || '제목 없음')}
+        <div class="meeting-card-title meeting-title-row">
+          <span class="news-badge">${item.badge || item.category || '기타자료'}</span>
+          <span class="meeting-title-text">${item.title || '회의자료'}</span>
         </div>
-        <div class="day-event-item-meta">등록일자: ${escapeMeetingHtml(normalizeMeetingDate(item.date))}</div>`;
-      if(/^https?:\/\//i.test(item.fileUrl)) card.onclick = () => openMeetingPdf(item.fileUrl);
+        ${item.date ? `<div class="meeting-card-meta">등록일자: ${item.date}</div>` : ''}`;
       list.appendChild(card);
     });
   }
 
-  async function loadMeetingData(){
-    const list = document.getElementById('meetingList');
-    if(list) list.innerHTML = `<div class="loading-msg">회의자료를 불러오는 중입니다...⏳</div>`;
-    try{
-      const response = await fetch(MEETING_SHEET_CSV_URL + '&t=' + new Date().getTime(), {cache:'no-store'});
-      if(!response.ok) throw new Error('회의자료 CSV 응답 오류');
-      meetingData = parseMeetingCSV(await response.text());
-      buildMeetingTabs();
-      renderMeetingList(currentMeetingCategory);
-    }catch(error){
-      if(list) list.innerHTML = `<div class="no-data">회의자료를 불러오지 못했습니다.<br>구글 시트가 웹에 게시되어 있는지 확인해주세요.</div>`;
-    }
-  }
-
-  window.filterMeeting = function(category){
+  window.filterMeeting = function(category) {
     currentMeetingCategory = category;
     renderMeetingList(category);
   };
 
-  window.openMeetingScreen = function(){
+  window.openMeetingScreen = function() {
     const screen = document.getElementById('meetingScreen');
-    if(!screen) return;
+    if (!screen) return;
     screen.style.display = 'flex';
     screen.scrollTop = 0;
     document.body.style.overflow = 'hidden';
-    history.pushState({meetingOpen:true}, '', '');
+    history.pushState({ meetingOpen: true }, "", "");
     currentMeetingCategory = '전체';
-    if(meetingData.length === 0) loadMeetingData();
-    else { buildMeetingTabs(); renderMeetingList('전체'); }
+    if (meetingData.length === 0) loadMeetingData();
+    else filterMeeting('전체');
   };
 
   window.closeMeetingScreen = function() {
