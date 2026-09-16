@@ -2077,6 +2077,84 @@ button,.nav-btn,.action-btn{min-height:44px;}
 </style>
 
 <style id="news-screen-staff-style-match">
+
+/* 회의자료 화면 - 협회공지와 동일한 디자인 언어 */
+#meetingScreen{
+  display:none; position:fixed; inset:0; z-index:1500;
+  overflow-y:auto; -webkit-overflow-scrolling:touch;
+  background:#f4f7fb; padding:0 10px 18px; box-sizing:border-box;
+}
+#meetingScreen .staff-mobile-header,
+#meetingScreen .fullscreen-tabs,
+#meetingScreen .fullscreen-content{
+  width:100%; max-width:430px; margin-left:auto; margin-right:auto;
+}
+#meetingScreen .staff-mobile-header{
+  height:76px; position:sticky; top:0; z-index:30;
+  background:#fff; border-bottom:1px solid #edf2f7;
+  box-shadow:0 3px 14px rgba(25,67,110,.055);
+  display:grid; grid-template-columns:54px minmax(0,1fr) 72px;
+  align-items:center; padding:0 16px; box-sizing:border-box;
+}
+#meetingScreen .fullscreen-back-btn{
+  width:42px; height:42px; min-height:42px; padding:0;
+  display:flex; align-items:center; justify-content:center;
+  border:0; border-radius:14px; background:#f1f6fd; color:#1769d2;
+  font-size:1.55rem; font-weight:700; line-height:1;
+}
+#meetingScreen .fullscreen-title{
+  display:block; text-align:center; color:#173f70;
+  font-size:1.12rem; font-weight:850; letter-spacing:-.045em;
+  white-space:nowrap;
+}
+#meetingScreen .fullscreen-tabs{
+  display:grid; grid-template-columns:repeat(4,minmax(0,1fr));
+  gap:5px; padding:12px 0 0; box-sizing:border-box;
+}
+#meetingScreen .month-tab{
+  min-width:0; width:100%; height:56px; min-height:56px; padding:0 2px;
+  border:1px solid #dce6f2; border-radius:15px; background:#fff;
+  color:#5d7089; font-size:.78rem; font-weight:850; letter-spacing:-.055em;
+  box-shadow:0 3px 11px rgba(24,71,120,.05); white-space:normal;
+}
+#meetingScreen .month-tab.active{
+  color:#fff; border-color:#173f70;
+  background:linear-gradient(135deg,#173f70,#245d91);
+  box-shadow:0 5px 13px rgba(23,63,112,.18);
+}
+#meetingScreen .fullscreen-content{
+  box-sizing:border-box; padding:15px 0 26px;
+}
+#meetingList{
+  display:flex; flex-direction:column; gap:8px;
+}
+.meeting-card{
+  width:100%; text-align:left; background:#fff;
+  border:1px solid #e1e9f2; border-radius:12px;
+  padding:13px 14px; cursor:default;
+  box-shadow:0 3px 11px rgba(24,71,120,.045);
+}
+.meeting-card-title{
+  display:flex; align-items:center; gap:7px;
+  color:#173f70; font-size:.88rem; font-weight:800;
+  line-height:1.35;
+}
+.meeting-card-meta{
+  margin-top:5px; color:#8494a8; font-size:.7rem; line-height:1.35;
+}
+.meeting-empty{
+  background:#fff; border:1px dashed #cfd9e6; border-radius:14px;
+  padding:42px 20px; text-align:center; color:#8a9aaf;
+}
+.meeting-empty-icon{
+  display:block; width:48px; height:48px; margin:0 auto 10px;
+}
+.meeting-empty-title{font-size:.9rem; font-weight:800; color:#64748b;}
+.meeting-empty-text{margin-top:5px; font-size:.72rem; line-height:1.5;}
+@media(max-width:360px){
+  #meetingScreen .month-tab{font-size:.7rem;}
+}
+
 /* 협회공지(newsScreen / newsDetailScreen) 스타일 */
 #newsScreen, #newsDetailScreen{
   display:none; position:fixed; inset:0; z-index:1500;
@@ -2478,14 +2556,36 @@ button,.nav-btn,.action-btn{min-height:44px;}
     </a>
   </div>
   <div class="sub-menu-container">
-    <button class="quick-btn" style="opacity:0.5; cursor:default;">
-      <span class="quick-icon" style="background:#f7fafc;"><span style="font-size:1.2rem; filter:grayscale(1);">🔒</span></span>
-      <span class="quick-label">준비중</span>
+    <!-- 8번째 퀵버튼 : 회의자료 -->
+    <button class="quick-btn" onclick="openMeetingScreen()" aria-label="회의자료">
+      <span class="quick-icon" style="background:#fff;">
+        <svg viewBox="0 0 52 52" aria-hidden="true">
+          <!-- 책상 위 자료/회의자료 실루엣 -->
+          <path d="M8 35h36v5H8z" fill="#173f70"/>
+          <path d="M12 31h28v4H12z" fill="#173f70"/>
+          <path d="M15 10h22c1.7 0 3 1.3 3 3v14H12V13c0-1.7 1.3-3 3-3z" fill="#173f70"/>
+          <path d="M18 14h16v3H18zm0 6h12v3H18z" fill="#fff"/>
+          <path d="M11 40h4v5h-4zm26 0h4v5h-4z" fill="#173f70"/>
+        </svg>
+      </span>
+      <span class="quick-label">회의자료</span>
     </button>
-    <button class="quick-btn" style="opacity:0.5; cursor:default;">
-      <span class="quick-icon" style="background:#f7fafc;"><span style="font-size:1.2rem; filter:grayscale(1);">🔒</span></span>
-      <span class="quick-label">준비중</span>
-    </button>
+
+    <!-- 9번째 퀵버튼 : 개발업법 -->
+    <a class="quick-btn"
+       href="https://www.law.go.kr/LSW/lsSc.do?dt=20201211&subMenuId=15&menuId=1&query=%EB%B6%80%EB%8F%99%EC%82%B0%EA%B0%9C%EB%B0%9C%EC%97%85"
+       target="_blank" rel="noopener noreferrer" aria-label="개발업법">
+      <span class="quick-icon" style="background:#fff;">
+        <svg viewBox="0 0 52 52" aria-hidden="true">
+          <!-- 법제처 느낌의 둥근 법령 아이콘 -->
+          <circle cx="26" cy="26" r="18" fill="#3f4650"/>
+          <circle cx="26" cy="26" r="13" fill="#fff"/>
+          <path d="M19 18h14v3H19zm0 6h14v3H19zm0 6h10v3H19z" fill="#3f4650"/>
+          <circle cx="34.5" cy="35" r="2.3" fill="#3f4650"/>
+        </svg>
+      </span>
+      <span class="quick-label">개발업법</span>
+    </a>
     <button class="quick-btn" style="opacity:0.5; cursor:default;">
       <span class="quick-icon" style="background:#f7fafc;"><span style="font-size:1.2rem; filter:grayscale(1);">🔒</span></span>
       <span class="quick-label">준비중</span>
@@ -2625,6 +2725,25 @@ button,.nav-btn,.action-btn{min-height:44px;}
   </div>
   <div class="fullscreen-content" style="padding-top: 15px;">
     <div class="day-event-list" id="newsList"></div>
+  </div>
+</div>
+
+<!-- ✨ 회의자료 목록 페이지 ✨ -->
+<div class="fullscreen-screen" id="meetingScreen">
+  <div class="staff-mobile-header">
+    <button class="fullscreen-back-btn" onclick="closeMeetingScreen()" aria-label="뒤로가기">←</button>
+    <div class="fullscreen-title">회의자료</div>
+  </div>
+
+  <div class="fullscreen-tabs" id="meetingTabs">
+    <button class="month-tab active" data-cat="전체" onclick="filterMeeting('전체')">전체</button>
+    <button class="month-tab" data-cat="사무국 회의" onclick="filterMeeting('사무국 회의')">사무국 회의</button>
+    <button class="month-tab" data-cat="임원, 운영위 회의" onclick="filterMeeting('임원, 운영위 회의')">임원·운영위 회의</button>
+    <button class="month-tab" data-cat="기타자료" onclick="filterMeeting('기타자료')">기타자료</button>
+  </div>
+
+  <div class="fullscreen-content" style="padding-top:15px;">
+    <div id="meetingList"></div>
   </div>
 </div>
 
@@ -4104,7 +4223,7 @@ function createEventCard(event) {
   if (!history.state || !history.state.kodaBase) { history.replaceState({kodaBase:true}, '', location.href); }
   window.addEventListener('popstate', function(event) {
     const st = event.state || {};
-    const ids = ['dayEventsModal', 'staffScreen', 'staffDetailModal', 'memberCompanyDetailModal', 'newsScreen', 'newsDetailScreen'];
+    const ids = ['dayEventsModal', 'staffScreen', 'staffDetailModal', 'memberCompanyDetailModal', 'newsScreen', 'newsDetailScreen', 'meetingScreen'];
     ids.forEach(id => { const el=document.getElementById(id); if(el) el.style.display='none'; });
     hideModalDOM();
     document.body.style.overflow = 'auto';
@@ -4115,8 +4234,9 @@ function createEventCard(event) {
     else if (st.dayEventsModalOpen) document.getElementById('dayEventsModal').style.display='flex';
     else if (st.newsOpen) document.getElementById('newsScreen').style.display = 'flex';
       else if (st.newsDetailOpen) document.getElementById('newsDetailScreen').style.display = 'flex';
+      else if (st.meetingOpen) document.getElementById('meetingScreen').style.display = 'flex';
 
-    if (st.staffOpen || st.staffDetailOpen || st.dayEventsModalOpen || st.newsOpen || st.newsDetailOpen) {
+    if (st.staffOpen || st.staffDetailOpen || st.dayEventsModalOpen || st.newsOpen || st.newsDetailOpen || st.meetingOpen) {
       document.body.style.overflow='hidden';
     }
   });
@@ -4555,6 +4675,74 @@ function createEventCard(event) {
     document.getElementById('newsDetailScreen').style.display = 'flex';
     document.body.style.overflow = 'hidden';
     history.pushState({ newsDetailOpen: true }, "", "");
+  };
+
+
+  /* ===== 회의자료 화면 =====
+     현재는 UI/카테고리 구조만 준비하고,
+     추후 Google Sheets / Google Drive 연동 시 meetingData를 교체합니다.
+  */
+  let meetingData = [];
+  let currentMeetingCategory = '전체';
+
+  function renderMeetingList(category) {
+    const list = document.getElementById('meetingList');
+    if (!list) return;
+
+    document.querySelectorAll('#meetingTabs .month-tab').forEach(btn => {
+      btn.classList.toggle('active', btn.dataset.cat === category);
+    });
+
+    const filtered = category === '전체'
+      ? meetingData.slice()
+      : meetingData.filter(item => String(item.category || '').trim() === category);
+
+    if (!filtered.length) {
+      list.innerHTML = `
+        <div class="meeting-empty">
+          <svg class="meeting-empty-icon" viewBox="0 0 52 52" aria-hidden="true">
+            <path d="M9 35h34v5H9z" fill="#173f70"/>
+            <path d="M13 31h26v4H13z" fill="#173f70"/>
+            <path d="M16 10h20c1.7 0 3 1.3 3 3v14H13V13c0-1.7 1.3-3 3-3z" fill="#173f70"/>
+            <path d="M19 14h14v3H19zm0 6h10v3H19z" fill="#fff"/>
+          </svg>
+          <div class="meeting-empty-title">등록된 회의자료가 없습니다.</div>
+          <div class="meeting-empty-text">추후 Google Sheets 및 Google Drive와 연동하여<br>회의자료를 등록할 수 있도록 구성할 예정입니다.</div>
+        </div>`;
+      return;
+    }
+
+    list.innerHTML = '';
+    filtered.forEach(item => {
+      const card = document.createElement('div');
+      card.className = 'meeting-card';
+      card.innerHTML = `
+        <div class="meeting-card-title">
+          <span class="news-badge">${item.category || '기타자료'}</span>
+          <span>${item.title || '회의자료'}</span>
+        </div>
+        ${item.date ? `<div class="meeting-card-meta">${item.date}</div>` : ''}`;
+      list.appendChild(card);
+    });
+  }
+
+  window.filterMeeting = function(category) {
+    currentMeetingCategory = category;
+    renderMeetingList(category);
+  };
+
+  window.openMeetingScreen = function() {
+    const screen = document.getElementById('meetingScreen');
+    if (!screen) return;
+    screen.style.display = 'flex';
+    screen.scrollTop = 0;
+    document.body.style.overflow = 'hidden';
+    history.pushState({ meetingOpen: true }, "", "");
+    filterMeeting('전체');
+  };
+
+  window.closeMeetingScreen = function() {
+    history.back();
   };
 
   initAuth();
