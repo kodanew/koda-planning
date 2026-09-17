@@ -3542,7 +3542,7 @@ button,.nav-btn,.action-btn{min-height:44px;}
     const authPhone = normalizePhone(auth.phone || '');
     return (staffData || []).find(item =>
       String(item.name || '').trim() === authName &&
-      normalizePhone(item.phone || '') === authPhone
+      normalizePhone(item.contact || '') === authPhone // 일치 여부를 J열(연락처)과 대조하도록 변경
     ) || null;
   }
 
