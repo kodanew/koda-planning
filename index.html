@@ -3468,11 +3468,12 @@ button,.nav-btn,.action-btn{min-height:44px;}
       pos: headers.indexOf("직위"),
       dept: headers.findIndex(h => h.includes("부서")),
       koda: headers.indexOf("KODA"),
-      phone: headers.indexOf("연락처"),
-      email: headers.indexOf("이메일"),
+      phone: headers.indexOf("연락처") !== -1 ? headers.indexOf("연락처") : 7,
+      fax: headers.indexOf("팩스번호") !== -1 ? headers.indexOf("팩스번호") : 8,
+      email: headers.indexOf("이메일") !== -1 ? headers.indexOf("이메일") : 9,
       note: headers.indexOf("비고")
     };
-    if (idx.name === -1) idx = { cat: 0, no: 1, name: 2, affil: 3, pos: 4, dept: -1, koda: 6, phone: 7, email: 8, note: 9 };
+    if (idx.name === -1) idx = { cat: 0, no: 1, name: 2, affil: 3, pos: 4, dept: 5, koda: 6, phone: 7, fax: 8, email: 9, note: 10 };
     if (idx.koda === -1) idx.koda = 6;
 
     for (let i = 1; i < rows.length; i++) {
@@ -3487,6 +3488,7 @@ button,.nav-btn,.action-btn{min-height:44px;}
         department: idx.dept !== -1 && r[idx.dept] ? r[idx.dept].trim() : "",
         koda: idx.koda !== -1 && r[idx.koda] ? r[idx.koda].trim() : "",
         phone: idx.phone !== -1 && r[idx.phone] ? r[idx.phone].trim() : "",
+        fax: idx.fax !== -1 && r[idx.fax] ? r[idx.fax].trim() : "",
         email: idx.email !== -1 && r[idx.email] ? r[idx.email].trim() : "",
         note: idx.note !== -1 && r[idx.note] ? r[idx.note].trim() : ""
       });
@@ -3588,47 +3590,47 @@ button,.nav-btn,.action-btn{min-height:44px;}
     const affiliation=String(data.affiliation || '').trim();
     const position=String(data.position || '').trim();
     const phone=formatBusinessCardPhone(data.phone);
+    const fax=formatBusinessCardPhone(data.fax);
     const email=String(data.email || '').trim();
 
-    // 샘플 명함 기준: KODA 로고와 이름 사이의 세로 여백을 기존 대비 약 1.5배 확대
+    // KODA 로고 아래에서 이름까지의 세로 여백을 한 단계 더 확대
     ctx.fillStyle=blue;
     ctx.font='800 82px "Malgun Gothic", "Apple SD Gothic Neo", sans-serif';
-    ctx.fillText(name,125,275);
+    ctx.fillText(name,125,315);
 
     ctx.fillStyle='#3d5d86';
     ctx.font='600 39px "Malgun Gothic", "Apple SD Gothic Neo", sans-serif';
-    ctx.fillText([affiliation,position].filter(Boolean).join(' | '),128,345);
+    ctx.fillText([affiliation,position].filter(Boolean).join(' | '),128,385);
 
     ctx.fillStyle=blue;
     ctx.font='800 48px "Malgun Gothic", "Apple SD Gothic Neo", sans-serif';
-    ctx.fillText('한국디벨로퍼협회',128,455);
+    ctx.fillText('한국디벨로퍼협회',128,495);
 
     ctx.fillStyle=dark;
     ctx.font='500 34px "Malgun Gothic", "Apple SD Gothic Neo", sans-serif';
-    ctx.fillText('06152 서울특별시 강남구 테헤란로 305 (역삼동, 한국기술센터 11층)',128,520);
+    ctx.fillText('06152 서울특별시 강남구 테헤란로 305 (역삼동, 한국기술센터 11층)',128,560);
 
-    // 샘플 명함과 동일하게 T/F(대표전화/팩스) + M/E(휴대폰/이메일) 2행 구성
-    // 전화/팩스는 협회 대표번호이므로 로그인 사용자와 관계없이 공통으로 표시
-    const officePhone = '02-512-6804';
-    const officeFax = '02-512-4752';
+    // Sheet4 H열(전화번호) / I열(팩스번호)를 명함의 T/F에 직접 표시
+    const officePhone = phone;
+    const officeFax = fax;
 
     ctx.fillStyle=blue;
     ctx.font='800 34px Arial, "Malgun Gothic", sans-serif';
-    ctx.fillText('T.',128,625);
-    ctx.fillText('F.',128,690);
-    ctx.fillText('M.',505,625);
-    ctx.fillText('E.',505,690);
+    ctx.fillText('T.',128,665);
+    ctx.fillText('F.',128,730);
+    ctx.fillText('M.',505,665);
+    ctx.fillText('E.',505,730);
 
     ctx.fillStyle=dark;
     ctx.font='500 34px Arial, "Malgun Gothic", sans-serif';
-    ctx.fillText(officePhone,175,625);
-    ctx.fillText(officeFax,175,690);
-    ctx.fillText(phone || '-',552,625);
-    ctx.fillText(email || '-',552,690);
+    ctx.fillText(officePhone || '-',175,665);
+    ctx.fillText(officeFax || '-',175,730);
+    ctx.fillText(phone || '-',552,665);
+    ctx.fillText(email || '-',552,730);
 
     ctx.fillStyle=blue;
     ctx.font='800 38px Arial, "Malgun Gothic", sans-serif';
-    ctx.fillText('www.koda.or.kr',128,760);
+    ctx.fillText('www.koda.or.kr',128,800);
 
     // 샘플 명함처럼 하단은 충분한 여백을 유지
     return canvas.toDataURL('image/jpeg',0.94);
@@ -4427,7 +4429,7 @@ button,.nav-btn,.action-btn{min-height:44px;}
     rows.innerHTML='';
     [
       ['성명',staff.name],['소속',staff.affiliation],['직위',staff.position],
-      ['KODA',staff.koda],['연락처',staff.phone],['이메일',staff.email],['비고',staff.note]
+      ['KODA',staff.koda],['전화번호',staff.phone],['팩스번호',staff.fax],['이메일',staff.email],['비고',staff.note]
     ].forEach(([label,value])=>{
       const row=document.createElement('div'); row.className='modal-detail-row';
       const l=document.createElement('span'); l.className='modal-label'; l.textContent=label;
