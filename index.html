@@ -3553,7 +3553,7 @@ button,.nav-btn,.action-btn{min-height:44px;}
   }
 
   async function createBusinessCardJpg(data) {
-    const W = 1800, H = 900;
+    const W = 1800, H = 1000;
     const canvas = document.createElement('canvas');
     canvas.width = W; canvas.height = H;
     const ctx = canvas.getContext('2d');
@@ -3590,36 +3590,47 @@ button,.nav-btn,.action-btn{min-height:44px;}
     const phone=formatBusinessCardPhone(data.phone);
     const email=String(data.email || '').trim();
 
+    // 샘플 명함 기준: KODA 로고와 이름 사이의 세로 여백을 기존 대비 약 1.5배 확대
     ctx.fillStyle=blue;
     ctx.font='800 82px "Malgun Gothic", "Apple SD Gothic Neo", sans-serif';
-    ctx.fillText(name,125,245);
+    ctx.fillText(name,125,275);
 
     ctx.fillStyle='#3d5d86';
     ctx.font='600 39px "Malgun Gothic", "Apple SD Gothic Neo", sans-serif';
-    ctx.fillText([affiliation,position].filter(Boolean).join(' | '),128,315);
+    ctx.fillText([affiliation,position].filter(Boolean).join(' | '),128,345);
 
     ctx.fillStyle=blue;
     ctx.font='800 48px "Malgun Gothic", "Apple SD Gothic Neo", sans-serif';
-    ctx.fillText('한국디벨로퍼협회',128,430);
+    ctx.fillText('한국디벨로퍼협회',128,455);
 
     ctx.fillStyle=dark;
     ctx.font='500 34px "Malgun Gothic", "Apple SD Gothic Neo", sans-serif';
-    ctx.fillText('06152 서울특별시 강남구 테헤란로 305 (역삼동, 한국기술센터 11층)',128,495);
+    ctx.fillText('06152 서울특별시 강남구 테헤란로 305 (역삼동, 한국기술센터 11층)',128,520);
 
-    ctx.strokeStyle='#dbe3ed'; ctx.lineWidth=2;
-    ctx.beginPath(); ctx.moveTo(128,545); ctx.lineTo(W-128,545); ctx.stroke();
+    // 샘플 명함과 동일하게 T/F(대표전화/팩스) + M/E(휴대폰/이메일) 2행 구성
+    // 전화/팩스는 협회 대표번호이므로 로그인 사용자와 관계없이 공통으로 표시
+    const officePhone = '02-512-6804';
+    const officeFax = '02-512-4752';
 
-    ctx.fillStyle=muted;
-    ctx.font='650 35px Arial, "Malgun Gothic", sans-serif';
-    ctx.fillText(`M. ${phone || '-'}`,128,610);
-    const emailX = Math.min(1050, 128 + ctx.measureText(`M. ${phone || '-'}`).width + 85);
-    ctx.fillText(`E. ${email || '-'}`,emailX,610);
+    ctx.fillStyle=blue;
+    ctx.font='800 34px Arial, "Malgun Gothic", sans-serif';
+    ctx.fillText('T.',128,625);
+    ctx.fillText('F.',128,690);
+    ctx.fillText('M.',505,625);
+    ctx.fillText('E.',505,690);
+
+    ctx.fillStyle=dark;
+    ctx.font='500 34px Arial, "Malgun Gothic", sans-serif';
+    ctx.fillText(officePhone,175,625);
+    ctx.fillText(officeFax,175,690);
+    ctx.fillText(phone || '-',552,625);
+    ctx.fillText(email || '-',552,690);
 
     ctx.fillStyle=blue;
     ctx.font='800 38px Arial, "Malgun Gothic", sans-serif';
-    ctx.fillText('www.koda.or.kr',128,700);
+    ctx.fillText('www.koda.or.kr',128,760);
 
-    // 샘플 명함의 비율에 맞춰 하단 여백을 줄여 전체적인 밸런스를 조정
+    // 샘플 명함처럼 하단은 충분한 여백을 유지
     return canvas.toDataURL('image/jpeg',0.94);
   }
 
