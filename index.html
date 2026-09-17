@@ -3468,12 +3468,14 @@ button,.nav-btn,.action-btn{min-height:44px;}
       pos: headers.indexOf("직위"),
       dept: headers.findIndex(h => h.includes("부서")),
       koda: headers.indexOf("KODA"),
-      phone: headers.indexOf("연락처") !== -1 ? headers.indexOf("연락처") : 7,
-      fax: headers.indexOf("팩스번호") !== -1 ? headers.indexOf("팩스번호") : 8,
-      email: headers.indexOf("이메일") !== -1 ? headers.indexOf("이메일") : 9,
+      // 시트4 고정 열 기준: H=전화번호, I=팩스번호, J=연락처
+      phone: 7,
+      fax: 8,
+      contact: 9,
+      email: headers.indexOf("이메일") !== -1 ? headers.indexOf("이메일") : -1,
       note: headers.indexOf("비고")
     };
-    if (idx.name === -1) idx = { cat: 0, no: 1, name: 2, affil: 3, pos: 4, dept: 5, koda: 6, phone: 7, fax: 8, email: 9, note: 10 };
+    if (idx.name === -1) idx = { cat: 0, no: 1, name: 2, affil: 3, pos: 4, dept: 5, koda: 6, phone: 7, fax: 8, contact: 9, email: 10, note: 11 };
     if (idx.koda === -1) idx.koda = 6;
 
     for (let i = 1; i < rows.length; i++) {
@@ -3487,8 +3489,9 @@ button,.nav-btn,.action-btn{min-height:44px;}
         position: idx.pos !== -1 && r[idx.pos] ? r[idx.pos].trim() : "",
         department: idx.dept !== -1 && r[idx.dept] ? r[idx.dept].trim() : "",
         koda: idx.koda !== -1 && r[idx.koda] ? r[idx.koda].trim() : "",
-        phone: idx.phone !== -1 && r[idx.phone] ? r[idx.phone].trim() : "",
-        fax: idx.fax !== -1 && r[idx.fax] ? r[idx.fax].trim() : "",
+        phone: r.length > 7 && r[7] ? r[7].trim() : "",
+        fax: r.length > 8 && r[8] ? r[8].trim() : "",
+        contact: r.length > 9 && r[9] ? r[9].trim() : "",
         email: idx.email !== -1 && r[idx.email] ? r[idx.email].trim() : "",
         note: idx.note !== -1 && r[idx.note] ? r[idx.note].trim() : ""
       });
@@ -3589,8 +3592,10 @@ button,.nav-btn,.action-btn{min-height:44px;}
     const name=String(data.name || '').trim();
     const affiliation=String(data.affiliation || '').trim();
     const position=String(data.position || '').trim();
+    // 명함 표시용: T=시트4 H열 전화번호 / F=시트4 I열 팩스번호 / M=시트4 J열 연락처
     const phone=formatBusinessCardPhone(data.phone);
     const fax=formatBusinessCardPhone(data.fax);
+    const contact=formatBusinessCardPhone(data.contact);
     const email=String(data.email || '').trim();
 
     // KODA 로고 아래에서 이름까지의 세로 여백을 한 단계 더 확대
@@ -3623,9 +3628,9 @@ button,.nav-btn,.action-btn{min-height:44px;}
 
     ctx.fillStyle=dark;
     ctx.font='500 34px Arial, "Malgun Gothic", sans-serif';
-    ctx.fillText(officePhone || '-',175,665);
-    ctx.fillText(officeFax || '-',175,730);
-    ctx.fillText(phone || '-',552,665);
+    ctx.fillText(officePhone || '-',175,665);  // T. = H열 전화번호
+    ctx.fillText(officeFax || '-',175,730);    // F. = I열 팩스번호
+    ctx.fillText(contact || '-',552,665);      // M. = J열 연락처
     ctx.fillText(email || '-',552,730);
 
     ctx.fillStyle=blue;
