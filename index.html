@@ -3371,13 +3371,15 @@ button,.nav-btn,.action-btn{min-height:44px;}
   let membersData = []; 
   function normalizePhone(str) { return (str || '').replace(/[^0-9]/g, ''); }
 
+  // 로그인 인증은 구글 시트4(임직원현황)를 기준으로 합니다.
+  // D열 = 이름, J열 = 연락처(핸드폰 번호)
   function parseMembersCSV(csv) {
     const rows = splitCSV(csv);
     const list = [];
     for (let i = 1; i < rows.length; i++) {
-      const r = rows[i];
-      const name = r[0] ? r[0].trim() : '';
-      const phone = r[1] ? normalizePhone(r[1]) : '';
+      const r = rows[i] || [];
+      const name = r[3] ? String(r[3]).trim() : '';   // D열
+      const phone = r[9] ? normalizePhone(r[9]) : ''; // J열
       if (name && phone) list.push({ name, phone });
     }
     return list;
@@ -3385,7 +3387,9 @@ button,.nav-btn,.action-btn{min-height:44px;}
 
   async function loadMembersData() {
     try {
-      const response = await fetch(MEMBERS_SHEET_CSV_URL + "&t=" + new Date().getTime());
+      // 로그인 인증용 데이터는 Sheet4를 사용합니다.
+      const response = await fetch(STAFF_SHEET_CSV_URL + "&t=" + new Date().getTime(), {cache:'no-store'});
+      if (!response.ok) throw new Error('Sheet4 CSV response error');
       membersData = parseMembersCSV(await response.text());
     } catch (error) { membersData = []; }
   }
