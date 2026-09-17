@@ -3468,12 +3468,13 @@ button,.nav-btn,.action-btn{min-height:44px;}
       pos: headers.indexOf("직위"),
       dept: headers.findIndex(h => h.includes("부서")),
       koda: headers.indexOf("KODA"),
-      phone: headers.indexOf("연락처") !== -1 ? headers.indexOf("연락처") : 7,
-      fax: headers.indexOf("팩스번호") !== -1 ? headers.indexOf("팩스번호") : 8,
-      email: headers.indexOf("이메일") !== -1 ? headers.indexOf("이메일") : 9,
+      phone: 7, // H열 전화번호
+      fax: 8, // I열 팩스번호
+      contact: 9, // J열 연락처
+      email: headers.indexOf("이메일") !== -1 ? headers.indexOf("이메일") : 10,
       note: headers.indexOf("비고")
     };
-    if (idx.name === -1) idx = { cat: 0, no: 1, name: 2, affil: 3, pos: 4, dept: 5, koda: 6, phone: 7, fax: 8, email: 9, note: 10 };
+    if (idx.name === -1) idx = { cat: 0, no: 1, name: 2, affil: 3, pos: 4, dept: 5, koda: 6, phone: 7, fax: 8, contact: 9, email: 10, note: 11 };
     if (idx.koda === -1) idx.koda = 6;
 
     for (let i = 1; i < rows.length; i++) {
@@ -3489,6 +3490,7 @@ button,.nav-btn,.action-btn{min-height:44px;}
         koda: idx.koda !== -1 && r[idx.koda] ? r[idx.koda].trim() : "",
         phone: idx.phone !== -1 && r[idx.phone] ? r[idx.phone].trim() : "",
         fax: idx.fax !== -1 && r[idx.fax] ? r[idx.fax].trim() : "",
+        contact: idx.contact !== -1 && r[idx.contact] ? r[idx.contact].trim() : "",
         email: idx.email !== -1 && r[idx.email] ? r[idx.email].trim() : "",
         note: idx.note !== -1 && r[idx.note] ? r[idx.note].trim() : ""
       });
@@ -3591,6 +3593,7 @@ button,.nav-btn,.action-btn{min-height:44px;}
     const position=String(data.position || '').trim();
     const phone=formatBusinessCardPhone(data.phone);
     const fax=formatBusinessCardPhone(data.fax);
+    const contact=formatBusinessCardPhone(data.contact);
     const email=String(data.email || '').trim();
 
     // KODA 로고 아래에서 이름까지의 세로 여백을 한 단계 더 확대
@@ -3610,7 +3613,7 @@ button,.nav-btn,.action-btn{min-height:44px;}
     ctx.font='500 34px "Malgun Gothic", "Apple SD Gothic Neo", sans-serif';
     ctx.fillText('06152 서울특별시 강남구 테헤란로 305 (역삼동, 한국기술센터 11층)',128,560);
 
-    // Sheet4 H열(전화번호) / I열(팩스번호)를 명함의 T/F에 직접 표시
+    // Sheet4 H열(전화번호) / I열(팩스번호) / J열(연락처)를 명함의 T/F/M에 표시
     const officePhone = phone;
     const officeFax = fax;
 
@@ -3625,7 +3628,7 @@ button,.nav-btn,.action-btn{min-height:44px;}
     ctx.font='500 34px Arial, "Malgun Gothic", sans-serif';
     ctx.fillText(officePhone || '-',175,665);
     ctx.fillText(officeFax || '-',175,730);
-    ctx.fillText(phone || '-',552,665);
+    ctx.fillText(contact || '-',552,665);
     ctx.fillText(email || '-',552,730);
 
     ctx.fillStyle=blue;
@@ -4429,7 +4432,7 @@ button,.nav-btn,.action-btn{min-height:44px;}
     rows.innerHTML='';
     [
       ['성명',staff.name],['소속',staff.affiliation],['직위',staff.position],
-      ['KODA',staff.koda],['전화번호',staff.phone],['팩스번호',staff.fax],['이메일',staff.email],['비고',staff.note]
+      ['KODA',staff.koda],['전화번호',staff.phone],['팩스번호',staff.fax],['연락처',staff.contact],['이메일',staff.email],['비고',staff.note]
     ].forEach(([label,value])=>{
       const row=document.createElement('div'); row.className='modal-detail-row';
       const l=document.createElement('span'); l.className='modal-label'; l.textContent=label;
