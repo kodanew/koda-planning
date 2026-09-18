@@ -2923,6 +2923,57 @@ button,.nav-btn,.action-btn{min-height:44px;}
   .login-install-btn{bottom:12px !important;font-size:.64rem !important;}
 }
 </style>
+
+<style id="header-welcome-style">
+/* 모바일 헤더 좌측 3줄 초소형 환영 메시지 */
+.header-welcome{
+  position:absolute;
+  left:14px;
+  top:50%;
+  transform:translateY(-50%);
+  width:112px;
+  min-width:0;
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
+  align-items:flex-start;
+  line-height:1.05;
+  text-align:left;
+  pointer-events:none;
+  z-index:2;
+  overflow:hidden;
+}
+.header-welcome .welcome-line{
+  display:block;
+  width:100%;
+  overflow:hidden;
+  white-space:nowrap;
+  text-overflow:ellipsis;
+  letter-spacing:-.045em;
+}
+.header-welcome .welcome-name{
+  color:#526274;
+  font-size:.48rem;
+  font-weight:750;
+}
+.header-welcome .welcome-position{
+  color:#7d8996;
+  font-size:.43rem;
+  font-weight:600;
+  margin-top:1px;
+}
+.header-welcome .welcome-message{
+  color:#9aa4ae;
+  font-size:.43rem;
+  font-weight:500;
+  margin-top:2px;
+}
+@media(max-width:360px){
+  .header-welcome{left:10px;width:103px;}
+  .header-welcome .welcome-name{font-size:.45rem;}
+  .header-welcome .welcome-position,.header-welcome .welcome-message{font-size:.40rem;}
+}
+</style>
 </head>
 <body>
 
@@ -2944,6 +2995,11 @@ button,.nav-btn,.action-btn{min-height:44px;}
 
 <div class="app-container" id="appRoot">
   <div class="header">
+    <div class="header-welcome" id="headerWelcome" aria-label="환영 메시지">
+      <span class="welcome-line welcome-name" id="welcomeName"></span>
+      <span class="welcome-line welcome-position" id="welcomePosition"></span>
+      <span class="welcome-line welcome-message" id="welcomeMessage"></span>
+    </div>
     <div class="header-spacer" aria-hidden="true"></div>
     <img src="koda-logo-re.png" alt="KODA 로고">
     <div class="header-right">
@@ -3495,6 +3551,53 @@ button,.nav-btn,.action-btn{min-height:44px;}
     return membersData.some(m => m.name === normName && m.phone === normPhone);
   }
 
+  /* ===== 로그인 사용자 환영 메시지 ===== */
+  const WELCOME_MESSAGES = [
+    '오늘도 행복하세요♬',
+    '오늘도 좋은 하루 보내세요 ☀',
+    '오늘도 웃음 가득한 하루 되세요',
+    '오늘도 힘차게 시작해보세요!',
+    '오늘도 멋진 하루가 되길 바랍니다',
+    '기분 좋은 하루 보내세요 😊',
+    '오늘도 건강하고 행복하세요',
+    '오늘도 좋은 일만 가득하세요',
+    '오늘도 힘내세요! 좋은 하루입니다',
+    '오늘도 여유롭고 행복하게 보내세요',
+    '새로운 하루, 좋은 하루 되세요',
+    '오늘도 활기찬 하루 보내세요!',
+    '웃음 가득한 하루 보내세요 ♡',
+    '오늘도 반가운 하루 되세요',
+    '오늘도 평안하고 행복하세요'
+  ];
+
+  function getTodayWelcomeMessage(){
+    const now = new Date();
+    const key = Math.floor(new Date(now.getFullYear(), now.getMonth(), now.getDate()).getTime() / 86400000);
+    return WELCOME_MESSAGES[((key % WELCOME_MESSAGES.length) + WELCOME_MESSAGES.length) % WELCOME_MESSAGES.length];
+  }
+
+  function findLoggedInStaff(name, phone){
+    const n = String(name || '').trim();
+    const p = normalizePhone(phone);
+    if (!Array.isArray(staffData)) return null;
+    return staffData.find(item => String(item.name || '').trim() === n && normalizePhone(item.phone || item.contact || '') === p)
+      || staffData.find(item => String(item.name || '').trim() === n)
+      || null;
+  }
+
+  function renderHeaderWelcome(){
+    const saved = JSON.parse(localStorage.getItem('koda_auth') || 'null');
+    const nameEl = document.getElementById('welcomeName');
+    const posEl = document.getElementById('welcomePosition');
+    const msgEl = document.getElementById('welcomeMessage');
+    if (!nameEl || !posEl || !msgEl || !saved) return;
+
+    const person = findLoggedInStaff(saved.name, saved.phone);
+    const position = person && person.pos ? String(person.pos).trim() : '';
+    nameEl.textContent = saved.name ? (position ? `${saved.name} ${position}님,` : `${saved.name}님,`) : '';
+    msgEl.textContent = getTodayWelcomeMessage();
+  }
+
   window.attemptLogin = async function() {
     const nameInput = document.getElementById('loginName');
     const phoneInput = document.getElementById('loginPhone');
@@ -3528,9 +3631,10 @@ button,.nav-btn,.action-btn{min-height:44px;}
     document.getElementById('loginScreen').style.display = 'none';
     document.getElementById('appRoot').style.display = 'block';
     document.body.style.overflow = 'auto';
+    renderHeaderWelcome();
     loadData();
-    // 명함 버튼을 누르기 전에 시트4(임직원 정보)를 미리 준비합니다.
-    ensureBusinessCardStaffData().catch(()=>{});
+    // 시트4의 직위까지 확인한 뒤 환영 메시지를 한 번 더 갱신합니다.
+    ensureBusinessCardStaffData().then(() => renderHeaderWelcome()).catch(() => renderHeaderWelcome());
   }
 
   window.logoutUser = function() {
