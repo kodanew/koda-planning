@@ -2826,6 +2826,103 @@ button,.nav-btn,.action-btn{min-height:44px;}
   .business-card-modal{padding:15px 10px 12px;}
 }
 </style>
+
+
+<style id="koda-final-button-layout">
+/* ===== 최종 버튼 배치/스타일 ===== */
+.app-container > .header{
+  display:grid !important;
+  grid-template-columns:1fr auto 1fr !important;
+  align-items:center !important;
+  justify-content:initial !important;
+  min-height:54px;
+}
+.app-container > .header .header-spacer{
+  grid-column:1 !important;
+  grid-row:1 !important;
+}
+.app-container > .header > img{
+  grid-column:2 !important;
+  grid-row:1 !important;
+  justify-self:center !important;
+}
+.app-container > .header .header-right{
+  grid-column:3 !important;
+  grid-row:1 !important;
+  justify-self:end !important;
+  position:static !important;
+  transform:none !important;
+  display:flex !important;
+  align-items:center !important;
+  justify-content:flex-end !important;
+  gap:5px !important;
+}
+.my-business-card-btn,
+.logout-btn{
+  background:rgba(255,255,255,.72) !important;
+  color:#7b8490 !important;
+  border:1px solid #cfd5dc !important;
+  box-shadow:0 2px 7px rgba(70,80,90,.06) !important;
+}
+.my-business-card-btn{
+  border-radius:8px !important;
+  padding:5px 9px !important;
+  font-size:.67rem !important;
+  font-weight:750 !important;
+}
+.my-business-card-btn:active,
+.logout-btn:active{
+  background:#f3f5f7 !important;
+  color:#5f6873 !important;
+}
+.app-footer{
+  width:100%;
+  display:flex;
+  justify-content:center;
+  padding:4px 10px 28px;
+}
+.app-footer .logout-btn{
+  position:static !important;
+  margin:0 !important;
+  border-radius:8px !important;
+  padding:5px 12px !important;
+  min-height:0 !important;
+  height:auto !important;
+  font-size:.68rem !important;
+  line-height:1.2 !important;
+}
+.login-screen{
+  position:fixed !important;
+}
+.login-install-btn{
+  position:absolute !important;
+  left:50% !important;
+  bottom:16px !important;
+  transform:translateX(-50%) !important;
+  width:auto !important;
+  min-height:0 !important;
+  height:auto !important;
+  padding:4px 8px !important;
+  margin:0 !important;
+  border:0 !important;
+  background:transparent !important;
+  color:#aeb5bd !important;
+  box-shadow:none !important;
+  border-radius:0 !important;
+  font-size:.68rem !important;
+  font-weight:500 !important;
+  opacity:.72 !important;
+}
+.login-install-btn:active{
+  color:#8f98a2 !important;
+  background:transparent !important;
+}
+@media(max-width:360px){
+  .my-business-card-btn{font-size:.60rem !important;padding:4px 7px !important;}
+  .app-footer{padding-bottom:24px;}
+  .login-install-btn{bottom:12px !important;font-size:.64rem !important;}
+}
+</style>
 </head>
 <body>
 
@@ -2842,17 +2939,15 @@ button,.nav-btn,.action-btn{min-height:44px;}
 
     <div class="login-error" id="loginError"></div>
   </div>
+  <button type="button" id="installBtn" class="install-btn login-install-btn" style="display: none;">앱설치</button>
 </div>
 
 <div class="app-container" id="appRoot">
   <div class="header">
-    <div class="header-left">
-      <button type="button" id="myBusinessCardBtn" class="my-business-card-btn" onclick="openMyBusinessCard()">나의 명함 보기</button>
-    </div>
+    <div class="header-spacer" aria-hidden="true"></div>
     <img src="koda-logo-re.png" alt="KODA 로고">
     <div class="header-right">
-      <button id="installBtn" class="install-btn" style="display: none;">앱설치</button>
-      <button id="logoutBtn" class="logout-btn" onclick="logoutUser()">로그아웃</button>
+      <button type="button" id="myBusinessCardBtn" class="my-business-card-btn" onclick="openMyBusinessCard()">나의 명함 보기</button>
     </div>
   </div>
 
@@ -3011,6 +3106,10 @@ button,.nav-btn,.action-btn{min-height:44px;}
 
   <div class="schedule-container" id="scheduleContainer">
     <div class="loading-msg">최신 일정을 불러오는 중입니다...⏳</div>
+  </div>
+
+  <div class="app-footer">
+    <button type="button" id="logoutBtn" class="logout-btn" onclick="logoutUser()">로그아웃</button>
   </div>
 </div>
 
