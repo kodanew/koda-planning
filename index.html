@@ -3030,6 +3030,48 @@ button,.nav-btn,.action-btn{min-height:44px;}
   }
 }
 </style>
+<style id="welcome-final-refinement">
+/* 2026-09-18: 환영영역 10% 축소 / 메시지 2줄 고정 / KODA 로고 방향 침범 방지 */
+.header-welcome{
+  width:105px !important;
+  max-width:105px !important;
+  left:10px !important;
+  right:auto !important;
+  overflow:hidden !important;
+}
+.header-welcome .welcome-name{
+  font-size:.774rem !important;
+  white-space:nowrap !important;
+  overflow:hidden !important;
+  text-overflow:clip !important;
+}
+.header-welcome .welcome-message{
+  width:100% !important;
+  max-width:100% !important;
+  font-size:.648rem !important;
+  margin-top:8px !important;
+  line-height:1.3 !important;
+  white-space:normal !important;
+  overflow:hidden !important;
+  display:-webkit-box !important;
+  -webkit-box-orient:vertical !important;
+  -webkit-line-clamp:2 !important;
+  line-clamp:2 !important;
+  word-break:keep-all !important;
+}
+@media(max-width:360px){
+  .header-welcome{
+    width:95px !important;
+    max-width:95px !important;
+    left:8px !important;
+  }
+  .header-welcome .welcome-name{font-size:.684rem !important;}
+  .header-welcome .welcome-message{
+    font-size:.576rem !important;
+    margin-top:7px !important;
+  }
+}
+</style>
 </head>
 <body>
 
@@ -3663,7 +3705,14 @@ button,.nav-btn,.action-btn{min-height:44px;}
       group.match.some(m => normalizeStaffText(normalizedPosition).includes(normalizeStaffText(m)))
     )?.label || normalizedPosition || '';
     nameEl.textContent = saved.name ? `${saved.name}${role ? ' ' + role : ''}님,` : '';
-    msgEl.textContent = getTodayWelcomeMessage();
+    // 환영 문구는 6~7자 정도씩 끊어 정확히 2줄로 표시
+    const welcomeText = getTodayWelcomeMessage();
+    const cleanWelcomeText = String(welcomeText || '').trim();
+    const firstLine = cleanWelcomeText.slice(0, 7);
+    const secondLine = cleanWelcomeText.slice(7);
+    msgEl.innerHTML = secondLine
+      ? `${firstLine}<br>${secondLine}`
+      : firstLine;
   }
 
   window.attemptLogin = async function() {
