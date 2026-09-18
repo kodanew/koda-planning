@@ -2974,6 +2974,62 @@ button,.nav-btn,.action-btn{min-height:44px;}
   .header-welcome .welcome-position,.header-welcome .welcome-message{font-size:.40rem;}
 }
 </style>
+<style id="final-user-request-refinement">
+/* 2026-09-18: 환영 문구 확대 / 이름+직위 / 줄간격 */
+.header-welcome{
+  width:150px !important;
+  line-height:1.15 !important;
+}
+.header-welcome .welcome-name{
+  font-size:.86rem !important;
+  font-weight:850 !important;
+  letter-spacing:-.055em !important;
+  color:#173f70 !important;
+}
+.header-welcome .welcome-position{
+  display:none !important;
+}
+.header-welcome .welcome-message{
+  font-size:.72rem !important;
+  font-weight:650 !important;
+  margin-top:8px !important;
+  line-height:1.25 !important;
+  letter-spacing:-.045em !important;
+  color:#65788e !important;
+}
+/* 코다피플 페이지: 세로 스크롤은 유지하되 스크롤바만 숨김 */
+#staffScreen{
+  scrollbar-width:none !important;
+  -ms-overflow-style:none !important;
+}
+#staffScreen::-webkit-scrollbar{
+  display:none !important;
+  width:0 !important;
+  height:0 !important;
+}
+/* 사무국 회의 자료 5개 탭 높이를 코다피플 5개 탭과 동일하게 */
+#meetingScreen #meetingTabs .month-tab{
+  height:42px !important;
+  min-height:42px !important;
+  padding:0 3px !important;
+  display:flex !important;
+  align-items:center !important;
+  justify-content:center !important;
+}
+@media(max-width:360px){
+  .header-welcome{
+    left:10px !important;
+    width:125px !important;
+  }
+  .header-welcome .welcome-name{font-size:.76rem !important;}
+  .header-welcome .welcome-message{font-size:.64rem !important;margin-top:7px !important;}
+  #meetingScreen #meetingTabs .month-tab{
+    height:39px !important;
+    min-height:39px !important;
+    font-size:.77rem !important;
+  }
+}
+</style>
 </head>
 <body>
 
@@ -3003,7 +3059,7 @@ button,.nav-btn,.action-btn{min-height:44px;}
     <div class="header-spacer" aria-hidden="true"></div>
     <img src="koda-logo-re.png" alt="KODA 로고">
     <div class="header-right">
-      <button type="button" id="myBusinessCardBtn" class="my-business-card-btn" onclick="openMyBusinessCard()">나의 명함 보기</button>
+      <button type="button" id="myBusinessCardBtn" class="my-business-card-btn" onclick="openMyBusinessCard()">나의 명함</button>
     </div>
   </div>
 
@@ -3297,12 +3353,12 @@ button,.nav-btn,.action-btn{min-height:44px;}
 <div class="fullscreen-screen" id="meetingScreen">
   <div class="staff-mobile-header">
     <button class="fullscreen-back-btn" onclick="closeMeetingScreen()" aria-label="뒤로가기">←</button>
-    <div class="fullscreen-title">KODA 회의 및 동향 자료</div>
+    <div class="fullscreen-title">사무국 회의 자료</div>
   </div>
 
   <div class="fullscreen-tabs" id="meetingTabs">
     <button class="month-tab active" data-cat="전체" onclick="filterMeeting('전체')">전체</button>
-    <button class="month-tab" data-cat="사무국 회의" onclick="filterMeeting('사무국 회의')">사무국 회의</button>
+    <button class="month-tab" data-cat="사무국 회의" onclick="filterMeeting('사무국 회의')">사무국회의</button>
     <button class="month-tab" data-cat="임원회의" onclick="filterMeeting('임원회의')">임원회의</button>
     <button class="month-tab" data-cat="일일동향" onclick="filterMeeting('일일동향')">일일동향</button>
     <button class="month-tab" data-cat="기타자료" onclick="filterMeeting('기타자료')">기타자료</button>
@@ -3553,21 +3609,21 @@ button,.nav-btn,.action-btn{min-height:44px;}
 
   /* ===== 로그인 사용자 환영 메시지 ===== */
   const WELCOME_MESSAGES = [
-    '오늘도 행복하세요♬',
-    '오늘도 좋은 하루 보내세요 ☀',
-    '오늘도 웃음 가득한 하루 되세요',
-    '오늘도 힘차게 시작해보세요!',
-    '오늘도 멋진 하루가 되길 바랍니다',
-    '기분 좋은 하루 보내세요 😊',
-    '오늘도 건강하고 행복하세요',
-    '오늘도 좋은 일만 가득하세요',
-    '오늘도 힘내세요! 좋은 하루입니다',
-    '오늘도 여유롭고 행복하게 보내세요',
-    '새로운 하루, 좋은 하루 되세요',
-    '오늘도 활기찬 하루 보내세요!',
-    '웃음 가득한 하루 보내세요 ♡',
-    '오늘도 반가운 하루 되세요',
-    '오늘도 평안하고 행복하세요'
+    '오늘도 행복한 하루 보내세요~! 😊',
+    '오늘도 좋은 하루 보내세요~! ☀️',
+    '오늘도 웃음 가득한 하루 되세요~! 😄',
+    '오늘도 힘차게 시작해보세요~! 💙',
+    '오늘도 멋진 하루 보내세요~! ✨',
+    '기분 좋은 하루 보내세요~! 😊',
+    '오늘도 건강하고 행복하세요~! 🌿',
+    '오늘도 좋은 일만 가득하세요~! 🍀',
+    '오늘도 힘내세요~! 💪',
+    '오늘도 여유롭고 행복하게 보내세요~! 🌸',
+    '새로운 하루, 좋은 하루 되세요~! ☀️',
+    '오늘도 활기찬 하루 보내세요~! 🌈',
+    '웃음 가득한 하루 보내세요~! 😄',
+    '오늘도 반가운 하루 되세요~! 💙',
+    '오늘도 평안하고 행복하세요~! 🌷'
   ];
 
   function getTodayWelcomeMessage(){
@@ -3593,8 +3649,20 @@ button,.nav-btn,.action-btn{min-height:44px;}
     if (!nameEl || !posEl || !msgEl || !saved) return;
 
     const person = findLoggedInStaff(saved.name, saved.phone);
-    const position = person && person.pos ? String(person.pos).trim() : '';
-    nameEl.textContent = saved.name ? (position ? `${saved.name} ${position}님,` : `${saved.name}님,`) : '';
+    const rawPosition = person && (person.pos || person.position) ? String(person.pos || person.position).trim() : '';
+    const normalizedPosition = stripAssociationWord(rawPosition);
+    const roleMap = [
+      { label:'전무', match:['전무'] },
+      { label:'실장', match:['기획운영실장','정책연구실장','실장'] },
+      { label:'팀장', match:['팀장'] },
+      { label:'파트장', match:['파트장'] },
+      { label:'대리', match:['대리'] },
+      { label:'책임연구원', match:['책임연구원'] }
+    ];
+    const role = roleMap.find(group =>
+      group.match.some(m => normalizeStaffText(normalizedPosition).includes(normalizeStaffText(m)))
+    )?.label || normalizedPosition || '';
+    nameEl.textContent = saved.name ? `${saved.name}${role ? ' ' + role : ''}님,` : '';
     msgEl.textContent = getTodayWelcomeMessage();
   }
 
