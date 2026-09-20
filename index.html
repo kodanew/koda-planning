@@ -3377,8 +3377,15 @@ button,.nav-btn,.action-btn{min-height:44px;}
     <button class="quick-btn" onclick="openNewsScreen()">
       <span class="quick-icon news-quick-icon">
         <svg viewBox="0 0 52 52" aria-hidden="true">
-          <rect x="7" y="6" width="38" height="40" rx="8" fill="#f6c344"/>
-          <path d="M14 14h24v4H14zm0 8h18v3H14zm0 7h24v3H14zm0 7h15v3H14z" fill="#fff"/>
+          <!-- 심플한 게시판 느낌: 상단 제목줄 + 게시물 라인 + 핀 -->
+          <rect x="7" y="8" width="38" height="36" rx="6" fill="#f6c344"/>
+          <rect x="12" y="13" width="28" height="5" rx="1.5" fill="#fff"/>
+          <circle cx="15" cy="25" r="2.2" fill="#d9a900"/>
+          <rect x="20" y="23" width="17" height="3.5" rx="1.5" fill="#fff"/>
+          <circle cx="15" cy="33" r="2.2" fill="#d9a900"/>
+          <rect x="20" y="31" width="14" height="3.5" rx="1.5" fill="#fff"/>
+          <circle cx="15" cy="40" r="2.2" fill="#d9a900"/>
+          <rect x="20" y="38" width="17" height="3" rx="1.5" fill="#fff"/>
         </svg>
       </span>
       <span class="quick-label">협회공지</span>
@@ -3399,13 +3406,11 @@ button,.nav-btn,.action-btn{min-height:44px;}
     <button class="quick-btn" onclick="openMeetingScreen()" aria-label="코다자료">
       <span class="quick-icon" style="background:#fff;">
         <svg viewBox="0 0 52 52" aria-hidden="true">
-          <!-- 심플한 3단 서랍 -->
-          <rect x="9" y="10" width="34" height="8" rx="2.5" fill="#8b5cf6"/>
-          <rect x="9" y="21" width="34" height="8" rx="2.5" fill="#8b5cf6"/>
-          <rect x="9" y="32" width="34" height="8" rx="2.5" fill="#8b5cf6"/>
-          <rect x="22" y="12.5" width="8" height="2" rx="1" fill="#fff"/>
-          <rect x="22" y="23.5" width="8" height="2" rx="1" fill="#fff"/>
-          <rect x="22" y="34.5" width="8" height="2" rx="1" fill="#fff"/>
+          <!-- 심플한 2단 서랍장: 각 서랍의 세로폭을 넉넉하게 -->
+          <rect x="8" y="8" width="36" height="15" rx="3" fill="#8b5cf6"/>
+          <rect x="8" y="27" width="36" height="15" rx="3" fill="#8b5cf6"/>
+          <rect x="21" y="14" width="10" height="3" rx="1.5" fill="#fff"/>
+          <rect x="21" y="33" width="10" height="3" rx="1.5" fill="#fff"/>
         </svg>
       </span>
       <span class="quick-label">코다자료</span>
