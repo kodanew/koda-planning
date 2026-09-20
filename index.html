@@ -3221,6 +3221,75 @@ button,.nav-btn,.action-btn{min-height:44px;}
 .shared-card-save{width:100%;margin-top:14px;min-height:48px;border:0;border-radius:12px;background:#1769d2;color:#fff;font-size:.9rem;font-weight:850;cursor:pointer;}
 .shared-card-tip{margin-top:10px;font-size:.68rem;line-height:1.45;color:#7b8da3;}
 </style>
+
+<style id="final-request-20260921">
+/* 2026-09-21 최종 UI 수정 */
+.emergency-notice{gap:8px;}
+.emergency-badge{
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  line-height:1.15;
+}
+.emergency-marquee{
+  display:flex;
+  align-items:center;
+  height:100%;
+  font-size:.90rem;
+  line-height:1.15;
+}
+.emergency-marquee-inner{
+  line-height:1.15;
+}
+
+/* 국토교통부·국회: 법제처와 동일하게 뱃지 오른쪽에 구분선 */
+.govasm-section-head{
+  display:flex;
+  align-items:center;
+  width:100%;
+  gap:9px;
+}
+.govasm-section-head .govasm-divider{
+  flex:1;
+  height:1.5px;
+  margin:0;
+}
+/* 뱃지와 버튼 사이를 한 줄 정도 띄움 */
+.govasm-section .govasm-grid{
+  margin-top:12px;
+}
+
+/* 법제처: 뱃지/글씨/버튼 테두리 모두 짙은 초록색 */
+.govasm-badge.law{
+  background:#eef6ef;
+  color:#166534;
+}
+.govasm-divider.law-divider{
+  background:#166534;
+}
+.govasm-card.law-card{
+  border-color:#166534;
+  color:#166534;
+}
+.govasm-card.law-card:active{
+  background:#f3faf4;
+}
+
+/* 국토교통부: 6개 버튼을 뱃지와 같은 푸른색으로 */
+.govasm-badge.gov{color:#1769d2;}
+.govasm-divider.gov-divider{background:#1769d2;}
+.govasm-card.gov-card{
+  border-color:#1769d2;
+  color:#1769d2;
+}
+.govasm-card.gov-card:active{background:#f2f7ff;}
+
+/* NEXT 일정도 TODAY처럼 일정 카드 전체에 푸른색 테두리 */
+.event-card.next-card{
+  border:2.5px solid #1769d2;
+}
+</style>
+
 </head>
 <body>
 
@@ -3585,8 +3654,10 @@ button,.nav-btn,.action-btn{min-height:44px;}
   </div>
   <div class="govasm-content">
     <section class="govasm-section">
-      <span class="govasm-badge gov">국토교통부</span>
-      <div class="govasm-divider gov-divider"></div>
+      <div class="govasm-section-head">
+        <span class="govasm-badge gov">국토교통부</span>
+        <div class="govasm-divider gov-divider"></div>
+      </div>
       <div class="govasm-grid">
         <a class="govasm-card gov-card" href="https://www.molit.go.kr/USR/NEWS/m_71/lst.jsp" target="_blank" rel="noopener noreferrer">보도자료</a>
         <a class="govasm-card gov-card" href="https://www.molit.go.kr/USR/INSA/m_79/lst.jsp" target="_blank" rel="noopener noreferrer">인사발령</a>
@@ -3598,8 +3669,10 @@ button,.nav-btn,.action-btn{min-height:44px;}
     </section>
 
     <section class="govasm-section">
-      <span class="govasm-badge assembly">국회</span>
-      <div class="govasm-divider assembly-divider"></div>
+      <div class="govasm-section-head">
+        <span class="govasm-badge assembly">국회</span>
+        <div class="govasm-divider assembly-divider"></div>
+      </div>
       <div class="govasm-grid">
         <a class="govasm-card assembly-card" href="https://www.assembly.go.kr/portal/bbs/B0000051/list.do?menuNo=600101" target="_blank" rel="noopener noreferrer">보도자료</a>
         <a class="govasm-card assembly-card" href="https://www.assembly.go.kr/portal/na/agenda/agendaSchl.do?menuNo=600015" target="_blank" rel="noopener noreferrer">국회일정</a>
@@ -5370,7 +5443,7 @@ function createEventCard(event, isNext=false) {
     const isToday = event.dday === "D-day";
 
     const card = document.createElement('div');
-    card.className = 'event-card' + (isToday ? ' today-card' : '');
+    card.className = 'event-card' + (isToday ? ' today-card' : (isNext ? ' next-card' : ''));
 
     const todayBadgeHtml = isToday ? `<div class="card-today-badge">TODAY</div>` : (isNext ? `<div class="card-next-badge">NEXT</div>` : '');
 
