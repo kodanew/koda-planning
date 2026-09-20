@@ -1781,6 +1781,8 @@ button,.nav-btn,.action-btn{min-height:44px;}
   font-weight:800;
   letter-spacing:-.035em;
 }
+.emergency-badge,
+.emergency-marquee{align-self:center;}
 .emergency-marquee-inner{
   display:inline-block;
   padding-left:100%;
@@ -3238,6 +3240,8 @@ button,.nav-btn,.action-btn{min-height:44px;}
   font-size:.90rem;
   line-height:1.15;
 }
+.emergency-badge,
+.emergency-marquee{align-self:center;}
 .emergency-marquee-inner{
   line-height:1.15;
 }
@@ -3342,7 +3346,6 @@ button,.nav-btn,.action-btn{min-height:44px;}
   <!-- 구글 시트6 B2가 "중요공지"일 때만 표시되는 긴급공지 -->
   <div class="emergency-notice-wrap" id="emergencyNoticeWrap">
     <div class="emergency-notice" role="status" aria-live="polite">
-      <span class="emergency-icon" aria-hidden="true">📣</span>
       <span class="emergency-badge" id="emergencyNoticeBadge"></span>
       <div class="emergency-marquee" id="emergencyNoticeMarquee">
         <span class="emergency-marquee-inner" id="emergencyNoticeText"></span>
@@ -3381,7 +3384,7 @@ button,.nav-btn,.action-btn{min-height:44px;}
       <span class="quick-label">협회공지</span>
     </button>
 
-    <!-- 3. 임직원현황 -->
+    <!-- 3. 코다피플 -->
     <button class="quick-btn" onclick="openStaffScreen()">
       <span class="quick-icon">
         <svg viewBox="0 0 52 52" aria-hidden="true">
@@ -3392,17 +3395,21 @@ button,.nav-btn,.action-btn{min-height:44px;}
       <span class="quick-label">코다피플</span>
     </button>
 
-    <!-- 4. 언론보도 -->
-    <a href="https://search.naver.com/search.naver?ssc=tab.news.all&where=news&sm=tab_jum&query=%EB%94%94%EB%B2%A8%EB%A1%9C%ED%8D%BC%ED%98%91%ED%9A%8C"
-       target="_blank" class="quick-btn">
-      <span class="quick-icon">
+    <!-- 4. 코다자료 -->
+    <button class="quick-btn" onclick="openMeetingScreen()" aria-label="코다자료">
+      <span class="quick-icon" style="background:#fff;">
         <svg viewBox="0 0 52 52" aria-hidden="true">
-          <rect x="5" y="5" width="42" height="42" rx="12" fill="#03C75A"/>
-          <path d="M16 14h7.5l6.5 10.5V14H36v24h-7l-7-10.8V38h-6z" fill="#fff"/>
+          <!-- 심플한 3단 서랍 -->
+          <rect x="9" y="10" width="34" height="8" rx="2.5" fill="#8b5cf6"/>
+          <rect x="9" y="21" width="34" height="8" rx="2.5" fill="#8b5cf6"/>
+          <rect x="9" y="32" width="34" height="8" rx="2.5" fill="#8b5cf6"/>
+          <rect x="22" y="12.5" width="8" height="2" rx="1" fill="#fff"/>
+          <rect x="22" y="23.5" width="8" height="2" rx="1" fill="#fff"/>
+          <rect x="22" y="34.5" width="8" height="2" rx="1" fill="#fff"/>
         </svg>
       </span>
-      <span class="quick-label">언론보도</span>
-    </a>
+      <span class="quick-label">코다자료</span>
+    </button>
 
     <!-- 5. KODA-TV -->
     <a href="https://www.youtube.com/@kodatv9717" target="_blank" class="quick-btn">
@@ -3417,68 +3424,49 @@ button,.nav-btn,.action-btn{min-height:44px;}
   </div>
 
   <div class="sub-menu-container">
-    <!-- 6. 회의자료 -->
-    <button class="quick-btn" onclick="openMeetingScreen()" aria-label="회의자료">
-      <span class="quick-icon" style="background:#fff;">
+    <!-- 6. 코다기사 -->
+    <a href="https://search.naver.com/search.naver?ssc=tab.news.all&where=news&sm=tab_jum&query=%EB%94%94%EB%B2%A8%EB%A1%9C%ED%8D%BC%ED%98%91%ED%9A%8C"
+       target="_blank" class="quick-btn" aria-label="코다기사">
+      <span class="quick-icon">
         <svg viewBox="0 0 52 52" aria-hidden="true">
-          <path d="M8 35h36v5H8z" fill="#173f70"/>
-          <path d="M12 31h28v4H12z" fill="#173f70"/>
-          <path d="M15 10h22c1.7 0 3 1.3 3 3v14H12V13c0-1.7 1.3-3 3-3z" fill="#173f70"/>
-          <path d="M18 14h16v3H18zm0 6h12v3H18z" fill="#fff"/>
-          <path d="M11 40h4v5h-4zm26 0h4v5h-4z" fill="#173f70"/>
+          <rect x="5" y="5" width="42" height="42" rx="12" fill="#03C75A"/>
+          <path d="M16 14h7.5l6.5 10.5V14H36v24h-7l-7-10.8V38h-6z" fill="#fff"/>
         </svg>
       </span>
-      <span class="quick-label">코다자료</span>
-    </button>
+      <span class="quick-label">코다기사</span>
+    </a>
 
     <!-- 7. 준비중 -->
-    <button class="quick-btn" style="opacity:0.5; cursor:default;">
+    <button class="quick-btn" style="opacity:0.5; cursor:default;" aria-label="준비중">
       <span class="quick-icon" style="background:#f7fafc;">
         <span style="font-size:1.2rem; filter:grayscale(1);">🔒</span>
       </span>
       <span class="quick-label">준비중</span>
     </button>
 
-    <!-- 8. 정부국회 -->
+    <!-- 8. 준비중 (LawBot 대체) -->
+    <button class="quick-btn" style="opacity:0.5; cursor:default;" aria-label="준비중">
+      <span class="quick-icon" style="background:#f7fafc;">
+        <span style="font-size:1.2rem; filter:grayscale(1);">🔒</span>
+      </span>
+      <span class="quick-label">준비중</span>
+    </button>
+
+    <!-- 9. 정부국회 -->
     <button class="quick-btn" onclick="openGovAssemblyScreen()" aria-label="정부국회">
       <span class="quick-icon" style="background:#fff;">
         <svg viewBox="0 0 52 52" aria-hidden="true">
-          <path d="M10 21h32v22H10z" fill="#1769d2"/>
-          <path d="M7 18h38l-19-9z" fill="#3182ce"/>
-          <path d="M14 24h5v14h-5zm9 0h5v14h-5zm9 0h5v14h-5z" fill="#fff"/>
-          <path d="M7 43h38v3H7z" fill="#173f70"/>
+          <!-- 심플한 국회/공공기관 건물 실루엣 -->
+          <path d="M8 18h36L26 9 8 18z" fill="#8b929b"/>
+          <rect x="11" y="19" width="30" height="23" rx="1.5" fill="#8b929b"/>
+          <rect x="15" y="23" width="4" height="15" rx="1" fill="#fff"/>
+          <rect x="24" y="23" width="4" height="15" rx="1" fill="#fff"/>
+          <rect x="33" y="23" width="4" height="15" rx="1" fill="#fff"/>
+          <rect x="8" y="41" width="36" height="3" rx="1.5" fill="#707780"/>
         </svg>
       </span>
       <span class="quick-label">정부국회</span>
     </button>
-
-    <!-- 9. 개발업법 : 비정형 지구 실루엣 -->
-    <a class="quick-btn"
-       href="https://www.law.go.kr/LSW/ais/main.do"
-       target="_blank" rel="noopener noreferrer" aria-label="LawBot">
-      <span class="quick-icon" style="background:#fff;">
-        <svg viewBox="0 0 64 64" aria-hidden="true">
-          <!-- 완전한 원이 아닌 한쪽이 살짝 비대칭인 지구 실루엣 -->
-          <path d="M31 8
-                   C20 8 11 14 7 23
-                   C3 32 6 43 14 50
-                   C21 57 31 59 41 55
-                   C51 51 57 42 57 31
-                   C57 20 50 12 41 9
-                   C38 8 34 8 31 8Z"
-                fill="#8b929b"/>
-          <!-- 경도/위도 느낌의 회색 지구선 -->
-          <path d="M16 21 C25 26 40 27 50 21
-                   M10 32 C22 37 42 38 55 31
-                   M15 43 C25 40 41 40 51 44
-                   M31 9 C25 18 23 29 25 39 C26 47 29 53 34 57
-                   M40 10 C34 20 33 31 35 40 C36 47 40 52 44 54"
-                fill="none" stroke="#e6e8eb" stroke-width="2.2"
-                stroke-linecap="round" opacity=".95"/>
-        </svg>
-      </span>
-      <span class="quick-label">LawBot</span>
-    </a>
 
     <!-- 10. 관심일정 -->
     <button class="quick-btn" id="bookmarkFilterBtn" onclick="toggleBookmarksOnly()">
@@ -3649,7 +3637,7 @@ button,.nav-btn,.action-btn{min-height:44px;}
 <div class="fullscreen-screen" id="govAssemblyScreen">
   <div class="govasm-header">
     <button class="govasm-back" onclick="closeGovAssemblyScreen()" aria-label="뒤로가기">←</button>
-    <div class="govasm-title">국토교통부 · 국회</div>
+    <div class="govasm-title">국토교통부 · 국회 · 법제처</div>
     <div></div>
   </div>
   <div class="govasm-content">
