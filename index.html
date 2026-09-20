@@ -2825,6 +2825,25 @@ button,.nav-btn,.action-btn{min-height:44px;}
   .business-card-overlay{padding:10px;}
   .business-card-modal{padding:15px 10px 12px;}
 }
+
+/* 공휴일 / 나의 명함 QR */
+.today-weather{cursor:pointer;user-select:none;}
+.today-weather:active{transform:scale(.98);}
+.calendar-holiday{font-size:.52rem!important;line-height:1.05!important;font-weight:650!important;color:#e05a63!important;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:100%;}
+.business-card-actions{grid-template-columns:1fr 1fr;}
+.business-card-actions .business-card-qr-btn{grid-column:1 / -1;background:#173f70;color:#fff;}
+.qr-preview-wrap{display:flex;align-items:center;justify-content:center;padding:10px 0 4px;}
+.business-card-qr-image{width:220px;height:220px;display:block;background:#fff;border-radius:14px;padding:8px;box-sizing:border-box;box-shadow:0 8px 24px rgba(17,49,87,.14);}
+.qr-name{text-align:center;color:#173f70;font-size:.88rem;font-weight:850;margin-top:8px;}
+.qr-actions{margin-top:10px;}
+
+.shared-business-card-mode{margin:0!important;background:#f4f7fb!important;}
+#sharedBusinessCardPage{min-height:100vh;display:flex;align-items:center;justify-content:center;padding:20px;box-sizing:border-box;}
+.shared-card-inner{width:min(100%,520px);text-align:center;background:#fff;border-radius:20px;padding:20px;box-sizing:border-box;box-shadow:0 14px 45px rgba(17,49,87,.13);}
+.shared-card-title{font-size:1.05rem;font-weight:900;color:#173f70;margin-bottom:14px;}
+.shared-card-image{display:block;width:100%;height:auto;border-radius:4px;box-shadow:0 7px 20px rgba(17,49,87,.15);}
+.shared-card-save{width:100%;margin-top:14px;min-height:48px;border:0;border-radius:12px;background:#1769d2;color:#fff;font-size:.9rem;font-weight:850;cursor:pointer;}
+.shared-card-tip{margin-top:10px;font-size:.68rem;line-height:1.45;color:#7b8da3;}
 </style>
 
 
@@ -3110,7 +3129,7 @@ button,.nav-btn,.action-btn{min-height:44px;}
       <span class="today-date" id="todayDateDisplay"></span>
       <span class="today-weekday" id="todayWeekdayDisplay"></span>
     </div>
-    <div class="today-weather" id="todayWeatherDisplay">
+    <div class="today-weather" id="todayWeatherDisplay" role="button" tabindex="0" onclick="openNaverWeather()" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();openNaverWeather();}">
       <span class="today-weather-icon">☁️</span><span>날씨 확인 중</span>
     </div>
   </div>
@@ -3454,6 +3473,22 @@ button,.nav-btn,.action-btn{min-height:44px;}
   </div>
 </div>
 
+<!-- QR 보내기 팝업 -->
+<div class="business-card-overlay" id="businessCardQROverlay" onclick="closeBusinessCardQROnOutside(event)">
+  <div class="business-card-modal qr-modal" role="dialog" aria-modal="true" aria-labelledby="businessCardQRTitle">
+    <button type="button" class="business-card-close" onclick="closeBusinessCardQR()" aria-label="닫기">×</button>
+    <div class="business-card-modal-title" id="businessCardQRTitle">QR 보내기</div>
+    <div class="qr-preview-wrap"><img id="businessCardQRImage" class="business-card-qr-image" alt="나의 명함 QR코드"></div>
+    <div class="qr-name" id="businessCardQRName"></div>
+    <div class="business-card-help">상대방이 이 QR을 카메라로 찍으면 명함 이미지가 열리고, 휴대폰에서 <b>갤러리 저장</b>을 할 수 있습니다.</div>
+    <div class="business-card-actions qr-actions">
+      <button type="button" class="business-card-save-btn" onclick="shareBusinessCardQR()">QR 공유</button>
+      <button type="button" class="business-card-share-btn" onclick="saveBusinessCardQR()">QR 저장</button>
+    </div>
+    <div class="business-card-status" id="businessCardQRStatus"></div>
+  </div>
+</div>
+
 <script>
   // 기본 시트 정보
   const GOOGLE_SHEET_CSV_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vQEbM8YAc7jQes9oX6_-aVsVib2H40avHQkL6TkRRI2cYmw7nYG29F_1lGGz-2gL0nve4Q91MBM02Q-/pub?output=csv";
@@ -3541,11 +3576,21 @@ button,.nav-btn,.action-btn{min-height:44px;}
   let calYear = currentYear;
   let calMonth = currentMonth; 
 
-  const holidays2026 = [
-    "01-01", "02-16", "02-17", "02-18", "03-01", "03-02", "05-05", 
-    "05-24", "05-25", "06-03", "06-06", "08-15", "08-17", 
-    "09-24", "09-25", "09-26", "10-03", "10-05", "10-09", "12-25"  
-  ];
+  // 대한민국 2026년 공휴일/대체공휴일/명절. 달력에 실제 공휴일 명칭을 함께 표시합니다.
+  const holidayMap = {
+    2026: {
+      "01-01":"신정", "02-16":"설날 연휴", "02-17":"설날", "02-18":"설날 연휴",
+      "03-01":"삼일절", "03-02":"대체공휴일", "05-05":"어린이날",
+      "05-24":"부처님오신날", "05-25":"대체공휴일", "06-06":"현충일",
+      "08-15":"광복절", "08-17":"대체공휴일", "09-24":"추석 연휴",
+      "09-25":"추석", "09-26":"추석 연휴", "10-03":"개천절", "10-05":"대체공휴일",
+      "10-09":"한글날", "12-25":"성탄절"
+    }
+  };
+  function getHolidayName(year, month, day){
+    const key=String(month).padStart(2,'0')+'-'+String(day).padStart(2,'0');
+    return holidayMap[year]?.[key] || '';
+  }
 
   function splitCSV(csv) {
     const rows = [];
@@ -3998,6 +4043,89 @@ button,.nav-btn,.action-btn{min-height:44px;}
   window.closeMyBusinessCardOnOutside = function(event) {
     if(event.target && event.target.id==='businessCardOverlay') closeMyBusinessCard();
   };
+
+  window.openNaverWeather = function(){
+    window.open('https://weather.naver.com/','_blank','noopener,noreferrer');
+  };
+
+  function businessCardShareUrl(data){
+    const base=window.location.origin + window.location.pathname;
+    const params=new URLSearchParams({
+      shareCard:'1',
+      name:data?.name||'', affiliation:data?.affiliation||'', position:data?.position||'',
+      phone:data?.phone||'', fax:data?.fax||'', contact:data?.contact||'', email:data?.email||''
+    });
+    return base+'?'+params.toString();
+  }
+
+  window.openBusinessCardQR = function(){
+    if(!myBusinessCardData) return;
+    const overlay=document.getElementById('businessCardQROverlay');
+    const img=document.getElementById('businessCardQRImage');
+    const name=document.getElementById('businessCardQRName');
+    const status=document.getElementById('businessCardQRStatus');
+    const shareUrl=businessCardShareUrl(myBusinessCardData);
+    if(!overlay||!img) return;
+    img.src='https://api.qrserver.com/v1/create-qr-code/?size=700x700&margin=12&data='+encodeURIComponent(shareUrl);
+    if(name) name.textContent=(myBusinessCardData.name||'KODA')+'님의 명함 QR';
+    if(status) status.textContent='';
+    overlay.style.display='flex';
+    document.body.style.overflow='hidden';
+  };
+  window.closeBusinessCardQR = function(){
+    const overlay=document.getElementById('businessCardQROverlay');
+    if(overlay) overlay.style.display='none';
+    document.body.style.overflow='auto';
+  };
+  window.closeBusinessCardQROnOutside = function(event){
+    if(event.target?.id==='businessCardQROverlay') closeBusinessCardQR();
+  };
+  window.saveBusinessCardQR = function(){
+    const img=document.getElementById('businessCardQRImage');
+    if(!img?.src) return;
+    const a=document.createElement('a'); a.href=img.src; a.download='KODA_명함_QR.png';
+    document.body.appendChild(a); a.click(); a.remove();
+    const status=document.getElementById('businessCardQRStatus');
+    if(status) status.textContent='QR 이미지 저장을 시작했습니다.';
+  };
+  window.shareBusinessCardQR = async function(){
+    const img=document.getElementById('businessCardQRImage');
+    const status=document.getElementById('businessCardQRStatus');
+    try{
+      const blob=await (await fetch(img.src)).blob();
+      const file=new File([blob],'KODA_명함_QR.png',{type:'image/png'});
+      if(navigator.share && navigator.canShare && navigator.canShare({files:[file]})){
+        await navigator.share({title:'KODA 명함 QR',text:'QR을 찍으면 명함을 저장할 수 있습니다.',files:[file]});
+        if(status) status.textContent='QR 공유가 완료되었습니다.'; return;
+      }
+    }catch(e){ if(e?.name==='AbortError') return; }
+    if(img?.src) window.open(img.src,'_blank','noopener,noreferrer');
+    if(status) status.textContent='QR 이미지를 길게 눌러 공유해주세요.';
+  };
+
+  function renderSharedBusinessCard(){
+    const params=new URLSearchParams(location.search);
+    if(params.get('shareCard')!=='1') return false;
+    document.body.classList.add('shared-business-card-mode');
+    const data={name:params.get('name')||'',affiliation:params.get('affiliation')||'',position:params.get('position')||'',phone:params.get('phone')||'',fax:params.get('fax')||'',contact:params.get('contact')||'',email:params.get('email')||''};
+    const host=document.createElement('div');
+    host.id='sharedBusinessCardPage';
+    host.innerHTML=`<div class="shared-card-inner"><div class="shared-card-title">KODA 명함</div><img id="sharedBusinessCardImage" class="shared-card-image" alt="${data.name||'KODA'}님의 명함"><button type="button" class="shared-card-save" id="sharedBusinessCardSave">갤러리에 저장</button><div class="shared-card-tip">저장 버튼이 지원되지 않으면 이미지를 길게 눌러 사진/갤러리에 저장해주세요.</div></div>`;
+    document.body.innerHTML=''; document.body.appendChild(host);
+    createBusinessCardJpg(data).then(url=>{
+      const im=document.getElementById('sharedBusinessCardImage'); if(im) im.src=url;
+      const btn=document.getElementById('sharedBusinessCardSave');
+      if(btn) btn.onclick=async()=>{
+        try{
+          const blob=await (await fetch(url)).blob(); const file=new File([blob],businessCardFilenameFor(data),{type:'image/jpeg'});
+          if(navigator.share && navigator.canShare && navigator.canShare({files:[file]})){await navigator.share({title:'KODA 명함',files:[file]});return;}
+        }catch(e){if(e?.name==='AbortError')return;}
+        const a=document.createElement('a');a.href=url;a.download=businessCardFilenameFor(data);document.body.appendChild(a);a.click();a.remove();
+      };
+    });
+    return true;
+  }
+  function businessCardFilenameFor(data){const n=String(data?.name||'KODA').replace(/[^가-힣a-zA-Z0-9_-]/g,'');return `${n||'KODA'}_명함.jpg`;}
 
   function businessCardFilename() {
     const name=String(myBusinessCardData?.name || 'KODA').replace(/[^가-힣a-zA-Z0-9_-]/g,'');
@@ -5065,7 +5193,8 @@ button,.nav-btn,.action-btn{min-height:44px;}
       const mmdd = String(calMonth).padStart(2, '0') + '-' + String(d).padStart(2, '0');
       let dateNumClass = "cal-date-num";
       
-      if (currentDayOfWeek === 0 || holidays2026.includes(mmdd)) dateNumClass += " text-red";
+      const holidayName = getHolidayName(calYear, calMonth, d);
+       if (currentDayOfWeek === 0 || holidayName) dateNumClass += " text-red";
       else if (currentDayOfWeek === 6) dateNumClass += " text-blue";
 
       const dateClick = monthBaseData.length > 0 ? `onclick="openDayEventsModal(${calYear}, ${calMonth}, ${d})"` : "";
@@ -5747,7 +5876,7 @@ function createEventCard(event) {
     history.back();
   };
 
-  initAuth();
+  if(!renderSharedBusinessCard()) initAuth();
 
 </script>
 </body>
