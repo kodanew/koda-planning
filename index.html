@@ -1762,11 +1762,11 @@ button,.nav-btn,.action-btn{min-height:44px;}
 .emergency-icon{font-size:.9rem;flex:0 0 auto;line-height:1;}
 .emergency-badge{
   flex:0 0 auto;
-  padding:3px 7px;
+  padding:4px 8px;
   border-radius:999px;
   background:linear-gradient(135deg,#c62828,#8b4513);
   color:#fff;
-  font-size:.58rem;
+  font-size:.68rem;
   font-weight:850;
   line-height:1;
   white-space:nowrap;
@@ -1777,7 +1777,7 @@ button,.nav-btn,.action-btn{min-height:44px;}
   overflow:hidden;
   white-space:nowrap;
   color:#9b321e;
-  font-size:.72rem;
+  font-size:.84rem;
   font-weight:800;
   letter-spacing:-.035em;
 }
@@ -1817,32 +1817,35 @@ button,.nav-btn,.action-btn{min-height:44px;}
 .govasm-section{margin-bottom:16px;}
 .govasm-section:last-child{margin-bottom:0;}
 .govasm-badge{
-  display:inline-flex;align-items:center;justify-content:center;
-  min-width:62px;height:28px;padding:0 12px;border-radius:999px;
-  color:#fff;font-size:.72rem;font-weight:850;letter-spacing:-.03em;
-  box-shadow:0 4px 10px rgba(23,63,112,.12);
+  display:inline-block;vertical-align:middle;
+  font-size:.68rem;font-weight:800;padding:3px 7px;border-radius:4px;
+  margin:0;letter-spacing:-.03em;
 }
-.govasm-badge.gov{background:linear-gradient(135deg,#1769d2,#3182ce);}
-.govasm-badge.assembly{background:linear-gradient(135deg,#64748b,#334155);}
-.govasm-divider{height:1px;background:#dbe4ef;margin:8px 0 10px;}
+.govasm-badge.gov{background:#ebf8ff;color:#1769d2;}
+.govasm-badge.assembly{background:#e2e8f0;color:#4a5568;}
+.govasm-divider{height:1px;background:#d9e6f4;margin:7px 0 9px;}
+.govasm-divider.gov-divider{background:#1769d2;}
+.govasm-divider.assembly-divider{background:#64748b;}
 .govasm-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;}
 .govasm-card{
   min-width:0;height:72px;border:1px solid #dce6f2;border-radius:13px;
   background:#fff;display:flex;align-items:center;justify-content:center;
   text-align:center;text-decoration:none;color:#27415f;
-  font-size:.74rem;font-weight:800;letter-spacing:-.045em;
+  font-size:.96rem;font-weight:800;letter-spacing:-.045em;
   box-shadow:0 3px 11px rgba(24,71,120,.05);
   transition:transform .12s,box-shadow .12s,background .12s;
 }
 .govasm-card:active{transform:scale(.97);background:#f8fbff;}
+.govasm-card.gov-card{border-color:#1769d2;}
+.govasm-card.assembly-card{border-color:#64748b;}
 .govasm-section-title{display:none;}
 @media(max-width:360px){
   .emergency-notice{height:38px;padding:0 8px;gap:5px;}
-  .emergency-marquee{font-size:.67rem;}
-  .emergency-badge{font-size:.54rem;padding:3px 6px;}
+  .emergency-marquee{font-size:.79rem;}
+  .emergency-badge{font-size:.64rem;padding:4px 7px;}
   .govasm-content{padding:10px 10px 20px;}
   .govasm-grid{gap:6px;}
-  .govasm-card{height:66px;font-size:.69rem;border-radius:11px;}
+  .govasm-card{height:66px;font-size:.86rem;border-radius:11px;}
 }
 
 </style>
@@ -2311,6 +2314,15 @@ button,.nav-btn,.action-btn{min-height:44px;}
       border-radius: 6px 0 10px 0; 
     }
   }
+</style>
+<style id="card-next-badge-style">
+  .card-next-badge {
+    position:absolute; bottom:0; right:0; background:#1769d2; color:#fff;
+    font-size:.55rem; font-weight:800; padding:3px 7px;
+    border-radius:8px 0 8px 0; z-index:5; line-height:1.1; pointer-events:none;
+    box-shadow:-1px -1px 4px rgba(23,105,210,.15);
+  }
+  @media(max-width:360px){.card-next-badge{font-size:.5rem;padding:2px 5px;border-radius:6px 0 10px 0;}}
 </style>
 
 <style id="news-screen-staff-style-match">
@@ -3558,33 +3570,33 @@ button,.nav-btn,.action-btn{min-height:44px;}
 <div class="fullscreen-screen" id="govAssemblyScreen">
   <div class="govasm-header">
     <button class="govasm-back" onclick="closeGovAssemblyScreen()" aria-label="뒤로가기">←</button>
-    <div class="govasm-title">정부국회</div>
+    <div class="govasm-title">국토교통부 · 국회</div>
     <div></div>
   </div>
   <div class="govasm-content">
     <section class="govasm-section">
-      <span class="govasm-badge gov">정부</span>
-      <div class="govasm-divider"></div>
+      <span class="govasm-badge gov">국토교통부</span>
+      <div class="govasm-divider gov-divider"></div>
       <div class="govasm-grid">
-        <a class="govasm-card" href="https://www.molit.go.kr/USR/NEWS/m_71/lst.jsp" target="_blank" rel="noopener noreferrer">보도자료</a>
-        <a class="govasm-card" href="https://www.molit.go.kr/USR/INSA/m_79/lst.jsp" target="_blank" rel="noopener noreferrer">인사발령</a>
-        <a class="govasm-card" href="https://www.molit.go.kr/USR/law/m_46/lst.jsp" target="_blank" rel="noopener noreferrer">입법예고</a>
-        <a class="govasm-card" href="https://www.molit.go.kr/USR/policyData/m_34681/lst.jsp" target="_blank" rel="noopener noreferrer">정책자료</a>
-        <a class="govasm-card" href="https://www.molit.go.kr/USR/I0204/m_45/lst.jsp" target="_blank" rel="noopener noreferrer">행정규칙</a>
-        <a class="govasm-card" href="https://www.molit.go.kr/USR/WPGE0201/m_212/DTL.jsp" target="_blank" rel="noopener noreferrer">부서안내</a>
+        <a class="govasm-card gov-card" href="https://www.molit.go.kr/USR/NEWS/m_71/lst.jsp" target="_blank" rel="noopener noreferrer">보도자료</a>
+        <a class="govasm-card gov-card" href="https://www.molit.go.kr/USR/INSA/m_79/lst.jsp" target="_blank" rel="noopener noreferrer">인사발령</a>
+        <a class="govasm-card gov-card" href="https://www.molit.go.kr/USR/law/m_46/lst.jsp" target="_blank" rel="noopener noreferrer">입법예고</a>
+        <a class="govasm-card gov-card" href="https://www.molit.go.kr/USR/policyData/m_34681/lst.jsp" target="_blank" rel="noopener noreferrer">정책자료</a>
+        <a class="govasm-card gov-card" href="https://www.molit.go.kr/USR/I0204/m_45/lst.jsp" target="_blank" rel="noopener noreferrer">행정규칙</a>
+        <a class="govasm-card gov-card" href="https://www.molit.go.kr/USR/WPGE0201/m_212/DTL.jsp" target="_blank" rel="noopener noreferrer">부서안내</a>
       </div>
     </section>
 
     <section class="govasm-section">
       <span class="govasm-badge assembly">국회</span>
-      <div class="govasm-divider"></div>
+      <div class="govasm-divider assembly-divider"></div>
       <div class="govasm-grid">
-        <a class="govasm-card" href="https://www.assembly.go.kr/portal/bbs/B0000051/list.do?menuNo=600101" target="_blank" rel="noopener noreferrer">보도자료</a>
-        <a class="govasm-card" href="https://www.assembly.go.kr/portal/na/agenda/agendaSchl.do?menuNo=600015" target="_blank" rel="noopener noreferrer">국회일정</a>
-        <a class="govasm-card" href="https://ampos.nanet.go.kr/seminarList.do?searchGubun=cal#searchGubun=cal&curPage=1&curMonth=202609&fileNo=&searchType=&queryText=&fromDate=2026-09-21&endDate=2026-09-21&sort=asc" target="_blank" rel="noopener noreferrer">국회세미나</a>
-        <a class="govasm-card" href="https://ltc.na.go.kr/cmmit/main/main.do" target="_blank" rel="noopener noreferrer">국토교통위</a>
-        <a class="govasm-card" href="https://ltc.na.go.kr/cmmit/mem/cmmitMemList/list.do?menuNo=2000013" target="_blank" rel="noopener noreferrer">국토위현황</a>
-        <a class="govasm-card" href="https://likms.assembly.go.kr/bill/bi/main/mainPage.do" target="_blank" rel="noopener noreferrer">의안검색</a>
+        <a class="govasm-card assembly-card" href="https://www.assembly.go.kr/portal/bbs/B0000051/list.do?menuNo=600101" target="_blank" rel="noopener noreferrer">보도자료</a>
+        <a class="govasm-card assembly-card" href="https://www.assembly.go.kr/portal/na/agenda/agendaSchl.do?menuNo=600015" target="_blank" rel="noopener noreferrer">국회일정</a>
+        <a class="govasm-card assembly-card" href="https://ampos.nanet.go.kr/seminarList.do?searchGubun=cal#searchGubun=cal&curPage=1&curMonth=202609&fileNo=&searchType=&queryText=&fromDate=2026-09-21&endDate=2026-09-21&sort=asc" target="_blank" rel="noopener noreferrer">국회세미나</a>
+        <a class="govasm-card assembly-card" href="https://ltc.na.go.kr/cmmit/main/main.do" target="_blank" rel="noopener noreferrer">국토교통위</a>
+        <a class="govasm-card assembly-card" href="https://ltc.na.go.kr/cmmit/mem/cmmitMemList/list.do?menuNo=2000013" target="_blank" rel="noopener noreferrer">국토위현황</a>
+        <a class="govasm-card assembly-card" href="https://likms.assembly.go.kr/bill/bi/main/mainPage.do" target="_blank" rel="noopener noreferrer">의안검색</a>
       </div>
     </section>
   </div>
@@ -5328,7 +5340,7 @@ button,.nav-btn,.action-btn{min-height:44px;}
     updateView();
   };
 
-function createEventCard(event) {
+function createEventCard(event, isNext=false) {
     const globalIndex = scheduleData.indexOf(event);
     const isChairman = event.note.includes("회장님 참석");
     const titleClass = isChairman ? "event-title chairman" : "event-title";
@@ -5338,7 +5350,7 @@ function createEventCard(event) {
     const card = document.createElement('div');
     card.className = 'event-card' + (isToday ? ' today-card' : '');
 
-    const todayBadgeHtml = isToday ? `<div class="card-today-badge">TODAY</div>` : '';
+    const todayBadgeHtml = isToday ? `<div class="card-today-badge">TODAY</div>` : (isNext ? `<div class="card-next-badge">NEXT</div>` : '');
 
     card.innerHTML = `
       ${todayBadgeHtml}
@@ -5403,8 +5415,13 @@ function createEventCard(event) {
         pastEvents.forEach(event => listWrapper.appendChild(createEventCard(event)));
     } else {
         todayEvents.forEach(event => listWrapper.appendChild(createEventCard(event)));
-        
-        futureEvents.forEach(event => listWrapper.appendChild(createEventCard(event)));
+
+        const nextEvent = futureEvents.length > 0 ? [...futureEvents].sort((a,b) => {
+          const da = new Date(currentYear, a.month - 1, a.day, ...(a.time ? a.time.split(':').map(Number) : [0,0])).getTime();
+          const db = new Date(currentYear, b.month - 1, b.day, ...(b.time ? b.time.split(':').map(Number) : [0,0])).getTime();
+          return da - db;
+        })[0] : null;
+        futureEvents.forEach(event => listWrapper.appendChild(createEventCard(event, event === nextEvent)));
         
         if (pastEvents.length > 0) {
             if (todayEvents.length > 0 || futureEvents.length > 0) {
