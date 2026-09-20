@@ -1736,6 +1736,115 @@ button,.nav-btn,.action-btn{min-height:44px;}
   }
 }
 
+
+/* 2026-09-20: 긴급공지 + 정부국회 페이지 */
+.emergency-notice-wrap{
+  width:calc(100% - 20px);
+  margin:0 10px 10px;
+  display:none;
+}
+.emergency-notice{
+  position:relative;
+  width:100%;
+  height:40px;
+  border:2px solid transparent;
+  border-radius:12px;
+  background:
+    linear-gradient(#f1f3f5,#f1f3f5) padding-box,
+    linear-gradient(90deg,#c62828 0%,#8b4513 52%,#c62828 100%) border-box;
+  box-shadow:0 4px 12px rgba(90,45,20,.08);
+  display:flex;
+  align-items:center;
+  gap:7px;
+  padding:0 10px;
+  overflow:hidden;
+}
+.emergency-icon{font-size:.9rem;flex:0 0 auto;line-height:1;}
+.emergency-badge{
+  flex:0 0 auto;
+  padding:3px 7px;
+  border-radius:999px;
+  background:linear-gradient(135deg,#c62828,#8b4513);
+  color:#fff;
+  font-size:.58rem;
+  font-weight:850;
+  line-height:1;
+  white-space:nowrap;
+}
+.emergency-marquee{
+  min-width:0;
+  flex:1 1 auto;
+  overflow:hidden;
+  white-space:nowrap;
+  color:#9b321e;
+  font-size:.72rem;
+  font-weight:800;
+  letter-spacing:-.035em;
+}
+.emergency-marquee-inner{
+  display:inline-block;
+  padding-left:100%;
+  animation:emergencyMarquee 15s linear infinite;
+}
+.emergency-marquee-inner.no-marquee{
+  padding-left:0;
+  animation:none;
+}
+@keyframes emergencyMarquee{
+  0%{transform:translateX(0)}
+  100%{transform:translateX(-100%)}
+}
+
+/* 정부·국회 화면 */
+#govAssemblyScreen{background:#f4f7fb;}
+#govAssemblyScreen .govasm-header{
+  width:100%;max-width:430px;margin:0 auto;height:54px;
+  position:sticky;top:0;z-index:30;background:#fff;
+  border-bottom:1px solid #edf2f7;
+  box-shadow:0 3px 14px rgba(25,67,110,.055);
+  display:grid;grid-template-columns:54px minmax(0,1fr) 54px;
+  align-items:center;padding:0 12px;
+}
+#govAssemblyScreen .govasm-back{
+  width:42px;height:42px;min-height:42px;padding:0;border:0;border-radius:14px;
+  background:#f1f6fd;color:#1769d2;font-size:1.55rem;font-weight:700;line-height:1;
+}
+#govAssemblyScreen .govasm-title{
+  text-align:center;color:#173f70;font-size:1.12rem;font-weight:850;
+  letter-spacing:-.045em;white-space:nowrap;
+}
+.govasm-content{width:100%;max-width:430px;margin:0 auto;padding:12px 14px 24px;}
+.govasm-section{margin-bottom:16px;}
+.govasm-section:last-child{margin-bottom:0;}
+.govasm-badge{
+  display:inline-flex;align-items:center;justify-content:center;
+  min-width:62px;height:28px;padding:0 12px;border-radius:999px;
+  color:#fff;font-size:.72rem;font-weight:850;letter-spacing:-.03em;
+  box-shadow:0 4px 10px rgba(23,63,112,.12);
+}
+.govasm-badge.gov{background:linear-gradient(135deg,#1769d2,#3182ce);}
+.govasm-badge.assembly{background:linear-gradient(135deg,#64748b,#334155);}
+.govasm-divider{height:1px;background:#dbe4ef;margin:8px 0 10px;}
+.govasm-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;}
+.govasm-card{
+  min-width:0;height:72px;border:1px solid #dce6f2;border-radius:13px;
+  background:#fff;display:flex;align-items:center;justify-content:center;
+  text-align:center;text-decoration:none;color:#27415f;
+  font-size:.74rem;font-weight:800;letter-spacing:-.045em;
+  box-shadow:0 3px 11px rgba(24,71,120,.05);
+  transition:transform .12s,box-shadow .12s,background .12s;
+}
+.govasm-card:active{transform:scale(.97);background:#f8fbff;}
+.govasm-section-title{display:none;}
+@media(max-width:360px){
+  .emergency-notice{height:38px;padding:0 8px;gap:5px;}
+  .emergency-marquee{font-size:.67rem;}
+  .emergency-badge{font-size:.54rem;padding:3px 6px;}
+  .govasm-content{padding:10px 10px 20px;}
+  .govasm-grid{gap:6px;}
+  .govasm-card{height:66px;font-size:.69rem;border-radius:11px;}
+}
+
 </style>
 
 <style id="final-staff-header-fixes">
@@ -3139,6 +3248,17 @@ button,.nav-btn,.action-btn{min-height:44px;}
     <button type="button" class="banner-pause-btn" id="bannerPauseBtn" onclick="toggleBannerPause()" aria-label="배너 자동 넘김 일시정지">Ⅱ</button>
   </section>
 
+  <!-- 구글 시트6 B2가 "중요공지"일 때만 표시되는 긴급공지 -->
+  <div class="emergency-notice-wrap" id="emergencyNoticeWrap">
+    <div class="emergency-notice" role="status" aria-live="polite">
+      <span class="emergency-icon" aria-hidden="true">📣</span>
+      <span class="emergency-badge" id="emergencyNoticeBadge"></span>
+      <div class="emergency-marquee" id="emergencyNoticeMarquee">
+        <span class="emergency-marquee-inner" id="emergencyNoticeText"></span>
+      </div>
+    </div>
+  </div>
+
   <div class="calendar-wrapper" id="calendarWrapper">
     <div class="cal-header">
       <button class="cal-nav-btn" onclick="changeMonth(-1)">&#10094;</button>
@@ -3228,12 +3348,17 @@ button,.nav-btn,.action-btn{min-height:44px;}
       <span class="quick-label">준비중</span>
     </button>
 
-    <!-- 8. 준비중 -->
-    <button class="quick-btn" style="opacity:0.5; cursor:default;">
-      <span class="quick-icon" style="background:#f7fafc;">
-        <span style="font-size:1.2rem; filter:grayscale(1);">🔒</span>
+    <!-- 8. 정부국회 -->
+    <button class="quick-btn" onclick="openGovAssemblyScreen()" aria-label="정부국회">
+      <span class="quick-icon" style="background:#fff;">
+        <svg viewBox="0 0 52 52" aria-hidden="true">
+          <path d="M10 21h32v22H10z" fill="#1769d2"/>
+          <path d="M7 18h38l-19-9z" fill="#3182ce"/>
+          <path d="M14 24h5v14h-5zm9 0h5v14h-5zm9 0h5v14h-5z" fill="#fff"/>
+          <path d="M7 43h38v3H7z" fill="#173f70"/>
+        </svg>
       </span>
-      <span class="quick-label">준비중</span>
+      <span class="quick-label">정부국회</span>
     </button>
 
     <!-- 9. 개발업법 : 비정형 지구 실루엣 -->
@@ -3426,6 +3551,42 @@ button,.nav-btn,.action-btn{min-height:44px;}
 
   <div class="fullscreen-content" style="padding-top:15px;">
     <div id="meetingList"></div>
+  </div>
+</div>
+
+<!-- ✨ 정부·국회 바로가기 페이지 ✨ -->
+<div class="fullscreen-screen" id="govAssemblyScreen">
+  <div class="govasm-header">
+    <button class="govasm-back" onclick="closeGovAssemblyScreen()" aria-label="뒤로가기">←</button>
+    <div class="govasm-title">정부국회</div>
+    <div></div>
+  </div>
+  <div class="govasm-content">
+    <section class="govasm-section">
+      <span class="govasm-badge gov">정부</span>
+      <div class="govasm-divider"></div>
+      <div class="govasm-grid">
+        <a class="govasm-card" href="https://www.molit.go.kr/USR/NEWS/m_71/lst.jsp" target="_blank" rel="noopener noreferrer">보도자료</a>
+        <a class="govasm-card" href="https://www.molit.go.kr/USR/INSA/m_79/lst.jsp" target="_blank" rel="noopener noreferrer">인사발령</a>
+        <a class="govasm-card" href="https://www.molit.go.kr/USR/law/m_46/lst.jsp" target="_blank" rel="noopener noreferrer">입법예고</a>
+        <a class="govasm-card" href="https://www.molit.go.kr/USR/policyData/m_34681/lst.jsp" target="_blank" rel="noopener noreferrer">정책자료</a>
+        <a class="govasm-card" href="https://www.molit.go.kr/USR/I0204/m_45/lst.jsp" target="_blank" rel="noopener noreferrer">행정규칙</a>
+        <a class="govasm-card" href="https://www.molit.go.kr/USR/WPGE0201/m_212/DTL.jsp" target="_blank" rel="noopener noreferrer">부서안내</a>
+      </div>
+    </section>
+
+    <section class="govasm-section">
+      <span class="govasm-badge assembly">국회</span>
+      <div class="govasm-divider"></div>
+      <div class="govasm-grid">
+        <a class="govasm-card" href="https://www.assembly.go.kr/portal/bbs/B0000051/list.do?menuNo=600101" target="_blank" rel="noopener noreferrer">보도자료</a>
+        <a class="govasm-card" href="https://www.assembly.go.kr/portal/na/agenda/agendaSchl.do?menuNo=600015" target="_blank" rel="noopener noreferrer">국회일정</a>
+        <a class="govasm-card" href="https://ampos.nanet.go.kr/seminarList.do?searchGubun=cal#searchGubun=cal&curPage=1&curMonth=202609&fileNo=&searchType=&queryText=&fromDate=2026-09-21&endDate=2026-09-21&sort=asc" target="_blank" rel="noopener noreferrer">국회세미나</a>
+        <a class="govasm-card" href="https://ltc.na.go.kr/cmmit/main/main.do" target="_blank" rel="noopener noreferrer">국토교통위</a>
+        <a class="govasm-card" href="https://ltc.na.go.kr/cmmit/mem/cmmitMemList/list.do?menuNo=2000013" target="_blank" rel="noopener noreferrer">국토위현황</a>
+        <a class="govasm-card" href="https://likms.assembly.go.kr/bill/bi/main/mainPage.do" target="_blank" rel="noopener noreferrer">의안검색</a>
+      </div>
+    </section>
   </div>
 </div>
 
@@ -5267,7 +5428,7 @@ function createEventCard(event) {
   if (!history.state || !history.state.kodaBase) { history.replaceState({kodaBase:true}, '', location.href); }
   window.addEventListener('popstate', function(event) {
     const st = event.state || {};
-    const ids = ['dayEventsModal', 'staffScreen', 'staffDetailModal', 'memberCompanyDetailModal', 'newsScreen', 'newsDetailScreen', 'meetingScreen'];
+    const ids = ['dayEventsModal', 'staffScreen', 'staffDetailModal', 'memberCompanyDetailModal', 'newsScreen', 'newsDetailScreen', 'meetingScreen', 'govAssemblyScreen'];
     ids.forEach(id => { const el=document.getElementById(id); if(el) el.style.display='none'; });
     hideModalDOM();
     document.body.style.overflow = 'auto';
@@ -5279,8 +5440,9 @@ function createEventCard(event) {
     else if (st.newsOpen) document.getElementById('newsScreen').style.display = 'flex';
       else if (st.newsDetailOpen) document.getElementById('newsDetailScreen').style.display = 'flex';
       else if (st.meetingOpen) document.getElementById('meetingScreen').style.display = 'flex';
+    else if (st.govAssemblyOpen) document.getElementById('govAssemblyScreen').style.display = 'flex';
 
-    if (st.staffOpen || st.staffDetailOpen || st.dayEventsModalOpen || st.newsOpen || st.newsDetailOpen || st.meetingOpen) {
+    if (st.staffOpen || st.staffDetailOpen || st.dayEventsModalOpen || st.newsOpen || st.newsDetailOpen || st.meetingOpen || st.govAssemblyOpen) {
       document.body.style.overflow='hidden';
     }
   });
@@ -5827,6 +5989,56 @@ function createEventCard(event) {
   window.closeMeetingScreen = function() {
     history.back();
   };
+
+
+  /* ===== 2026-09-20 긴급공지: Sheet6 B2/D2/E2 ===== */
+  async function loadEmergencyNotice() {
+    const wrap = document.getElementById('emergencyNoticeWrap');
+    const badge = document.getElementById('emergencyNoticeBadge');
+    const textEl = document.getElementById('emergencyNoticeText');
+    if (!wrap || !badge || !textEl) return;
+
+    try {
+      const response = await fetch(NEWS_SHEET_CSV_URL + "&t=" + Date.now());
+      if (!response.ok) throw new Error('긴급공지 CSV 응답 오류');
+      const rows = splitCSV(await response.text());
+      // 2행(B2/D2/E2): splitCSV의 첫 데이터 행은 index 1
+      const row2 = rows[1] || [];
+      const category = String(row2[1] || '').trim();
+      const badgeText = String(row2[3] || '').trim();
+      const noticeText = String(row2[4] || '').trim();
+
+      if (category === '중요공지' && noticeText) {
+        badge.textContent = badgeText || '중요공지';
+        textEl.textContent = noticeText;
+        textEl.classList.remove('no-marquee');
+        // 짧은 문구는 정지 상태로 표시
+        if (noticeText.length <= 24) textEl.classList.add('no-marquee');
+        wrap.style.display = 'block';
+      } else {
+        wrap.style.display = 'none';
+      }
+    } catch (error) {
+      console.warn('긴급공지 불러오기 실패:', error);
+      wrap.style.display = 'none';
+    }
+  }
+
+  /* ===== 정부·국회 페이지 ===== */
+  window.openGovAssemblyScreen = function() {
+    const screen = document.getElementById('govAssemblyScreen');
+    if (!screen) return;
+    screen.style.display = 'flex';
+    screen.scrollTop = 0;
+    document.body.style.overflow = 'hidden';
+    history.pushState({ govAssemblyOpen: true }, "", "");
+  };
+
+  window.closeGovAssemblyScreen = function() {
+    history.back();
+  };
+
+  loadEmergencyNotice();
 
   initAuth();
 
