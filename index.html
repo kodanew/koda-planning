@@ -3294,6 +3294,20 @@ button,.nav-btn,.action-btn{min-height:44px;}
 }
 </style>
 
+
+<style id="quick-icon-size-up-20260921">
+  /* 요청: 지정된 주요 퀵버튼 이모티콘 1사이즈 확대 */
+  .quick-btn[aria-label="협회공지"] .quick-icon svg,
+  .quick-btn[aria-label="코다피플"] .quick-icon svg,
+  .quick-btn[aria-label="코다자료"] .quick-icon svg,
+  .quick-btn[aria-label="KODA-TV"] .quick-icon svg,
+  .quick-btn[aria-label="코다기사"] .quick-icon svg,
+  .quick-btn[aria-label="정부국회"] .quick-icon svg,
+  .quick-btn[aria-label="관심일정"] .quick-icon svg{
+    width:35px !important;
+    height:35px !important;
+  }
+</style>
 </head>
 <body>
 
@@ -3377,15 +3391,8 @@ button,.nav-btn,.action-btn{min-height:44px;}
     <button class="quick-btn" onclick="openNewsScreen()">
       <span class="quick-icon news-quick-icon">
         <svg viewBox="0 0 52 52" aria-hidden="true">
-          <!-- 심플한 게시판 느낌: 상단 제목줄 + 게시물 라인 + 핀 -->
-          <rect x="7" y="8" width="38" height="36" rx="6" fill="#f6c344"/>
-          <rect x="12" y="13" width="28" height="5" rx="1.5" fill="#fff"/>
-          <circle cx="15" cy="25" r="2.2" fill="#d9a900"/>
-          <rect x="20" y="23" width="17" height="3.5" rx="1.5" fill="#fff"/>
-          <circle cx="15" cy="33" r="2.2" fill="#d9a900"/>
-          <rect x="20" y="31" width="14" height="3.5" rx="1.5" fill="#fff"/>
-          <circle cx="15" cy="40" r="2.2" fill="#d9a900"/>
-          <rect x="20" y="38" width="17" height="3" rx="1.5" fill="#fff"/>
+          <rect x="7" y="6" width="38" height="40" rx="8" fill="#f6c344"/>
+          <path d="M14 14h24v4H14zm0 8h18v3H14zm0 7h24v3H14zm0 7h15v3H14z" fill="#fff"/>
         </svg>
       </span>
       <span class="quick-label">협회공지</span>
@@ -3417,7 +3424,7 @@ button,.nav-btn,.action-btn{min-height:44px;}
     </button>
 
     <!-- 5. KODA-TV -->
-    <a href="https://www.youtube.com/@kodatv9717" target="_blank" class="quick-btn">
+    <a href="https://www.youtube.com/@kodatv9717" target="_blank" class="quick-btn" aria-label="KODA-TV">
       <span class="quick-icon">
         <svg viewBox="0 0 64 44" aria-hidden="true">
           <rect x="2" y="2" width="60" height="40" rx="11" fill="#FF0033"/>
@@ -3435,7 +3442,7 @@ button,.nav-btn,.action-btn{min-height:44px;}
       <span class="quick-icon">
         <svg viewBox="0 0 52 52" aria-hidden="true">
           <rect x="5" y="5" width="42" height="42" rx="12" fill="#03C75A"/>
-          <path d="M16 14h7.5l6.5 10.5V14H36v24h-7l-7-10.8V38h-6z" fill="#fff"/>
+          <path d="M16 14h6v9l8-9h7l-9 10 10 14h-7l-7-10-2 2v8h-6z" fill="#fff"/>
         </svg>
       </span>
       <span class="quick-label">코다기사</span>
