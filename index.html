@@ -3308,19 +3308,6 @@ button,.nav-btn,.action-btn{min-height:44px;}
     height:35px !important;
   }
 </style>
-
-<style id="latest-icon-adjustments">
-/* 코다자료 2단 서랍장 아이콘을 아이콘 영역의 정중앙에 배치 */
-.quick-btn[aria-label="코다자료"] .quick-icon svg{
-  position:relative;
-  top:2px;
-}
-/* 관심일정 아이콘 1사이즈 추가 확대 */
-#bookmarkFilterBtn .quick-icon svg{
-  width:40px !important;
-  height:40px !important;
-}
-</style>
 </head>
 <body>
 
@@ -6167,22 +6154,6 @@ function createEventCard(event, isNext=false) {
 
   initAuth();
 
-</script>
-
-<script id="hide-emergency-on-notice">
-(function(){
-  function setEmergencyHidden(hidden){
-    var wrap=document.getElementById('emergencyNoticeWrap');
-    if(wrap) wrap.style.display=hidden?'none':'';
-  }
-  var original=window.openNewsScreen;
-  if(typeof original==='function'){
-    window.openNewsScreen=function(){
-      setEmergencyHidden(true);
-      return original.apply(this,arguments);
-    };
-  }
-})();
 </script>
 </body>
 </html>
