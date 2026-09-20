@@ -1816,19 +1816,28 @@ button,.nav-btn,.action-btn{min-height:44px;}
 .govasm-content{width:100%;max-width:430px;margin:0 auto;padding:12px 14px 24px;}
 .govasm-section{margin-bottom:16px;}
 .govasm-section:last-child{margin-bottom:0;}
-.govasm-badge{
-  display:inline-block;vertical-align:middle;
-  font-size:.68rem;font-weight:800;padding:3px 7px;border-radius:4px;
-  margin:0;letter-spacing:-.03em;
+.govasm-section-head{
+  display:flex;align-items:center;width:100%;gap:9px;
 }
-.govasm-badge.gov{background:#ebf8ff;color:#1769d2;}
-.govasm-badge.assembly{background:#e2e8f0;color:#4a5568;}
-.govasm-divider{height:1px;background:#d9e6f4;margin:7px 0 9px;}
+.govasm-badge{
+  display:inline-flex;align-items:center;justify-content:center;
+  flex:0 0 auto;
+  font-size:.82rem;font-weight:850;padding:5px 10px;border-radius:6px;
+  margin:0;letter-spacing:-.035em;line-height:1.15;
+}
+.govasm-divider{
+  flex:1;height:1.5px;background:#d9e6f4;margin:0;
+}
 .govasm-divider.gov-divider{background:#1769d2;}
 .govasm-divider.assembly-divider{background:#64748b;}
+.govasm-divider.law-divider{background:#7b8794;}
+.govasm-badge.gov{background:#ebf8ff;color:#1769d2;}
+.govasm-badge.assembly{background:#e2e8f0;color:#4a5568;}
+.govasm-badge.law{background:#eef1f4;color:#586474;}
+
 .govasm-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;}
 .govasm-card{
-  min-width:0;height:72px;border:1px solid #dce6f2;border-radius:13px;
+  min-width:0;height:72px;border:1.5px solid #dce6f2;border-radius:13px;
   background:#fff;display:flex;align-items:center;justify-content:center;
   text-align:center;text-decoration:none;color:#27415f;
   font-size:.96rem;font-weight:800;letter-spacing:-.045em;
@@ -1836,13 +1845,14 @@ button,.nav-btn,.action-btn{min-height:44px;}
   transition:transform .12s,box-shadow .12s,background .12s;
 }
 .govasm-card:active{transform:scale(.97);background:#f8fbff;}
-.govasm-card.gov-card{border-color:#1769d2;}
-.govasm-card.assembly-card{border-color:#64748b;}
+.govasm-card.gov-card{border:1.5px solid #1769d2;}
+.govasm-card.assembly-card{border:1.5px solid #64748b;}
+.govasm-card.law-card{border:1.5px solid #7b8794;}
 .govasm-section-title{display:none;}
 @media(max-width:360px){
   .emergency-notice{height:38px;padding:0 8px;gap:5px;}
-  .emergency-marquee{font-size:.79rem;}
-  .emergency-badge{font-size:.64rem;padding:4px 7px;}
+  .emergency-marquee{font-size:.88rem;}
+  .emergency-badge{font-size:.68rem;padding:4px 8px;}
   .govasm-content{padding:10px 10px 20px;}
   .govasm-grid{gap:6px;}
   .govasm-card{height:66px;font-size:.86rem;border-radius:11px;}
@@ -3597,6 +3607,18 @@ button,.nav-btn,.action-btn{min-height:44px;}
         <a class="govasm-card assembly-card" href="https://ltc.na.go.kr/cmmit/main/main.do" target="_blank" rel="noopener noreferrer">국토교통위</a>
         <a class="govasm-card assembly-card" href="https://ltc.na.go.kr/cmmit/mem/cmmitMemList/list.do?menuNo=2000013" target="_blank" rel="noopener noreferrer">국토위현황</a>
         <a class="govasm-card assembly-card" href="https://likms.assembly.go.kr/bill/bi/main/mainPage.do" target="_blank" rel="noopener noreferrer">의안검색</a>
+      </div>
+    </section>
+
+    <section class="govasm-section">
+      <div class="govasm-section-head">
+        <span class="govasm-badge law">법제처</span>
+        <div class="govasm-divider law-divider"></div>
+      </div>
+      <div class="govasm-grid">
+        <a class="govasm-card law-card" href="https://www.moleg.go.kr/index.es?sid=a1" target="_blank" rel="noopener noreferrer">홈페이지</a>
+        <a class="govasm-card law-card" href="https://www.law.go.kr/lsSc.do?menuId=1&subMenuId=15&query=%EB%B6%80%EB%8F%99%EC%82%B0%EA%B0%9C%EB%B0%9C%EC%97%85%EB%B2%95&dt=20201211" target="_blank" rel="noopener noreferrer">개발업법</a>
+        <a class="govasm-card law-card" href="https://law.go.kr/LSW/ais/main.do" target="_blank" rel="noopener noreferrer">AI-LAW봇</a>
       </div>
     </section>
   </div>
