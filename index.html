@@ -1797,68 +1797,19 @@ button,.nav-btn,.action-btn{min-height:44px;}
   100%{transform:translateX(-100%)}
 }
 
-/* 정부·국회 화면 */
-#govAssemblyScreen{background:#f4f7fb;}
-#govAssemblyScreen .govasm-header{
-  width:100%;max-width:430px;margin:0 auto;height:54px;
-  position:sticky;top:0;z-index:30;background:#fff;
-  border-bottom:1px solid #edf2f7;
-  box-shadow:0 3px 14px rgba(25,67,110,.055);
-  display:grid;grid-template-columns:54px minmax(0,1fr) 54px;
-  align-items:center;padding:0 12px;
-}
-#govAssemblyScreen .govasm-back{
-  width:42px;height:42px;min-height:42px;padding:0;border:0;border-radius:14px;
-  background:#f1f6fd;color:#1769d2;font-size:1.55rem;font-weight:700;line-height:1;
-}
-#govAssemblyScreen .govasm-title{
-  text-align:center;color:#173f70;font-size:1.12rem;font-weight:850;
-  letter-spacing:-.045em;white-space:nowrap;
-}
-.govasm-content{width:100%;max-width:430px;margin:0 auto;padding:12px 14px 24px;}
-.govasm-section{margin-bottom:16px;}
-.govasm-section:last-child{margin-bottom:0;}
-.govasm-section-head{
-  display:flex;align-items:center;width:100%;gap:9px;
-}
-.govasm-badge{
-  display:inline-flex;align-items:center;justify-content:center;
-  flex:0 0 auto;
-  font-size:.82rem;font-weight:850;padding:5px 10px;border-radius:6px;
-  margin:0;letter-spacing:-.035em;line-height:1.15;
-}
-.govasm-divider{
-  flex:1;height:1.5px;background:#d9e6f4;margin:0;
-}
-.govasm-divider.gov-divider{background:#1769d2;}
-.govasm-divider.assembly-divider{background:#64748b;}
-.govasm-divider.law-divider{background:#7b8794;}
-.govasm-badge.gov{background:#ebf8ff;color:#1769d2;}
-.govasm-badge.assembly{background:#e2e8f0;color:#4a5568;}
-.govasm-badge.law{background:#eef1f4;color:#586474;}
 
-.govasm-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;}
-.govasm-card{
-  min-width:0;height:72px;border:1.5px solid #dce6f2;border-radius:13px;
-  background:#fff;display:flex;align-items:center;justify-content:center;
-  text-align:center;text-decoration:none;color:#27415f;
-  font-size:.96rem;font-weight:800;letter-spacing:-.045em;
-  box-shadow:0 3px 11px rgba(24,71,120,.05);
-  transition:transform .12s,box-shadow .12s,background .12s;
-}
-.govasm-card:active{transform:scale(.97);background:#f8fbff;}
-.govasm-card.gov-card{border:1.5px solid #1769d2;}
-.govasm-card.assembly-card{border:1.5px solid #64748b;}
-.govasm-card.law-card{border:1.5px solid #7b8794;}
-.govasm-section-title{display:none;}
-@media(max-width:360px){
-  .emergency-notice{height:38px;padding:0 8px;gap:5px;}
-  .emergency-marquee{font-size:.88rem;}
-  .emergency-badge{font-size:.68rem;padding:4px 8px;}
-  .govasm-content{padding:10px 10px 20px;}
-  .govasm-grid{gap:6px;}
-  .govasm-card{height:66px;font-size:.86rem;border-radius:11px;}
-}
+/* 2026-09-21: 중요공지 바로 아래 GIF 1행 2열 */
+.employee-gif-notice-wrap{width:calc(100% - 20px);margin:8px 10px 12px;display:none;}
+.employee-gif-notice-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;width:100%;}
+.employee-gif-notice-card{min-width:0;border:0;background:#fff;padding:0;margin:0;text-align:left;cursor:pointer;overflow:hidden;}
+.employee-gif-notice-badge-line{display:flex;align-items:center;width:100%;height:22px;margin:0 0 6px;}
+.employee-gif-notice-badge{display:inline-flex;align-items:center;max-width:72%;height:20px;padding:0 7px;border-radius:10px;background:#f1f4f7;color:#59636e;font-size:.59rem;font-weight:800;line-height:1;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.employee-gif-notice-badge-divider{flex:1;height:1px;margin-left:7px;background:#e7ebef;}
+.employee-gif-notice-media{display:block;width:100%;aspect-ratio:16 / 9;object-fit:cover;border-radius:8px;background:#eef2f6;border:1px solid #e3e9f1;}
+.employee-gif-notice-media.is-broken{display:none;}
+.employee-gif-notice-title{display:-webkit-box;-webkit-box-orient:vertical;-webkit-line-clamp:2;overflow:hidden;margin-top:6px;padding:0 2px;color:#1a202c;font-size:.76rem;font-weight:800;line-height:1.35;word-break:keep-all;}
+.employee-gif-notice-card:active .employee-gif-notice-media{transform:scale(.985);}
+@media(max-width:360px){.employee-gif-notice-grid{gap:6px;}.employee-gif-notice-title{font-size:.7rem;}}
 
 </style>
 
@@ -3311,16 +3262,21 @@ button,.nav-btn,.action-btn{min-height:44px;}
   .quick-btn[aria-label="협회공지"] .quick-icon svg,
   .quick-btn[aria-label="코다피플"] .quick-icon svg,
   .quick-btn[aria-label="코다자료"] .quick-icon svg,
-  .quick-btn[aria-label="KODA-TV"] .quick-icon svg,
-  .quick-btn[aria-label="코다기사"] .quick-icon svg,
   .quick-btn[aria-label="정부국회"] .quick-icon svg,
   .quick-btn[aria-label="관심일정"] .quick-icon svg{
     width:39px !important;
     height:39px !important;
   }
+
+  /* KODA-TV(빨간색) · 코다기사(초록색): 기존보다 1단계 축소 */
+  .quick-btn[aria-label="KODA-TV"] .quick-icon svg,
+  .quick-btn[aria-label="코다기사"] .quick-icon svg{
+    width:35px !important;
+    height:35px !important;
+  }
   /* 코다자료 퀵버튼: 다른 퀵버튼과 동일한 라인에 맞춤 */
   .quick-menu-container .quick-btn[aria-label="코다자료"]{
-    transform:translateY(-1px)!important;
+    transform:translateY(0.5px)!important;
   }
   /* 관심일정 퀵버튼: 다른 퀵버튼과 동일한 라인에 맞춤 */
   .quick-menu-container .quick-btn[aria-label="관심일정"]{
@@ -3385,6 +3341,12 @@ button,.nav-btn,.action-btn{min-height:44px;}
       </div>
     </div>
   </div>
+
+
+  <!-- 직원공지: Sheet6 G열 GIF + H열 제목, 상단 2개만 1행 2열로 표시 -->
+  <section class="employee-gif-notice-wrap" id="employeeGifNoticeWrap" aria-label="직원공지">
+      <div class="employee-gif-notice-grid" id="employeeGifNoticeGrid"></div>
+  </section>
 
   <div class="calendar-wrapper" id="calendarWrapper">
     <div class="cal-header">
@@ -4297,6 +4259,13 @@ button,.nav-btn,.action-btn{min-height:44px;}
     const preview=document.getElementById('businessCardPreview');
     const status=document.getElementById('businessCardStatus');
     if(!overlay || !preview) return;
+
+    // 명함을 별도 history 상태로 기록하여 휴대폰/브라우저의 뒤로가기로
+    // 명함만 닫히도록 합니다.
+    if (!history.state || !history.state.businessCardOpen) {
+      history.pushState({ ...(history.state || {}), businessCardOpen: true }, '', '');
+    }
+
     overlay.style.display='flex';
     document.body.style.overflow='hidden';
     status.textContent='내 명함 정보를 확인하는 중입니다...';
@@ -4324,6 +4293,11 @@ button,.nav-btn,.action-btn{min-height:44px;}
     const overlay=document.getElementById('businessCardOverlay');
     if(overlay) overlay.style.display='none';
     document.body.style.overflow='auto';
+
+    // X 버튼/바깥 영역으로 닫을 때도 history를 원래 화면으로 되돌립니다.
+    if (history.state && history.state.businessCardOpen) {
+      history.back();
+    }
   };
 
   window.closeMyBusinessCardOnOutside = function(event) {
@@ -5574,6 +5548,11 @@ function createEventCard(event, isNext=false) {
     const st = event.state || {};
     const ids = ['dayEventsModal', 'staffScreen', 'staffDetailModal', 'memberCompanyDetailModal', 'newsScreen', 'newsDetailScreen', 'meetingScreen', 'govAssemblyScreen'];
     ids.forEach(id => { const el=document.getElementById(id); if(el) el.style.display='none'; });
+
+    // 브라우저 뒤로가기로 명함 상태가 해제되면 명함 팝업도 함께 닫습니다.
+    const businessCardOverlay = document.getElementById('businessCardOverlay');
+    if (businessCardOverlay) businessCardOverlay.style.display = 'none';
+
     hideModalDOM();
     document.body.style.overflow = 'auto';
 
@@ -6141,6 +6120,157 @@ function createEventCard(event, isNext=false) {
   };
 
 
+
+  /* ===== 2026-09-21 홈 하단 GIF 공지 =====
+     중요공지(빨간 테두리) 바로 아래에 Sheet6의 G/H 데이터를 2개 표시합니다.
+     GIF 위 뱃지는 Sheet6 I열의 각 게시물 내용을 사용합니다. */
+  function getEmployeeGifSourceUrls(rawUrl) {
+    const url = String(rawUrl || '').trim();
+    if (!/^https?:\/\//i.test(url)) return [];
+    const id = (typeof extractDriveFileId === 'function') ? extractDriveFileId(url) : null;
+    if (id) {
+      return [
+        `https://lh3.googleusercontent.com/d/${id}`,
+        `https://drive.google.com/uc?export=view&id=${id}`,
+        `https://drive.google.com/thumbnail?id=${id}&sz=w1200`
+      ];
+    }
+    return [url];
+  }
+
+  async function loadEmployeeGifNotices() {
+    const wrap = document.getElementById('employeeGifNoticeWrap');
+    const grid = document.getElementById('employeeGifNoticeGrid');
+    if (!wrap || !grid) return;
+
+    try {
+      const response = await fetch(NEWS_SHEET_CSV_URL + "&t=" + Date.now(), {cache:'no-store'});
+      if (!response.ok) throw new Error('GIF 공지 CSV 응답 오류');
+
+      const newsCsv = await response.text();
+      const newsRows = splitCSV(newsCsv);
+      const notices = [];
+
+      // Sheet6 목록 위에서부터 G열 GIF + H열 제목이 있는 2개를 표시
+      // I열은 GIF 위 뱃지, J열은 GIF 클릭 시 연결할 협회공지 D열 제목으로 사용합니다.
+      for (let i=1; i<newsRows.length && notices.length<2; i++) {
+        const r = newsRows[i] || [];
+        const date = String(r[2] || '').trim();      // C열 작성일
+        const category = String(r[1] || '').trim();  // B열 구분
+        const title = String(r[7] || '').trim();     // H열 GIF 제목(화면 표시용)
+        const gifRaw = String(r[6] || '').trim();    // G열 GIF
+        const badgeText = String(r[8] || '').trim();// I열 뱃지
+        const gifLinkTitle = String(r[9] || '').trim(); // J열 GIF링크(협회공지 D열 제목과 매칭)
+
+        if (!gifRaw || !title) continue;
+
+        const sources = getEmployeeGifSourceUrls(gifRaw);
+        if (!sources.length) continue;
+
+        notices.push({
+          rowIndex: i,
+          date,
+          category,
+          badgeText: badgeText || category || '공지',
+          title,
+          gifLinkTitle,
+          sources
+        });
+      }
+
+      grid.innerHTML = '';
+      if (!notices.length) {
+        wrap.style.display = 'none';
+        return;
+      }
+
+      notices.forEach((item) => {
+        const card = document.createElement('button');
+        card.type = 'button';
+        card.className = 'employee-gif-notice-card';
+
+        // Sheet6 I열 뱃지 + 정부·국회 페이지와 같은 작은 라운드 뱃지/구분선
+        const badgeLine = document.createElement('div');
+        badgeLine.className = 'employee-gif-notice-badge-line';
+
+        const badge = document.createElement('span');
+        badge.className = 'employee-gif-notice-badge';
+        badge.textContent = item.badgeText;
+
+        const divider = document.createElement('span');
+        divider.className = 'employee-gif-notice-badge-divider';
+
+        badgeLine.appendChild(badge);
+        badgeLine.appendChild(divider);
+
+        const img = document.createElement('img');
+        img.className = 'employee-gif-notice-media';
+        img.alt = item.title;
+        img.loading = 'eager';
+        img.decoding = 'async';
+
+        let sourceIndex = 0;
+        const tryNextSource = () => {
+          if (sourceIndex >= item.sources.length) {
+            img.removeAttribute('src');
+            img.classList.add('is-broken');
+            return;
+          }
+          img.src = item.sources[sourceIndex++];
+        };
+        img.addEventListener('error', tryNextSource);
+        tryNextSource();
+
+        const title = document.createElement('span');
+        title.className = 'employee-gif-notice-title';
+        title.textContent = item.title;
+
+        card.appendChild(badgeLine);
+        card.appendChild(img);
+        card.appendChild(title);
+
+        // GIF를 클릭하면 외부 링크가 아니라 '협회공지'의 실제 상세 내용으로 이동
+        card.addEventListener('click', async () => {
+          try {
+            // 협회공지 원본 데이터가 없으면 먼저 불러옵니다.
+            if (!Array.isArray(newsData) || newsData.length === 0) {
+              await loadNewsData();
+            }
+
+            const gifLinkTitle = String(item.gifLinkTitle || '').trim();
+
+            // 화면에 표시되는 GIF 제목은 H열입니다.
+            // 클릭 연결용 J열 값을 협회공지 D열 제목과 정확히 일치시킵니다.
+            // parseNewsCSV()에서 협회공지 title은 D열(r[3])을 사용합니다.
+            const detailIndex = gifLinkTitle
+              ? newsData.findIndex(n =>
+                  String(n.title || '').trim() === gifLinkTitle
+                )
+              : -1;
+
+            if (detailIndex >= 0 && typeof openNewsDetailScreen === 'function') {
+              // 협회공지 목록을 거치지 않고 해당 게시물의 상세 화면을 바로 엽니다.
+              openNewsDetailScreen(detailIndex);
+            } else {
+              // J열 GIF링크와 일치하는 D열 제목을 찾지 못한 경우에는
+              // 잘못된 공지로 이동하지 않고 현재 화면을 유지합니다.
+              console.warn('GIF J열 값과 일치하는 협회공지 D열 제목을 찾지 못했습니다:', gifLinkTitle);
+            }
+          } catch (error) {
+            console.warn('GIF 공지 상세 연결 실패:', error);
+          }
+        });
+
+        grid.appendChild(card);
+      });
+
+      wrap.style.display = 'block';
+    } catch (error) {
+      console.warn('홈 GIF 공지 불러오기 실패:', error);
+      wrap.style.display = 'none';
+    }
+  }
+
   /* ===== 2026-09-20 긴급공지: Sheet6 B2/D2/E2 ===== */
   async function loadEmergencyNotice() {
     const wrap = document.getElementById('emergencyNoticeWrap');
@@ -6189,6 +6319,7 @@ function createEventCard(event, isNext=false) {
   };
 
   loadEmergencyNotice();
+  loadEmployeeGifNotices();
 
   initAuth();
 
