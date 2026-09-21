@@ -3186,6 +3186,62 @@ button,.nav-btn,.action-btn{min-height:44px;}
 .shared-card-tip{margin-top:10px;font-size:.68rem;line-height:1.45;color:#7b8da3;}
 </style>
 
+
+<style id="restore-govasm-ui-20260921">
+/* 정부·국회 페이지 UI 복원: 뱃지 / 구분선 / 버튼 */
+#govAssemblyScreen{background:#f4f7fb;}
+#govAssemblyScreen .govasm-header{
+  width:100%;max-width:430px;margin:0 auto;height:54px;
+  position:sticky;top:0;z-index:30;background:#fff;
+  border-bottom:1px solid #edf2f7;
+  box-shadow:0 3px 14px rgba(25,67,110,.055);
+  display:grid;grid-template-columns:54px minmax(0,1fr) 54px;
+  align-items:center;padding:0 12px;
+}
+#govAssemblyScreen .govasm-back{
+  width:42px;height:42px;min-height:42px;padding:0;border:0;border-radius:14px;
+  background:#f1f6fd;color:#1769d2;font-size:1.55rem;font-weight:700;line-height:1;
+}
+#govAssemblyScreen .govasm-title{
+  text-align:center;color:#173f70;font-size:1.12rem;font-weight:850;
+  letter-spacing:-.045em;white-space:nowrap;
+}
+.govasm-content{width:100%;max-width:430px;margin:0 auto;padding:12px 14px 24px;}
+.govasm-section{margin-bottom:16px;}
+.govasm-section:last-child{margin-bottom:0;}
+.govasm-section-head{display:flex;align-items:center;width:100%;gap:9px;}
+.govasm-badge{
+  display:inline-flex;align-items:center;justify-content:center;flex:0 0 auto;
+  font-size:.82rem;font-weight:850;padding:5px 10px;border-radius:6px;
+  margin:0;letter-spacing:-.035em;line-height:1.15;
+}
+.govasm-divider{flex:1;height:1.5px;background:#d9e6f4;margin:0;}
+.govasm-divider.gov-divider{background:#1769d2;}
+.govasm-divider.assembly-divider{background:#64748b;}
+.govasm-divider.law-divider{background:#7b8794;}
+.govasm-badge.gov{background:#ebf8ff;color:#1769d2;}
+.govasm-badge.assembly{background:#e2e8f0;color:#4a5568;}
+.govasm-badge.law{background:#eef1f4;color:#586474;}
+.govasm-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;}
+.govasm-card{
+  min-width:0;height:72px;border:1.5px solid #dce6f2;border-radius:13px;
+  background:#fff;display:flex;align-items:center;justify-content:center;
+  text-align:center;text-decoration:none;color:#27415f;
+  font-size:.96rem;font-weight:800;letter-spacing:-.045em;
+  box-shadow:0 3px 11px rgba(24,71,120,.05);
+  transition:transform .12s,box-shadow .12s,background .12s;
+}
+.govasm-card:active{transform:scale(.97);background:#f8fbff;}
+.govasm-card.gov-card{border:1.5px solid #1769d2;color:#1769d2;}
+.govasm-card.assembly-card{border:1.5px solid #64748b;color:#64748b;}
+.govasm-card.law-card{border:1.5px solid #7b8794;color:#586474;}
+@media(max-width:360px){
+  .govasm-content{padding:10px 10px 20px;}
+  .govasm-grid{gap:6px;}
+  .govasm-card{height:66px;font-size:.86rem;border-radius:11px;}
+}
+</style>
+
 <style id="final-request-20260921">
 /* 2026-09-21 최종 UI 수정 */
 .emergency-notice{gap:8px;}
