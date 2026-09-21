@@ -3318,9 +3318,13 @@ button,.nav-btn,.action-btn{min-height:44px;}
     width:39px !important;
     height:39px !important;
   }
-  /* 코다자료 퀵버튼을 같은 줄에 맞춰 2px 아래로 정렬 */
+  /* 코다자료 퀵버튼: 다른 퀵버튼과 동일한 라인에 맞춤 */
   .quick-menu-container .quick-btn[aria-label="코다자료"]{
-    transform:translateY(2px)!important;
+    transform:translateY(-1px)!important;
+  }
+  /* 관심일정 퀵버튼: 다른 퀵버튼과 동일한 라인에 맞춤 */
+  .quick-menu-container .quick-btn[aria-label="관심일정"]{
+    transform:translateY(1px)!important;
   }
 </style>
 </head>
