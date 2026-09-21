@@ -2817,8 +2817,8 @@ button,.nav-btn,.action-btn{min-height:44px;}
 /* 협회공지: 뱃지와 날짜를 같은 줄, 제목은 다음 줄에서 뱃지 시작점과 정렬 */
 #newsList .news-card-item{display:block!important;}
 #newsList .news-meta-row{display:flex!important;align-items:center!important;justify-content:space-between!important;width:100%!important;gap:8px!important;min-width:0!important;}
-#newsList .news-meta-row .news-badge{margin-right:0!important;flex:0 0 auto!important;white-space:nowrap!important;}
-#newsList .news-date-text{margin-left:auto!important;white-space:nowrap!important;color:#8494a8!important;font-size:.70rem!important;line-height:1.35!important;font-weight:600!important;}
+#newsList .news-meta-row .news-badge{margin-left:auto!important;flex:0 0 auto!important;white-space:nowrap!important;}
+#newsList .news-date-text{margin-right:auto!important;white-space:nowrap!important;color:#8494a8!important;font-size:.70rem!important;line-height:1.35!important;font-weight:600!important;}
 #newsList .news-title-text{display:block!important;width:100%!important;margin-top:5px!important;min-width:0!important;padding:0!important;overflow-wrap:anywhere!important;word-break:keep-all!important;text-align:left!important;font-size:.82rem!important;line-height:1.35!important;font-weight:700!important;color:var(--text-dark)!important;}
 /* 코다자료: 등록일자 문구 없이 날짜만 표시 */
 #meetingScreen .meeting-card-meta{margin:5px 0 0!important;white-space:nowrap!important;text-align:right!important;align-self:start!important;color:#8494a8!important;font-size:.70rem!important;line-height:1.35!important;}
@@ -5929,7 +5929,7 @@ function createEventCard(event, isNext=false) {
       card.type = 'button';
       card.className = 'day-event-item news-card-item';
       card.innerHTML = `
-        <div class="news-meta-row"><span class="news-badge ${newsBadgeClass(item.category)}">${normalizeNewsCategory(item.category)}</span><span class="news-date-text">${item.date}</span></div>
+        <div class="news-meta-row"><span class="news-date-text">${item.date}</span><span class="news-badge ${newsBadgeClass(item.category)}">${normalizeNewsCategory(item.category)}</span></div>
         <div class="day-event-item-title news-title-text">${item.title}</div>
       `;
       card.onclick = () => openNewsDetailScreen(globalIndex);
