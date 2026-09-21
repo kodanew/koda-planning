@@ -3315,8 +3315,12 @@ button,.nav-btn,.action-btn{min-height:44px;}
   .quick-btn[aria-label="코다기사"] .quick-icon svg,
   .quick-btn[aria-label="정부국회"] .quick-icon svg,
   .quick-btn[aria-label="관심일정"] .quick-icon svg{
-    width:35px !important;
-    height:35px !important;
+    width:39px !important;
+    height:39px !important;
+  }
+  /* 코다자료 퀵버튼을 같은 줄에 맞춰 2px 아래로 정렬 */
+  .quick-menu-container .quick-btn[aria-label="코다자료"]{
+    transform:translateY(2px)!important;
   }
 </style>
 </head>
@@ -5112,7 +5116,7 @@ button,.nav-btn,.action-btn{min-height:44px;}
     rows.innerHTML='';
     [
       ['성명',staff.name],['소속',staff.affiliation],['직위',staff.position],
-      ['KODA',staff.koda],['전화번호',staff.phone],['팩스번호',staff.fax],['이메일',staff.email],['비고',staff.note]
+      ['KODA',staff.koda],['전화번호',staff.phone],['팩스번호',staff.fax],['핸드폰',staff.contact],['이메일',staff.email],['비고',staff.note]
     ].forEach(([label,value])=>{
       const row=document.createElement('div'); row.className='modal-detail-row';
       const l=document.createElement('span'); l.className='modal-label'; l.textContent=label;
