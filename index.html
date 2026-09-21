@@ -6179,7 +6179,7 @@ function createEventCard(event, isNext=false) {
 
   /* ===== 2026-09-21 홈 하단 GIF 공지 =====
      중요공지(빨간 테두리) 바로 아래에 Sheet6의 G/H 데이터를 2개 표시합니다.
-     GIF 위 뱃지는 Sheet6 I열의 각 게시물 내용을 사용합니다. */
+     GIF 이미지는 Sheet6 G열, 제목은 H열을 사용합니다. */
   function getEmployeeGifSourceUrls(rawUrl) {
     const url = String(rawUrl || '').trim();
     if (!/^https?:\/\//i.test(url)) return [];
@@ -6245,20 +6245,6 @@ function createEventCard(event, isNext=false) {
         card.type = 'button';
         card.className = 'employee-gif-notice-card';
 
-        // Sheet6 I열 뱃지 + 정부·국회 페이지와 같은 작은 라운드 뱃지/구분선
-        const badgeLine = document.createElement('div');
-        badgeLine.className = 'employee-gif-notice-badge-line';
-
-        const badge = document.createElement('span');
-        badge.className = 'employee-gif-notice-badge';
-        badge.textContent = item.badgeText;
-
-        const divider = document.createElement('span');
-        divider.className = 'employee-gif-notice-badge-divider';
-
-        badgeLine.appendChild(badge);
-        badgeLine.appendChild(divider);
-
         const img = document.createElement('img');
         img.className = 'employee-gif-notice-media';
         img.alt = item.title;
@@ -6281,7 +6267,6 @@ function createEventCard(event, isNext=false) {
         title.className = 'employee-gif-notice-title';
         title.textContent = item.title;
 
-        card.appendChild(badgeLine);
         card.appendChild(img);
         card.appendChild(title);
 
