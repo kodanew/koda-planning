@@ -5239,6 +5239,310 @@ button,.nav-btn,.action-btn{min-height:44px;}
 }
 </style>
 
+
+<style id="final-conflict-cleanup-20260923">
+/* =========================================================
+   2026-09-23 FINAL CONFLICT CLEANUP
+   A. 코다피플 검색창/기수버튼: 완전 불투명 sticky
+   B. 검색 돋보기: 검색창 내부 좌측 고정
+   C. 일일동향: 기사 3개 + 구분점선 2개를
+      DOM 순서 그대로 5행으로 명확하게 배치
+   ========================================================= */
+
+/* ---------- A. 코다피플: 스크롤 컨테이너 ---------- */
+#staffScreen{
+  overflow:hidden !important;
+}
+
+#staffScreen .fullscreen-content{
+  position:relative !important;
+  z-index:1 !important;
+  flex:1 1 auto !important;
+  min-height:0 !important;
+  height:auto !important;
+  max-height:none !important;
+  overflow-y:auto !important;
+  overflow-x:hidden !important;
+  -webkit-overflow-scrolling:touch !important;
+  overscroll-behavior:contain !important;
+  background:#f4f7fb !important;
+  isolation:isolate !important;
+}
+
+/* 검색창 sticky 영역 */
+#staffScreen .staff-search-wrap{
+  position:sticky !important;
+  top:0 !important;
+  z-index:1000 !important;
+  width:100% !important;
+  box-sizing:border-box !important;
+  margin:0 0 8px !important;
+  padding:7px 0 7px !important;
+  background:#f4f7fb !important;
+  background-color:#f4f7fb !important;
+  opacity:1 !important;
+  isolation:isolate !important;
+  overflow:visible !important;
+  box-shadow:0 7px 0 #f4f7fb !important;
+}
+
+/* sticky 배경은 음수 z-index를 사용하지 않고 별도 불투명 면으로 확보 */
+#staffScreen .staff-search-wrap::before{
+  content:"" !important;
+  position:absolute !important;
+  z-index:0 !important;
+  left:-40px !important;
+  right:-40px !important;
+  top:0 !important;
+  bottom:0 !important;
+  background:#f4f7fb !important;
+  opacity:1 !important;
+  pointer-events:none !important;
+}
+
+/* 검색 입력 */
+#staffScreen .staff-search-wrap .staff-search{
+  position:relative !important;
+  z-index:2 !important;
+  display:block !important;
+  width:100% !important;
+  height:46px !important;
+  box-sizing:border-box !important;
+  padding:0 42px !important;
+  margin:0 !important;
+  background:#fff !important;
+}
+
+/* 돋보기: 반드시 검색창 내부 좌측에 위치 */
+#staffScreen .staff-search-wrap .staff-search-icon{
+  position:absolute !important;
+  z-index:3 !important;
+  left:15px !important;
+  top:50% !important;
+  transform:translateY(-50%) !important;
+  width:20px !important;
+  height:20px !important;
+  margin:0 !important;
+  padding:0 !important;
+  display:flex !important;
+  align-items:center !important;
+  justify-content:center !important;
+  color:#1769d2 !important;
+  font-size:0 !important;
+  line-height:1 !important;
+  pointer-events:none !important;
+}
+
+#staffScreen .staff-search-wrap .staff-search-icon svg{
+  display:block !important;
+  width:18px !important;
+  height:18px !important;
+  fill:none !important;
+  stroke:currentColor !important;
+  stroke-width:2.2 !important;
+  stroke-linecap:round !important;
+  stroke-linejoin:round !important;
+}
+
+/* 검색창 오른쪽 X */
+#staffScreen .staff-search-wrap .staff-search-clear{
+  position:absolute !important;
+  z-index:4 !important;
+  right:9px !important;
+  top:50% !important;
+  transform:translateY(-50%) !important;
+}
+
+/* ---------- 기수 버튼 sticky 영역 ---------- */
+#staffScreen #arpCohortFilters{
+  position:sticky !important;
+  top:var(--staff-search-sticky-height,60px) !important;
+  z-index:900 !important;
+  width:100% !important;
+  box-sizing:border-box !important;
+  margin:0 0 10px !important;
+  padding:4px 0 7px !important;
+  background:#f4f7fb !important;
+  background-color:#f4f7fb !important;
+  opacity:1 !important;
+  isolation:isolate !important;
+  overflow:visible !important;
+  box-shadow:0 7px 0 #f4f7fb !important;
+}
+
+#staffScreen #arpCohortFilters::before{
+  content:"" !important;
+  position:absolute !important;
+  z-index:0 !important;
+  left:-40px !important;
+  right:-40px !important;
+  top:0 !important;
+  bottom:0 !important;
+  background:#f4f7fb !important;
+  opacity:1 !important;
+  pointer-events:none !important;
+}
+
+#staffScreen #arpCohortFilters > *{
+  position:relative !important;
+  z-index:2 !important;
+}
+
+/* 목록은 sticky보다 아래 */
+#staffScreen #staffList{
+  position:relative !important;
+  z-index:1 !important;
+}
+
+/* 실제 높이 계산용 */
+#staffScreen .staff-search-wrap > *,
+#staffScreen #arpCohortFilters > *{
+  position:relative !important;
+}
+
+/* 단, 돋보기/X는 다시 absolute */
+#staffScreen .staff-search-wrap > .staff-search-icon{
+  position:absolute !important;
+}
+#staffScreen .staff-search-wrap > .staff-search-clear{
+  position:absolute !important;
+}
+
+/* ---------- B. 일일동향: 기사 3개 + 구분선 2개 ---------- */
+/*
+ DOM:
+  1 = article
+  2 = divider
+  3 = article
+  4 = divider
+  5 = article
+*/
+.daily-trend-articles{
+  display:grid !important;
+  grid-template-columns:minmax(0,1fr) !important;
+  grid-template-rows:minmax(0,1fr) auto minmax(0,1fr) auto minmax(0,1fr) !important;
+  grid-auto-flow:row !important;
+  align-items:center !important;
+  justify-items:stretch !important;
+  width:100% !important;
+  height:var(--daily-trend-left-height,auto) !important;
+  min-height:0 !important;
+  margin:0 !important;
+  padding:0 !important;
+  gap:0 !important;
+  overflow:hidden !important;
+  box-sizing:border-box !important;
+}
+
+.daily-trend-articles > .daily-trend-article{
+  grid-column:1 !important;
+  width:100% !important;
+  min-width:0 !important;
+  min-height:0 !important;
+  height:auto !important;
+  margin:0 !important;
+  padding:0 !important;
+  border:0 !important;
+  display:flex !important;
+  align-items:flex-start !important;
+  justify-content:flex-start !important;
+  overflow:hidden !important;
+  box-sizing:border-box !important;
+  font-size:.84rem !important;
+  line-height:1.30 !important;
+  font-weight:600 !important;
+  color:#000 !important;
+  text-decoration:none !important;
+}
+
+/* article의 위치는 nth-of-type으로만 지정
+   (divider가 div라서 nth-child와 섞이면 충돌하므로 사용하지 않음) */
+.daily-trend-articles > .daily-trend-article:nth-of-type(1){grid-row:1 !important;}
+.daily-trend-articles > .daily-trend-article:nth-of-type(2){grid-row:3 !important;}
+.daily-trend-articles > .daily-trend-article:nth-of-type(3){grid-row:5 !important;}
+
+.daily-trend-articles > .daily-trend-article-divider{
+  grid-column:1 !important;
+  width:100% !important;
+  height:0 !important;
+  min-height:0 !important;
+  margin:0 !important;
+  padding:0 !important;
+  border:0 !important;
+  border-top:1px dotted #c7cdd5 !important;
+  box-sizing:border-box !important;
+  align-self:center !important;
+}
+
+/* divider는 DOM상 2번째/4번째 자식 */
+.daily-trend-articles > .daily-trend-article-divider:nth-child(2){grid-row:2 !important;}
+.daily-trend-articles > .daily-trend-article-divider:nth-child(4){grid-row:4 !important;}
+
+.daily-trend-articles > .daily-trend-article .daily-trend-article-text{
+  display:-webkit-box !important;
+  -webkit-box-orient:vertical !important;
+  -webkit-line-clamp:2 !important;
+  width:100% !important;
+  min-width:0 !important;
+  height:auto !important;
+  min-height:0 !important;
+  max-height:2.60em !important;
+  margin:0 !important;
+  padding:0 !important;
+  overflow:hidden !important;
+  text-overflow:ellipsis !important;
+  white-space:normal !important;
+  word-break:keep-all !important;
+  overflow-wrap:anywhere !important;
+  font-size:.84rem !important;
+  line-height:1.30 !important;
+  box-sizing:border-box !important;
+}
+
+/* 더 이상 article 자체에 구분선을 그리지 않음 */
+.daily-trend-articles > .daily-trend-article{
+  border-top:0 !important;
+  border-bottom:0 !important;
+}
+
+@media(max-width:600px){
+  #staffScreen .staff-search-wrap{
+    padding-top:6px !important;
+    padding-bottom:6px !important;
+  }
+
+  #staffScreen .staff-search-wrap .staff-search{
+    height:44px !important;
+  }
+
+  #staffScreen .staff-search-wrap .staff-search-icon{
+    left:14px !important;
+    width:19px !important;
+    height:19px !important;
+  }
+
+  #staffScreen .staff-search-wrap .staff-search-icon svg{
+    width:17px !important;
+    height:17px !important;
+  }
+
+  #staffScreen #arpCohortFilters{
+    top:var(--staff-search-sticky-height,58px) !important;
+  }
+}
+
+@media(max-width:360px){
+  #staffScreen .staff-search-wrap{
+    padding-top:4px !important;
+    padding-bottom:5px !important;
+  }
+
+  #staffScreen #arpCohortFilters{
+    top:var(--staff-search-sticky-height,54px) !important;
+  }
+}
+</style>
+
 </head>
 <body>
 
@@ -5469,7 +5773,12 @@ button,.nav-btn,.action-btn{min-height:44px;}
 
   <div class="fullscreen-content">
 <div class="staff-search-wrap">
-      <span class="staff-search-icon" aria-hidden="true">⌕</span>
+      <span class="staff-search-icon" aria-hidden="true">
+        <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+          <circle cx="10.8" cy="10.8" r="6.8"></circle>
+          <path d="M16 16l5 5"></path>
+        </svg>
+      </span>
       <input type="search" id="staffSearchInput" class="staff-search" placeholder="회사명 또는 이름으로 검색" autocomplete="off">
       <button type="button" id="staffSearchClear" class="staff-search-clear" aria-label="검색어 지우기">×</button>
     </div>
@@ -8964,6 +9273,38 @@ function createEventCard(event, isNext=false) {
   initAuth();
 
 </script>
+
+<script id="final-sticky-height-observer-20260923">
+(function(){
+  function sync(){
+    const screen=document.getElementById('staffScreen');
+    const content=screen && screen.querySelector('.fullscreen-content');
+    const search=screen && screen.querySelector('.staff-search-wrap');
+    const cohort=document.getElementById('arpCohortFilters');
+    if(!content || !search) return;
+    const sh=Math.ceil(search.getBoundingClientRect().height || 0);
+    const visible=cohort && getComputedStyle(cohort).display!=='none' && cohort.classList.contains('show');
+    const ch=visible ? Math.ceil(cohort.getBoundingClientRect().height || 0) : 0;
+    content.style.setProperty('--staff-search-sticky-height', sh+'px');
+    content.style.setProperty('--staff-cohort-sticky-height', ch+'px');
+  }
+  function start(){
+    sync();
+    window.addEventListener('resize',()=>requestAnimationFrame(sync),{passive:true});
+    window.addEventListener('orientationchange',()=>setTimeout(sync,120),{passive:true});
+    const cohort=document.getElementById('arpCohortFilters');
+    if(cohort && window.MutationObserver){
+      new MutationObserver(()=>requestAnimationFrame(sync))
+        .observe(cohort,{attributes:true,childList:true,subtree:true});
+    }
+    setTimeout(sync,50);
+    setTimeout(sync,250);
+  }
+  if(document.readyState==='loading') document.addEventListener('DOMContentLoaded',start);
+  else start();
+})();
+</script>
+
 </body>
 </html>
 <style id="holiday-label-small-fix">
