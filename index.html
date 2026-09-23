@@ -4708,7 +4708,7 @@ button,.nav-btn,.action-btn{min-height:44px;}
     if(!content || !searchWrap) return;
 
     const searchH = Math.ceil(searchWrap.getBoundingClientRect().height || 0);
-    content.style.setProperty('--staff-search-sticky-height', Math.max(searchH, 54) + 'px');
+    content.style.setProperty('--staff-search-sticky-height', Math.max(searchH, 1) + 'px');
 
     const cohortVisible = cohort && getComputedStyle(cohort).display !== 'none' && cohort.classList.contains('show');
     const cohortH = cohortVisible ? Math.ceil(cohort.getBoundingClientRect().height || 0) : 0;
@@ -5030,6 +5030,211 @@ button,.nav-btn,.action-btn{min-height:44px;}
   }
   .daily-trend-articles{
     height:var(--daily-trend-left-height,auto) !important;
+  }
+}
+</style>
+
+
+<style id="final-layout-reset-20260923">
+/* =========================================================
+   최종 레이아웃 리셋
+   기존에 누적된 daily-trend / staff-search 선언을 무시하고
+   실제 DOM 구조 기준으로 다시 배치합니다.
+   ========================================================= */
+
+/* ---------- 코다피플 검색창 ---------- */
+#staffScreen .staff-search-wrap{
+  position:sticky !important;
+  top:0 !important;
+  z-index:500 !important;
+  box-sizing:border-box !important;
+  background:#f4f7fb !important;
+  background-color:#f4f7fb !important;
+  opacity:1 !important;
+  isolation:isolate !important;
+  overflow:visible !important;
+  padding:8px 0 !important;
+  box-shadow:0 7px 0 #f4f7fb !important;
+}
+#staffScreen .staff-search-wrap::before{
+  content:"" !important;
+  position:absolute !important;
+  z-index:0 !important;
+  left:-100vw !important;
+  right:-100vw !important;
+  top:0 !important;
+  bottom:0 !important;
+  background:#f4f7fb !important;
+  pointer-events:none !important;
+}
+#staffScreen .staff-search-wrap .staff-search,
+#staffScreen .staff-search-wrap .staff-search-icon,
+#staffScreen .staff-search-wrap .staff-search-clear{
+  position:absolute !important;
+  z-index:2 !important;
+}
+#staffScreen .staff-search-wrap .staff-search{
+  position:relative !important;
+  display:block !important;
+  width:100% !important;
+  height:46px !important;
+  padding:0 42px !important;
+  box-sizing:border-box !important;
+}
+#staffScreen .staff-search-wrap .staff-search-icon{
+  left:15px !important;
+  top:50% !important;
+  transform:translateY(-50%) !important;
+  width:auto !important;
+  height:auto !important;
+  margin:0 !important;
+  color:#1769d2 !important;
+  font-size:1.05rem !important;
+  line-height:1 !important;
+  pointer-events:none !important;
+}
+#staffScreen .staff-search-wrap .staff-search-clear{
+  right:9px !important;
+  top:50% !important;
+  transform:translateY(-50%) !important;
+  z-index:3 !important;
+}
+
+/* 검색창 자식이 background 레이어보다 위에 오도록 */
+#staffScreen .staff-search-wrap > *{
+  isolation:auto !important;
+}
+
+/* ---------- 코다피플 기수 버튼 ---------- */
+#staffScreen #arpCohortFilters{
+  position:sticky !important;
+  top:var(--staff-search-sticky-height,62px) !important;
+  z-index:490 !important;
+  box-sizing:border-box !important;
+  background:#f4f7fb !important;
+  background-color:#f4f7fb !important;
+  opacity:1 !important;
+  isolation:isolate !important;
+  overflow:visible !important;
+  padding-top:0 !important;
+  box-shadow:0 7px 0 #f4f7fb !important;
+}
+#staffScreen #arpCohortFilters::before{
+  content:"" !important;
+  position:absolute !important;
+  z-index:0 !important;
+  left:-100vw !important;
+  right:-100vw !important;
+  top:0 !important;
+  bottom:0 !important;
+  background:#f4f7fb !important;
+  pointer-events:none !important;
+}
+#staffScreen #arpCohortFilters > *{
+  position:relative !important;
+  z-index:2 !important;
+}
+
+/* 목록은 sticky 영역보다 아래 레이어 */
+#staffScreen .fullscreen-content{
+  position:relative !important;
+  z-index:1 !important;
+  background:#f4f7fb !important;
+}
+#staffScreen #staffList{
+  position:relative !important;
+  z-index:1 !important;
+}
+
+/* ---------- 일일동향: 3개 기사를 처음부터 5행으로 재구성 ---------- */
+.daily-trend-articles{
+  display:grid !important;
+  grid-template-columns:minmax(0,1fr) !important;
+  grid-template-rows:auto minmax(12px,1fr) auto minmax(12px,1fr) auto !important;
+  width:100% !important;
+  height:var(--daily-trend-left-height,auto) !important;
+  min-height:0 !important;
+  margin:0 !important;
+  padding:0 !important;
+  gap:0 !important;
+  overflow:hidden !important;
+  align-self:start !important;
+  align-items:start !important;
+  justify-items:stretch !important;
+  box-sizing:border-box !important;
+}
+.daily-trend-article{
+  grid-column:1 !important;
+  width:100% !important;
+  min-width:0 !important;
+  min-height:0 !important;
+  height:auto !important;
+  margin:0 !important;
+  padding:0 !important;
+  border:0 !important;
+  display:block !important;
+  align-self:start !important;
+  overflow:hidden !important;
+  box-sizing:border-box !important;
+  font-size:.84rem !important;
+  line-height:1.30 !important;
+  font-weight:600 !important;
+  color:#000 !important;
+  text-decoration:none !important;
+}
+.daily-trend-article:nth-of-type(1){grid-row:1 !important;}
+.daily-trend-article:nth-of-type(2){grid-row:3 !important;}
+.daily-trend-article:nth-of-type(3){grid-row:5 !important;}
+
+.daily-trend-article-text{
+  display:-webkit-box !important;
+  -webkit-box-orient:vertical !important;
+  -webkit-line-clamp:2 !important;
+  width:100% !important;
+  max-height:2.60em !important;
+  height:auto !important;
+  min-height:0 !important;
+  margin:0 !important;
+  padding:0 !important;
+  overflow:hidden !important;
+  text-overflow:ellipsis !important;
+  white-space:normal !important;
+  word-break:keep-all !important;
+  overflow-wrap:break-word !important;
+  font-size:.84rem !important;
+  line-height:1.30 !important;
+  box-sizing:border-box !important;
+}
+
+/* JS가 별도로 만든 두 개의 구분선 */
+.daily-trend-article-divider{
+  grid-column:1 !important;
+  width:100% !important;
+  height:0 !important;
+  min-height:0 !important;
+  margin:0 !important;
+  padding:0 !important;
+  border-top:1px dotted rgba(0,0,0,.55) !important;
+  box-sizing:border-box !important;
+  align-self:start !important;
+}
+.daily-trend-article-divider:nth-child(2){grid-row:2 !important;}
+.daily-trend-article-divider:nth-child(4){grid-row:4 !important;}
+
+/* 작은/큰 휴대폰 모두 동일한 원칙으로 작동 */
+@media(max-width:600px){
+  #staffScreen .staff-search-wrap{
+    padding:7px 0 !important;
+  }
+  #staffScreen .staff-search-wrap .staff-search{
+    height:44px !important;
+  }
+  #staffScreen .staff-search-wrap .staff-search-icon{
+    left:14px !important;
+    font-size:1rem !important;
+  }
+  #staffScreen #arpCohortFilters{
+    top:var(--staff-search-sticky-height,58px) !important;
   }
 }
 </style>
@@ -6632,27 +6837,30 @@ button,.nav-btn,.action-btn{min-height:44px;}
 
   function scrollToArpCohort(cohort) {
     const target = document.getElementById(`arp-cohort-${cohort}`);
-    if (!target) return;
     const screen = document.getElementById('staffScreen');
-    const content = screen?.querySelector('.fullscreen-content');
-    if (!content) {
-      target.scrollIntoView({behavior:'smooth', block:'start'});
-      return;
-    }
+    const content = screen && screen.querySelector('.fullscreen-content');
+    if (!target || !content) return;
 
-    // 실제 고정 영역의 현재 높이를 측정한다.
-    // 기존의 -8px 방식은 기기별 검색창/기수버튼 높이를 고려하지 않아
-    // 7기 등을 눌렀을 때 뱃지가 고정 버튼 뒤에 걸리는 문제가 있었다.
     const searchWrap = screen.querySelector('.staff-search-wrap');
     const cohortWrap = document.getElementById('arpCohortFilters');
-    const searchH = Math.ceil(searchWrap?.getBoundingClientRect().height || 0);
-    const cohortVisible = cohortWrap && getComputedStyle(cohortWrap).display !== 'none' && cohortWrap.classList.contains('show');
-    const cohortH = cohortVisible ? Math.ceil(cohortWrap.getBoundingClientRect().height || 0) : 0;
-    const gap = 8;
-    const targetTop = target.getBoundingClientRect().top;
-    const contentTop = content.getBoundingClientRect().top;
-    const top = targetTop - contentTop + content.scrollTop - searchH - cohortH - gap;
-    content.scrollTo({top: Math.max(0, top), behavior:'smooth'});
+
+    /* 실제 sticky 요소의 화면 높이를 다시 측정합니다.
+       기기마다 검색창/기수 버튼의 줄바꿈 높이가 다르므로 고정 px를 쓰지 않습니다. */
+    const searchH = Math.ceil(searchWrap ? searchWrap.getBoundingClientRect().height : 0);
+    const cohortVisible = cohortWrap &&
+      getComputedStyle(cohortWrap).display !== 'none' &&
+      cohortWrap.classList.contains('show');
+    const cohortH = cohortVisible ? Math.ceil(cohortWrap.getBoundingClientRect().height) : 0;
+
+    /* sticky 영역의 가장 아래에서 8px 아래가 기수 뱃지의 시작점 */
+    const offset = searchH + cohortH + 8;
+    const targetRect = target.getBoundingClientRect();
+    const contentRect = content.getBoundingClientRect();
+    const targetTop = targetRect.top - contentRect.top + content.scrollTop;
+    const maxTop = Math.max(0, content.scrollHeight - content.clientHeight);
+    const destination = Math.min(maxTop, Math.max(0, targetTop - offset));
+
+    content.scrollTo({top: destination, behavior:'smooth'});
   }
 
   function renderArpList(categoryFilter) {
@@ -8559,7 +8767,17 @@ function createEventCard(event, isNext=false) {
     const articleWrap = document.createElement('div');
     articleWrap.className = 'daily-trend-articles';
 
+    /* 오른쪽 기사 영역은 '기사-구분선-기사-구분선-기사'의 5개 행으로
+       처음부터 다시 구성합니다. 기존 3등분/중첩 flex/grid 규칙과 충돌하지 않도록
+       구분선도 별도 DOM 요소로 분리합니다. */
     for (let idx = 0; idx < 3; idx++) {
+      if (idx > 0) {
+        const divider = document.createElement('div');
+        divider.className = 'daily-trend-article-divider';
+        divider.setAttribute('aria-hidden', 'true');
+        articleWrap.appendChild(divider);
+      }
+
       const article = articles[idx];
       const a = document.createElement('a');
       a.className = 'daily-trend-article';
