@@ -4880,6 +4880,160 @@ button,.nav-btn,.action-btn{min-height:44px;}
 })();
 </script>
 
+
+<style id="responsive-conflict-final-20260923">
+/* =========================================================
+   2026-09-23 최종 반응형 충돌 해소
+   기존에 중복 선언된 daily-trend / staff sticky CSS보다
+   항상 마지막에 적용되도록 head의 마지막에 배치
+   ========================================================= */
+
+/* ---------- 일일동향 : 기사 3개 ---------- */
+.daily-trend-articles{
+  display:grid !important;
+  grid-template-columns:minmax(0,1fr) !important;
+  grid-template-rows:auto minmax(0,1fr) auto minmax(0,1fr) auto !important;
+  align-items:start !important;
+  align-self:start !important;
+  width:100% !important;
+  height:var(--daily-trend-left-height, auto) !important;
+  min-height:0 !important;
+  margin:0 !important;
+  padding:0 !important;
+  gap:0 !important;
+  overflow:hidden !important;
+  box-sizing:border-box !important;
+}
+.daily-trend-article{
+  grid-row:auto !important;
+  width:100% !important;
+  height:auto !important;
+  min-width:0 !important;
+  min-height:0 !important;
+  margin:0 !important;
+  padding:0 !important;
+  display:block !important;
+  align-self:start !important;
+  box-sizing:border-box !important;
+  overflow:hidden !important;
+  border:0 !important;
+  font-size:.84rem !important;
+  line-height:1.30 !important;
+  font-weight:600 !important;
+  color:#000 !important;
+  word-break:keep-all !important;
+  overflow-wrap:break-word !important;
+}
+.daily-trend-article:nth-child(1){grid-row:1 !important;}
+.daily-trend-article:nth-child(2){
+  grid-row:3 !important;
+  border-top:1px dotted #000 !important;
+  padding-top:6px !important;
+}
+.daily-trend-article:nth-child(3){
+  grid-row:5 !important;
+  border-top:1px dotted #000 !important;
+  padding-top:6px !important;
+}
+.daily-trend-article-text{
+  display:-webkit-box !important;
+  -webkit-box-orient:vertical !important;
+  -webkit-line-clamp:2 !important;
+  width:100% !important;
+  height:auto !important;
+  min-height:0 !important;
+  max-height:2.60em !important;
+  margin:0 !important;
+  padding:0 !important;
+  overflow:hidden !important;
+  text-overflow:ellipsis !important;
+  white-space:normal !important;
+  word-break:keep-all !important;
+  overflow-wrap:break-word !important;
+  font-size:.84rem !important;
+  line-height:1.30 !important;
+}
+
+/* ---------- 코다피플 : 스크롤 영역 ---------- */
+#staffScreen{
+  overflow:hidden !important;
+}
+#staffScreen .fullscreen-content{
+  position:relative !important;
+  z-index:1 !important;
+  overflow-y:auto !important;
+  overflow-x:hidden !important;
+  -webkit-overflow-scrolling:touch !important;
+  background:#f4f7fb !important;
+  isolation:isolate !important;
+}
+
+/* 검색창과 기수버튼은 각각 독립적인 불투명 sticky 영역 */
+#staffScreen .staff-search-wrap{
+  position:sticky !important;
+  top:0 !important;
+  z-index:100 !important;
+  background:#f4f7fb !important;
+  opacity:1 !important;
+  -webkit-backdrop-filter:none !important;
+  backdrop-filter:none !important;
+  isolation:isolate !important;
+  box-shadow:0 7px 0 #f4f7fb !important;
+}
+#staffScreen #arpCohortFilters{
+  position:sticky !important;
+  top:var(--staff-search-sticky-height,57px) !important;
+  z-index:99 !important;
+  background:#f4f7fb !important;
+  opacity:1 !important;
+  -webkit-backdrop-filter:none !important;
+  backdrop-filter:none !important;
+  isolation:isolate !important;
+  box-shadow:0 7px 0 #f4f7fb !important;
+}
+
+/* 자식/목록 stacking context까지 명확히 분리 */
+#staffScreen .staff-search-wrap::after,
+#staffScreen #arpCohortFilters::after{
+  content:"" !important;
+  position:absolute !important;
+  left:-40px !important;
+  right:-40px !important;
+  top:0 !important;
+  bottom:0 !important;
+  background:#f4f7fb !important;
+  z-index:-1 !important;
+  pointer-events:none !important;
+}
+#staffScreen .staff-search-wrap > *,
+#staffScreen #arpCohortFilters > *{
+  position:relative !important;
+  z-index:2 !important;
+}
+#staffScreen #staffList{
+  position:relative !important;
+  z-index:1 !important;
+}
+
+/* 기수 뱃지는 검색창 + 기수버튼 아래에서 시작 */
+#staffScreen #staffList.arp-list .arp-cohort-group{
+  scroll-margin-top:calc(var(--staff-search-sticky-height,57px) + var(--staff-cohort-sticky-height,0px) + 8px) !important;
+}
+
+/* 작은 기기에서도 검색창/기수영역이 줄어들지 않도록 */
+@media(max-width:600px){
+  #staffScreen .staff-search-wrap{
+    top:0 !important;
+  }
+  #staffScreen #arpCohortFilters{
+    top:var(--staff-search-sticky-height,54px) !important;
+  }
+  .daily-trend-articles{
+    height:var(--daily-trend-left-height,auto) !important;
+  }
+}
+</style>
+
 </head>
 <body>
 
@@ -6481,12 +6635,24 @@ button,.nav-btn,.action-btn{min-height:44px;}
     if (!target) return;
     const screen = document.getElementById('staffScreen');
     const content = screen?.querySelector('.fullscreen-content');
-    if (content) {
-      const top = target.getBoundingClientRect().top - content.getBoundingClientRect().top + content.scrollTop - 8;
-      content.scrollTo({top: Math.max(0, top), behavior:'smooth'});
-    } else {
+    if (!content) {
       target.scrollIntoView({behavior:'smooth', block:'start'});
+      return;
     }
+
+    // 실제 고정 영역의 현재 높이를 측정한다.
+    // 기존의 -8px 방식은 기기별 검색창/기수버튼 높이를 고려하지 않아
+    // 7기 등을 눌렀을 때 뱃지가 고정 버튼 뒤에 걸리는 문제가 있었다.
+    const searchWrap = screen.querySelector('.staff-search-wrap');
+    const cohortWrap = document.getElementById('arpCohortFilters');
+    const searchH = Math.ceil(searchWrap?.getBoundingClientRect().height || 0);
+    const cohortVisible = cohortWrap && getComputedStyle(cohortWrap).display !== 'none' && cohortWrap.classList.contains('show');
+    const cohortH = cohortVisible ? Math.ceil(cohortWrap.getBoundingClientRect().height || 0) : 0;
+    const gap = 8;
+    const targetTop = target.getBoundingClientRect().top;
+    const contentTop = content.getBoundingClientRect().top;
+    const top = targetTop - contentTop + content.scrollTop - searchH - cohortH - gap;
+    content.scrollTo({top: Math.max(0, top), behavior:'smooth'});
   }
 
   function renderArpList(categoryFilter) {
