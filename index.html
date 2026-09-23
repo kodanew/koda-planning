@@ -3350,6 +3350,1536 @@ button,.nav-btn,.action-btn{min-height:44px;}
     transform:translateY(1px)!important;
   }
 </style>
+
+<style id="daily-trend-ui">
+/* ===== 일일동향 ===== */
+#dailyTrendScreen,
+#dailyTrendDetailScreen{
+  position:fixed; inset:0; z-index:1550;
+  display:none; flex-direction:column; overflow-y:auto;
+  -webkit-overflow-scrolling:touch; background:#f4f7fb;
+  padding:0 0 18px; box-sizing:border-box;
+}
+#dailyTrendScreen .govasm-header,
+#dailyTrendDetailScreen .govasm-header{
+  width:100%; max-width:430px; margin:0 auto; box-sizing:border-box;
+}
+#dailyTrendScreen .govasm-header,
+#dailyTrendDetailScreen .govasm-header{
+  flex:0 0 auto;
+}
+.daily-trend-content{
+  width:100%; max-width:430px; margin:0 auto;
+  padding:12px 0 28px; box-sizing:border-box;
+}
+.daily-trend-card{
+  background:#fff; border:1px solid #e2eaf4; border-radius:16px;
+  padding:13px; margin-bottom:11px;
+  box-shadow:0 5px 16px rgba(25,67,110,.055);
+}
+.daily-trend-card-head{
+  display:flex; align-items:center; gap:9px; width:100%;
+  margin-bottom:12px;
+}
+.daily-trend-date-badge{
+  flex:0 0 auto; display:inline-flex; align-items:center; justify-content:center;
+  min-height:25px; padding:4px 9px; border-radius:7px;
+  background:#eaf3ff; color:#1769d2; font-size:.76rem;
+  line-height:1.1; font-weight:850; letter-spacing:-.03em;
+}
+.daily-trend-divider{
+  flex:1; height:1.5px; background:#e4eaf2; min-width:12px;
+}
+.daily-trend-more{
+  width:27px; height:27px; min-width:27px; min-height:27px;
+  border:0; border-radius:50%; background:#f4f7fb; color:#64748b;
+  display:flex; align-items:center; justify-content:center;
+  font-size:1.35rem; line-height:1; font-weight:500; cursor:pointer;
+  padding:0;
+}
+.daily-trend-more:active{background:#e8eef6; transform:scale(.95);}
+.daily-trend-body{
+  display:grid; grid-template-columns:minmax(0,1.02fr) minmax(0,.98fr);
+  gap:12px; align-items:start;
+}
+.daily-trend-media{min-width:0;}
+.daily-trend-image-link{
+  display:block; width:100%; aspect-ratio:16/9; overflow:hidden;
+  border-radius:11px; background:#f1f4f8; text-decoration:none;
+}
+.daily-trend-image{
+  width:100%; height:100%; object-fit:cover; display:block;
+}
+.daily-trend-image-placeholder{
+  width:100%; height:100%; display:flex; align-items:center; justify-content:center;
+  color:#a0aec0; font-size:.72rem; font-weight:700;
+}
+.daily-trend-main-title{
+  margin-top:8px; color:#203a59; font-size:.84rem; line-height:1.4;
+  font-weight:800; letter-spacing:-.035em; word-break:keep-all;
+  display:-webkit-box; -webkit-box-orient:vertical; -webkit-line-clamp:2;
+  overflow:hidden; min-height:2.35em;
+}
+.daily-trend-articles{
+  min-width:0; display:flex; flex-direction:column;
+}
+.daily-trend-article{
+  display:block; min-width:0; padding:0 0 7px; margin-bottom:7px;
+  color:#334e68; text-decoration:none; cursor:pointer;
+  font-size:.76rem; line-height:1.28; font-weight:700;
+  letter-spacing:-.035em; word-break:keep-all; overflow:visible;
+}
+.daily-trend-article-text{
+  display:-webkit-box; -webkit-box-orient:vertical; -webkit-line-clamp:2;
+  overflow:hidden; line-height:1.28; max-height:2.56em;
+}
+.daily-trend-article + .daily-trend-article{
+  border-top:1px solid #edf1f5; padding-top:7px;
+}
+.daily-trend-article:last-child{margin-bottom:0; padding-bottom:0;}
+.daily-trend-article:active{color:#1769d2;}
+.daily-trend-empty{
+  background:#fff; border:1px solid #e2eaf4; border-radius:14px;
+  padding:28px 16px; text-align:center; color:#8a9aaf; font-size:.82rem;
+}
+.daily-trend-detail{
+  width:100%; max-width:430px; margin:0 auto; padding:20px 16px 34px;
+  box-sizing:border-box; background:#fff; min-height:calc(100vh - 54px);
+}
+.daily-trend-detail-label{
+  display:inline-flex; padding:4px 8px; border-radius:6px;
+  background:#fff0f6; color:#c53078; font-size:.68rem; font-weight:850;
+  margin-bottom:8px;
+}
+.daily-trend-detail-title{
+  margin:0 0 7px; color:#17385f; font-size:1.25rem; line-height:1.4;
+  font-weight:850; letter-spacing:-.045em; word-break:keep-all;
+}
+.daily-trend-detail-date{
+  color:#718096; font-size:.78rem; padding-bottom:14px; margin-bottom:20px;
+  border-bottom:1px solid #e2e8f0;
+}
+.daily-trend-section{margin:0 0 24px;}
+.daily-trend-section:last-child{margin-bottom:0;}
+.daily-trend-section-title{
+  margin:0 0 9px; padding-left:9px; border-left:4px solid #1769d2;
+  color:#1769d2; font-size:.92rem; line-height:1.3; font-weight:850;
+}
+.daily-trend-section:nth-child(2) .daily-trend-section-title{
+  border-left-color:#c53078; color:#c53078;
+}
+.daily-trend-section:nth-child(3) .daily-trend-section-title{
+  border-left-color:#b7791f; color:#b7791f;
+}
+.daily-trend-section-body{
+  color:#273b52; font-size:.88rem; line-height:1.68;
+  white-space:normal; word-break:keep-all;
+}
+.daily-trend-line{
+  display:block; margin:0 0 7px;
+}
+.daily-trend-line:last-child{margin-bottom:0;}
+.daily-trend-line a{
+  color:#2563eb; text-decoration:none; font-weight:700;
+}
+.daily-trend-line a:hover{text-decoration:underline;}
+@media(max-width:360px){
+  .daily-trend-content{padding-left:10px;padding-right:10px;}
+  .daily-trend-body{gap:9px;}
+  .daily-trend-article{font-size:.73rem;}
+  .daily-trend-main-title{font-size:.79rem;}
+  .daily-trend-detail{padding-left:13px;padding-right:13px;}
+}
+
+/* 일일동향 헤더는 정부·국회 헤더와 동일한 폭/정렬로 표시 */
+#dailyTrendScreen,
+#dailyTrendDetailScreen{
+  padding:0 !important;
+}
+#dailyTrendScreen .govasm-header,
+#dailyTrendDetailScreen .govasm-header{
+  width:100%;
+  max-width:430px;
+  min-height:54px;
+  height:54px;
+  margin:0 auto;
+  position:sticky;
+  top:0;
+  z-index:30;
+  background:#fff;
+  border-bottom:1px solid #edf2f7;
+  box-shadow:0 3px 14px rgba(25,67,110,.055);
+  display:grid;
+  grid-template-columns:54px minmax(0,1fr) 54px;
+  align-items:center;
+  padding:0 12px;
+  box-sizing:border-box;
+}
+#dailyTrendScreen .govasm-back,
+#dailyTrendDetailScreen .govasm-back{
+  width:42px;
+  height:42px;
+  min-height:42px;
+  padding:0;
+  border:0;
+  border-radius:14px;
+  background:#f1f6fd;
+  color:#1769d2;
+  font-size:1.55rem;
+  font-weight:700;
+  line-height:1;
+}
+#dailyTrendScreen .govasm-title,
+#dailyTrendDetailScreen .govasm-title{
+  text-align:center;
+  color:#173f70;
+  font-size:1.12rem;
+  font-weight:850;
+  letter-spacing:-.045em;
+  white-space:nowrap;
+}
+/* 오른쪽 대표 기사 제목은 정확히 최대 2줄 */
+.daily-trend-article{
+  display:-webkit-box;
+  -webkit-box-orient:vertical;
+  -webkit-line-clamp:2;
+  overflow:hidden;
+  max-height:2.84em;
+  text-overflow:ellipsis;
+}
+</style>
+
+<style id="daily-trend-final-layout">
+.daily-trend-body{align-items:stretch !important;}
+.daily-trend-media{display:flex !important;flex-direction:column !important;height:100% !important;}
+.daily-trend-main-title{min-height:0 !important;display:block !important;}
+.daily-trend-main-title-link{display:block;color:inherit;text-decoration:none;}
+.daily-trend-articles{
+  display:grid !important;grid-template-rows:repeat(3,minmax(0,1fr)) !important;
+  height:100% !important;min-height:0 !important;align-self:stretch !important;
+}
+.daily-trend-article{
+  display:flex !important;align-items:center !important;min-height:0 !important;
+  margin:0 !important;padding:7px 0 !important;border-top:0 !important;
+  color:#000 !important;font-weight:500 !important;
+}
+.daily-trend-article + .daily-trend-article{border-top:1px solid #edf1f5 !important;padding-top:7px !important;}
+.daily-trend-article-text{color:#000 !important;line-height:1.35 !important;max-height:2.7em !important;}
+.daily-trend-article:active,.daily-trend-article:hover{color:#1769d2 !important;}
+</style>
+
+
+
+<style id="daily-trend-user-final-adjustments">
+/* 2026-09-23 일일동향 기사 제목 최종 정렬 */
+.daily-trend-body{
+  align-items:start !important;
+}
+.daily-trend-media{
+  align-self:start !important;
+}
+/* 썸네일 오른쪽 기사 영역은 썸네일 높이에 맞추고, 첫 기사는 상단에서 살짝 내려 시작 */
+.daily-trend-articles{
+  height:var(--daily-trend-image-height, auto) !important;
+  align-self:start !important;
+  display:flex !important;
+  flex-direction:column !important;
+  justify-content:flex-start !important;
+}
+.daily-trend-article{
+  flex:1 1 0 !important;
+  min-height:0 !important;
+  margin:0 !important;
+  padding:6px 0 !important;
+  display:flex !important;
+  align-items:flex-start !important;
+  box-sizing:border-box !important;
+  border-top:0 !important;
+  font-size:.90rem !important;
+  line-height:1.38 !important;
+  font-weight:700 !important;
+  word-break:keep-all !important;
+  overflow:hidden !important;
+}
+.daily-trend-article:first-child{
+  padding-top:7px !important;
+}
+.daily-trend-article + .daily-trend-article{
+  border-top:1px solid #dfe5ec !important;
+  padding-top:6px !important;
+}
+.daily-trend-article-text{
+  width:100% !important;
+  min-width:0 !important;
+  color:#000 !important;
+  line-height:1.38 !important;
+  max-height:2.76em !important;
+  display:-webkit-box !important;
+  -webkit-box-orient:vertical !important;
+  -webkit-line-clamp:2 !important;
+  overflow:hidden !important;
+  white-space:normal !important;
+  word-break:keep-all !important;
+  overflow-wrap:break-word !important;
+  text-indent:0 !important;
+}
+/* 첫 단어/한글 제목 시작점에서 다음 줄도 같은 위치로 정렬 */
+.daily-trend-article-text::first-line{ text-indent:0 !important; }
+/* 썸네일과 오른쪽 기사 시작 높이를 조금 다르게 */
+.daily-trend-image-link{
+  margin-bottom:0 !important;
+}
+@media(max-width:360px){
+  .daily-trend-article{font-size:.86rem !important;line-height:1.36 !important;}
+}
+</style>
+
+<style id="daily-trend-mobile-final">
+/* ===== 일일동향 최종 모바일 레이아웃 ===== */
+.daily-trend-body{
+  display:grid !important;
+  grid-template-columns:minmax(0,1fr) minmax(0,1fr) !important;
+  gap:12px !important;
+  align-items:stretch !important;
+}
+.daily-trend-media{
+  min-width:0 !important;
+  height:100% !important;
+  display:flex !important;
+  flex-direction:column !important;
+}
+.daily-trend-image-link{
+  width:100% !important;
+  aspect-ratio:16/9 !important;
+  overflow:hidden !important;
+  flex:0 0 auto !important;
+}
+.daily-trend-image{
+  width:100% !important;
+  height:100% !important;
+  object-fit:cover !important;
+  display:block !important;
+}
+.daily-trend-main-title,
+.daily-trend-main-title-link{
+  min-width:0 !important;
+  margin-top:8px !important;
+  color:#203a59 !important;
+  font-size:.84rem !important;
+  line-height:1.4 !important;
+  font-weight:800 !important;
+  letter-spacing:-.035em !important;
+  white-space:normal !important;
+  word-break:break-all !important;
+  overflow-wrap:anywhere !important;
+  display:-webkit-box !important;
+  -webkit-box-orient:vertical !important;
+  -webkit-line-clamp:2 !important;
+  overflow:hidden !important;
+  text-overflow:ellipsis !important;
+  height:2.8em !important;
+  max-height:2.8em !important;
+  min-height:2.8em !important;
+  text-decoration:none !important;
+}
+.daily-trend-articles{
+  min-width:0 !important;
+  height:auto !important;
+  min-height:0 !important;
+  align-self:stretch !important;
+  display:grid !important;
+  grid-template-rows:repeat(3,minmax(0,1fr)) !important;
+}
+.daily-trend-article{
+  min-width:0 !important;
+  min-height:0 !important;
+  margin:0 !important;
+  padding:6px 0 !important;
+  border-top:0 !important;
+  display:flex !important;
+  align-items:center !important;
+  color:#000 !important;
+  text-decoration:none !important;
+  font-size:.84rem !important;
+  line-height:1.38 !important;
+  font-weight:700 !important;
+  letter-spacing:-.035em !important;
+  word-break:break-all !important;
+  overflow-wrap:anywhere !important;
+  overflow:hidden !important;
+}
+.daily-trend-article + .daily-trend-article{
+  border-top:1px solid #edf1f5 !important;
+}
+.daily-trend-article-text{
+  min-width:0 !important;
+  width:100% !important;
+  color:#000 !important;
+  display:-webkit-box !important;
+  -webkit-box-orient:vertical !important;
+  -webkit-line-clamp:2 !important;
+  overflow:hidden !important;
+  text-overflow:ellipsis !important;
+  white-space:normal !important;
+  word-break:break-all !important;
+  overflow-wrap:anywhere !important;
+  line-height:1.38 !important;
+  max-height:2.76em !important;
+}
+
+/* ===== 일일동향 상세 본문 ===== */
+.daily-trend-detail{
+  color:#000 !important;
+}
+.daily-trend-section{
+  margin:0 0 36px !important;
+}
+.daily-trend-section:last-child{margin-bottom:0 !important;}
+.daily-trend-section-title{
+  margin:0 0 14px !important;
+  padding-left:11px !important;
+  border-left:4px solid #1769d2 !important;
+  color:#1769d2 !important;
+  font-size:1.15rem !important;
+  line-height:1.4 !important;
+  font-weight:900 !important;
+  letter-spacing:-.045em !important;
+}
+.daily-trend-section:nth-child(2) .daily-trend-section-title,
+.daily-trend-section:nth-child(3) .daily-trend-section-title{
+  border-left-color:#1769d2 !important;
+  color:#1769d2 !important;
+}
+.daily-trend-section-body{
+  color:#000 !important;
+  font-size:.96rem !important;
+  line-height:1.72 !important;
+  white-space:normal !important;
+  word-break:break-all !important;
+  overflow-wrap:anywhere !important;
+}
+.daily-trend-line{
+  display:flex !important;
+  align-items:flex-start !important;
+  gap:6px !important;
+  width:100% !important;
+  margin:0 0 11px !important;
+  color:#000 !important;
+}
+.daily-trend-line-number{
+  flex:0 0 auto !important;
+  width:20px !important;
+  color:#000 !important;
+  font-weight:800 !important;
+  line-height:1.72 !important;
+}
+.daily-trend-line > a,
+.daily-trend-line-title{
+  display:block !important;
+  min-width:0 !important;
+  flex:1 1 auto !important;
+  color:#000 !important;
+  font-weight:500 !important;
+  line-height:1.72 !important;
+  text-decoration:none !important;
+  white-space:normal !important;
+  word-break:break-all !important;
+  overflow-wrap:anywhere !important;
+}
+.daily-trend-line > a:hover{color:#000 !important;text-decoration:none !important;}
+@media(max-width:360px){
+  .daily-trend-body{gap:9px !important;}
+  .daily-trend-article{font-size:.81rem !important;}
+  .daily-trend-main-title,.daily-trend-main-title-link{font-size:.81rem !important;}
+  .daily-trend-detail{padding-left:13px !important;padding-right:13px !important;}
+  .daily-trend-section-title{font-size:1.08rem !important;}
+  .daily-trend-section-body{font-size:.92rem !important;}
+}
+</style>
+
+<style id="daily-trend-user-final-adjustments-2">
+/* 2026-09-23 사용자 요청 최종 적용 */
+.daily-trend-body{
+  align-items:start !important;
+}
+.daily-trend-media{
+  align-self:start !important;
+}
+.daily-trend-articles{
+  align-self:start !important;
+  display:flex !important;
+  flex-direction:column !important;
+  justify-content:flex-start !important;
+  height:auto !important;
+}
+.daily-trend-article{
+  flex:1 1 0 !important;
+  min-height:0 !important;
+  margin:0 !important;
+  padding:6px 0 !important;
+  display:flex !important;
+  align-items:flex-start !important;
+  box-sizing:border-box !important;
+  border-top:0 !important;
+  color:#000 !important;
+  font-size:.90rem !important;
+  line-height:1.38 !important;
+  font-weight:700 !important;
+  word-break:keep-all !important;
+  overflow:hidden !important;
+}
+.daily-trend-article:first-child{
+  padding-top:7px !important;
+}
+.daily-trend-article + .daily-trend-article{
+  border-top:1px solid #dfe5ec !important;
+  padding-top:6px !important;
+}
+.daily-trend-article-text{
+  width:100% !important;
+  min-width:0 !important;
+  color:#000 !important;
+  line-height:1.38 !important;
+  max-height:2.76em !important;
+  display:-webkit-box !important;
+  -webkit-box-orient:vertical !important;
+  -webkit-line-clamp:2 !important;
+  overflow:hidden !important;
+  white-space:normal !important;
+  word-break:keep-all !important;
+  overflow-wrap:break-word !important;
+  text-indent:0 !important;
+}
+@media(max-width:360px){
+  .daily-trend-article{font-size:.86rem !important;line-height:1.36 !important;}
+}
+</style>
+
+<style id="daily-trend-definitive-20260923">
+/* ===== 일일동향 오른쪽 기사 영역: 왼쪽 전체 높이와 1:1 정렬 ===== */
+.daily-trend-body{
+  display:grid !important;
+  grid-template-columns:minmax(0,1fr) minmax(0,1fr) !important;
+  gap:12px !important;
+  align-items:start !important;
+}
+.daily-trend-media{
+  min-width:0 !important;
+  height:auto !important;
+  align-self:start !important;
+  display:flex !important;
+  flex-direction:column !important;
+}
+.daily-trend-image-link{
+  flex:0 0 auto !important;
+}
+.daily-trend-main-title,
+.daily-trend-main-title-link{
+  flex:0 0 auto !important;
+  height:auto !important;
+  min-height:0 !important;
+  max-height:2.8em !important;
+  margin-top:8px !important;
+}
+
+/* JS가 계산한 왼쪽 전체 높이를 그대로 사용. 내부 여백은 바깥에서 균등하게 처리 */
+.daily-trend-articles{
+  min-width:0 !important;
+  height:var(--daily-trend-left-height, auto) !important;
+  align-self:start !important;
+  display:grid !important;
+  grid-template-rows:repeat(3,minmax(0,1fr)) !important;
+  padding:7px 0 !important;
+  margin:0 !important;
+  box-sizing:border-box !important;
+  overflow:hidden !important;
+}
+.daily-trend-article{
+  min-width:0 !important;
+  min-height:0 !important;
+  height:auto !important;
+  margin:0 !important;
+  padding:0 !important;
+  display:flex !important;
+  align-items:flex-start !important;
+  box-sizing:border-box !important;
+  border:0 !important;
+  color:#000 !important;
+  font-size:.90rem !important;
+  line-height:1.38 !important;
+  font-weight:700 !important;
+  letter-spacing:-.035em !important;
+  word-break:keep-all !important;
+  overflow:hidden !important;
+}
+.daily-trend-article + .daily-trend-article{
+  border-top:1px solid #dfe5ec !important;
+}
+.daily-trend-article-text{
+  display:-webkit-box !important;
+  -webkit-box-orient:vertical !important;
+  -webkit-line-clamp:2 !important;
+  width:100% !important;
+  min-width:0 !important;
+  margin:0 !important;
+  padding:0 !important;
+  color:#000 !important;
+  font-size:inherit !important;
+  font-weight:inherit !important;
+  line-height:1.38 !important;
+  max-height:2.76em !important;
+  white-space:normal !important;
+  word-break:keep-all !important;
+  overflow-wrap:normal !important;
+  text-indent:0 !important;
+  overflow:hidden !important;
+}
+
+/* 상세보기 본문: 번호와 제목을 분리하고 제목 자체를 독립 블록으로 만들어
+   2번째 줄이 반드시 1번째 줄의 첫 글자와 동일한 X좌표에서 시작 */
+.daily-trend-line{
+  display:grid !important;
+  grid-template-columns:20px minmax(0,1fr) !important;
+  column-gap:6px !important;
+  align-items:start !important;
+  width:100% !important;
+  margin:0 0 11px !important;
+}
+.daily-trend-line-number{
+  display:block !important;
+  width:20px !important;
+  margin:0 !important;
+  padding:0 !important;
+  line-height:1.72 !important;
+}
+.daily-trend-line > a,
+.daily-trend-line-title{
+  display:block !important;
+  width:100% !important;
+  min-width:0 !important;
+  margin:0 !important;
+  padding:0 !important;
+  line-height:1.72 !important;
+  text-indent:0 !important;
+  white-space:normal !important;
+  word-break:keep-all !important;
+  overflow-wrap:normal !important;
+}
+.daily-trend-line > a{
+  color:#000 !important;
+  text-decoration:none !important;
+}
+.daily-trend-line > a .daily-trend-line-title{
+  display:block !important;
+  width:100% !important;
+  margin:0 !important;
+  padding:0 !important;
+  text-indent:0 !important;
+}
+
+@media(max-width:360px){
+  .daily-trend-article{font-size:.86rem !important;line-height:1.36 !important;}
+}
+</style>
+<style id="daily-trend-user-request-20260923">
+/* 2026-09-23 일일동향 최종 요청 */
+.daily-trend-body{display:grid!important;grid-template-columns:minmax(0,1.02fr) minmax(0,.98fr)!important;gap:10px!important;align-items:start!important}
+.daily-trend-media{min-width:0!important;align-self:start!important}
+.daily-trend-main-title,.daily-trend-main-title-link{margin-top:6px!important;line-height:1.35!important;max-height:2.7em!important}
+.daily-trend-articles{min-width:0!important;height:var(--daily-trend-left-height,auto)!important;align-self:start!important;display:grid!important;grid-template-rows:repeat(4,minmax(0,1fr))!important;padding:2px 0!important;margin:0!important;box-sizing:border-box!important;overflow:hidden!important}
+.daily-trend-article{min-width:0!important;min-height:0!important;height:auto!important;margin:0!important;padding:0!important;display:flex!important;align-items:flex-start!important;box-sizing:border-box!important;border:0!important;color:#000!important;font-size:.82rem!important;line-height:1.30!important;font-weight:700!important;letter-spacing:-.035em!important;word-break:break-all!important;overflow:hidden!important}
+.daily-trend-article + .daily-trend-article{border-top:1px solid #dfe5ec!important;padding-top:3px!important}
+.daily-trend-article:first-child{padding-top:0!important}
+.daily-trend-article:last-child{padding-bottom:0!important;border-bottom:0!important}
+.daily-trend-article-text{display:-webkit-box!important;-webkit-box-orient:vertical!important;-webkit-line-clamp:2!important;width:100%!important;min-width:0!important;margin:0!important;padding:0!important;color:#000!important;font-size:inherit!important;font-weight:inherit!important;line-height:1.30!important;max-height:2.60em!important;white-space:normal!important;word-break:break-all!important;overflow-wrap:anywhere!important;text-indent:0!important;overflow:hidden!important}
+.daily-trend-line{display:grid!important;grid-template-columns:20px minmax(0,1fr)!important;column-gap:6px!important;align-items:start!important;width:100%!important;margin:0 0 11px!important}
+.daily-trend-line-number{display:block!important;width:20px!important;margin:0!important;padding:0!important;line-height:1.72!important}
+.daily-trend-line > a,.daily-trend-line-title{display:block!important;width:100%!important;min-width:0!important;margin:0!important;padding:0!important;line-height:1.72!important;text-indent:0!important;white-space:normal!important;word-break:break-all!important;overflow-wrap:anywhere!important}
+.daily-trend-line > a{color:#000!important;text-decoration:none!important}
+.daily-trend-line > a .daily-trend-line-title{display:block!important;width:100%!important;margin:0!important;padding:0!important;text-indent:0!important;word-break:break-all!important;overflow-wrap:anywhere!important}
+@media(max-width:360px){.daily-trend-article{font-size:.77rem!important;line-height:1.28!important}.daily-trend-article-text{line-height:1.28!important;max-height:2.56em!important}}
+</style>
+
+<style id="daily-trend-fix-20260923-2">
+/* ===== 2026-09-23 일일동향 카드 / 상세기사 제목 최종 보정 ===== */
+
+/* 1) 카드 전체 높이는 제목이 잘리지 않도록 내용에 맞춰 자연스럽게 늘립니다. */
+.daily-trend-card{
+  padding:12px 12px 15px !important;
+  margin-bottom:11px !important;
+}
+.daily-trend-card-head{
+  margin-bottom:9px !important;
+  gap:7px !important;
+}
+.daily-trend-body{
+  grid-template-columns:minmax(0,1.03fr) minmax(0,.97fr) !important;
+  gap:9px !important;
+  align-items:start !important;
+}
+
+/* 왼쪽 대표 한글 제목: 2줄에서 잘라내지 않고 최대 3줄까지 표시 */
+.daily-trend-main-title,
+.daily-trend-main-title-link{
+  margin-top:7px !important;
+  height:auto !important;
+  min-height:0 !important;
+  max-height:4.20em !important;
+  line-height:1.40 !important;
+  -webkit-line-clamp:3 !important;
+  overflow:hidden !important;
+  word-break:keep-all !important;
+  overflow-wrap:break-word !important;
+}
+
+/* 오른쪽 기사 4개가 카드 높이를 고르게 사용하되, 기사 사이 여백은 최소화 */
+.daily-trend-articles{
+  height:var(--daily-trend-left-height,auto) !important;
+  padding:1px 0 !important;
+  grid-template-rows:repeat(4,minmax(0,1fr)) !important;
+}
+.daily-trend-article{
+  padding:3px 0 !important;
+  font-size:.82rem !important;
+  line-height:1.32 !important;
+  letter-spacing:-.035em !important;
+  word-break:break-all !important;
+  overflow-wrap:anywhere !important;
+  align-items:flex-start !important;
+}
+.daily-trend-article + .daily-trend-article{
+  padding-top:4px !important;
+}
+.daily-trend-article-text{
+  line-height:1.32 !important;
+  max-height:2.64em !important;
+  -webkit-line-clamp:2 !important;
+  word-break:break-all !important;
+  overflow-wrap:anywhere !important;
+}
+
+/* 작은 화면에서도 오른쪽 기사 제목이 지나치게 잘리지 않도록 */
+@media(max-width:360px){
+  .daily-trend-card{
+    padding:11px 10px 14px !important;
+  }
+  .daily-trend-body{
+    gap:7px !important;
+  }
+  .daily-trend-main-title,
+  .daily-trend-main-title-link{
+    font-size:.80rem !important;
+    line-height:1.36 !important;
+    max-height:4.08em !important;
+  }
+  .daily-trend-article{
+    font-size:.76rem !important;
+    line-height:1.28 !important;
+  }
+  .daily-trend-article-text{
+    line-height:1.28 !important;
+    max-height:2.56em !important;
+  }
+}
+
+/* ===== 2) 일자별 상세보기: 번호/하이픈은 별도 영역,
+   기사 제목의 2번째 줄부터는 첫 한글 제목 글자와 같은 X좌표에서 시작 ===== */
+.daily-trend-line{
+  display:grid !important;
+  grid-template-columns:20px minmax(0,1fr) !important;
+  column-gap:6px !important;
+  align-items:start !important;
+}
+.daily-trend-line-number{
+  width:20px !important;
+  min-width:20px !important;
+  line-height:1.72 !important;
+}
+.daily-trend-line > a,
+.daily-trend-line-title{
+  min-width:0 !important;
+  width:100% !important;
+  margin:0 !important;
+  padding:0 !important;
+  text-indent:0 !important;
+  line-height:1.72 !important;
+  white-space:normal !important;
+  /* 단어마다 줄바꿈시키지 않고, 문장 전체를 자연스럽게 채운 뒤
+     줄을 넘길 때는 한글 한 글자 단위로 다음 줄로 넘어가도록 합니다. */
+  word-break:break-all !important;
+  overflow-wrap:anywhere !important;
+}
+.daily-trend-line > a{
+  display:block !important;
+  color:#000 !important;
+  text-decoration:none !important;
+}
+.daily-trend-line > a .daily-trend-line-title{
+  display:block !important;
+  width:100% !important;
+}
+</style>
+
+
+<style id="daily-trend-final-user-fix-20260923">
+/* ===== 일일동향 카드: 4개 기사 / 옅은 미세 점선 / 동일한 세로 간격 ===== */
+.daily-trend-articles{
+  display:grid !important;
+  grid-template-rows:repeat(4,minmax(0,1fr)) !important;
+  padding:0 !important;
+  margin:0 !important;
+  overflow:hidden !important;
+}
+.daily-trend-article{
+  min-width:0 !important;
+  min-height:0 !important;
+  height:auto !important;
+  margin:0 !important;
+  padding:3px 0 !important;
+  box-sizing:border-box !important;
+  display:flex !important;
+  align-items:center !important;
+  justify-content:flex-start !important;
+  border:0 !important;
+  position:relative !important;
+  color:#000 !important;
+  /* 기존 .90rem → 1사이즈 축소 */
+  font-size:.82rem !important;
+  line-height:1.30 !important;
+  font-weight:700 !important;
+  letter-spacing:-.035em !important;
+  word-break:break-all !important;
+  overflow:hidden !important;
+}
+.daily-trend-article + .daily-trend-article{
+  border-top:1px dotted #d9e0e8 !important;
+  padding-top:3px !important;
+}
+.daily-trend-article-text{
+  display:block !important;
+  width:100% !important;
+  min-width:0 !important;
+  margin:0 !important;
+  padding:0 !important;
+  color:#000 !important;
+  font-size:inherit !important;
+  font-weight:inherit !important;
+  line-height:1.30 !important;
+  white-space:normal !important;
+  word-break:break-all !important;
+  overflow-wrap:normal !important;
+  text-indent:0 !important;
+  overflow:hidden !important;
+  max-height:2.60em !important;
+  display:-webkit-box !important;
+  -webkit-box-orient:vertical !important;
+  -webkit-line-clamp:2 !important;
+}
+
+/* ===== 일자별 상세보기: 제목 전체를 하나의 문장으로 감싸고 자연스럽게 줄바꿈 ===== */
+.daily-trend-line{
+  display:grid !important;
+  grid-template-columns:20px minmax(0,1fr) !important;
+  column-gap:6px !important;
+  align-items:start !important;
+  width:100% !important;
+  margin:0 0 11px !important;
+}
+.daily-trend-line-number{
+  display:block !important;
+  width:20px !important;
+  min-width:20px !important;
+  margin:0 !important;
+  padding:0 !important;
+  line-height:1.72 !important;
+}
+.daily-trend-line > a,
+.daily-trend-line-title{
+  display:block !important;
+  width:100% !important;
+  min-width:0 !important;
+  margin:0 !important;
+  padding:0 !important;
+  color:#000 !important;
+  line-height:1.72 !important;
+  text-indent:0 !important;
+  white-space:normal !important;
+  /* 단어 단위 강제 줄바꿈이 아니라, 문장 전체 폭을 채운 뒤 자연스럽게 한 글자씩 줄바꿈 */
+  word-break:break-all !important;
+  overflow-wrap:normal !important;
+  hyphens:none !important;
+}
+.daily-trend-line > a{
+  color:#000 !important;
+  text-decoration:none !important;
+}
+.daily-trend-line > a .daily-trend-line-title{
+  display:block !important;
+  width:100% !important;
+  margin:0 !important;
+  padding:0 !important;
+  text-indent:0 !important;
+  word-break:break-all !important;
+  overflow-wrap:normal !important;
+}
+
+@media(max-width:360px){
+  .daily-trend-article{
+    font-size:.76rem !important;
+    line-height:1.28 !important;
+  }
+  .daily-trend-article-text{
+    line-height:1.28 !important;
+    max-height:2.56em !important;
+  }
+}
+</style>
+
+<style id="daily-trend-user-request-20260923-2">
+/* ===== 2026-09-23 추가 요청 ===== */
+/* 썸네일 아래 대표 한글 제목은 최대 2줄 */
+.daily-trend-main-title,
+.daily-trend-main-title-link{
+  -webkit-line-clamp:2 !important;
+  max-height:2.8em !important;
+  height:2.8em !important;
+  min-height:0 !important;
+  overflow:hidden !important;
+}
+
+/* 오른쪽 4개 기사: 왼쪽 대표 제목과 같은 색 / 한 단계 얇은 굵기 */
+.daily-trend-article,
+.daily-trend-article-text{
+  color:#203a59 !important;
+  font-weight:600 !important;
+}
+
+/* 기사 사이 구분선은 옅은 미세 점선, 기사 영역은 동일한 높이로 균등 분할 */
+.daily-trend-articles{
+  grid-template-rows:repeat(4,minmax(0,1fr)) !important;
+  padding:0 !important;
+}
+.daily-trend-article{
+  padding:0 !important;
+  margin:0 !important;
+  line-height:1.30 !important;
+  display:flex !important;
+  align-items:center !important;
+}
+.daily-trend-article + .daily-trend-article{
+  border-top:1px dotted #dfe5ec !important;
+  padding-top:0 !important;
+}
+.daily-trend-article-text{
+  line-height:1.30 !important;
+}
+
+/* 상세보기: 하이픈과 제목 사이에 정확히 한 칸 */
+.daily-trend-line.has-hyphen{
+  grid-template-columns:auto minmax(0,1fr) !important;
+  column-gap:0 !important;
+}
+.daily-trend-line.has-hyphen .daily-trend-line-number{
+  width:auto !important;
+  min-width:0 !important;
+  white-space:pre !important;
+}
+.daily-trend-line-title{
+  white-space:normal !important;
+  word-break:break-all !important;
+  overflow-wrap:normal !important;
+  text-indent:0 !important;
+}
+
+/* 상세보기 마지막 여백은 글자 한 줄 정도 */
+.daily-trend-detail{
+  padding-bottom:1.72em !important;
+}
+
+/* 상세보기 하단 일자 이동 버튼 */
+.daily-trend-detail-nav{
+  display:flex !important;
+  justify-content:flex-end !important;
+  align-items:center !important;
+  gap:6px !important;
+  margin-top:4px !important;
+  padding-top:4px !important;
+}
+.daily-trend-nav-btn{
+  appearance:none !important;
+  border:1px solid #d9e2ec !important;
+  background:#fff !important;
+  color:#526b86 !important;
+  border-radius:7px !important;
+  padding:6px 9px !important;
+  font-size:.72rem !important;
+  line-height:1.2 !important;
+  font-weight:650 !important;
+  letter-spacing:-.03em !important;
+  cursor:pointer !important;
+}
+.daily-trend-nav-btn:disabled{
+  opacity:.35 !important;
+  cursor:default !important;
+}
+.daily-trend-nav-btn:not(:disabled):active{
+  background:#f3f7fb !important;
+}
+</style>
+
+<style id="final-20260923-ui-permission-fix">
+/* ===== 최종 UI 보정 ===== */
+.daily-trend-card{
+  padding-bottom:10px !important;
+}
+.daily-trend-main-title,
+.daily-trend-main-title-link{
+  -webkit-line-clamp:2 !important;
+  max-height:2.8em !important;
+  height:2.8em !important;
+  overflow:hidden !important;
+}
+.daily-trend-article{
+  padding:0 !important;
+  margin:0 !important;
+  font-weight:600 !important;
+  color:#203a59 !important;
+  line-height:1.30 !important;
+  display:flex !important;
+  align-items:center !important;
+  min-height:0 !important;
+}
+.daily-trend-article-text{
+  color:#203a59 !important;
+  font-weight:600 !important;
+  line-height:1.30 !important;
+  margin:0 !important;
+  padding:0 !important;
+}
+.daily-trend-article + .daily-trend-article{
+  border-top:1px dotted #dfe5ec !important;
+  padding-top:0 !important;
+}
+.daily-trend-articles{
+  padding:0 !important;
+  margin:0 !important;
+  grid-template-rows:repeat(4,minmax(0,1fr)) !important;
+}
+/* 권한 제한 탭: 존재는 보이되 실제 데이터 접근은 차단 */
+#staffTabs .month-tab.permission-denied-tab{
+  opacity:.45 !important;
+  position:relative !important;
+}
+#staffTabs .month-tab.permission-denied-tab::after{
+  content:'🔒';
+  font-size:.58rem;
+  margin-left:3px;
+}
+/* 상세보기 하단은 마지막 본문 뒤에 한 줄보다 조금 넉넉한 공간 */
+.daily-trend-detail{
+  padding-bottom:3.2em !important;
+}
+.daily-trend-detail-nav{
+  margin-top:12px !important;
+  padding-top:8px !important;
+  padding-bottom:12px !important;
+}
+</style>
+
+<style id="koda-codapeople-sticky-permission-fix-20260923">
+/* 코다피플: 검색창은 스크롤 중에도 상단 고정 */
+#staffScreen .fullscreen-content{
+  position:relative !important;
+  overflow-y:auto !important;
+  overflow-x:hidden !important;
+  -webkit-overflow-scrolling:touch !important;
+}
+#staffScreen .staff-search-wrap{
+  position:sticky !important;
+  top:0 !important;
+  z-index:60 !important;
+  margin:0 0 8px !important;
+  padding:4px 0 6px !important;
+  background:#f4f7fb !important;
+}
+#staffScreen #arpCohortFilters{
+  position:sticky !important;
+  top:57px !important;
+  z-index:59 !important;
+  margin:0 0 10px !important;
+  padding:4px 0 6px !important;
+  background:#f4f7fb !important;
+}
+#staffScreen #arpCohortFilters.show{
+  display:grid !important;
+}
+
+/* 권한 제한 버튼은 클릭 자체를 막고 잠금 상태를 명확하게 표시 */
+#staffTabs .month-tab.permission-denied-tab{
+  opacity:.42 !important;
+  cursor:not-allowed !important;
+}
+#staffTabs .month-tab.permission-denied-tab:active{
+  transform:none !important;
+}
+
+@media(max-width:360px){
+  #staffScreen .staff-search-wrap{top:0 !important; padding-top:3px !important; padding-bottom:5px !important;}
+  #staffScreen #arpCohortFilters{top:54px !important; padding-top:3px !important; padding-bottom:5px !important;}
+}
+</style>
+
+<style id="daily-trend-three-article-balance-final">
+/* ===== 일일동향: J·K·L 3개 기사만 노출 / 세로 균형 ===== */
+.daily-trend-articles{
+  grid-template-rows:repeat(3,minmax(0,1fr)) !important;
+  padding:0 !important;
+  margin:0 !important;
+  gap:0 !important;
+  overflow:hidden !important;
+}
+.daily-trend-article{
+  box-sizing:border-box !important;
+  margin:0 !important;
+  padding:0 !important;
+  min-height:0 !important;
+  height:auto !important;
+  display:flex !important;
+  align-items:center !important;
+  font-size:.96rem !important;
+  line-height:1.30 !important;
+  font-weight:600 !important;
+  color:#203a59 !important;
+  border:0 !important;
+}
+.daily-trend-article-text{
+  margin:0 !important;
+  padding:0 !important;
+  color:#203a59 !important;
+  font-size:.96rem !important;
+  line-height:1.30 !important;
+  font-weight:600 !important;
+}
+.daily-trend-article + .daily-trend-article{
+  border-top:1px dotted #000 !important;
+  padding:0 !important;
+}
+</style>
+
+<style id="final-user-request-20260923-2">
+/* ===== 일일동향: 폴드/대화면 포함 모든 화면에서 3개 기사 간격을 동일 비율로 유지 ===== */
+.daily-trend-articles{
+  display:grid !important;
+  grid-template-rows:repeat(3,minmax(0,1fr)) !important;
+  height:var(--daily-trend-left-height,auto) !important;
+  min-height:0 !important;
+  padding:0 !important;
+  margin:0 !important;
+  gap:0 !important;
+  overflow:hidden !important;
+  box-sizing:border-box !important;
+}
+.daily-trend-article,
+.daily-trend-article-text{
+  min-height:0 !important;
+  box-sizing:border-box !important;
+  font-size:.84rem !important;
+  line-height:1.30 !important;
+  font-weight:600 !important;
+}
+.daily-trend-article{
+  min-width:0 !important;
+  height:auto !important;
+  margin:0 !important;
+  padding:0 !important;
+  display:flex !important;
+  align-items:center !important;
+  overflow:hidden !important;
+  border:0 !important;
+}
+.daily-trend-article-text{
+  display:-webkit-box !important;
+  -webkit-box-orient:vertical !important;
+  -webkit-line-clamp:2 !important;
+  width:100% !important;
+  margin:0 !important;
+  padding:0 !important;
+  overflow:hidden !important;
+  white-space:normal !important;
+  word-break:keep-all !important;
+  overflow-wrap:break-word !important;
+}
+.daily-trend-article + .daily-trend-article{
+  border-top:1px dotted #000 !important;
+}
+
+/* ===== 코다피플: 고정 검색/기수 영역 뒤로 목록이 숨겨지도록 불투명 레이어 확보 ===== */
+#staffScreen .fullscreen-content{
+  position:relative !important;
+  z-index:0 !important;
+  background:#f4f7fb !important;
+  overflow-y:auto !important;
+  overflow-x:hidden !important;
+}
+#staffScreen .staff-search-wrap{
+  position:sticky !important;
+  top:0 !important;
+  z-index:100 !important;
+  background:#f4f7fb !important;
+  isolation:isolate !important;
+  box-shadow:0 4px 7px rgba(244,247,251,.98) !important;
+}
+#staffScreen #arpCohortFilters{
+  position:sticky !important;
+  top:57px !important;
+  z-index:99 !important;
+  background:#f4f7fb !important;
+  isolation:isolate !important;
+  box-shadow:0 4px 7px rgba(244,247,251,.98) !important;
+}
+#staffScreen #staffList{
+  position:relative !important;
+  z-index:1 !important;
+}
+@media(max-width:360px){
+  #staffScreen .staff-search-wrap{top:0 !important;}
+  #staffScreen #arpCohortFilters{top:54px !important;}
+}
+</style>
+
+<style id="final-fix-20260923-1222">
+/* =========================================================
+   2026-09-23 최종 보정
+   1) 일일동향 3개 기사: 대화면에서도 제목 주변 여백 균형
+   2) 코다피플 검색창/기수버튼: 목록이 뒤로 비치지 않는 완전 불투명 sticky
+   3) 기수 이동: 해당 기수 뱃지가 고정영역 바로 아래에서 시작
+   ========================================================= */
+
+/* ----- 일일동향: 대화면에서 제목 아래로 과도하게 남는 빈 공간 방지 ----- */
+.daily-trend-articles{
+  display:flex !important;
+  flex-direction:column !important;
+  justify-content:space-between !important;
+  align-items:stretch !important;
+  height:var(--daily-trend-left-height,auto) !important;
+  min-height:0 !important;
+  padding:0 !important;
+  margin:0 !important;
+  gap:0 !important;
+  overflow:hidden !important;
+  box-sizing:border-box !important;
+}
+.daily-trend-article{
+  flex:0 0 auto !important;
+  width:100% !important;
+  min-height:0 !important;
+  height:auto !important;
+  margin:0 !important;
+  padding:0 !important;
+  display:block !important;
+  box-sizing:border-box !important;
+  align-items:initial !important;
+  overflow:hidden !important;
+  font-size:.84rem !important;
+  line-height:1.30 !important;
+  font-weight:600 !important;
+}
+.daily-trend-article-text{
+  display:-webkit-box !important;
+  -webkit-box-orient:vertical !important;
+  -webkit-line-clamp:2 !important;
+  width:100% !important;
+  min-height:0 !important;
+  max-height:2.6em !important;
+  margin:0 !important;
+  padding:0 !important;
+  line-height:1.30 !important;
+  font-size:.84rem !important;
+  overflow:hidden !important;
+  white-space:normal !important;
+  word-break:keep-all !important;
+  overflow-wrap:break-word !important;
+}
+.daily-trend-article + .daily-trend-article{
+  border-top:1px dotted #000 !important;
+  padding-top:6px !important;
+}
+
+/* ----- 코다피플: 하나의 스크롤 컨테이너만 사용 ----- */
+#staffScreen{
+  overflow:hidden !important;
+}
+#staffScreen .fullscreen-content{
+  position:relative !important;
+  z-index:1 !important;
+  height:calc(100vh - 54px - 80px) !important;
+  max-height:calc(100vh - 54px - 80px) !important;
+  overflow-y:auto !important;
+  overflow-x:hidden !important;
+  -webkit-overflow-scrolling:touch !important;
+  overscroll-behavior:contain !important;
+  background:#f4f7fb !important;
+}
+
+/* 검색창과 기수버튼이 지나가는 목록을 완전히 가리는 불투명 영역 */
+#staffScreen .staff-search-wrap,
+#staffScreen #arpCohortFilters{
+  isolation:isolate !important;
+  background:#f4f7fb !important;
+  opacity:1 !important;
+  -webkit-backdrop-filter:none !important;
+  backdrop-filter:none !important;
+}
+#staffScreen .staff-search-wrap{
+  position:sticky !important;
+  top:0 !important;
+  z-index:200 !important;
+  margin:0 0 8px !important;
+  padding:4px 0 6px !important;
+  box-shadow:none !important;
+}
+#staffScreen .staff-search-wrap::before{
+  content:"" !important;
+  position:absolute !important;
+  left:-20px !important;
+  right:-20px !important;
+  top:0 !important;
+  bottom:0 !important;
+  background:#f4f7fb !important;
+  z-index:-1 !important;
+  pointer-events:none !important;
+}
+#staffScreen #arpCohortFilters{
+  position:sticky !important;
+  top:var(--staff-search-sticky-height,57px) !important;
+  z-index:199 !important;
+  margin:0 0 10px !important;
+  padding:4px 0 6px !important;
+  box-shadow:none !important;
+}
+#staffScreen #arpCohortFilters::before{
+  content:"" !important;
+  position:absolute !important;
+  left:-20px !important;
+  right:-20px !important;
+  top:0 !important;
+  bottom:0 !important;
+  background:#f4f7fb !important;
+  z-index:-1 !important;
+  pointer-events:none !important;
+}
+#staffScreen #staffList{
+  position:relative !important;
+  z-index:1 !important;
+}
+
+/* 기수 그룹 자체도 고정영역 뒤에 들어가지 않도록 기본 scroll-margin 확보 */
+#staffScreen #staffList.arp-list .arp-cohort-group{
+  scroll-margin-top:calc(var(--staff-search-sticky-height,57px) + var(--staff-cohort-sticky-height,0px) + 8px) !important;
+}
+
+@media(max-width:360px){
+  #staffScreen .fullscreen-content{
+    height:calc(100vh - 68px - 68px) !important;
+    max-height:calc(100vh - 68px - 68px) !important;
+  }
+  #staffScreen .staff-search-wrap{
+    top:0 !important;
+    padding-top:3px !important;
+    padding-bottom:5px !important;
+  }
+  #staffScreen #arpCohortFilters{
+    top:var(--staff-search-sticky-height,54px) !important;
+    padding-top:3px !important;
+    padding-bottom:5px !important;
+  }
+}
+</style>
+
+<script>
+/* 2026-09-23: 코다피플 sticky 높이/기수 이동 보정 */
+(function(){
+  function updateStaffStickyHeights(){
+    const screen = document.getElementById('staffScreen');
+    const content = screen && screen.querySelector('.fullscreen-content');
+    const search = document.getElementById('staffSearchInput');
+    const searchWrap = document.querySelector('#staffScreen .staff-search-wrap');
+    const cohort = document.getElementById('arpCohortFilters');
+    if(!content || !searchWrap) return;
+
+    const searchH = Math.ceil(searchWrap.getBoundingClientRect().height || 0);
+    content.style.setProperty('--staff-search-sticky-height', Math.max(searchH, 54) + 'px');
+
+    const cohortVisible = cohort && getComputedStyle(cohort).display !== 'none' && cohort.classList.contains('show');
+    const cohortH = cohortVisible ? Math.ceil(cohort.getBoundingClientRect().height || 0) : 0;
+    content.style.setProperty('--staff-cohort-sticky-height', cohortH + 'px');
+
+    if(search){
+      searchWrap.style.setProperty('--staff-search-real-height', searchH + 'px');
+    }
+  }
+
+  function bindStaffStickyFix(){
+    updateStaffStickyHeights();
+    window.addEventListener('resize', updateStaffStickyHeights, {passive:true});
+    window.addEventListener('orientationchange', ()=>setTimeout(updateStaffStickyHeights,120), {passive:true});
+
+    const cohort = document.getElementById('arpCohortFilters');
+    if(cohort && typeof MutationObserver !== 'undefined'){
+      new MutationObserver(()=>requestAnimationFrame(updateStaffStickyHeights)).observe(cohort,{attributes:true,childList:true,subtree:true});
+    }
+  }
+
+  if(document.readyState === 'loading') document.addEventListener('DOMContentLoaded',bindStaffStickyFix);
+  else bindStaffStickyFix();
+
+  /* 기존 기수 이동 함수보다 뒤에 선언되어 실제 클릭 시 이 함수를 사용 */
+  window.scrollToArpCohort = function(cohort){
+    const target = document.getElementById(`arp-cohort-${cohort}`);
+    const screen = document.getElementById('staffScreen');
+    const content = screen && screen.querySelector('.fullscreen-content');
+    if(!target || !content) return;
+
+    updateStaffStickyHeights();
+    const searchWrap = document.querySelector('#staffScreen .staff-search-wrap');
+    const cohortWrap = document.getElementById('arpCohortFilters');
+    const searchH = Math.ceil(searchWrap?.getBoundingClientRect().height || 0);
+    const cohortH = (cohortWrap && getComputedStyle(cohortWrap).display !== 'none')
+      ? Math.ceil(cohortWrap.getBoundingClientRect().height || 0) : 0;
+    const topOffset = searchH + cohortH + 8;
+    const top = target.getBoundingClientRect().top - content.getBoundingClientRect().top + content.scrollTop - topOffset;
+
+    content.scrollTo({top:Math.max(0,top),behavior:'smooth'});
+  };
+})();
+</script>
+
+
+<style id="hard-fix-20260923">
+/* ===== 충돌 CSS 최종 정리: 일일동향 / 코다피플 sticky ===== */
+
+/* 일일동향: 제목 자체는 각 행의 시작점에 붙이고, 남는 높이는 제목과 제목 사이에만 배분 */
+.daily-trend-articles{
+  display:grid !important;
+  grid-template-columns:minmax(0,1fr) !important;
+  grid-template-rows:auto minmax(0,1fr) auto minmax(0,1fr) auto !important;
+  align-items:start !important;
+  justify-items:stretch !important;
+  height:var(--daily-trend-left-height,auto) !important;
+  min-height:0 !important;
+  margin:0 !important; padding:0 !important; gap:0 !important;
+  overflow:hidden !important; box-sizing:border-box !important;
+}
+.daily-trend-article{
+  width:100% !important; height:auto !important; min-height:0 !important;
+  margin:0 !important; padding:0 !important;
+  display:block !important; overflow:hidden !important;
+  align-self:start !important; box-sizing:border-box !important;
+  font-size:.84rem !important; line-height:1.30 !important; font-weight:600 !important;
+  border:0 !important;
+}
+.daily-trend-article:nth-child(1){grid-row:1 !important;}
+.daily-trend-article:nth-child(2){grid-row:3 !important; border-top:1px dotted #000 !important; padding-top:6px !important;}
+.daily-trend-article:nth-child(3){grid-row:5 !important; border-top:1px dotted #000 !important; padding-top:6px !important;}
+.daily-trend-article-text{
+  display:-webkit-box !important; -webkit-box-orient:vertical !important; -webkit-line-clamp:2 !important;
+  width:100% !important; height:auto !important; min-height:0 !important; max-height:2.6em !important;
+  margin:0 !important; padding:0 !important; overflow:hidden !important;
+  white-space:normal !important; word-break:keep-all !important; overflow-wrap:break-word !important;
+  font-size:.84rem !important; line-height:1.30 !important;
+}
+
+/* 코다피플: 검색창/기수영역을 '불투명한 별도 층'으로 만들어 목록이 절대 비치지 않게 함 */
+#staffScreen{
+  overflow:hidden !important;
+}
+#staffScreen .fullscreen-content{
+  position:relative !important; z-index:1 !important;
+  overflow-y:auto !important; overflow-x:hidden !important;
+  background:#f4f7fb !important;
+  isolation:isolate !important;
+  -webkit-overflow-scrolling:touch !important;
+}
+#staffScreen .staff-search-wrap,
+#staffScreen #arpCohortFilters{
+  position:sticky !important;
+  isolation:isolate !important;
+  opacity:1 !important;
+  background:#f4f7fb !important;
+  -webkit-backdrop-filter:none !important; backdrop-filter:none !important;
+  overflow:visible !important;
+}
+#staffScreen .staff-search-wrap{
+  top:0 !important; z-index:1000 !important;
+  margin:0 0 8px !important; padding:4px 0 6px !important;
+}
+#staffScreen #arpCohortFilters{
+  top:var(--staff-search-sticky-height,57px) !important; z-index:999 !important;
+  margin:0 0 10px !important; padding:4px 0 6px !important;
+}
+/* 실제 가림판: z-index 음수 사용 금지 */
+#staffScreen .staff-search-wrap::before,
+#staffScreen #arpCohortFilters::before{
+  content:"" !important; position:absolute !important;
+  left:-30px !important; right:-30px !important; top:-1px !important; bottom:-1px !important;
+  background:#f4f7fb !important; opacity:1 !important;
+  z-index:0 !important; pointer-events:none !important;
+}
+#staffScreen .staff-search-wrap > *,
+#staffScreen #arpCohortFilters > *{
+  position:relative !important; z-index:1 !important;
+}
+#staffScreen #staffList{position:relative !important; z-index:1 !important;}
+#staffScreen #staffList.arp-list .arp-cohort-group{
+  scroll-margin-top:calc(var(--staff-search-sticky-height,57px) + var(--staff-cohort-sticky-height,0px) + 8px) !important;
+}
+</style>
+
+
+<script id="hard-fix-staff-scroll-20260923">
+(function(){
+  function hardUpdateStaffHeights(){
+    const screen=document.getElementById('staffScreen');
+    const content=screen && screen.querySelector('.fullscreen-content');
+    const search=document.querySelector('#staffScreen .staff-search-wrap');
+    const cohort=document.getElementById('arpCohortFilters');
+    if(!content || !search) return;
+    const sh=Math.ceil(search.getBoundingClientRect().height||0);
+    const visible=cohort && getComputedStyle(cohort).display!=='none' && cohort.classList.contains('show');
+    const ch=visible ? Math.ceil(cohort.getBoundingClientRect().height||0) : 0;
+    content.style.setProperty('--staff-search-sticky-height',sh+'px');
+    content.style.setProperty('--staff-cohort-sticky-height',ch+'px');
+  }
+  window.hardUpdateStaffHeights=hardUpdateStaffHeights;
+  function bind(){
+    hardUpdateStaffHeights();
+    window.addEventListener('resize',()=>requestAnimationFrame(hardUpdateStaffHeights),{passive:true});
+    window.addEventListener('orientationchange',()=>setTimeout(hardUpdateStaffHeights,150),{passive:true});
+    const cohort=document.getElementById('arpCohortFilters');
+    if(cohort && window.MutationObserver){
+      new MutationObserver(()=>requestAnimationFrame(hardUpdateStaffHeights)).observe(cohort,{attributes:true,childList:true,subtree:true});
+    }
+  }
+  if(document.readyState==='loading') document.addEventListener('DOMContentLoaded',bind); else bind();
+
+  window.scrollToArpCohort=function(cohort){
+    const target=document.getElementById('arp-cohort-'+cohort);
+    const content=document.querySelector('#staffScreen .fullscreen-content');
+    if(!target || !content) return;
+    hardUpdateStaffHeights();
+    const search=document.querySelector('#staffScreen .staff-search-wrap');
+    const cohortWrap=document.getElementById('arpCohortFilters');
+    const sh=Math.ceil(search?.getBoundingClientRect().height||0);
+    const ch=(cohortWrap && getComputedStyle(cohortWrap).display!=='none') ? Math.ceil(cohortWrap.getBoundingClientRect().height||0) : 0;
+    const gap=8;
+    const targetTop=target.getBoundingClientRect().top;
+    const contentTop=content.getBoundingClientRect().top;
+    const desired=targetTop-contentTop+content.scrollTop-(sh+ch+gap);
+    content.scrollTo({top:Math.max(0,desired),behavior:'smooth'});
+  };
+})();
+</script>
+
 </head>
 <body>
 
@@ -3504,12 +5034,17 @@ button,.nav-btn,.action-btn{min-height:44px;}
       <span class="quick-label">준비중</span>
     </button>
 
-    <!-- 8. 준비중 (LawBot 대체) -->
-    <button class="quick-btn" style="opacity:0.5; cursor:default;" aria-label="준비중">
-      <span class="quick-icon" style="background:#f7fafc;">
-        <span style="font-size:1.2rem; filter:grayscale(1);">🔒</span>
+    <!-- 8. 일일동향 -->
+    <button class="quick-btn" onclick="openDailyTrendScreen()" aria-label="일일동향">
+      <span class="quick-icon news-quick-icon" style="background:#fff;">
+        <svg viewBox="0 0 52 52" aria-hidden="true">
+          <!-- NEWS 소식과 같은 분홍색 계열의 뉴스 아이콘 -->
+          <path d="M9 11h34a3 3 0 0 1 3 3v23a4 4 0 0 1-4 4H13a6 6 0 0 1-6-6V14a3 3 0 0 1 3-3z" fill="#d53f8c"/>
+          <path d="M13 17h24v4H13zM13 24h16v4H13zM13 31h20v4H13z" fill="#fff"/>
+          <path d="M39 17h4v18h-4z" fill="#b83280"/>
+        </svg>
       </span>
-      <span class="quick-label">준비중</span>
+      <span class="quick-label">일일동향</span>
     </button>
 
     <!-- 9. 정부국회 -->
@@ -3771,6 +5306,50 @@ button,.nav-btn,.action-btn{min-height:44px;}
   </div>
 </div>
 
+
+<!-- ✨ 일일동향 목록 페이지 ✨ -->
+<div class="fullscreen-screen" id="dailyTrendScreen" style="background:#f4f7fb;">
+  <div class="govasm-header">
+    <button class="govasm-back" onclick="closeDailyTrendScreen()" aria-label="뒤로가기">←</button>
+    <div class="govasm-title">일일동향</div>
+    <div></div>
+  </div>
+  <div class="daily-trend-content" id="dailyTrendList">
+    <div class="loading-msg">일일동향을 불러오는 중입니다...⏳</div>
+  </div>
+</div>
+
+<!-- ✨ 일일동향 기사 전체보기 페이지 ✨ -->
+<div class="fullscreen-screen" id="dailyTrendDetailScreen" style="background:#ffffff;z-index:1600;">
+  <div class="govasm-header">
+    <button class="govasm-back" onclick="closeDailyTrendDetailScreen()" aria-label="뒤로가기">←</button>
+    <div class="govasm-title">일일동향</div>
+    <div></div>
+  </div>
+  <div class="daily-trend-detail">
+    <div id="dailyTrendDetailLabel" class="daily-trend-detail-label">일일동향</div>
+    <h1 id="dailyTrendDetailTitle" class="daily-trend-detail-title"></h1>
+    <div id="dailyTrendDetailDate" class="daily-trend-detail-date"></div>
+
+    <section class="daily-trend-section">
+      <h2 class="daily-trend-section-title">1. 회원사 소식</h2>
+      <div id="dailyTrendSectionG" class="daily-trend-section-body"></div>
+    </section>
+    <section class="daily-trend-section">
+      <h2 class="daily-trend-section-title">2. 정책 및 부동산개발업계 동향</h2>
+      <div id="dailyTrendSectionH" class="daily-trend-section-body"></div>
+    </section>
+    <section class="daily-trend-section">
+      <h2 class="daily-trend-section-title">3. 기타 소식</h2>
+      <div id="dailyTrendSectionI" class="daily-trend-section-body"></div>
+    </section>
+    <div class="daily-trend-detail-nav" aria-label="일자 이동">
+      <button type="button" id="dailyTrendNextBtn" class="daily-trend-nav-btn" onclick="navigateDailyTrendDate(-1)">&lt;다음일자</button>
+      <button type="button" id="dailyTrendPrevBtn" class="daily-trend-nav-btn" onclick="navigateDailyTrendDate(1)">이전일자&gt;</button>
+    </div>
+  </div>
+</div>
+
 <!-- ✨ 나의 명함 팝업 ✨ -->
 <div class="business-card-overlay" id="businessCardOverlay" onclick="closeMyBusinessCardOnOutside(event)">
   <div class="business-card-modal" role="dialog" aria-modal="true" aria-labelledby="businessCardModalTitle">
@@ -3991,22 +5570,125 @@ button,.nav-btn,.action-btn{min-height:44px;}
       const r = rows[i];
       const name = r[0] ? r[0].trim() : '';
       const phone = r[1] ? normalizePhone(r[1]) : '';
-      if (name && phone) list.push({ name, phone });
+      const permission = r[2] ? r[2].trim() : '';   // C열: 권한
+      const permissionContent = r[3] ? r[3].trim() : ''; // D열: 권한내용
+      if (name && phone) list.push({ name, phone, permission, permissionContent });
     }
     return list;
   }
 
   async function loadMembersData() {
     try {
-      const response = await fetch(MEMBERS_SHEET_CSV_URL + "&t=" + new Date().getTime());
+      const response = await fetch(MEMBERS_SHEET_CSV_URL + "&t=" + new Date().getTime(), {cache:'no-store'});
+      if (!response.ok) throw new Error('Sheet3 CSV response error');
       membersData = parseMembersCSV(await response.text());
     } catch (error) { membersData = []; }
   }
 
-  function isAuthorizedMember(name, phone) {
+  function findAuthorizedMember(name, phone) {
     const normName = (name || '').trim();
     const normPhone = normalizePhone(phone);
-    return membersData.some(m => m.name === normName && m.phone === normPhone);
+    return membersData.find(m => m.name === normName && m.phone === normPhone) || null;
+  }
+
+  function isAuthorizedMember(name, phone) {
+    return !!findAuthorizedMember(name, phone);
+  }
+
+  function getCurrentPermissionMember() {
+    try {
+      const saved = JSON.parse(localStorage.getItem('koda_auth') || 'null');
+      if (!saved) return null;
+      return findAuthorizedMember(saved.name, saved.phone);
+    } catch(e) { return null; }
+  }
+
+  function permissionText(value) {
+    return String(value || '').replace(/\s+/g,'').toLowerCase();
+  }
+
+  /*
+   * Sheet3 C열=권한, D열=권한내용을 기준으로 제한합니다.
+   * - 회원사: 기본적으로 Sheet8(ARP/ARPY) 접근 차단
+   * - C열이 ARP / ARPY / ARP&ARPY이면 해당 영역 허용
+   * - D열에 '전체'가 있으면 전체 허용
+   * - D열에 ARP/ARPY가 명시되어 있으면 해당 영역만 허용
+   * - 그 외 권한은 기존처럼 전체 접근 허용
+   */
+  function canAccessMemberCompany() {
+    const member = getCurrentPermissionMember();
+    if (!member) return true;
+
+    const c = permissionText(member.permission);
+    const d = permissionText(member.permissionContent);
+
+    // 전체/관리자는 회원사 정보까지 허용
+    if (c.includes('전체') || c.includes('관리자')) return true;
+
+    // Sheet3에서 ARP(Y)가 권한으로 지정된 경우 회원사 정보는 차단
+    // ARP(Y), ARP&ARPY, ARP, ARPY 모두 같은 방식으로 처리
+    const isArpPermission = c.includes('arp') || c.includes('arpy') ||
+      c.includes('arp(y)') || c.includes('arp및arpy') || c.includes('arparpy');
+    if (isArpPermission) return false;
+
+    // D열에 ARP(Y) 권한이 명시된 경우도 동일하게 회원사 접근 차단
+    const dHasArpPermission = d.includes('arp') || d.includes('arpy') ||
+      d.includes('arp(y)') || d.includes('arp및arpy') || d.includes('arparpy');
+    if (dHasArpPermission) return false;
+
+    // C열이 회원사인 경우에는 회원사 정보 접근 허용
+    if (c.includes('회원사')) return true;
+
+    // 기존 계정은 기존 동작 유지
+    return true;
+  }
+
+  function canAccessStaffCategory(category) {
+    const member = getCurrentPermissionMember();
+    if (!member) return true;
+
+    const c = permissionText(member.permission);
+    const d = permissionText(member.permissionContent);
+    const target = permissionText(category);
+    if (!['arp','arpy'].includes(target)) return true;
+
+    // C열 '전체/관리자'는 모든 권한을 허용합니다.
+    if (c.includes('전체') || c.includes('관리자')) return true;
+
+    // C열이 ARP&ARPY로 명시되어 있으면 두 영역 모두 허용합니다.
+    const cHasBoth = c.includes('arp(y)') || c.includes('arp&arpy') || c.includes('arparpy') || c.includes('arp및arpy') || (c.includes('arp') && c.includes('arpy'));
+    if (cHasBoth) return true;
+
+    // C열이 단일 권한으로 명시된 경우 해당 영역만 허용합니다.
+    if (c === target || (target === 'arp' && c === 'arp회원') || (target === 'arpy' && c === 'arpy회원')) return true;
+
+    // 중요: C열이 '회원사'인 사용자는 Sheet8의 ARP/ARPY를 기본적으로 차단합니다.
+    // D열에 단순히 문자열이 적혀 있어도 C열의 기본 권한을 넘어 접근시키지 않습니다.
+    if (c.includes('회원사')) return false;
+
+    // C열이 상위 권한으로 지정되지 않은 경우 D열의 세부 권한을 사용합니다.
+    const dHasArp = d.includes('arp');
+    const dHasArpy = d.includes('arpy');
+    if (dHasArp || dHasArpy) {
+      return target === 'arp' ? dHasArp : dHasArpy;
+    }
+
+    // C/D 모두 특정 제한을 표시하지 않은 기존 계정은 기존 동작을 유지합니다.
+    return true;
+  }
+
+  function showPermissionDenied() {
+    alert('해당정보에 접근권한이 없습니다');
+  }
+
+  function refreshPermissionUI() {
+    document.querySelectorAll('#staffTabs .month-tab').forEach(btn => {
+      const cat = btn.dataset.cat;
+      const denied = (cat === 'ARP' || cat === 'ARPY') ? !canAccessStaffCategory(cat) : (cat === '회원사' && !canAccessMemberCompany());
+      btn.classList.toggle('permission-denied-tab', denied);
+      btn.setAttribute('aria-disabled', denied ? 'true' : 'false');
+      btn.title = denied ? '해당정보에 접근권한이 없습니다' : '';
+    });
   }
 
   /* ===== 로그인 사용자 환영 메시지 ===== */
@@ -4093,8 +5775,14 @@ button,.nav-btn,.action-btn{min-height:44px;}
 
     if (membersData.length === 0) await loadMembersData(); 
 
-    if (isAuthorizedMember(nameInput.value.trim(), phoneInput.value.trim())) {
-      localStorage.setItem('koda_auth', JSON.stringify({ name: nameInput.value.trim(), phone: normalizePhone(phoneInput.value.trim()) }));
+    const matchedMember = findAuthorizedMember(nameInput.value.trim(), phoneInput.value.trim());
+    if (matchedMember) {
+      localStorage.setItem('koda_auth', JSON.stringify({
+        name: nameInput.value.trim(),
+        phone: normalizePhone(phoneInput.value.trim()),
+        permission: matchedMember.permission || '',
+        permissionContent: matchedMember.permissionContent || ''
+      }));
       enterApp();
     } else {
       errorEl.innerText = '등록된 회원 정보와 일치하지 않습니다. 다시 확인해주세요.';
@@ -4109,6 +5797,7 @@ button,.nav-btn,.action-btn{min-height:44px;}
     document.getElementById('appRoot').style.display = 'block';
     document.body.style.overflow = 'auto';
     renderHeaderWelcome();
+    refreshPermissionUI();
     loadData();
     // 시트4의 직위까지 확인한 뒤 환영 메시지를 한 번 더 갱신합니다.
     ensureBusinessCardStaffData().then(() => renderHeaderWelcome()).catch(() => renderHeaderWelcome());
@@ -4451,6 +6140,26 @@ button,.nav-btn,.action-btn{min-height:44px;}
   window.filterStaff = function(category) {
     const validCategories = ['사무국','7대 임원','회원사','ARP','ARPY'];
     if (!validCategories.includes(category)) category = '사무국';
+    if ((category === 'ARP' || category === 'ARPY') && !canAccessStaffCategory(category)) {
+      refreshPermissionUI();
+      const deniedList = document.getElementById('staffList');
+      const deniedCount = document.querySelector(`#staffTabs .month-tab[data-cat=\"${category}\"] .tab-count`);
+      if (deniedCount) deniedCount.textContent = '';
+      if (deniedList) deniedList.innerHTML = '';
+      setupArpCohortFilters('');
+      showPermissionDenied();
+      return;
+    }
+    if (category === '회원사' && !canAccessMemberCompany()) {
+      refreshPermissionUI();
+      const deniedList = document.getElementById('staffList');
+      const deniedCount = document.querySelector('#staffTabs .month-tab[data-cat="회원사"] .tab-count');
+      if (deniedCount) deniedCount.textContent = '';
+      if (deniedList) deniedList.innerHTML = '';
+      setupArpCohortFilters('');
+      showPermissionDenied();
+      return;
+    }
     currentStaffCategory = category;
     const tabs = document.querySelectorAll('#staffTabs .month-tab');
     tabs.forEach(btn => {
@@ -4503,7 +6212,17 @@ button,.nav-btn,.action-btn{min-height:44px;}
     document.querySelectorAll('#staffTabs .month-tab').forEach(btn => {
       const cat = btn.dataset.cat;
       const em = btn.querySelector('.tab-count');
-      if (em) em.textContent = `(${counts[cat] ?? 0})`;
+      if (!em) return;
+      if ((cat === 'ARP' || cat === 'ARPY') && !canAccessStaffCategory(cat)) {
+        em.textContent = '';
+        btn.setAttribute('aria-disabled','true');
+      } else if (cat === '회원사' && !canAccessMemberCompany()) {
+        em.textContent = '';
+        btn.setAttribute('aria-disabled','true');
+      } else {
+        em.textContent = `(${counts[cat] ?? 0})`;
+        btn.setAttribute('aria-disabled','false');
+      }
     });
   }
 
@@ -4514,9 +6233,15 @@ button,.nav-btn,.action-btn{min-height:44px;}
   }
 
   function renderMemberCompanyList() {
-    updateStaffTabCounts();
     const list = document.getElementById('staffList');
     if (!list) return;
+    if (!canAccessMemberCompany()) {
+      list.innerHTML = '';
+      setupArpCohortFilters('');
+      showPermissionDenied();
+      return;
+    }
+    updateStaffTabCounts();
     list.classList.add('member-company-list');
     list.classList.remove('executive-list');
     if (!list.dataset.memberClickBound) {
@@ -4590,6 +6315,12 @@ button,.nav-btn,.action-btn{min-height:44px;}
   }
 
   async function loadMemberCompanyData(forceRefresh = false) {
+    if (!canAccessMemberCompany()) {
+      memberCompanyData = [];
+      memberCompanyLoaded = false;
+      updateStaffTabCounts();
+      return;
+    }
     if (memberCompanyLoading) return;
 
     if (!forceRefresh && !memberCompanyData.length) loadMemberCompanyCache();
@@ -4683,6 +6414,12 @@ button,.nav-btn,.action-btn{min-height:44px;}
   }
 
   async function loadArpData() {
+    if (!canAccessStaffCategory('ARP') && !canAccessStaffCategory('ARPY')) {
+      arpData = [];
+      arpLoaded = false;
+      updateStaffTabCounts();
+      return;
+    }
     if (arpLoading) return;
     arpLoading = true;
     const list = document.getElementById('staffList');
@@ -4725,7 +6462,11 @@ button,.nav-btn,.action-btn{min-height:44px;}
       btn.className = 'arp-cohort-btn';
       btn.textContent = `${i}기`;
       btn.dataset.cohort = String(i);
-      btn.addEventListener('click', () => scrollToArpCohort(i));
+      btn.addEventListener('click', () => {
+        const cat = wrap.dataset.category;
+        if (!canAccessStaffCategory(cat)) { showPermissionDenied(); return; }
+        scrollToArpCohort(i);
+      });
       wrap.appendChild(btn);
     }
   }
@@ -4751,6 +6492,12 @@ button,.nav-btn,.action-btn{min-height:44px;}
   function renderArpList(categoryFilter) {
     const list = document.getElementById('staffList');
     if (!list) return;
+    if (!canAccessStaffCategory(categoryFilter)) {
+      setupArpCohortFilters('');
+      list.innerHTML = '';
+      showPermissionDenied();
+      return;
+    }
     setupArpCohortFilters(categoryFilter);
     list.classList.remove('member-company-list','executive-list');
     list.classList.add('arp-list');
@@ -4834,6 +6581,11 @@ button,.nav-btn,.action-btn{min-height:44px;}
     list.classList.remove('member-company-list', 'executive-list');
 
     if (categoryFilter === '회원사') {
+      if (!canAccessMemberCompany()) {
+        list.innerHTML = '';
+        showPermissionDenied();
+        return;
+      }
       if (!memberCompanyData.length) loadMemberCompanyCache();
       renderMemberCompanyList();
       if (!memberCompanyLoaded && !memberCompanyLoading) loadMemberCompanyData();
@@ -5089,8 +6841,9 @@ button,.nav-btn,.action-btn{min-height:44px;}
     if(search) search.value = '';
     const clear = document.getElementById('staffSearchClear');
     if(clear) clear.classList.remove('show');
+    refreshPermissionUI();
     if (staffData.length === 0) loadStaffData(); else renderStaffList('사무국');
-    if (!arpLoaded && !arpLoading) loadArpData();
+    if (canAccessStaffCategory('ARP') && canAccessStaffCategory('ARPY') && !arpLoaded && !arpLoading) loadArpData();
   };
 
   document.addEventListener('DOMContentLoaded',()=>{
@@ -5612,7 +7365,7 @@ function createEventCard(event, isNext=false) {
   if (!history.state || !history.state.kodaBase) { history.replaceState({kodaBase:true}, '', location.href); }
   window.addEventListener('popstate', function(event) {
     const st = event.state || {};
-    const ids = ['dayEventsModal', 'staffScreen', 'staffDetailModal', 'memberCompanyDetailModal', 'newsScreen', 'newsDetailScreen', 'meetingScreen', 'govAssemblyScreen'];
+    const ids = ['dayEventsModal', 'staffScreen', 'staffDetailModal', 'memberCompanyDetailModal', 'newsScreen', 'newsDetailScreen', 'meetingScreen', 'govAssemblyScreen', 'dailyTrendScreen', 'dailyTrendDetailScreen'];
     ids.forEach(id => { const el=document.getElementById(id); if(el) el.style.display='none'; });
 
     // 브라우저 뒤로가기로 명함 상태가 해제되면 명함 팝업도 함께 닫습니다.
@@ -5630,8 +7383,10 @@ function createEventCard(event, isNext=false) {
       else if (st.newsDetailOpen) document.getElementById('newsDetailScreen').style.display = 'flex';
       else if (st.meetingOpen) document.getElementById('meetingScreen').style.display = 'flex';
     else if (st.govAssemblyOpen) document.getElementById('govAssemblyScreen').style.display = 'flex';
+    else if (st.dailyTrendOpen) document.getElementById('dailyTrendScreen').style.display = 'flex';
+    else if (st.dailyTrendDetailOpen) document.getElementById('dailyTrendDetailScreen').style.display = 'flex';
 
-    if (st.staffOpen || st.staffDetailOpen || st.dayEventsModalOpen || st.newsOpen || st.newsDetailOpen || st.meetingOpen || st.govAssemblyOpen) {
+    if (st.staffOpen || st.staffDetailOpen || st.dayEventsModalOpen || st.newsOpen || st.newsDetailOpen || st.meetingOpen || st.govAssemblyOpen || st.dailyTrendOpen || st.dailyTrendDetailOpen) {
       document.body.style.overflow='hidden';
     }
   });
@@ -6368,6 +8123,456 @@ function createEventCard(event, isNext=false) {
   window.closeGovAssemblyScreen = function() {
     history.back();
   };
+
+
+  /* ===== 일일동향: Sheet11(B-L) 연동 =====
+     B 날짜 / D 이미지 / E 이미지링크 / F 대표 한글제목
+     G 회원사 소식 / H 정책 및 부동산개발업계 동향 / I 기타 소식
+     J/K/L/M 기사 제목 / N/O/P/Q 관련 링크(존재할 경우) */
+  const DAILY_TREND_SHEET_CSV_URL =
+    "https://docs.google.com/spreadsheets/d/e/2PACX-1vQEbM8YAc7jQes9oX6_-aVsVib2H40avHQkL6TkRRI2cYmw7nYG29F_1lGGz-2gL0nve4Q91MBM02Q-/pub?gid=2013350157&single=true&output=csv";
+  let dailyTrendData = [];
+  let dailyTrendLoaded = false;
+
+  function dailyTrendEsc(value) {
+    return String(value == null ? '' : value)
+      .replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')
+      .replace(/"/g,'&quot;').replace(/'/g,'&#39;');
+  }
+
+  function dailyTrendUrl(value) {
+    let v = String(value || '').trim();
+    /* 셀에 링크가 수식/텍스트로 들어온 경우 URL 부분을 먼저 추출 */
+    const urlMatch = v.match(/https?:\/\/[^\s"')]+/i);
+    if (urlMatch) v = urlMatch[0];
+    return /^https?:\/\//i.test(v) ? v : '';
+  }
+
+  function dailyTrendImageUrl(value) {
+    let v = String(value || '').trim();
+    if (!v) return '';
+
+    // CSV에서 수식/HTML/링크가 그대로 넘어오는 경우 URL을 최대한 복원
+    const imgSrc = v.match(/<img[^>]+src=["']([^"']+)["']/i);
+    if (imgSrc) v = imgSrc[1];
+    const formulaMatch = v.match(/(?:IMAGE|HYPERLINK)\s*\(\s*["']([^"']+)["']/i);
+    if (formulaMatch) v = formulaMatch[1].trim();
+    const urlMatch = v.match(/https?:\/\/[^\s"'<>]+/i);
+    if (urlMatch) v = urlMatch[0].replace(/[.,;]+$/, '');
+
+    // Google Drive: 공유 링크/파일 ID를 브라우저 표시용 URL로 변환
+    if (/drive\.google\.com|docs\.google\.com/i.test(v)) {
+      const id = typeof extractDriveFileId === 'function' ? extractDriveFileId(v) : (v.match(/(?:id=|\/d\/|file\/d\/)([A-Za-z0-9_-]{20,})/)||[])[1];
+      if (id) return [
+        'https://drive.google.com/thumbnail?id=' + encodeURIComponent(id) + '&sz=w1600',
+        'https://drive.google.com/uc?export=view&id=' + encodeURIComponent(id),
+        'https://lh3.googleusercontent.com/d/' + encodeURIComponent(id) + '=w1600'
+      ];
+    }
+    if (/^[a-zA-Z0-9_-]{20,}$/.test(v)) {
+      const id = encodeURIComponent(v);
+      return [
+        'https://drive.google.com/thumbnail?id=' + id + '&sz=w1600',
+        'https://drive.google.com/uc?export=view&id=' + id,
+        'https://lh3.googleusercontent.com/d/' + id + '=w1600'
+      ];
+    }
+    if (typeof toDisplayableImageUrl === 'function') {
+      const converted = toDisplayableImageUrl(v);
+      if (converted) return converted;
+    }
+    return v;
+  }
+  function dailyTrendDateValue(v) {
+    const raw = String(v || '').trim();
+    const m = raw.match(/(\d{2,4})[.\-\/](\d{1,2})[.\-\/](\d{1,2})(?:\s+(\d{1,2})(?::(\d{2}))?)?/);
+    if (!m) return 0;
+    let y = Number(m[1]); if (y < 100) y += 2000;
+    return new Date(y, Number(m[2])-1, Number(m[3]), Number(m[4]||0), Number(m[5]||0)).getTime();
+  }
+
+  function parseDailyTrendCSV(csv) {
+    const rows = splitCSV(csv);
+    const result = [];
+    for (let i = 1; i < rows.length; i++) {
+      const r = rows[i] || [];
+      if (!r.some(v => String(v || '').trim())) continue;
+      result.push({
+        date: String(r[1] || '').trim(),          // B
+        detailTitle: String(r[2] || '').trim(),   // C
+        imageUrl: String(r[3] || '').trim(),      // D
+        imageLink: String(r[4] || '').trim(),     // E
+        title: String(r[5] || '').trim(),         // F
+        memberNews: String(r[6] || '').trim(),    // G
+        policyNews: String(r[7] || '').trim(),    // H
+        otherNews: String(r[8] || '').trim(),     // I
+        article1: String(r[9] || '').trim(),     // J
+        article2: String(r[10] || '').trim(),     // K
+        article3: String(r[11] || '').trim(),     // L
+        article4: String(r[12] || '').trim(),     // M
+        link1: String(r[13] || '').trim(),        // N
+        link2: String(r[14] || '').trim(),        // O
+        link3: String(r[15] || '').trim(),        // P
+        link4: String(r[16] || '').trim()         // Q
+      });
+    }
+    return result;
+  }
+
+  function groupDailyTrendByDate(data) {
+    const groups = new Map();
+    data.forEach(item => {
+      const key = item.date || '날짜 미정';
+      if (!groups.has(key)) groups.set(key, []);
+      groups.get(key).push(item);
+    });
+    return Array.from(groups.entries())
+      .sort((a,b) => dailyTrendDateValue(b[0]) - dailyTrendDateValue(a[0]));
+  }
+
+  function firstDailyTrendValue(items, key) {
+    for (const item of items) {
+      if (String(item[key] || '').trim()) return String(item[key]).trim();
+    }
+    return '';
+  }
+
+  function dailyTrendArticleItems(items) {
+    const out = [];
+    const seen = new Set();
+    const keys = [
+      ['article1','link1'],
+      ['article2','link2'],
+      ['article3','link3']
+    ];
+    keys.forEach(([titleKey, linkKey]) => {
+      for (const item of items) {
+        let rawTitle = String(item[titleKey] || '').trim();
+        let link = dailyTrendUrl(item[linkKey]);
+        if (!rawTitle) continue;
+        const embedded = dailyTrendUrl(rawTitle);
+        if (embedded) {
+          link = link || embedded;
+          rawTitle = rawTitle.replace(embedded, '').replace(/[\s|·:：-]+$/,'').trim();
+        }
+        if (rawTitle && !seen.has(rawTitle)) {
+          seen.add(rawTitle); out.push({title:rawTitle, link:link});
+          break;
+        }
+      }
+    });
+    return out;
+  }
+
+  function dailyTrendTextAndUrl(value) {
+    let text = String(value || '').trim();
+    if (!text) return {text:'', link:''};
+    const url = dailyTrendUrl(text);
+    if (url) {
+      text = text.replace(url,'').replace(/[\s|·:：-]+$/,'').trim();
+    }
+    return {text, link:url};
+  }
+
+  // G/H/I 셀 안에 여러 기사(제목 + URL)가 들어있는 경우 각각 분리한다.
+  // 한 셀에 URL이 여러 개 있어도 URL별로 하나의 기사로 인식한다.
+  function dailyTrendMultiEntries(value) {
+    const raw = String(value || '').replace(/\r\n/g,'\n').replace(/\r/g,'\n').trim();
+    if (!raw) return [];
+    const urlRe = /https?:\/\/[^\s"')<>]+/ig;
+    const matches = [...raw.matchAll(urlRe)];
+    if (!matches.length) {
+      return raw.split(/\n+/).map(v=>v.trim()).filter(Boolean).map(v=>({text:v.replace(/^\s*\d+[.)]\s*/,''),link:''}));
+    }
+    const out=[]; const seen=new Set();
+    let cursor=0;
+    matches.forEach((m, idx)=>{
+      const url=m[0].replace(/[.,;]+$/,'');
+      const segment=raw.slice(cursor,m.index).trim();
+      let text=segment
+        .replace(/^\s*\d+[.)]\s*/gm,'')
+        .replace(/[\s|·:：-]+$/,'')
+        .trim();
+      // 제목과 URL이 다음 줄에 배치된 경우에도 제목만 정확히 연결
+      if (!text && idx > 0) {
+        const between=raw.slice(matches[idx-1].index + matches[idx-1][0].length, m.index).trim();
+        text=between.replace(/^\s*\d+[.)]\s*/gm,'').replace(/[\s|·:：-]+$/,'').trim();
+      }
+      if (text && !seen.has(text)) { seen.add(text); out.push({text,link:url}); }
+      cursor=m.index + m[0].length;
+    });
+    // URL 뒤에만 남은 제목도 보존하되 링크는 직전 URL에 연결하지 않는다.
+    const tail=raw.slice(cursor).trim().replace(/^\s*\d+[.)]\s*/gm,'').trim();
+    if (tail && !seen.has(tail)) out.push({text:tail,link:''});
+    return out;
+  }
+
+  function dailyTrendCollectSection(items, key) {
+    const out=[]; const seen=new Set();
+    items.forEach(item=>{
+      dailyTrendMultiEntries(item[key]).forEach(parsed=>{
+        if(parsed.text && !seen.has(parsed.text)) { seen.add(parsed.text); out.push(parsed); }
+      });
+    });
+    return out;
+  }
+
+  function renderDailyTrendCard(date, items) {
+    const imageUrl = dailyTrendImageUrl(firstDailyTrendValue(items,'imageUrl'));
+    const imageLink = dailyTrendUrl(firstDailyTrendValue(items,'imageLink'));
+    const titleParsed = dailyTrendTextAndUrl(firstDailyTrendValue(items,'title'));
+    const title = titleParsed.text || '일일동향';
+    const titleLink = titleParsed.link;
+    const articles = dailyTrendArticleItems(items);
+
+    const card = document.createElement('article');
+    card.className = 'daily-trend-card';
+
+    const head = document.createElement('div');
+    head.className = 'daily-trend-card-head';
+    head.innerHTML = `
+      <span class="daily-trend-date-badge">${dailyTrendEsc(date)}</span>
+      <span class="daily-trend-divider"></span>
+      <button type="button" class="daily-trend-more" aria-label="${dailyTrendEsc(date)} 기사 전체보기">+</button>
+    `;
+    head.querySelector('.daily-trend-more').addEventListener('click', () => openDailyTrendDetail(date, items));
+
+    const body = document.createElement('div');
+    body.className = 'daily-trend-body';
+
+    const media = document.createElement('div');
+    media.className = 'daily-trend-media';
+
+    const mediaLink = document.createElement('a');
+    mediaLink.className = 'daily-trend-image-link';
+    if (imageLink) {
+      mediaLink.href = imageLink;
+      mediaLink.target = '_blank';
+      mediaLink.rel = 'noopener noreferrer';
+    } else {
+      mediaLink.href = '#';
+      mediaLink.addEventListener('click', e => e.preventDefault());
+    }
+
+    if (imageUrl) {
+      const img = document.createElement('img');
+      img.className = 'daily-trend-image';
+      img.alt = title; img.loading = 'eager';
+      const candidates = Array.isArray(imageUrl) ? imageUrl : [imageUrl];
+      let imageIndex = 0;
+      const tryNextImage = () => {
+        if (imageIndex >= candidates.length) {
+          mediaLink.innerHTML = '<span class="daily-trend-image-placeholder">이미지를 불러올 수 없습니다</span>';
+          return;
+        }
+        img.src = candidates[imageIndex++];
+      };
+      img.onerror = tryNextImage;
+      mediaLink.appendChild(img);
+      tryNextImage();
+    } else {
+      mediaLink.innerHTML = '<span class="daily-trend-image-placeholder">이미지 없음</span>';
+    }
+    media.appendChild(mediaLink);
+
+    if (titleLink) {
+      const titleLinkEl = document.createElement('a');
+      titleLinkEl.className = 'daily-trend-main-title daily-trend-main-title-link';
+      titleLinkEl.href = titleLink;
+      titleLinkEl.target = '_blank';
+      titleLinkEl.rel = 'noopener noreferrer';
+      titleLinkEl.textContent = title;
+      media.appendChild(titleLinkEl);
+    } else {
+      const titleEl = document.createElement('div');
+      titleEl.className = 'daily-trend-main-title';
+      titleEl.textContent = title;
+      media.appendChild(titleEl);
+    }
+
+    const articleWrap = document.createElement('div');
+    articleWrap.className = 'daily-trend-articles';
+
+    for (let idx = 0; idx < 3; idx++) {
+      const article = articles[idx];
+      const a = document.createElement('a');
+      a.className = 'daily-trend-article';
+
+      if (article && article.title) {
+        const articleText = document.createElement('span');
+        articleText.className = 'daily-trend-article-text';
+        articleText.textContent = article.title;
+        a.appendChild(articleText);
+
+        if (article.link) {
+          a.href = article.link;
+          a.target = '_blank';
+          a.rel = 'noopener noreferrer';
+        } else {
+          a.href = '#';
+          a.addEventListener('click', e => e.preventDefault());
+        }
+      } else {
+        a.setAttribute('aria-hidden', 'true');
+        a.style.cursor = 'default';
+      }
+      articleWrap.appendChild(a);
+    }
+
+    body.appendChild(media);
+    body.appendChild(articleWrap);
+
+    // 오른쪽 기사 영역의 높이를 왼쪽 전체(썸네일 + 썸네일 제목)와 정확히 동일하게 맞춥니다.
+    // 이미지가 늦게 로드되는 경우까지 다시 계산하여 항상 좌우 하단 라인이 일치하도록 합니다.
+    const syncArticleHeight = () => {
+      const h = Math.ceil(media.getBoundingClientRect().height);
+      if (h > 0) {
+        body.style.setProperty('--daily-trend-left-height', h + 'px');
+        articleWrap.style.height = h + 'px';
+      }
+    };
+    const syncSoon = () => requestAnimationFrame(() => requestAnimationFrame(syncArticleHeight));
+    syncSoon();
+    if (typeof ResizeObserver !== 'undefined') {
+      const ro = new ResizeObserver(syncArticleHeight);
+      ro.observe(media);
+      ro.observe(body);
+      mediaLink.querySelectorAll('img').forEach(img => img.addEventListener('load', syncSoon));
+    }
+    window.addEventListener('resize', syncSoon, {passive:true});
+    card.appendChild(head);
+    card.appendChild(body);
+    return card;
+  }
+
+  async function loadDailyTrendData() {
+    const list = document.getElementById('dailyTrendList');
+    if (!list) return;
+    list.innerHTML = '<div class="loading-msg">일일동향을 불러오는 중입니다...⏳</div>';
+    try {
+      const response = await fetch(DAILY_TREND_SHEET_CSV_URL + '&t=' + Date.now(), {cache:'no-store'});
+      if (!response.ok) throw new Error('Sheet11 CSV response error');
+      dailyTrendData = parseDailyTrendCSV(await response.text());
+      dailyTrendLoaded = true;
+      renderDailyTrendList();
+    } catch (error) {
+      console.error('일일동향 로딩 오류:', error);
+      list.innerHTML = '<div class="daily-trend-empty">일일동향 데이터를 불러오지 못했습니다.<br>Google Sheet11이 웹에 게시되어 있는지 확인해주세요.</div>';
+    }
+  }
+
+  function renderDailyTrendList() {
+    const list = document.getElementById('dailyTrendList');
+    if (!list) return;
+    list.innerHTML = '';
+    const groups = groupDailyTrendByDate(dailyTrendData);
+    if (!groups.length) {
+      list.innerHTML = '<div class="daily-trend-empty">등록된 일일동향이 없습니다.</div>';
+      return;
+    }
+    groups.forEach(([date, items]) => list.appendChild(renderDailyTrendCard(date, items)));
+  }
+
+  function splitDailyTrendLines(value) {
+    const raw = String(value || '').replace(/\r\n/g,'\n').replace(/\r/g,'\n').trim();
+    if (!raw) return [];
+    return raw.split(/\n+/).map(v => v.trim()).filter(Boolean);
+  }
+
+  function renderDailyTrendSection(container, entries, fallbackLinks) {
+    container.innerHTML='';
+    let list = Array.isArray(entries) ? entries : splitDailyTrendLines(entries).map(x=>({text:x,link:''}));
+    if(!list.length && fallbackLinks && fallbackLinks.length) list=fallbackLinks.map(x=>({text:x.title,link:x.link}));
+    if(!list.length){ container.innerHTML='<span style="color:#a0aec0;">등록된 내용이 없습니다.</span>'; return; }
+    list.forEach((entry,idx)=>{
+      const row=document.createElement('div'); row.className='daily-trend-line';
+      const link=entry.link || (fallbackLinks&&fallbackLinks[idx]?fallbackLinks[idx].link:'');
+      let text=String(entry.text||'').replace(/[\r\n]+/g,' ').replace(/\s+/g,' ').trim();
+      /* 번호/하이픈은 제목과 분리합니다.
+         제목 전체를 하나의 문장으로 유지하고, 줄이 바뀌어도 제목 첫 글자 위치에서 이어집니다. */
+      const bulletMatch=text.match(/^(?:([0-9]+)[.)]|([-–—•]))\s*/);
+      const content=text.replace(/^(?:[0-9]+[.)]|[-–—•])\s*/,'').replace(/[\r\n]+/g,' ').replace(/\s+/g,' ').trim();
+      const titleNode=document.createElement('span');
+      titleNode.className='daily-trend-line-title';
+      titleNode.textContent=content || text;
+      if(bulletMatch){
+        const bullet=document.createElement('span');
+        bullet.className='daily-trend-line-number';
+        if (bulletMatch[1]) {
+          bullet.textContent = bulletMatch[1] + '.';
+        } else {
+          bullet.textContent = '- ';
+          row.classList.add('has-hyphen');
+        }
+        row.appendChild(bullet);
+      }
+      if(link){
+        const a=document.createElement('a'); a.href=link; a.target='_blank'; a.rel='noopener noreferrer'; a.appendChild(titleNode); row.appendChild(a);
+      } else row.appendChild(titleNode);
+      container.appendChild(row);
+    });
+  }
+  function findDailyTrendDateItems(date) {
+    return dailyTrendData.filter(item => String(item.date || '').trim() === String(date || '').trim());
+  }
+
+  function openDailyTrendDetail(date, items, skipHistory) {
+    const detail = document.getElementById('dailyTrendDetailScreen');
+    if (!detail) return;
+    window.currentDailyTrendDate = date;
+
+    const first = items && items.length ? items[0] : findDailyTrendDateItems(date)[0];
+    const articleLinks = dailyTrendArticleItems(items || findDailyTrendDateItems(date));
+    document.getElementById('dailyTrendDetailTitle').textContent =
+      firstDailyTrendValue(items || [], 'detailTitle') || date || '일일동향';
+    document.getElementById('dailyTrendDetailDate').textContent = '작성일자  ·  ' + (date || '');
+
+    const dateItems = items || findDailyTrendDateItems(date);
+    renderDailyTrendSection(document.getElementById('dailyTrendSectionG'), dailyTrendCollectSection(dateItems,'memberNews'), articleLinks.slice(0,1));
+    renderDailyTrendSection(document.getElementById('dailyTrendSectionH'), dailyTrendCollectSection(dateItems,'policyNews'), articleLinks.slice(1,2));
+    renderDailyTrendSection(document.getElementById('dailyTrendSectionI'), dailyTrendCollectSection(dateItems,'otherNews'), articleLinks.slice(2,3));
+
+    detail.style.display = 'flex';
+    document.getElementById('dailyTrendScreen').style.display = 'none';
+    document.body.style.overflow = 'hidden';
+    requestAnimationFrame(() => {
+      detail.scrollTop = 0;
+      window.scrollTo(0, 0);
+    });
+    if (!skipHistory) history.pushState({ dailyTrendDetailOpen:true }, "", "");
+  }
+
+  function navigateDailyTrendDate(offset) {
+    const groups = groupDailyTrendByDate(dailyTrendData);
+    if (!groups.length) return;
+    const currentDate = String(window.currentDailyTrendDate || '').trim();
+    let idx = groups.findIndex(([d]) => String(d).trim() === currentDate);
+    if (idx < 0) idx = 0;
+    const nextIdx = idx + offset;
+    if (nextIdx < 0 || nextIdx >= groups.length) return;
+    const [nextDate, nextItems] = groups[nextIdx];
+    window.currentDailyTrendDate = nextDate;
+    openDailyTrendDetail(nextDate, nextItems, true);
+    requestAnimationFrame(() => {
+      const screen = document.getElementById('dailyTrendDetailScreen');
+      if (screen) screen.scrollTop = 0;
+      window.scrollTo(0, 0);
+    });
+  }
+  window.navigateDailyTrendDate = navigateDailyTrendDate;
+
+  window.openDailyTrendScreen = function() {
+    const screen = document.getElementById('dailyTrendScreen');
+    if (!screen) return;
+    screen.style.display = 'flex';
+    document.body.style.overflow = 'hidden';
+    history.pushState({ dailyTrendOpen:true }, "", "");
+    if (!dailyTrendLoaded) loadDailyTrendData();
+    else renderDailyTrendList();
+  };
+
+  window.closeDailyTrendScreen = function() { history.back(); };
+  window.closeDailyTrendDetailScreen = function() { history.back(); };
 
   loadEmergencyNotice();
   loadEmployeeGifNotices();
