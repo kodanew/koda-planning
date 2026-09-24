@@ -5855,6 +5855,81 @@ button,.nav-btn,.action-btn{min-height:44px;}
 }
 </style>
 
+
+<style id="koda-20260924-user-request-final">
+/* =========================================================
+   2026-09-24 사용자 요청 최종 보정
+   1) 협회공지 5개 버튼: 실제 모바일 콘텐츠 폭 기준으로 정확히 중앙 정렬
+   2) 코다피플 ARP/ARPY 기수 버튼: 스크롤 중 미세한 위치 흔들림 제거
+   ========================================================= */
+
+/* ---------- 협회공지 5개 버튼 ---------- */
+#newsScreen #newsTabs{
+  width:100% !important;
+  max-width:430px !important;
+  margin-left:auto !important;
+  margin-right:auto !important;
+  padding-left:0 !important;
+  padding-right:0 !important;
+  box-sizing:border-box !important;
+  display:grid !important;
+  grid-template-columns:repeat(5,minmax(0,1fr)) !important;
+  gap:4px !important;
+  justify-self:center !important;
+  align-self:center !important;
+  left:auto !important;
+  right:auto !important;
+}
+
+#newsScreen #newsTabs .month-tab{
+  width:100% !important;
+  min-width:0 !important;
+  max-width:none !important;
+  margin:0 !important;
+  box-sizing:border-box !important;
+  display:flex !important;
+  align-items:center !important;
+  justify-content:center !important;
+}
+
+/* ---------- 코다피플 ARP / ARPY 기수 버튼 ---------- */
+/* sticky 자체는 유지하되, 스크롤 중 top 값/transform 재계산으로
+   생기는 미세한 상하 흔들림을 방지 */
+#staffScreen #arpCohortFilters{
+  position:sticky !important;
+  top:var(--staff-search-sticky-height,58px) !important;
+  transform:none !important;
+  will-change:auto !important;
+  backface-visibility:visible !important;
+  z-index:999 !important;
+  box-sizing:border-box !important;
+  background:#f4f7fb !important;
+  background-color:#f4f7fb !important;
+  opacity:1 !important;
+  isolation:isolate !important;
+}
+
+/* 기수 버튼 자체는 고정된 영역 안에서 움직이지 않도록 */
+#staffScreen #arpCohortFilters,
+#staffScreen #arpCohortFilters .arp-cohort-btn{
+  -webkit-transform:none !important;
+  transform:none !important;
+  will-change:auto !important;
+}
+
+/* 모바일에서는 검색창 높이에 따라 한 번 정해진 sticky 기준만 사용 */
+@media(max-width:600px){
+  #staffScreen #arpCohortFilters{
+    top:var(--staff-search-sticky-height,56px) !important;
+  }
+}
+@media(max-width:360px){
+  #staffScreen #arpCohortFilters{
+    top:var(--staff-search-sticky-height,54px) !important;
+  }
+}
+</style>
+
 </head>
 <body>
 
