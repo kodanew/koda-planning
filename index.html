@@ -5690,6 +5690,171 @@ button,.nav-btn,.action-btn{min-height:44px;}
 }
 </style>
 
+
+<style id="user-final-layout-fix-20260924">
+/* =========================================================
+   2026-09-24 사용자 요청 최종 보정
+   1) 일일동향 첫 기사 위 / 세 번째 기사 아래 여백 동일
+   2) 두 구분선 사이 여백도 동일하게 유지
+   3) 협회공지 5개 버튼 고정
+   4) 코다피플 ARP/ARPY 기수 버튼 고정
+   ========================================================= */
+
+/* ---------- 일일동향: 외곽 여백 + 기사/구분선 간격 균등 ---------- */
+.daily-trend-articles{
+  display:grid !important;
+  grid-template-columns:minmax(0,1fr) !important;
+  grid-template-rows:auto minmax(12px,1fr) auto minmax(12px,1fr) auto !important;
+  grid-auto-flow:row !important;
+  align-items:start !important;
+  justify-items:stretch !important;
+  width:100% !important;
+  height:var(--daily-trend-left-height,auto) !important;
+  min-height:0 !important;
+  margin:0 !important;
+  padding:8px 0 !important;
+  gap:0 !important;
+  overflow:hidden !important;
+  box-sizing:border-box !important;
+}
+
+/* 3개 기사는 각각 자기 행의 시작점에서 동일하게 배치 */
+.daily-trend-articles > .daily-trend-article{
+  grid-column:1 !important;
+  width:100% !important;
+  min-width:0 !important;
+  min-height:0 !important;
+  height:auto !important;
+  margin:0 !important;
+  padding:0 !important;
+  border:0 !important;
+  display:block !important;
+  align-self:start !important;
+  overflow:hidden !important;
+  box-sizing:border-box !important;
+}
+
+.daily-trend-articles > .daily-trend-article:nth-of-type(1){grid-row:1 !important;}
+.daily-trend-articles > .daily-trend-article:nth-of-type(2){grid-row:3 !important;}
+.daily-trend-articles > .daily-trend-article:nth-of-type(3){grid-row:5 !important;}
+
+/* 구분선은 두 개의 1fr 공간 정중앙에 위치 */
+.daily-trend-articles > .daily-trend-article-divider{
+  grid-column:1 !important;
+  width:100% !important;
+  height:0 !important;
+  min-height:0 !important;
+  margin:0 !important;
+  padding:0 !important;
+  border:0 !important;
+  border-top:1px dotted #c7cdd5 !important;
+  box-sizing:border-box !important;
+  align-self:center !important;
+}
+.daily-trend-articles > .daily-trend-article-divider:nth-child(2){grid-row:2 !important;}
+.daily-trend-articles > .daily-trend-article-divider:nth-child(4){grid-row:4 !important;}
+
+.daily-trend-articles > .daily-trend-article .daily-trend-article-text{
+  width:100% !important;
+  min-width:0 !important;
+  height:auto !important;
+  min-height:0 !important;
+  max-height:2.60em !important;
+  margin:0 !important;
+  padding:0 !important;
+  display:-webkit-box !important;
+  -webkit-box-orient:vertical !important;
+  -webkit-line-clamp:2 !important;
+  overflow:hidden !important;
+  text-overflow:ellipsis !important;
+  white-space:normal !important;
+  word-break:keep-all !important;
+  overflow-wrap:anywhere !important;
+  font-size:.84rem !important;
+  line-height:1.30 !important;
+  box-sizing:border-box !important;
+}
+
+/* ---------- 협회공지: 5개 카테고리 버튼을 헤더 아래에 고정 ---------- */
+#newsScreen #newsTabs{
+  position:sticky !important;
+  top:54px !important;
+  z-index:29 !important;
+  flex:0 0 54px !important;
+  height:54px !important;
+  min-height:54px !important;
+  box-sizing:border-box !important;
+  background:#f4f7fb !important;
+  isolation:isolate !important;
+  padding:7px 0 !important;
+  margin:0 !important;
+  box-shadow:0 5px 10px rgba(244,247,251,.98) !important;
+}
+
+#newsScreen #newsTabs::before{
+  content:"" !important;
+  position:absolute !important;
+  z-index:-1 !important;
+  left:-20px !important;
+  right:-20px !important;
+  top:0 !important;
+  bottom:0 !important;
+  background:#f4f7fb !important;
+  pointer-events:none !important;
+}
+
+#newsScreen .fullscreen-content{
+  position:relative !important;
+  z-index:1 !important;
+}
+
+/* ---------- 코다피플: ARP / ARPY 기수 버튼 위치 완전 고정 ---------- */
+#staffScreen #arpCohortFilters{
+  position:sticky !important;
+  top:var(--staff-search-sticky-height,60px) !important;
+  z-index:900 !important;
+  flex:none !important;
+  transform:translateZ(0) !important;
+  will-change:top !important;
+  box-sizing:border-box !important;
+  background:#f4f7fb !important;
+  background-color:#f4f7fb !important;
+  opacity:1 !important;
+  isolation:isolate !important;
+  -webkit-backdrop-filter:none !important;
+  backdrop-filter:none !important;
+}
+
+/* 기수 영역 자체의 내부 이동/미세 흔들림 방지 */
+#staffScreen #arpCohortFilters,
+#staffScreen #arpCohortFilters > *{
+  backface-visibility:hidden !important;
+}
+
+/* 검색창 높이가 바뀌어도 기수 버튼의 기준점은 검색창 바로 아래 */
+#staffScreen .fullscreen-content{
+  scroll-padding-top:calc(var(--staff-search-sticky-height,60px) + var(--staff-cohort-sticky-height,0px)) !important;
+}
+
+@media(max-width:600px){
+  #newsScreen #newsTabs{
+    top:54px !important;
+    height:54px !important;
+    min-height:54px !important;
+  }
+
+  #staffScreen #arpCohortFilters{
+    top:var(--staff-search-sticky-height,56px) !important;
+  }
+
+  .daily-trend-articles{
+    padding-top:8px !important;
+    padding-bottom:8px !important;
+    grid-template-rows:auto minmax(12px,1fr) auto minmax(12px,1fr) auto !important;
+  }
+}
+</style>
+
 </head>
 <body>
 
