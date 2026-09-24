@@ -6072,6 +6072,79 @@ button,.nav-btn,.action-btn{min-height:44px;}
 }
 </style>
 
+
+<style id="final-spacing-sticky-20260924">
+/* 2026-09-24 최종 요청: 협회공지/코다자료 상하 여백 균등 + 코다피플 기수 필터 고정 */
+#newsScreen #newsTabs,
+#meetingScreen #meetingTabs{
+  box-sizing:border-box !important;
+  margin:0 !important;
+  background:#f4f7fb !important;
+}
+
+/* 헤더 → 버튼 / 버튼 → 게시목록의 여백을 동일하게 */
+#newsScreen #newsTabs{
+  height:54px !important;
+  min-height:54px !important;
+  padding:8px 0 !important;
+}
+#newsScreen #newsTabs .month-tab{
+  height:38px !important;
+  min-height:38px !important;
+}
+#newsScreen > .fullscreen-content{
+  padding-top:8px !important;
+}
+
+#meetingScreen #meetingTabs{
+  padding:8px 0 !important;
+}
+#meetingScreen > .fullscreen-content{
+  padding-top:8px !important;
+}
+
+/* 코다피플: 상단 5개 탭 + 검색창 + ARP/ARPY 기수 필터를 모두 스크롤 중 고정 */
+#staffScreen{
+  overflow-y:auto !important;
+  -webkit-overflow-scrolling:touch !important;
+}
+#staffScreen .fullscreen-content{
+  overflow:visible !important;
+  position:relative !important;
+}
+#staffScreen .staff-mobile-header{
+  position:sticky !important;
+  top:0 !important;
+  z-index:80 !important;
+}
+#staffScreen #staffTabs{
+  position:sticky !important;
+  top:54px !important;
+  z-index:79 !important;
+  background:#f4f7fb !important;
+  padding-top:12px !important;
+  padding-bottom:12px !important;
+  box-sizing:border-box !important;
+}
+#staffScreen .staff-search-wrap{
+  position:sticky !important;
+  top:132px !important;
+  z-index:78 !important;
+  background:#f4f7fb !important;
+}
+#staffScreen #arpCohortFilters{
+  position:sticky !important;
+  top:193px !important;
+  z-index:77 !important;
+  background:#f4f7fb !important;
+  box-sizing:border-box !important;
+}
+@media(max-width:360px){
+  #staffScreen #staffTabs{top:52px !important;}
+  #staffScreen .staff-search-wrap{top:113px !important;}
+  #staffScreen #arpCohortFilters{top:174px !important;}
+}
+</style>
 </head>
 <body>
 
