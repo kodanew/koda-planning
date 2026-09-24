@@ -5937,6 +5937,141 @@ button,.nav-btn,.action-btn{min-height:44px;}
 }
 </style>
 
+
+<style id="user-final-fix-v4-20260924">
+/* =========================================================
+   협회공지: 기존의 작고 중앙 정렬된 5개 버튼 규격 복원
+   - 대형 화면에서도 버튼이 화면 전체로 커지지 않도록 430px 기준
+   - 5개 버튼 동일 폭
+   - 헤더 아래 고정
+   ========================================================= */
+#newsScreen #newsTabs{
+  position:sticky !important;
+  top:54px !important;
+  z-index:40 !important;
+  width:100% !important;
+  max-width:430px !important;
+  height:50px !important;
+  min-height:50px !important;
+  flex:0 0 50px !important;
+  margin:0 auto !important;
+  padding:6px 0 !important;
+  box-sizing:border-box !important;
+  display:grid !important;
+  grid-template-columns:repeat(5,minmax(0,1fr)) !important;
+  gap:4px !important;
+  justify-content:normal !important;
+  align-items:stretch !important;
+  background:#f4f7fb !important;
+  isolation:isolate !important;
+}
+
+#newsScreen #newsTabs::before{
+  content:"" !important;
+  position:absolute !important;
+  left:-100vw !important;
+  right:-100vw !important;
+  top:0 !important;
+  bottom:0 !important;
+  z-index:-1 !important;
+  background:#f4f7fb !important;
+  pointer-events:none !important;
+}
+
+#newsScreen #newsTabs .month-tab{
+  width:100% !important;
+  min-width:0 !important;
+  max-width:none !important;
+  height:38px !important;
+  min-height:38px !important;
+  margin:0 !important;
+  padding:0 2px !important;
+  box-sizing:border-box !important;
+  font-size:.76rem !important;
+  line-height:1.2 !important;
+  border-radius:13px !important;
+  display:flex !important;
+  align-items:center !important;
+  justify-content:center !important;
+  white-space:nowrap !important;
+}
+
+/* 대형 화면에서도 크기 증가 금지 */
+@media(min-width:601px){
+  #newsScreen #newsTabs{
+    width:100% !important;
+    max-width:430px !important;
+    height:50px !important;
+    min-height:50px !important;
+  }
+  #newsScreen #newsTabs .month-tab{
+    height:38px !important;
+    min-height:38px !important;
+    font-size:.76rem !important;
+  }
+}
+
+/* ---------- 코다자료: 5개 버튼 스크롤 시 고정 ---------- */
+#meetingScreen{
+  overflow-y:auto !important;
+  -webkit-overflow-scrolling:touch !important;
+}
+
+#meetingScreen .staff-mobile-header{
+  position:sticky !important;
+  top:0 !important;
+  z-index:50 !important;
+}
+
+#meetingScreen #meetingTabs{
+  position:sticky !important;
+  top:54px !important;
+  z-index:49 !important;
+  width:100% !important;
+  box-sizing:border-box !important;
+  margin:0 auto !important;
+  background:#f4f7fb !important;
+  isolation:isolate !important;
+  padding:6px 0 !important;
+}
+
+#meetingScreen #meetingTabs::before{
+  content:"" !important;
+  position:absolute !important;
+  left:-100vw !important;
+  right:-100vw !important;
+  top:0 !important;
+  bottom:0 !important;
+  z-index:-1 !important;
+  background:#f4f7fb !important;
+  pointer-events:none !important;
+}
+
+#meetingScreen #meetingTabs .month-tab{
+  transform:none !important;
+  translate:none !important;
+}
+
+/* 좁은 화면 헤더 높이와 연동 */
+@media(max-width:360px){
+  #newsScreen #newsTabs{
+    top:52px !important;
+    height:48px !important;
+    min-height:48px !important;
+    flex-basis:48px !important;
+  }
+  #newsScreen #newsTabs .month-tab{
+    height:36px !important;
+    min-height:36px !important;
+    font-size:.70rem !important;
+  }
+
+  #meetingScreen #meetingTabs{
+    top:52px !important;
+  }
+}
+</style>
+
 </head>
 <body>
 
