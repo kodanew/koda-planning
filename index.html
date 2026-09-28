@@ -10507,28 +10507,30 @@ function createEventCard(event, isNext=false) {
 }
 </style>
 <style id="koda-20260928-top-button">
-/* TOP 버튼: 공유·별 아이콘 톤(연한 회청색 → 눌렀을 때 별 금색). 스크롤 내렸을 때만 오른쪽 아래에 표시 */
+/* TOP 버튼(C안): 테두리·배경 없이 화살표 + TOP 글자. 공유·별 아이콘 톤(연한 회청색), 누르면 별 금색.
+   글씨 위에서도 보이도록 흰색 외곽 그림자만 얇게 적용. 스크롤 내렸을 때만 표시 */
 #kodaTopBtn{
   position:fixed;
-  right:max(8px, calc((100vw - 600px) / 2 - 44px));
-  bottom:calc(16px + env(safe-area-inset-bottom, 0px));
-  width:34px;height:34px;padding:0;border-radius:50%;
-  border:1.5px solid #cbd5e0;background:rgba(255,255,255,.9);color:#a0aec0;
-  display:flex;align-items:center;justify-content:center;
-  box-shadow:0 2px 8px rgba(24,71,120,.10);
+  right:max(6px, calc((100vw - 600px) / 2 - 46px));
+  bottom:calc(14px + env(safe-area-inset-bottom, 0px));
+  width:40px;height:40px;padding:0;margin:0;border:0;border-radius:0;background:transparent;
+  color:#a0aec0;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1px;
   opacity:0;visibility:hidden;transform:translateY(8px);
-  transition:opacity .2s, transform .2s, visibility .2s, color .15s, border-color .15s, background .15s;
+  transition:opacity .2s, transform .2s, visibility .2s, color .15s;
   z-index:1750;cursor:pointer;-webkit-tap-highlight-color:transparent;
+  filter:drop-shadow(0 0 2px #fff) drop-shadow(0 0 2px #fff);
 }
-#kodaTopBtn.show{opacity:.92;visibility:visible;transform:none;}
-#kodaTopBtn:active{color:#d69e2e;border-color:#d69e2e;background:#fffaf0;opacity:1;}
-#kodaTopBtn svg{width:17px;height:17px;display:block;}
+#kodaTopBtn.show{opacity:.95;visibility:visible;transform:none;}
+#kodaTopBtn:active{color:#d69e2e;opacity:1;}
+#kodaTopBtn svg{width:20px;height:16px;display:block;}
+#kodaTopBtn .top-label{font-size:11px;font-weight:800;line-height:1;letter-spacing:-.02em;font-family:inherit;}
 </style>
 <script id="koda-20260928-top-button-script">
 (function(){
   var btn=document.createElement('button');
   btn.id='kodaTopBtn'; btn.type='button'; btn.setAttribute('aria-label','맨 위로');
-  btn.innerHTML='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20V5"></path><path d="M5.5 11.5L12 5l6.5 6.5"></path></svg>';
+  btn.innerHTML='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5.5 15L12 8l6.5 7"></path></svg><span class="top-label">TOP</span>';
   document.body.appendChild(btn);
 
   var scroller=null, SHOW_AT=300;
