@@ -10447,9 +10447,20 @@ function createEventCard(event, isNext=false) {
 .quick-btn[aria-label="일일동향"] .quick-icon svg{width:39px !important;height:39px !important;}
 /* 전체메뉴: 긴 카드명은 카드 안에서 줄바꿈 */
 #fullMenuScreen .fullmenu-card{overflow-wrap:anywhere !important;}
-/* 긴 카드명(한국부동산개발산업연구원): 2줄로 깔끔하게 표시 */
-#fullMenuScreen .fullmenu-card[href$="/lab/"]{font-size:.78rem !important;line-height:1.25 !important;padding-left:3px !important;padding-right:3px !important;}
-@media(max-width:340px){#fullMenuScreen .fullmenu-card[href$="/lab/"]{font-size:.7rem !important;}}
+/* KREDII 카드: 다른 카드와 동일한 글자 크기(개별 축소 규칙 제거) */
+</style>
+<style id="koda-20260928-people-scroll-edge">
+/* 코다피플(사무국·7대임원·회원사·ARP·ARPY): 스크롤 영역을 화면 전체 폭으로 넓혀 스크롤바를 페이지 오른쪽 끝에 배치.
+   콘텐츠 폭(430px)은 좌우 패딩으로 유지 */
+#staffScreen .fullscreen-content{
+  width:100% !important;
+  max-width:none !important;
+  padding-left:max(10px, calc((100% - 430px) / 2)) !important;
+  padding-right:max(10px, calc((100% - 430px) / 2)) !important;
+}
+@media(max-width:360px){
+  #staffScreen .fullscreen-content{padding-left:7px !important;padding-right:7px !important;}
+}
 </style>
 </body>
 </html>
