@@ -6076,7 +6076,6 @@ button,.nav-btn,.action-btn{min-height:44px;}
 <div aria-hidden="true" class="header-spacer"></div>
 <img alt="KODA 로고" src="koda-logo-re.png"/>
 <div class="header-right">
-<button class="my-business-card-btn" id="appInstallGuideBtn" onclick="openAppInstallPopup()" type="button">앱설치</button>
 <button class="my-business-card-btn" id="myBusinessCardBtn" onclick="openMyBusinessCard()" type="button">나의 명함</button>
 </div>
 </div>
@@ -10452,88 +10451,5 @@ function createEventCard(event, isNext=false) {
 #fullMenuScreen .fullmenu-card[href$="/lab/"]{font-size:.78rem !important;line-height:1.25 !important;padding-left:3px !important;padding-right:3px !important;}
 @media(max-width:340px){#fullMenuScreen .fullmenu-card[href$="/lab/"]{font-size:.7rem !important;}}
 </style>
-
-<style id="koda-app-install-css">
-.app-container > .header .header-right{padding-top:2px !important;gap:5px !important;}
-#myBusinessCardBtn{margin-top:3px !important;}
-.app-install-overlay{display:none;position:fixed;inset:0;z-index:3000;background:rgba(15,23,42,.55);align-items:center;justify-content:center;padding:20px;}
-.app-install-overlay.show{display:flex;}
-.app-install-modal{width:100%;max-width:320px;background:#fff;border-radius:16px;padding:22px 18px 16px;text-align:center;box-shadow:0 12px 40px rgba(0,0,0,.25);}
-.app-install-title{font-size:1.05rem;font-weight:800;color:#173f70;margin-bottom:8px;}
-.app-install-msg{font-size:.85rem;line-height:1.55;color:#4a5568;margin-bottom:14px;white-space:pre-line;}
-.app-install-steps{text-align:left;font-size:.85rem;line-height:1.6;color:#2d3748;margin:0 0 14px;padding-left:20px;}
-.app-install-actions{display:flex;gap:8px;}
-.app-install-actions button{flex:1;border:0;border-radius:10px;padding:11px 4px;font-size:.85rem;font-weight:800;color:#fff;cursor:pointer;}
-.app-install-android{background:#1769d2;}
-.app-install-ios{background:#333b47;}
-.app-install-close{margin-top:10px;background:none;border:0;color:#8a94a3;font-size:.8rem;cursor:pointer;padding:6px;}
-</style>
-<div class="app-install-overlay" id="appInstallOverlay" onclick="if(event.target===this)closeAppInstallPopup()">
-<div aria-modal="true" class="app-install-modal" role="dialog">
-<div class="app-install-title" id="appInstallTitle">앱 설치 안내</div>
-<div class="app-install-msg" id="appInstallMsg">내 휴대폰에 맞는 버튼을 눌러주세요.</div>
-<ol class="app-install-steps" id="appInstallSteps" style="display:none"></ol>
-<div class="app-install-actions" id="appInstallActions">
-<button class="app-install-android" onclick="installAndroidApp()" type="button">안드로이드 설치</button>
-<button class="app-install-ios" onclick="installIosApp()" type="button">아이폰 설치</button>
-</div>
-<button class="app-install-close" onclick="closeAppInstallPopup()" type="button">닫기</button>
-</div>
-</div>
-<script id="koda-app-install-js">
-(function(){
-  var ua=navigator.userAgent||'', deferred=null;
-  var isKakao=/KAKAOTALK/i.test(ua);
-  window.addEventListener('beforeinstallprompt',function(e){e.preventDefault();deferred=e;});
-  if('serviceWorker' in navigator){window.addEventListener('load',function(){navigator.serviceWorker.register('sw.js').catch(function(){});});}
-  function $(id){return document.getElementById(id);}
-  function withParam(v){var u=new URL(location.href);u.searchParams.set('koda_install',v);return u.toString();}
-  function show(title,msg,steps,actions){
-    $('appInstallTitle').textContent=title;
-    $('appInstallMsg').textContent=msg||'';
-    $('appInstallMsg').style.display=msg?'':'none';
-    var ol=$('appInstallSteps');ol.innerHTML='';
-    if(steps){steps.forEach(function(t){var li=document.createElement('li');li.innerHTML=t;ol.appendChild(li);});}
-    ol.style.display=steps?'':'none';
-    $('appInstallActions').style.display=actions?'':'none';
-    $('appInstallOverlay').classList.add('show');
-  }
-  function home(){show('앱 설치 안내','내 휴대폰에 맞는 버튼을 눌러주세요.'+(isKakao?'\n(카카오톡에서는 바로 설치가 안 돼요.)':''),null,true);}
-  window.openAppInstallPopup=home;
-  window.closeAppInstallPopup=function(){$('appInstallOverlay').classList.remove('show');};
-  function iosGuide(){show('아이폰 설치 방법','',[
-    '화면 아래 <b>공유 버튼(□↑)</b> 누르기',
-    '<b>"홈 화면에 추가"</b> 선택',
-    '오른쪽 위 <b>"추가"</b> 누르기'],false);}
-  window.installAndroidApp=function(){
-    if(deferred){var d=deferred;deferred=null;d.prompt();return;}
-    if(/Android/i.test(ua)&&(isKakao||!/Chrome\//.test(ua)||/SamsungBrowser|Whale|NAVER|; wv/i.test(ua))){
-      var u=new URL(withParam('android'));
-      location.href='intent://'+u.host+u.pathname+u.search+'#Intent;scheme=https;package=com.android.chrome;S.browser_fallback_url='+encodeURIComponent(u.toString())+';end';
-      return;
-    }
-    show('안드로이드 설치 방법','',[
-      'Chrome 오른쪽 위 <b>⋮ 메뉴</b> 누르기',
-      '<b>"앱 설치"</b> 또는 <b>"홈 화면에 추가"</b> 선택',
-      '<b>"설치"</b> 누르기'],false);
-  };
-  window.installIosApp=function(){
-    if(isKakao){location.href='kakaotalk://web/openExternal?url='+encodeURIComponent(withParam('ios'));return;}
-    if(/CriOS|FxiOS|EdgiOS|NAVER|DaumApps/i.test(ua)){
-      show('Safari에서 열어주세요','아이폰은 Safari 브라우저에서만 설치할 수 있어요.\n주소를 복사해 Safari에서 열어주세요.',null,false);return;}
-    iosGuide();
-  };
-  // 외부 브라우저로 넘어온 뒤: 한 번 더 누르도록 안내 팝업 자동 표시
-  window.addEventListener('load',function(){
-    var q=new URLSearchParams(location.search).get('koda_install');
-    if(q==='ios'){iosGuide();}
-    else if(q==='android'){
-      show('앱 설치','아래 버튼을 누르면 설치 확인창이 나타납니다.',null,false);
-      $('appInstallActions').style.display='';
-      $('appInstallActions').innerHTML='<button class="app-install-android" onclick="installAndroidApp()" type="button">설치하기</button>';
-    }
-  });
-})();
-</script>
 </body>
 </html>
