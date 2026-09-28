@@ -10123,9 +10123,11 @@ function createEventCard(event, isNext=false) {
     history.pushState({fullMenuOpen:true},'', '');
   };
   window.closeFullMenuScreen=function(){ history.back(); };
+  /* 전체메뉴는 히스토리에 남겨 둔 채 화면만 숨기고 대상 페이지를 위에 쌓음
+     → 대상 페이지에서 뒤로가기(브라우저/←버튼) 시 전체메뉴로 복귀 */
   function transition(fn){
-    history.back();
-    setTimeout(fn,80);
+    hideFullMenu();
+    fn();
   }
   window.openFullMenuNews=function(category){ transition(function(){ openNewsScreen(); setTimeout(function(){ filterNews(category); },0); }); };
   window.openFullMenuMeeting=function(category){ transition(function(){ openMeetingScreen(); setTimeout(function(){ filterMeeting(category); },0); }); };
@@ -10504,5 +10506,59 @@ function createEventCard(event, isNext=false) {
   #dailyTrendScreen .daily-trend-image-link{aspect-ratio:4/3 !important;}
 }
 </style>
+<style id="koda-20260928-top-button">
+/* TOP 버튼: 공유·별 아이콘 톤(연한 회청색 → 눌렀을 때 별 금색). 스크롤 내렸을 때만 오른쪽 아래에 표시 */
+#kodaTopBtn{
+  position:fixed;
+  right:max(8px, calc((100vw - 600px) / 2 - 44px));
+  bottom:calc(16px + env(safe-area-inset-bottom, 0px));
+  width:34px;height:34px;padding:0;border-radius:50%;
+  border:1.5px solid #cbd5e0;background:rgba(255,255,255,.9);color:#a0aec0;
+  display:flex;align-items:center;justify-content:center;
+  box-shadow:0 2px 8px rgba(24,71,120,.10);
+  opacity:0;visibility:hidden;transform:translateY(8px);
+  transition:opacity .2s, transform .2s, visibility .2s, color .15s, border-color .15s, background .15s;
+  z-index:1750;cursor:pointer;-webkit-tap-highlight-color:transparent;
+}
+#kodaTopBtn.show{opacity:.92;visibility:visible;transform:none;}
+#kodaTopBtn:active{color:#d69e2e;border-color:#d69e2e;background:#fffaf0;opacity:1;}
+#kodaTopBtn svg{width:17px;height:17px;display:block;}
+</style>
+<script id="koda-20260928-top-button-script">
+(function(){
+  var btn=document.createElement('button');
+  btn.id='kodaTopBtn'; btn.type='button'; btn.setAttribute('aria-label','맨 위로');
+  btn.innerHTML='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20V5"></path><path d="M5.5 11.5L12 5l6.5 6.5"></path></svg>';
+  document.body.appendChild(btn);
+
+  var scroller=null, SHOW_AT=300;
+  function isDoc(t){return t===document||t===document.documentElement||t===document.body||t===document.scrollingElement;}
+  function visible(el){return isDoc(el)||!!(el.offsetWidth||el.offsetHeight||el.getClientRects().length);}
+  function pos(el){return isDoc(el)?(window.pageYOffset||document.documentElement.scrollTop||0):el.scrollTop;}
+  function update(){
+    if(!scroller){btn.classList.remove('show');return;}
+    // 다른 화면이 위에 열려 홈(문서) 스크롤이 잠긴 경우
+    if(isDoc(scroller)&&getComputedStyle(document.body).overflow==='hidden'){scroller=null;btn.classList.remove('show');return;}
+    if(!visible(scroller)){scroller=null;btn.classList.remove('show');return;}
+    btn.classList.toggle('show',pos(scroller)>SHOW_AT);
+  }
+  document.addEventListener('scroll',function(e){
+    var t=e.target;
+    if(isDoc(t)){scroller=document.scrollingElement||document.documentElement;}
+    else if(t&&t.nodeType===1&&t.scrollHeight-t.clientHeight>200&&visible(t)){scroller=t;}
+    else return;
+    update();
+  },true);
+  btn.addEventListener('click',function(){
+    if(!scroller)return;
+    try{
+      if(isDoc(scroller))window.scrollTo({top:0,behavior:'smooth'});
+      else scroller.scrollTo({top:0,behavior:'smooth'});
+    }catch(err){ if(isDoc(scroller))window.scrollTo(0,0); else scroller.scrollTop=0; }
+  });
+  window.addEventListener('popstate',function(){setTimeout(update,120);});
+  setInterval(update,500);
+})();
+</script>
 </body>
 </html>
