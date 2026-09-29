@@ -6054,18 +6054,18 @@ button,.nav-btn,.action-btn{min-height:44px;}
 </style>
 
 <style id="koda-splash-style">
-#koda-splash{position:fixed;inset:0;z-index:2147483000;background:#fff;display:flex;align-items:center;justify-content:center;--w:min(72vw,300px);transition:opacity .5s ease,visibility .5s;overflow:hidden;-webkit-tap-highlight-color:transparent}
+#koda-splash{position:fixed;inset:0;z-index:2147483000;background:#fff;display:flex;align-items:center;justify-content:center;--w:min(88vw,320px);transition:opacity .5s ease,visibility .5s;overflow:hidden;-webkit-tap-highlight-color:transparent}
 #koda-splash.hide{opacity:0;visibility:hidden}
 #koda-splash .stage{position:relative;width:var(--w);height:calc(var(--w)*0.3000)}
 #koda-splash .up{position:absolute;inset:0;animation:ks-up .7s cubic-bezier(.22,.8,.3,1) 2.6s forwards}
 #koda-splash .lg{position:absolute;inset:0;transform:translateX(15.69%);animation:ks-shift .8s cubic-bezier(.22,.8,.3,1) 1.5s forwards}
 #koda-splash img{position:absolute;display:block;max-width:none;user-select:none;-webkit-user-drag:none}
-#koda-splash .sym{left:19.31%;top:0.0%;width:30.0%;height:100.0%;opacity:0;animation:ks-sym 1.3s cubic-bezier(.45,.05,.25,1) .2s forwards}
+#koda-splash .sym{left:19.31%;top:0.0%;width:30.0%;height:100.0%;opacity:1;animation:ks-sym 1.4s cubic-bezier(.45,.05,.25,1) forwards}
 #koda-splash .k{left:0.0%;top:3.45%;width:20.34%;height:93.1%;opacity:0;transform:translateX(150%);animation:ks-k .8s cubic-bezier(.22,.8,.3,1) 1.5s forwards}
 #koda-splash .da{left:53.97%;top:3.45%;width:46.03%;height:93.1%;opacity:0;transform:translateX(-60%);animation:ks-k .8s cubic-bezier(.22,.8,.3,1) 1.5s forwards}
 #koda-splash .name{position:absolute;left:50%;top:calc(50% + var(--w)*0.1400);width:calc(var(--w)*0.832);opacity:0;transform:translateX(-50%);animation:ks-name .7s ease 2.8s forwards}
 #koda-splash .name img{position:static;width:100%;height:auto}
-@keyframes ks-sym{0%{opacity:0;transform:rotate(-360deg)}8%{opacity:1}100%{opacity:1;transform:rotate(0)}}
+@keyframes ks-sym{0%,10%{transform:rotate(-360deg)}100%{transform:rotate(0)}}
 @keyframes ks-shift{to{transform:translateX(0)}}
 @keyframes ks-k{to{opacity:1;transform:translateX(0)}}
 @keyframes ks-up{to{transform:translateY(calc(var(--w)*-0.0460))}}
