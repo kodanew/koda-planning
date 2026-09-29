@@ -19,6 +19,7 @@
 <meta content="KODA 일정" name="apple-mobile-web-app-title"/>
 <link href="로고.png" rel="apple-touch-icon"/>
 <link href="manifest.json" rel="manifest"/>
+<meta content="#ffffff" name="theme-color"/>
 <!-- 카카오톡 인앱 브라우저 강제 탈출 스크립트 -->
 <script>
   var userAgent = navigator.userAgent.toLowerCase();
@@ -6064,7 +6065,7 @@ button,.nav-btn,.action-btn{min-height:44px;}
 #koda-splash .da{left:53.97%;top:3.45%;width:46.03%;height:93.1%;opacity:0;transform:translateX(-60%);animation:ks-k .8s cubic-bezier(.22,.8,.3,1) 1.5s forwards}
 #koda-splash .name{position:absolute;left:50%;top:calc(50% + var(--w)*0.1400);width:calc(var(--w)*0.832);opacity:0;transform:translateX(-50%);animation:ks-name .7s ease 2.8s forwards}
 #koda-splash .name img{position:static;width:100%;height:auto}
-@keyframes ks-sym{0%{opacity:0;transform:rotate(-360deg) scale(.6)}25%{opacity:1}100%{opacity:1;transform:rotate(0) scale(1)}}
+@keyframes ks-sym{0%{opacity:0;transform:rotate(-360deg)}8%{opacity:1}100%{opacity:1;transform:rotate(0)}}
 @keyframes ks-shift{to{transform:translateX(0)}}
 @keyframes ks-k{to{opacity:1;transform:translateX(0)}}
 @keyframes ks-up{to{transform:translateY(calc(var(--w)*-0.0460))}}
@@ -10584,9 +10585,19 @@ function createEventCard(event, isNext=false) {
 })();
 </script>
 <script id="koda-splash-script">
+var __kodaTpl=(document.getElementById('koda-splash')||{}).outerHTML||'';
 function kodaSplashClose(){var s=document.getElementById('koda-splash');if(!s||s.dataset.c)return;s.dataset.c=1;s.classList.add('hide');setTimeout(function(){s.remove()},600)}
+function kodaSplashShow(){if(!__kodaTpl||document.getElementById('koda-splash'))return;
+  document.body.insertAdjacentHTML('afterbegin',__kodaTpl);
+  setTimeout(kodaSplashClose,4000)}
 (function(){var t0=Date.now(),MIN=4000;function go(){setTimeout(kodaSplashClose,Math.max(0,MIN-(Date.now()-t0)))}
 if(document.readyState==='complete')go();else window.addEventListener('load',go);setTimeout(kodaSplashClose,7000)})();
+/* 앱을 백그라운드에 두었다가 60초 이상 지나 다시 열 때도 스플래시 재생 */
+(function(){var hiddenAt=0;
+document.addEventListener('visibilitychange',function(){
+  if(document.visibilityState==='hidden'){hiddenAt=Date.now()}
+  else if(hiddenAt&&Date.now()-hiddenAt>60000){kodaSplashShow()}});
+window.addEventListener('pageshow',function(e){if(e.persisted)kodaSplashShow()})})();
 </script>
 </body>
 </html>
