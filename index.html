@@ -6052,8 +6052,91 @@ button,.nav-btn,.action-btn{min-height:44px;}
 }
 </style>
 
+
+/* ===== KODA 시작 로딩 애니메이션 ===== */
+#kodaSplash{
+  position:fixed; inset:0; z-index:99999;
+  display:flex; align-items:center; justify-content:center;
+  background:#fff; opacity:1; visibility:visible;
+  transition:opacity .45s ease, visibility .45s ease; overflow:hidden;
+}
+#kodaSplash.is-hidden{opacity:0;visibility:hidden;pointer-events:none;}
+.koda-splash-inner{
+  width:min(92vw,430px); display:flex; flex-direction:column;
+  align-items:center; justify-content:center; transform:translateY(0);
+  animation:kodaSplashRise 1.95s cubic-bezier(.2,.75,.25,1) forwards;
+}
+.koda-splash-mark{
+  position:relative; display:flex; align-items:center; justify-content:center;
+  height:94px; width:min(88vw,360px); color:#064b8f;
+  font-family:Arial,'Helvetica Neue',sans-serif; font-weight:800;
+  line-height:1; letter-spacing:-.07em;
+}
+.koda-splash-k,.koda-splash-da{
+  position:absolute; top:50%; transform:translateY(-50%);
+  font-size:clamp(58px,16vw,82px); opacity:0; white-space:nowrap;
+}
+.koda-splash-k{right:50%;margin-right:38px;animation:kodaSplashK .55s .38s cubic-bezier(.2,.8,.2,1) forwards;}
+.koda-splash-da{left:50%;margin-left:38px;animation:kodaSplashDA .60s .52s cubic-bezier(.2,.8,.2,1) forwards;}
+.koda-splash-o{
+  position:relative; z-index:2; width:82px; height:82px; object-fit:contain;
+  opacity:0; transform:scale(.78) rotate(0deg);
+  animation:kodaSplashO .72s .08s cubic-bezier(.2,.75,.2,1) forwards;
+}
+.koda-splash-name{
+  margin-top:4px; color:#064b8f; font-size:clamp(15px,4.1vw,20px);
+  font-weight:750; letter-spacing:.02em; opacity:0; transform:translateY(8px);
+  animation:kodaSplashKorean .48s 1.42s ease-out forwards;
+}
+@keyframes kodaSplashO{
+  0%{opacity:0;transform:scale(.78) rotate(0deg)}
+  20%{opacity:1}
+  78%{opacity:1;transform:scale(1) rotate(360deg)}
+  100%{opacity:1;transform:scale(1) rotate(360deg)}
+}
+@keyframes kodaSplashK{
+  0%{opacity:0;transform:translate(42px,-50%) scale(.82)}
+  100%{opacity:1;transform:translate(0,-50%) scale(1)}
+}
+@keyframes kodaSplashDA{
+  0%{opacity:0;transform:translate(-42px,-50%) scale(.82)}
+  100%{opacity:1;transform:translate(0,-50%) scale(1)}
+}
+@keyframes kodaSplashRise{
+  0%,68%{transform:translateY(0)}
+  100%{transform:translateY(-15px)}
+}
+@keyframes kodaSplashKorean{
+  0%{opacity:0;transform:translateY(8px)}
+  100%{opacity:1;transform:translateY(0)}
+}
+@media(max-width:360px){
+  .koda-splash-mark{height:78px}
+  .koda-splash-o{width:68px;height:68px}
+  .koda-splash-k,.koda-splash-da{font-size:58px}
+  .koda-splash-k{margin-right:31px}.koda-splash-da{margin-left:31px}
+}
+@media(prefers-reduced-motion:reduce){
+  #kodaSplash,.koda-splash-inner,.koda-splash-k,.koda-splash-da,.koda-splash-o,.koda-splash-name{animation:none!important}
+  .koda-splash-inner{transform:translateY(-15px)}
+  .koda-splash-k,.koda-splash-da,.koda-splash-o,.koda-splash-name{opacity:1}
+  .koda-splash-o{transform:none}
+}
+
 </head>
 <body>
+<!-- KODA 앱 시작 로딩 화면 -->
+<div id="kodaSplash" aria-label="KODA 로딩 중">
+  <div class="koda-splash-inner">
+    <div class="koda-splash-mark" aria-hidden="true">
+      <span class="koda-splash-k">K</span>
+      <img class="koda-splash-o" src="logoT.png" alt="">
+      <span class="koda-splash-da">DA</span>
+    </div>
+    <div class="koda-splash-name">한국디벨로퍼협회</div>
+  </div>
+</div>
+
 <div class="login-screen" id="loginScreen">
 <div class="login-box">
 <img alt="KODA 로고" class="login-logo" src="스크린샷 2026-08-12 140547.png"/>
@@ -6855,13 +6938,33 @@ button,.nav-btn,.action-btn{min-height:44px;}
   };
 
   async function initAuth() {
-    await loadMembersData();
-    const saved = JSON.parse(localStorage.getItem('koda_auth') || 'null');
-    if (saved && isAuthorizedMember(saved.name, saved.phone)) {
-      enterApp(); return;
+    const splash = document.getElementById('kodaSplash');
+    const splashStart = performance.now();
+
+    const finishSplash = () => {
+      const wait = Math.max(0, 1900 - (performance.now() - splashStart));
+      setTimeout(() => {
+        if (splash) splash.classList.add('is-hidden');
+      }, wait);
+    };
+
+    try {
+      await loadMembersData();
+      const saved = JSON.parse(localStorage.getItem('koda_auth') || 'null');
+      if (saved && isAuthorizedMember(saved.name, saved.phone)) {
+        enterApp();
+        finishSplash();
+        return;
+      }
+      document.getElementById('loginScreen').style.display = 'flex';
+      document.body.style.overflow = 'hidden';
+      finishSplash();
+    } catch (error) {
+      console.error('KODA 인증 초기화 실패:', error);
+      document.getElementById('loginScreen').style.display = 'flex';
+      document.body.style.overflow = 'hidden';
+      finishSplash();
     }
-    document.getElementById('loginScreen').style.display = 'flex';
-    document.body.style.overflow = 'hidden';
   }
 
   function parseStaffCSV(csv) {
