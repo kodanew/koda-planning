@@ -6085,8 +6085,24 @@ button,.nav-btn,.action-btn{min-height:44px;}
 <input autocomplete="name" class="login-input" id="loginName" placeholder="이름" type="text"/>
 <input autocomplete="tel" class="login-input" id="loginPhone" onkeydown="if(event.key==='Enter'){attemptLogin();}" placeholder="핸드폰 번호 (- 없이 입력)" type="tel"/>
 <div class="login-error" id="loginError"></div>
+<div class="login-install-row" id="loginInstallRow">
+<button class="login-install-choice" id="installAndroidBtn" type="button">
+<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 4v11"/><path d="M7.5 11l4.5 4.5 4.5-4.5"/><path d="M5 19h14"/></svg>
+<span>안드로이드 설치</span>
+</button>
+<button class="login-install-choice" id="installIosBtn" type="button">
+<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 4v11"/><path d="M7.5 11l4.5 4.5 4.5-4.5"/><path d="M5 19h14"/></svg>
+<span>아이폰 설치</span>
+</button>
 </div>
-<button class="install-btn login-install-btn" id="installBtn" style="display: none;" type="button">앱설치</button>
+</div>
+</div>
+<div class="install-guide-overlay" id="installGuide" onclick="if(event.target===this)closeInstallGuide()">
+<div class="install-guide-box">
+<div class="install-guide-title" id="installGuideTitle"></div>
+<ol class="install-guide-steps" id="installGuideSteps"></ol>
+<button class="install-guide-close" type="button" onclick="closeInstallGuide()">확인</button>
+</div>
 </div>
 <div class="app-container" id="appRoot">
 <div class="header">
@@ -8659,22 +8675,73 @@ function createEventCard(event, isNext=false) {
   window.closeModalAction = function() { history.back(); };
   window.closeModalOnOutsideClick = function(e) { if(e.target.id === 'eventModal') history.back(); };
 
-  let deferredPrompt;
-  const installBtn = document.getElementById('installBtn');
+  /* ===== 로그인 화면: 안드로이드 / 아이폰 홈 화면 설치 ===== */
+  let deferredPrompt = null;
+  const ua = window.navigator.userAgent.toLowerCase();
+  const isIos = /iphone|ipad|ipod/.test(ua) || (ua.includes('macintosh') && navigator.maxTouchPoints > 1);
+  const isAndroid = /android/.test(ua);
+  const isInStandaloneMode = () =>
+    (window.matchMedia && window.matchMedia('(display-mode: standalone)').matches) ||
+    (('standalone' in window.navigator) && window.navigator.standalone);
+
+  const installRow = document.getElementById('loginInstallRow');
+  const installAndroidBtn = document.getElementById('installAndroidBtn');
+  const installIosBtn = document.getElementById('installIosBtn');
+
+  // 이미 바탕화면 앱으로 실행 중이면 설치 버튼 숨김
+  if (isInStandaloneMode()) installRow.style.display = 'none';
+
   window.addEventListener('beforeinstallprompt', (e) => {
-    e.preventDefault(); deferredPrompt = e; installBtn.style.display = 'inline-block'; 
-    installBtn.addEventListener('click', () => {
-      installBtn.style.display = 'none'; deferredPrompt.prompt();
-      deferredPrompt.userChoice.then((choiceResult) => { deferredPrompt = null; });
-    });
+    e.preventDefault();
+    deferredPrompt = e;
+  });
+  window.addEventListener('appinstalled', () => {
+    deferredPrompt = null;
+    installRow.style.display = 'none';
   });
 
-  const isIos = () => /iphone|ipad|ipod/.test(window.navigator.userAgent.toLowerCase());
-  const isInStandaloneMode = () => ('standalone' in window.navigator) && (window.navigator.standalone);
-  if (isIos() && !isInStandaloneMode()) {
-    installBtn.style.display = 'inline-block';
-    installBtn.addEventListener('click', () => alert("아이폰 화면 맨 아래의 '공유(내보내기) [↑]' 버튼을 누른 후,\n'홈 화면에 추가 [+]'를 선택해주세요!"));
+  function openInstallGuide(title, steps) {
+    document.getElementById('installGuideTitle').textContent = title;
+    document.getElementById('installGuideSteps').innerHTML = steps.map(t => '<li>' + t + '</li>').join('');
+    document.getElementById('installGuide').style.display = 'flex';
   }
+  window.closeInstallGuide = function() {
+    document.getElementById('installGuide').style.display = 'none';
+  };
+
+  // 안드로이드 설치: 설치 창이 지원되면 바로 띄우고, 아니면 크롬 메뉴 안내
+  installAndroidBtn.addEventListener('click', async () => {
+    if (deferredPrompt) {
+      deferredPrompt.prompt();
+      try { await deferredPrompt.userChoice; } catch (err) {}
+      deferredPrompt = null;
+      return;
+    }
+    if (isIos) {
+      openInstallGuide('안드로이드 폰 전용입니다', ['아이폰은 오른쪽 <b>아이폰 설치</b> 버튼을 눌러주세요.']);
+      return;
+    }
+    openInstallGuide('안드로이드 설치 방법', [
+      '<b>크롬(Chrome)</b> 브라우저로 접속해주세요.',
+      '오른쪽 위 <b>⋮ 메뉴</b>를 눌러주세요.',
+      '<b>앱 설치</b> 또는 <b>홈 화면에 추가</b>를 선택하세요.',
+      '바탕화면에 <b>KODA 일정</b> 아이콘이 생성됩니다.'
+    ]);
+  });
+
+  // 아이폰 설치: iOS는 자동 설치가 불가하여 Safari '홈 화면에 추가' 안내
+  installIosBtn.addEventListener('click', () => {
+    if (isAndroid) {
+      openInstallGuide('아이폰 전용입니다', ['안드로이드 폰은 왼쪽 <b>안드로이드 설치</b> 버튼을 눌러주세요.']);
+      return;
+    }
+    openInstallGuide('아이폰 설치 방법', [
+      '<b>Safari</b> 브라우저로 접속해주세요. (카카오톡·네이버 등 앱 안에서 열었다면 Safari로 다시 열어주세요)',
+      '화면 아래 <b>공유 버튼 [↑]</b>을 눌러주세요.',
+      '<b>홈 화면에 추가 [+]</b>를 선택하세요.',
+      '오른쪽 위 <b>추가</b>를 누르면 바탕화면에 <b>KODA 일정</b> 아이콘이 생성됩니다.'
+    ]);
+  });
 
   const calendarWrapper = document.getElementById('calendarWrapper');
   let startX = 0, endX = 0;
@@ -10584,6 +10651,46 @@ function createEventCard(event, isNext=false) {
   setInterval(update,500);
 })();
 </script>
+<style id="koda-login-install-buttons">
+/* 로그인 화면: 전화번호 입력칸 아래, 중앙 기준 좌(안드로이드)·우(아이폰) 설치 버튼 */
+.login-install-row{
+  display:flex; gap:8px; margin-top:14px; width:100%;
+}
+.login-install-choice{
+  flex:1 1 0; min-width:0;
+  display:flex; align-items:center; justify-content:center; gap:5px;
+  padding:10px 4px;
+  background:#eef5ff; color:#0756c9;
+  border:1px solid #c9ddfb; border-radius:8px;
+  font-family:inherit; font-size:.76rem; font-weight:800; letter-spacing:-.03em;
+  white-space:nowrap; cursor:pointer;
+  -webkit-tap-highlight-color:transparent;
+}
+.login-install-choice svg{width:15px;height:15px;flex:0 0 auto;}
+.login-install-choice:active{background:#dcecff;transform:scale(.98);}
+@media(max-width:320px){
+  .login-install-choice{font-size:.68rem;padding:9px 2px;gap:3px;}
+  .login-install-choice svg{width:13px;height:13px;}
+}
+/* 설치 안내 팝업 */
+.install-guide-overlay{
+  position:fixed; inset:0; z-index:2600; display:none;
+  align-items:center; justify-content:center; padding:20px;
+  background:rgba(15,23,42,.55);
+}
+.install-guide-box{
+  width:100%; max-width:320px; background:#fff; border-radius:14px;
+  padding:22px 20px 16px; box-shadow:0 12px 30px rgba(0,0,0,.2);
+}
+.install-guide-title{font-size:1rem;font-weight:800;color:var(--text-dark);margin-bottom:12px;text-align:center;}
+.install-guide-steps{margin:0 0 16px;padding-left:20px;font-size:.82rem;line-height:1.6;color:var(--text-dark);}
+.install-guide-steps li{margin-bottom:6px;}
+.install-guide-close{
+  width:100%; padding:11px; border:0; border-radius:8px;
+  background:var(--primary-color); color:#fff;
+  font-family:inherit; font-size:.9rem; font-weight:700; cursor:pointer;
+}
+</style>
 <script id="koda-splash-script">
 var __kodaTpl=(document.getElementById('koda-splash')||{}).outerHTML||'';
 function kodaSplashClose(){var s=document.getElementById('koda-splash');if(!s||s.dataset.c)return;s.dataset.c=1;s.classList.add('hide');setTimeout(function(){s.remove()},600)}
