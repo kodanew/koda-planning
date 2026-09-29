@@ -1,6 +1,6 @@
 {
-  "name": "KODA 일정 안내",
-  "short_name": "KODA 일정",
+  "name": "KODA",
+  "short_name": "KODA",
   "start_url": "./index.html",
   "display": "standalone",
   "background_color": "#ffffff",
