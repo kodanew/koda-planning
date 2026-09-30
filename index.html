@@ -1,1512 +1,2836 @@
 <!DOCTYPE html>
+
 <html lang="ko">
 <head>
-<meta charset="UTF-8">
-<script>window.__INIT_HASH=(location.hash||"").replace("#","");</script>
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-
-<!-- 모바일 앱(PWA) 설치를 위한 매니페스트 및 iOS 설정 -->
-<link rel="manifest" href="manifest.json">
-<meta name="theme-color" content="#0C52AA">
-<meta name="mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-status-bar-style" content="default">
-<meta name="apple-mobile-web-app-title" content="KODA 골프대회">
-<link rel="apple-touch-icon" href="apple-touch-icon.png">
-<link rel="icon" href="icon-192.png" type="image/png">
-<title>2026 협회장배 KODA x ARP 골프대회</title>
-
-<!-- ===== 카카오톡 등 SNS 공유 미리보기(Open Graph) 태그 ===== -->
-<meta property="og:type" content="website">
-<meta property="og:title" content="2026 협회장배 KODA x ARP 골프대회">
-<meta property="og:description" content="2026.10.26(월) · 리베라C.C | 참가인원 160인(40개팀) · 총 18홀">
-<meta property="og:image" content="https://koda-golf.netlify.app/og-image.png">
-<meta property="og:url" content="https://koda-golf.netlify.app/">
-<meta name="twitter:card" content="summary_large_image">
-<link rel="preconnect" href="https://cdn.jsdelivr.net">
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.css">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,600;0,700;1,600&display=swap">
-<style>
-:root{
-  --paper:#FFFFFF;
-  --paper-deep:#F4F7FC;
-  --ink:#1A2333;
-  --ink-soft:#5C6677;
-  --ink-faint:#9BA3B3;
-  --blue:#0C52AA;
-  --blue-deep:#083875;
-  --blue-tint:#EBF2FB;
-  --green:#0E8F63;
-  --line:#E6EAF2;
-  --shadow-sm: 0 4px 12px rgba(12, 82, 170, 0.05);
-  --shadow-md: 0 8px 24px rgba(12, 82, 170, 0.08);
-  --shadow-lg: 0 16px 40px rgba(12, 82, 170, 0.12);
-}
-*{ box-sizing:border-box; }
-html,body{ height:100%; }
-body{
-  margin:0;
-  font-family:'Pretendard', -apple-system, BlinkMacSystemFont, 'Malgun Gothic', sans-serif;
-  background:#EEF3F9; 
-  color:var(--ink);
-  -webkit-font-smoothing:antialiased;
-}
-#app{
-  width:100%; max-width:480px; margin:0 auto; height:100vh; height:100dvh; position:relative;
-  display:flex; flex-direction:column; background:var(--paper-deep);
-  box-shadow:0 0 60px rgba(0,0,0,0.08); overflow:hidden;
-}
-::-webkit-scrollbar{ width:0; height:0; }
-
-/* ---------- 화면 전환 효과 ---------- */
-.screen{
-  display:none; flex-direction:column; flex:1; height:100%;
-  animation:slideIn .25s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
-}
-.screen.active{ display:flex; }
-@keyframes slideIn{ from{opacity:0; transform:translateX(30px);} to{opacity:1; transform:translateX(0);} }
-@keyframes fadeIn{ from{opacity:0; transform:translateY(10px);} to{opacity:1; transform:translateY(0);} }
-
-/* ---------- HOME ACTIONS / FOOTER ---------- */
-.home-action-row{display:flex;justify-content:center;align-items:center;gap:12px;margin:18px auto 0;width:100%;max-width:340px;}
-.home-action-btn{flex:1;max-width:160px;border:0;border-radius:10px;padding:11px 12px;background:#eef4fb;color:var(--blue-deep);font-size:13px;font-weight:800;cursor:pointer;}
-.home-footer{padding:28px 20px 18px;text-align:center;color:#6f7f91;font-size:12px;font-weight:700;}
-.attendee-filter-row{display:grid;grid-template-columns:repeat(5,1fr);gap:6px;padding:12px 16px 8px;background:#fff;}
-.attendee-filter-btn{border:1px solid #d8e2ee;background:#fff;color:#536477;border-radius:8px;padding:10px 3px;font-size:12px;font-weight:800;cursor:pointer;}
-.attendee-filter-btn.active{background:var(--blue-deep);border-color:var(--blue-deep);color:#fff;}
-
-/* ---------- COVER ---------- */
-#screen-cover{
-  justify-content:center; align-items:center; padding:24px 17px 70px;
-  background:linear-gradient(145deg,#FFFFFF 0%,#EDF3FA 100%);
-  text-align:center; animation:fadeIn .3s ease forwards;
-  min-height:100%;
-}
-.login-box-golf{
-  background:#fff; width:100%; max-width:340px; border-radius:14px;
-  padding:30px 24px 26px; box-shadow:0 10px 25px rgba(0,0,0,.08);
-}
-.cover-logo{ width:150px; max-width:55vw; height:auto; margin:0 auto 16px; object-fit:contain; display:block; }
-.cover-title{
-  font-size:19px; font-weight:900; color:#111827; line-height:1.45;
-  margin-bottom:5px; letter-spacing:-0.6px; word-break:keep-all;
-}
-.cover-sub{ font-size:12px; color:#667085; margin-bottom:20px; font-weight:500; line-height:1.45; }
-.enter-btn{
-  width:100%; padding:12px; border:none; border-radius:8px;
-  background:#1456A8; color:#fff; font-size:15px; font-weight:800;
-  cursor:pointer; transition:transform .15s ease; font-family:inherit;
-  margin-bottom:16px;
-}
-.enter-btn:active{ transform:scale(0.97); }
-.enter-btn:disabled{ background:#A0AEC0; cursor:not-allowed; }
-.login-input-golf{
-  width:100%; padding:11px 12px; border:1px solid #E2E8F0; border-radius:8px;
-  font-size:14px; margin-bottom:10px; outline:none; font-family:inherit;
-  color:var(--ink);
-}
-.login-input-golf:focus{ border-color:#1456A8; }
-.login-error-golf{
-  color:#E53E3E; font-size:12px; margin-top:4px; line-height:1.45;
-  display:none;
-}
-.cover-foot{ margin-top:20px; font-size:11px; color:#AAB3C2; font-weight:600;}
-
-/* ---------- HOME 상단 개요 ---------- */
-.home-header-clean{
-  flex-shrink:0; padding:40px 16px 20px;
-  border-bottom-left-radius:0; border-bottom-right-radius:0;
-  box-shadow:none; z-index:10; position:relative; overflow:hidden;
-  background-image:
-    linear-gradient(100deg,
-      rgba(255,255,255,0.97) 0%,
-      rgba(255,255,255,0.94) 32%,
-      rgba(255,255,255,0.72) 52%,
-      rgba(255,255,255,0.40) 68%,
-      rgba(255,255,255,0.20) 100%),
-    linear-gradient(0deg, rgba(235,242,251,0.35), rgba(235,242,251,0.35)),
-    url('https://images.unsplash.com/photo-1742498626135-67a7d3501eff?fm=jpg&q=80&w=1200&auto=format&fit=crop');
-  background-size:cover, cover, cover;
-  background-position:center, center, 78% 42%;
-  background-repeat:no-repeat;
-}
-.header-content-wrap{ position:relative; z-index:2; width:100%; }
-
-.title-year{font-size:20px;font-weight:800;color:var(--blue);margin-bottom:4px;margin-left:10px;}
-.title-main{
-  font-size:38px; font-weight:900; color:var(--blue-deep); 
-  line-height:1.18; letter-spacing:-1px; margin-bottom:25px; margin-left:10px; word-break:keep-all;
-}
-
-.info-box {
-    display:flex; flex-direction:column; gap:12px;
-    padding-left:16px; border-left:3px solid var(--blue-tint);
-}
-.info-row { display:flex; align-items:flex-start; gap:8px; font-size:14px; line-height:1.6; color:var(--ink-soft); }
-.info-icon { font-size:15px; color:var(--blue); flex-shrink:0;}
-.info-text { word-break:keep-all; letter-spacing:-0.5px; }
-.info-text strong { color:var(--ink); font-weight:800; }
-.info-subtext { color:var(--ink-soft); display:inline; margin-left:2px; }
-
-/* ---------- HOME 본문 (버튼 리스트) ---------- */
-.home-content{ flex:1; overflow-y:auto; padding:18px 20px 20px; display:flex; flex-direction:column; gap:10px; }
-.home-menu-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;}
-.home-menu-grid .btn-premium{min-height:80px;padding:13px 12px;gap:9px;flex-direction:row;align-items:center;justify-content:center;position:relative;}
-.home-menu-grid .btn-icon-wrap{width:33px;height:33px;border-radius:10px;font-size:14px;}
-.home-menu-grid .btn-title{font-size:14px;line-height:1.3;}
-.home-menu-grid .btn-desc{font-size:11px;line-height:2.0;}
-.home-menu-grid .btn-arrow{display:none;}
-.attendee-search-wrap{padding:14px 20px 10px;position:sticky;top:0;background:rgba(255,255,255,.96);backdrop-filter:blur(10px);z-index:20;border-bottom:1px solid var(--line);}
-.attendee-count{padding:10px 20px 4px;font-size:12px;color:var(--ink-soft);font-weight:700;}
-.attendee-table-wrap{padding:8px 16px 40px;overflow-x:auto;}
-.attendee-table{width:100%;border-collapse:separate;border-spacing:0;background:#fff;border:1px solid var(--line);border-radius:14px;overflow:hidden;box-shadow:var(--shadow-sm);font-size:12.5px;table-layout:fixed;}
-.attendee-table th{background:var(--paper-deep);color:var(--ink-soft);font-weight:800;padding:11px 7px;border-bottom:1px solid var(--line);text-align:center;}
-.attendee-table td{padding:11px 7px;border-bottom:1px solid var(--line);color:var(--ink);line-height:1.4;vertical-align:middle;word-break:keep-all;}
-.attendee-table tr:last-child td{border-bottom:none;}
-.attendee-table th:nth-child(1),.attendee-table td:nth-child(1){width:42px;text-align:center;color:var(--ink-soft);}
-.attendee-table th:nth-child(2),.attendee-table td:nth-child(2){width:76px;text-align:center;font-weight:800;}
-.attendee-table th:nth-child(4),.attendee-table td:nth-child(4){width:130px;text-align:center;color:var(--ink-soft);}
-.attendee-name{color:var(--blue-deep);font-weight:800;}
-.attendee-empty{text-align:center;padding:36px 15px!important;color:var(--ink-faint)!important;}
-
-
-.btn-premium {
-    display:flex; align-items:center; gap:14px;
-    width:100%; padding:14px 16px; border-radius:18px; border:1px solid rgba(255,255,255,0.9);
-    background:linear-gradient(135deg, rgba(255,255,255,1) 0%, rgba(240,245,255,0.6) 100%);
-    color:var(--ink); font-size:17px; font-weight:800; text-align:left;
-    box-shadow: 8px 8px 20px rgba(12, 82, 170, 0.06), -4px -4px 12px rgba(255, 255, 255, 1);
-    cursor:pointer; transition:all 0.15s ease; font-family:inherit;
-}
-.btn-premium:active {
-    transform:translateY(2px) scale(0.98);
-    box-shadow: 2px 2px 8px rgba(12, 82, 170, 0.05), -2px -2px 8px rgba(255, 255, 255, 0.9);
-}
-.btn-icon-wrap {
-    width:42px; height:42px; border-radius:12px; background:var(--blue-tint);
-    display:flex; align-items:center; justify-content:center; font-size:20px;
-    color:var(--blue); flex-shrink:0;
-}
-.btn-text-wrap { flex:1; }
-.btn-title { font-size:16px; font-weight:800; color:var(--blue-deep); margin-bottom:2px; word-break:keep-all;}
-.btn-desc { font-size:12px; font-weight:500; color:var(--ink-soft); word-break:keep-all;}
-.btn-arrow { font-size:14px; color:var(--ink-faint); flex-shrink:0;}
-
-.install-app-btn {
-  text-align:center; margin-top:12px; padding:12px 0 8px;
-  font-size:14px; font-weight:700; color:var(--ink-faint); /* 옅은 회색으로 변경 */
-  letter-spacing:-0.2px; cursor:pointer; user-select:none;
-}
-.install-app-btn:active{ opacity:.6; }
-
-/* ---------- 서브페이지 공통 ---------- */
-.topbar{ flex-shrink:0; display:flex; align-items:center; gap:12px; padding:16px 20px 12px; background:rgba(255,255,255,0.95); backdrop-filter:blur(10px); border-bottom:1px solid var(--line); z-index:30; }
-.back-btn{ width:36px; height:36px; border-radius:50%; border:1px solid var(--line); display:flex; align-items:center; justify-content:center; cursor:pointer; color:var(--ink); transition:transform .15s; flex-shrink:0; background:#fff; font-size:18px; font-weight:300;}
-.back-btn:active{ transform:scale(0.9); }
-.topbar-title{ font-size:17px; font-weight:800; color:var(--ink); display:flex; align-items:center; white-space:nowrap;}
-.content{ flex:1; overflow-y:auto; padding:0; }
-
-/* ---------- 행사 프로그램 표 ---------- */
-.program-wrap { padding:20px; }
-.prog-table{ width:100%; border-collapse:collapse; background:#fff; border-radius:16px; overflow:hidden; box-shadow:var(--shadow-sm); font-size:13px; }
-.prog-table th{ background:var(--paper-deep); color:var(--ink-soft); font-weight:700; padding:12px 10px; font-size:13px; border-bottom:1px solid var(--line); text-align:center;}
-.prog-table td{ padding:14px 10px; border-bottom:1px solid var(--line); color:var(--ink); vertical-align:middle; line-height:1.6; font-size:13px; word-break:keep-all;}
-.prog-table td:first-child { font-weight:600; color:var(--blue-deep); text-align:center; white-space:nowrap; }
-.prog-table td:nth-child(2) { text-align:left; padding-left:14px; }
-.prog-table td:last-child { text-align:center; color:var(--ink-soft); }
-.prog-table tr:last-child td{ border-bottom:none; }
-
-.content-list { margin:0; padding:0; list-style:none; }
-.content-list li { position:relative; padding-left:10px; margin-bottom:2px; }
-.content-list li::before { content:'-'; position:absolute; left:0; top:0; }
-.content-list li:last-child { margin-bottom:0; }
-
-/* ---------- 지도 및 문의 페이지 ---------- */
-.map-frame{ width:100%; height:300px; border:none; margin-bottom:0; display:block; }
-.map-info{ padding:24px; font-size:14.5px; line-height:1.7; color:var(--ink); background:#fff; border-bottom:1px solid var(--line); word-break:keep-all;}
-
-/* ---------- 조편성 페이지 ---------- */
-.search-wrap{ padding:14px 20px 10px; position:sticky; top:0; background:rgba(255,255,255,0.95); backdrop-filter:blur(10px); z-index:20; border-bottom:1px solid var(--line);}
-.search-box{ display:flex; align-items:center; gap:10px; background:var(--paper-deep); border:1px solid var(--line); border-radius:999px; padding:6px 18px; }
-.search-box input{ border:none; outline:none; background:transparent; flex:1; font-size:15px; font-family:inherit; color:var(--ink); font-weight:500;}
-.search-box input::placeholder { color:var(--ink-faint); }
-.legend{ display:flex; gap:16px; padding:14px 20px 4px; font-size:12px; font-weight:600; color:var(--ink-soft); }
-.dot{ width:8px; height:8px; border-radius:50%; display:inline-block; margin-right:6px; }
-.dot.green{ background:var(--green); } .dot.blue{ background:var(--blue); }
-
-.team-grid{ padding:12px 20px 40px; display:grid; grid-template-columns:repeat(auto-fit, minmax(140px, 1fr)); gap:12px; }
-.team-btn{ background:#fff; border:1px solid var(--line); border-radius:16px; padding:16px 14px; text-align:left; cursor:pointer; font-family:inherit; box-shadow:var(--shadow-sm); transition:transform .1s; word-break:keep-all;}
-.team-btn:active{ transform:scale(0.96); box-shadow:var(--shadow-md); }
-.team-code{ font-size:16px; font-weight:900; }
-.team-code.blue{ color:var(--blue); } .team-code.green{ color:var(--green); }
-.team-start{ font-size:11.5px; color:var(--ink-faint); margin:4px 0 12px; font-weight:500; }
-.team-members{ font-size:13.5px; color:var(--ink-soft); line-height:1.5; font-weight:700; word-break:keep-all;}
-
-/* ---------- 팀/연락처 상세 페이지 공통 ---------- */
-.card-detail{ background:#fff; border:1px solid var(--line); border-radius:16px; padding:32px 24px; box-shadow:var(--shadow-sm); margin-bottom:16px; word-break:keep-all;}
-
-/* ---------- 구글시트 실시간 동기화 상태 ---------- */
-.sync-toggle-btn{ width:36px; height:36px; border-radius:50%; border:1px solid var(--line); display:flex; align-items:center; justify-content:center; cursor:pointer; background:#fff; font-size:16px; flex-shrink:0; margin-left:auto; transition:transform .4s ease; }
-.sync-toggle-btn.spinning{ animation:spin .8s linear infinite; }
-@keyframes spin{ from{transform:rotate(0deg);} to{transform:rotate(360deg);} }
-.sync-toggle-btn:active{ transform:scale(0.9); }
-.sync-status{ display:flex; align-items:center; justify-content:space-between; gap:8px; padding:9px 20px; background:var(--blue-tint); border-bottom:1px solid #D7E4F5; font-size:11.5px; color:var(--blue-deep); font-weight:700; }
-.sync-status.error{ background:#FDEEEC; border-bottom-color:#F2C6C0; color:#C0392B; }
-.sync-status-btn{ border:1px solid rgba(12,82,170,0.25); background:#fff; color:var(--blue-deep); font-size:11px; font-weight:700; padding:5px 10px; border-radius:999px; cursor:pointer; font-family:inherit; flex-shrink:0;}
-.sync-status.error .sync-status-btn{ border-color:#F2C6C0; color:#C0392B; }
-.sync-status-btn:active{ transform:scale(0.95); }
-.team-grid-loading{ grid-column:1/-1; text-align:center; padding:40px 20px; color:var(--ink-faint); font-size:13.5px; font-weight:600; }
-
-/* ---------- 내비게이션 버튼 ---------- */
-.navi-wrap { padding:24px 20px; background:#fff; border-bottom:1px solid var(--line); }
-.navi-title { font-size:15px; font-weight:800; color:var(--ink); margin-bottom:14px; display:flex; align-items:center; gap:6px; }
-.navi-buttons { display:flex; gap:10px; }
-.navi-btn {
-  flex:1; display:flex; flex-direction:column; align-items:center; justify-content:center;
-  padding:14px 0; border-radius:12px; text-decoration:none; font-weight:800; font-size:14px;
-  transition:transform .15s; box-shadow:var(--shadow-sm);
-}
-.navi-btn:active { transform:scale(0.95); box-shadow:none; }
-.navi-btn.tmap { background:#111111; color:#ffffff; }
-.navi-btn.kakao { background:#FEE500; color:#191919; }
-.navi-btn.naver { background:#03C75A; color:#ffffff; }
-.navi-icon { margin-bottom:6px; font-size:18px; font-weight:900; }
-
-/* ---------- HOME 하단 외부 링크 (1행 4열) ---------- */
-.quick-link-wrap {
-    display: flex; 
-    gap: 8px; 
-    margin-top: 4px;
-}
-.quick-link-btn {
-    flex: 1; 
-    display: flex; 
-    align-items: center; 
-    justify-content: center;
-    padding: 12px 2px; 
-    background: #ffffff; 
-    border: 1px solid var(--line);
-    border-radius: 12px; 
-    font-size: 11.5px; 
-    font-weight: 800; 
-    color: #999999;
-    text-decoration: none; 
-    text-align: center; 
-    word-break: keep-all;
-    box-shadow: 2px 4px 10px rgba(12, 82, 170, 0.04);
-    transition: all 0.15s ease;
-}
-.quick-link-btn:active {
-    transform: scale(0.95);
-    background: var(--paper-deep);
-}
-
-/* ===== 요청사항 최종 조정 ===== */
-.home-action-row{gap:8px;max-width:210px;margin:14px auto 0;}
-.home-action-btn{flex:0 0 auto;width:92px;max-width:92px;padding:5px 7px;border-radius:7px;font-size:10px;font-weight:700;}
-.home-footer{padding:20px 20px 14px;font-size:12px;color:#6f7f91;font-weight:700;}
-.attendee-filter-row{padding:8px 16px 6px;gap:5px;}
-.attendee-filter-btn{padding:5px 2px;font-size:11px;border-radius:7px;}
-.attendee-search-wrap .search-box{padding:10px 16px;}
-.attendee-search-wrap .search-box input{font-size:14px;}
-
-
-/* =====================================================================
-   NEW UI LAYER  (MY ROUND 중심 리디자인) — 기존 CSS는 그대로 두고 덮어씀
-   ===================================================================== */
-:root{
-  --navy:#0B3D91; --navy-2:#155BB8; --gold:#D6F25C; --gold-deep:#5E8A00;
-  --valley:#3DDC97; --lake:#CFE8FF;
-  --serif:'Cormorant Garamond', Georgia, 'Times New Roman', serif;
-}
-.screen{ min-height:0; }
-.content{ min-height:0; }
-
-/* ---------- COVER (로그인 화면 톤만 맞춤, 로직 동일) ---------- */
-#screen-cover{ background:radial-gradient(120% 80% at 50% 0%, #FFFFFF 0%, #DCEEFF 55%, #BFDDFB 100%); }
-#screen-cover .login-box-golf{ box-shadow:0 20px 50px rgba(22,99,199,.18); border-top:4px solid var(--gold); }
-#screen-cover .cover-foot{ color:var(--ink-soft); }
-
-/* ---------- HOME ---------- */
-#screen-home{ background:var(--paper-deep); }
-.nh-scroll{ flex:1; min-height:0; overflow-y:auto; padding-bottom:28px; }
-.nh-top{ padding:calc(18px + env(safe-area-inset-top,0px)) 20px 16px; }
-.nh-toprow{ display:flex; align-items:center; justify-content:space-between; gap:10px; }
-.nh-eyebrow{ font-family:var(--serif); font-size:17px; font-weight:700; color:var(--navy-2); letter-spacing:.6px; }
-.nh-title{ margin:8px 0 0; font-size:clamp(22px,7vw,30px); line-height:1.2; font-weight:900; letter-spacing:-1.2px; color:var(--ink); word-break:keep-all; }
-.nh-meta{ margin-top:7px; font-size:14px; font-weight:700; color:var(--ink-soft); letter-spacing:-.3px; }
-.nh-dday{ flex-shrink:0; border:1px solid #BFE05A; color:var(--gold-deep); background:#F4FCD3; border-radius:999px; padding:6px 12px; font-size:12px; font-weight:800; }
-.nh-hello{ padding:6px 20px 12px; font-size:20px; font-weight:800; color:var(--ink); letter-spacing:-.6px; }
-.nh-hello b{ color:var(--blue); }
-.nh-hello span{ display:block; font-size:12.5px; font-weight:600; color:var(--ink-soft); margin-top:3px; letter-spacing:-.2px; }
-
-/* MY ROUND 카드 */
-.mr-card{ margin:0 16px; border-radius:24px; padding:22px 20px 20px; color:#fff; position:relative; overflow:hidden;
-  background:radial-gradient(90% 70% at 100% 0%, rgba(255,255,255,.3) 0%, rgba(255,255,255,0) 60%), linear-gradient(160deg,#4BA6FF 0%,#1F78E6 55%,#1560C9 100%);
-  box-shadow:0 18px 40px rgba(31,120,230,.32); }
-.mr-card.clickable{ cursor:pointer; }
-.mr-card.clickable:active{ transform:scale(.99); }
-.mr-head{ display:flex; align-items:center; justify-content:space-between; }
-.mr-label{ font-family:var(--serif); font-size:20px; font-weight:700; letter-spacing:1.5px; color:var(--gold); }
-.mr-course{ font-size:12px; font-weight:800; padding:5px 11px; border-radius:999px; background:rgba(255,255,255,.22); display:inline-flex; align-items:center; gap:6px; }
-.mr-course i{ display:none; width:8px; height:8px; border-radius:50%; display:inline-block; }
-.mr-course.v i{ background:var(--valley); } .mr-course.l i{ background:var(--lake); }
-.mr-tee{ margin:16px 0 4px; }
-.mr-tee-lab{ font-size:12px; font-weight:800; letter-spacing:.18em; color:rgba(255,255,255,.9); margin-bottom:6px; }
-.mr-course b{ font-size:13.5px; font-weight:900; margin-left:2px; }
-.mr-course-block{ margin-top:18px; padding-top:14px; border-top:1px solid rgba(255,255,255,.32); }
-.mr-course-block span{ display:block; font-size:12px; font-weight:800; letter-spacing:.06em; color:rgba(255,255,255,.85); margin-bottom:5px; }
-.mr-course-block b{ font-size:28px; font-weight:900; letter-spacing:-.8px; }
-.mr-tee-time{ font-family:var(--serif); font-size:78px; line-height:.9; font-weight:700; color:var(--gold); letter-spacing:-1px; font-variant-numeric:tabular-nums; }
-.mr-tee-side{ font-size:13px; font-weight:800; color:#fff; line-height:1.45; letter-spacing:-.2px; }
-.mr-tee-side em{ display:block; font-style:normal; font-size:11px; font-weight:700; color:rgba(255,255,255,.85); }
-.mr-facts{ display:grid; grid-template-columns:1fr 1fr; gap:0; margin-top:18px; border-top:1px solid rgba(255,255,255,.32); }
-.mr-fact{ padding:14px 0 4px; }
-.mr-fact + .mr-fact{ padding-left:16px; border-left:1px solid rgba(255,255,255,.32); }
-.mr-fact span{ display:block; font-size:11.5px; font-weight:700; color:rgba(255,255,255,.85); margin-bottom:4px; }
-.mr-fact b{ font-size:22px; font-weight:900; letter-spacing:-.5px; word-break:keep-all; }
-.mr-mates{ margin-top:16px; padding-top:14px; border-top:1px solid rgba(255,255,255,.32); }
-.mr-mates > span{ display:block; font-size:11.5px; font-weight:700; color:rgba(255,255,255,.85); margin-bottom:9px; }
-.mr-mate-list{ display:flex; flex-wrap:wrap; gap:7px; }
-.mr-mate{ background:rgba(255,255,255,.2); border:1px solid rgba(255,255,255,.35); border-radius:12px; padding:7px 12px; font-size:14px; font-weight:800; letter-spacing:-.3px; }
-.mr-empty{ margin-top:16px; padding:14px 0 2px; border-top:1px solid rgba(255,255,255,.32); font-size:13.5px; line-height:1.6; font-weight:600; color:rgba(255,255,255,.85); word-break:keep-all; }
-.mr-more{ margin-top:14px; font-size:12px; font-weight:800; color:var(--gold); text-align:right; }
-
-.mr-pick{ display:flex; flex-direction:column; gap:8px; margin-top:12px; }
-.mr-pick button{ text-align:left; font-family:inherit; cursor:pointer; color:#fff; background:rgba(255,255,255,.12); border:1px solid rgba(214,242,92,.85); border-radius:12px; padding:11px 14px; display:flex; justify-content:space-between; gap:10px; align-items:center; }
-.mr-pick button b{ font-size:16px; font-weight:900; color:var(--gold); } .mr-pick button span{ font-size:12px; font-weight:700; color:rgba(255,255,255,.8); }
-/* 섹션 제목 */
-.nh-sec{ padding:0 20px; margin:30px 0 12px; display:flex; align-items:baseline; justify-content:space-between; }
-.nh-sec h2{ margin:0; font-family:var(--serif); font-size:26px; font-weight:700; color:var(--navy-2); letter-spacing:.2px; font-style:italic; }
-.nh-sec button{ border:0; background:none; font-family:inherit; font-size:12px; font-weight:800; color:var(--blue); cursor:pointer; padding:4px 0; }
-
-/* Today's Flow 타임라인 */
-.flow-wrap{ margin:0 16px; background:#fff; border:1px solid var(--line); border-radius:20px; padding:8px 16px 6px; box-shadow:var(--shadow-sm); }
-.flow{ list-style:none; margin:0; padding:0; }
-.flow-item{ display:grid; grid-template-columns:62px 18px 1fr; gap:0 10px; position:relative; padding:14px 0; }
-.flow-item + .flow-item{ border-top:1px dashed var(--line); }
-.flow-time{ font-size:14px; font-weight:800; color:var(--ink); font-variant-numeric:tabular-nums; line-height:1.3; }
-.flow-time small{ display:block; font-size:11px; font-weight:600; color:var(--ink-faint); }
-.flow-rail{ position:relative; display:flex; justify-content:center; }
-.flow-rail::before{ content:''; position:absolute; top:-14px; bottom:-14px; width:2px; background:var(--line); }
-.flow-item:first-child .flow-rail::before{ top:6px; }
-.flow-item:last-child .flow-rail::before{ bottom:calc(100% - 12px); }
-.flow-dot{ position:relative; z-index:1; width:11px; height:11px; margin-top:5px; border-radius:50%; background:#fff; border:2px solid #B9C6DA; }
-.flow-title{ font-size:14.5px; font-weight:800; color:var(--ink); letter-spacing:-.3px; line-height:1.4; word-break:keep-all; }
-.flow-sub{ font-size:12.5px; font-weight:600; color:var(--ink-soft); margin-top:2px; line-height:1.5; word-break:keep-all; }
-.flow-place{ display:inline-block; margin-top:6px; font-size:11px; font-weight:800; color:var(--blue-deep); background:var(--blue-tint); padding:3px 8px; border-radius:6px; }
-.flow-item.is-done .flow-title, .flow-item.is-done .flow-time{ color:var(--ink-faint); }
-.flow-item.is-done .flow-dot{ background:#B9C6DA; }
-.flow-item.is-now .flow-dot{ background:var(--blue); border-color:var(--blue); box-shadow:0 0 0 5px rgba(12,82,170,.15); }
-.flow-item.is-now .flow-title::after{ content:'진행 중'; margin-left:8px; font-size:10.5px; font-weight:800; color:#fff; background:var(--blue); padding:2px 7px; border-radius:999px; vertical-align:middle; }
-/* 티오프 강조 */
-.flow-item.is-tee{ margin:0 -16px; padding:16px 16px; background:linear-gradient(90deg, rgba(214,242,92,.4), rgba(214,242,92,.06)); border-top:0; border-left:4px solid var(--gold); grid-template-columns:62px 18px 1fr; padding-left:12px; }
-.flow-item.is-tee + .flow-item{ border-top:0; }
-.flow-item.is-tee .flow-time{ color:var(--gold-deep); font-size:17px; }
-.flow-item.is-tee .flow-dot{ background:var(--gold); border-color:var(--gold-deep); }
-.flow-item.is-tee .flow-title{ color:var(--navy); font-size:15.5px; }
-.flow-item.is-tee .flow-title::before{ content:'TEE OFF'; margin-right:8px; font-size:10.5px; font-weight:900; letter-spacing:.6px; color:#fff; background:var(--gold-deep); padding:2px 7px; border-radius:5px; vertical-align:middle; }
-.flow-toggle{ display:block; width:100%; border:0; border-top:1px solid var(--line); background:none; padding:13px 0 11px; font-family:inherit; font-size:12.5px; font-weight:800; color:var(--blue); cursor:pointer; }
-
-/* 플레이어 도구 */
-.tool-grid{ display:grid; grid-template-columns:1fr 1fr; gap:10px; padding:0 16px; }
-.tool{ position:relative; overflow:hidden; text-align:left; font-family:inherit; cursor:pointer; border:0; border-radius:20px; padding:16px 15px 14px; min-height:124px;
-  display:flex; flex-direction:column; justify-content:space-between; gap:14px; background:var(--tint); box-shadow:0 6px 16px rgba(22,99,199,.08); transition:transform .12s; }
-.tool:active{ transform:scale(.97); }
-.tool-ico{ position:relative; z-index:1; width:40px; height:40px; border-radius:50%; background:#fff; color:var(--ink-c); display:flex; align-items:center; justify-content:center; box-shadow:0 2px 8px rgba(0,0,0,.06); }
-.tool-ico svg{ width:20px; height:20px; }
-.tool-txt{ position:relative; z-index:1; }
-.tool-name{ font-size:13px; font-weight:900; letter-spacing:.5px; color:var(--ink-c); }
-.tool-desc{ font-size:11.5px; font-weight:700; color:rgba(26,35,51,.62); margin-top:3px; letter-spacing:-.2px; word-break:keep-all; }
-.tool-wm{ position:absolute; right:-12px; bottom:-16px; width:92px; height:92px; color:var(--ink-c); opacity:.1; }
-.tool-wm svg{ width:100%; height:100%; }
-.t1{ --tint:#DCEEFF; --ink-c:#155BB8; } .t2{ --tint:#DDF6E8; --ink-c:#0E8F63; } .t3{ --tint:#F1FAC9; --ink-c:#5E8A00; }
-.t4{ --tint:#D9F3F7; --ink-c:#0B8794; } .t5{ --tint:#FFF0D2; --ink-c:#B36A00; } .t6{ --tint:#E8E6FB; --ink-c:#5B4FC7; }
-
-/* 리베라CC 프리미엄 클럽 카드 */
-.club{ margin:0 16px; border-radius:24px; overflow:hidden; position:relative; color:#fff; padding:26px 22px 20px; min-height:300px; display:flex; flex-direction:column; justify-content:flex-end;
-  background:linear-gradient(180deg, rgba(40,130,240,.45) 0%, rgba(24,110,225,.7) 46%, rgba(16,88,196,.94) 100%), url('https://images.unsplash.com/photo-1742498626135-67a7d3501eff?fm=jpg&q=80&w=1200&auto=format&fit=crop') center/cover no-repeat;
-  box-shadow:0 18px 40px rgba(31,120,230,.3); outline:1px solid rgba(255,255,255,.75); outline-offset:-8px; }
-.club-tag{ font-size:11px; font-weight:800; letter-spacing:.14em; color:#fff; margin-bottom:8px; }
-.club-ko{ font-size:13px; font-weight:800; color:rgba(255,255,255,.9); margin-top:8px; letter-spacing:-.2px; }
-.club-name{ font-family:var(--serif); font-size:40px; line-height:1.02; font-weight:700; letter-spacing:.5px; }
-.club-courses{ margin-top:12px; font-size:13px; font-weight:700; color:rgba(255,255,255,.82); display:flex; align-items:center; gap:14px; }
-.club-courses span{ display:inline-flex; align-items:center; gap:6px; }
-.club-courses i{ width:8px; height:8px; border-radius:50%; display:inline-block; }
-.club-addr{ margin-top:14px; font-size:12.5px; font-weight:600; line-height:1.6; color:rgba(255,255,255,.75); word-break:keep-all; }
-.club-stats{ display:grid; grid-template-columns:repeat(4,1fr); margin-top:16px; padding-top:14px; border-top:1px solid rgba(255,255,255,.2); }
-.club-stat b{ display:block; font-family:var(--serif); font-size:24px; font-weight:700; color:var(--gold); line-height:1.1; }
-.club-stat span{ font-size:10.5px; font-weight:700; color:rgba(255,255,255,.65); }
-.club-actions{ display:flex; gap:8px; margin-top:16px; }
-.club-btn{ flex:1; text-align:center; text-decoration:none; font-family:inherit; cursor:pointer; border:0; border-radius:12px; padding:13px 8px; font-size:13.5px; font-weight:800; }
-.club-btn.primary{ background:var(--gold); color:var(--navy); }
-.club-btn.ghost{ background:rgba(255,255,255,.12); color:#fff; border:1px solid rgba(255,255,255,.25); }
-.club-btn:active{ transform:scale(.97); }
-
-.nh-links{ padding:22px 16px 0; }
-.nh-org{ text-align:center; font-size:11.5px; font-weight:600; color:var(--ink-faint); line-height:1.7; padding:8px 20px 0; }
-
-/* ---------- MY ROUND 탭 ---------- */
-#screen-myround{ background:var(--paper-deep); }
-.mrs-title{ padding:calc(18px + env(safe-area-inset-top,0px)) 20px 14px; display:flex; align-items:center; justify-content:space-between; }
-.mrs-title h1{ margin:0; font-family:var(--serif); font-size:30px; font-weight:700; color:var(--navy-2); letter-spacing:.5px; }
-.mrs-sync{ font-size:11px; font-weight:700; color:var(--ink-faint); }
-.roster{ display:flex; flex-direction:column; gap:10px; padding:0 16px; }
-.rost{ display:flex; align-items:center; gap:12px; background:#fff; border:1px solid var(--line); border-radius:16px; padding:14px 14px; box-shadow:var(--shadow-sm); }
-.rost.me{ border-color:var(--gold); background:linear-gradient(90deg,#F4FCD3,#fff); }
-.rost-no{ width:30px; height:30px; border-radius:50%; background:var(--blue-tint); color:var(--blue-deep); font-weight:900; font-size:13px; display:flex; align-items:center; justify-content:center; flex-shrink:0; }
-.rost.me .rost-no{ background:var(--gold); color:var(--navy); }
-.rost-body{ flex:1; min-width:0; }
-.rost-name{ font-size:16px; font-weight:900; letter-spacing:-.4px; }
-.rost-name em{ font-style:normal; margin-left:6px; font-size:10.5px; font-weight:800; color:var(--gold-deep); border:1px solid var(--gold); padding:1px 6px; border-radius:999px; vertical-align:middle; }
-.rost-org{ font-size:12.5px; font-weight:600; color:var(--ink-soft); margin-top:2px; word-break:keep-all; }
-.rost-call{ flex-shrink:0; width:40px; height:40px; border-radius:50%; background:var(--blue-tint); color:var(--blue); display:flex; align-items:center; justify-content:center; text-decoration:none; }
-.rost-call svg{ width:18px; height:18px; }
-.mrs-actions{ display:flex; gap:10px; padding:14px 16px 0; }
-.mrs-actions button{ flex:1; font-family:inherit; cursor:pointer; border-radius:14px; padding:13px 8px; font-size:13px; font-weight:800; border:1px solid var(--line); background:#fff; color:var(--blue-deep); }
-.mrs-actions button.primary{ background:var(--blue-deep); color:#fff; border-color:var(--blue-deep); }
-
-/* ---------- 하단 고정 네비게이션 ---------- */
-.bottom-nav{ flex-shrink:0; display:grid; grid-template-columns:repeat(4,1fr); background:rgba(255,255,255,.97); backdrop-filter:blur(12px); border-top:1px solid var(--line); padding:6px 6px calc(6px + env(safe-area-inset-bottom,0px)); z-index:50; box-shadow:0 -6px 20px rgba(12,82,170,.06); }
-.bottom-nav.hidden{ display:none; }
-.bn{ position:relative; border:0; background:none; font-family:inherit; cursor:pointer; padding:8px 0 6px; display:flex; flex-direction:column; align-items:center; gap:4px; color:#8B96A8; }
-.bn svg{ width:22px; height:22px; }
-.bn span{ font-size:10px; font-weight:800; letter-spacing:.5px; }
-.bn.active{ color:var(--navy-2); }
-.bn.active::before{ content:''; position:absolute; top:-7px; left:50%; width:26px; height:3px; margin-left:-13px; border-radius:0 0 3px 3px; background:var(--blue); }
-.bn:focus-visible, .tool:focus-visible, .club-btn:focus-visible{ outline:2px solid var(--blue); outline-offset:2px; }
-@media (prefers-reduced-motion:reduce){ .screen{ animation:none!important; } }
-
-</style>
-</head>
-<body>
-<div id="app">
-
-  <!-- ================= COVER (첫 화면) ================= -->
-  <section id="screen-cover" class="screen active">
-    <div class="login-box-golf">
-      <img src="koda-logo-re.png" class="cover-logo" alt="KODA">
-      <div class="cover-title">2026 협회장배<br>KODA · ARP 골프대회</div>
-      <div class="cover-sub">등록된 참가자만 이용하실 수 있습니다.<br>이름과 핸드폰 번호를 입력해주세요.</div>
-
-      <button type="button" class="enter-btn" id="enterBtn">입장하기</button>
-      <input type="text" id="loginName" class="login-input-golf" placeholder="이름" autocomplete="name">
-      <input type="tel" id="loginPhone" class="login-input-golf" placeholder="핸드폰 번호 (- 없이 입력)" autocomplete="tel" onkeydown="if(event.key==='Enter'){attemptGolfLogin();}">
-      <div class="login-error-golf" id="loginError"> </div>
-    </div>
-    <div class="cover-foot">한국디벨로퍼협회</div>
-  </section>
-
-  <!-- ================= HOME (개요 + 고급 버튼 리스트) ================= -->
-  <section id="screen-home" class="screen">
-    <div class="nh-scroll">
-
-      <!-- 상단 -->
-      <div class="nh-top">
-        <div class="nh-toprow"><div class="nh-eyebrow">KODA · ARP Golf</div><div class="nh-dday" id="nhDday">10.26 (월)</div></div>
-        <h1 class="nh-title">2026 협회장배 골프대회</h1>
-        <div class="nh-meta">2026.10.26(월) · 리베라CC</div>
-      </div>
-      <div class="nh-hello" id="nhHello">안녕하세요</div>
-
-      <!-- MY ROUND -->
-      <div id="homeRound"></div>
-
-      <!-- Today's Flow -->
-      <div class="nh-sec"><h2>Today's Flow</h2><button type="button" data-go="program">프로그램 표</button></div>
-      <div class="flow-wrap">
-        <ol class="flow" id="flowHome"></ol>
-        <button type="button" class="flow-toggle" id="flowToggle">전체 일정 보기</button>
-      </div>
-
-      <!-- PLAYER TOOLS -->
-      <div class="nh-sec"><h2>Player Tools</h2></div>
-      <div class="tool-grid">
-        <button type="button" class="tool t1" data-go="teams"><div class="tool-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M6 21V4"/><path d="M6 4h11l-2.5 4L17 12H6"/></svg></div><div class="tool-txt"><div class="tool-name">TEAM DRAW</div><div class="tool-desc">40개 팀 조편성</div></div><span class="tool-wm"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M6 21V4"/><path d="M6 4h11l-2.5 4L17 12H6"/></svg></span></button>
-        <button type="button" class="tool t2" data-go="attendees"><div class="tool-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="8" r="3.2"/><path d="M3 20c0-3.3 2.7-6 6-6s6 2.7 6 6"/><circle cx="17" cy="9" r="2.4"/><path d="M17 14c2.4 0 4.2 1.9 4.2 4.5"/></svg></div><div class="tool-txt"><div class="tool-name">GOLF &amp; PEOPLE</div><div class="tool-desc">참석자 명단</div></div><span class="tool-wm"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="8" r="3.2"/><path d="M3 20c0-3.3 2.7-6 6-6s6 2.7 6 6"/><circle cx="17" cy="9" r="2.4"/><path d="M17 14c2.4 0 4.2 1.9 4.2 4.5"/></svg></span></button>
-        <button type="button" class="tool t3" data-go="notice"><div class="tool-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M6 16V11a6 6 0 1 1 12 0v5l1.5 2h-15z"/><path d="M10 21h4"/></svg></div><div class="tool-txt"><div class="tool-name">CLUB NOTICE</div><div class="tool-desc">참가자 안내 · 문의</div></div><span class="tool-wm"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M6 16V11a6 6 0 1 1 12 0v5l1.5 2h-15z"/><path d="M10 21h4"/></svg></span></button>
-        <button type="button" class="tool t4" data-go="location"><div class="tool-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21s7-6.2 7-11.5A7 7 0 0 0 5 9.5C5 14.8 12 21 12 21z"/><circle cx="12" cy="9.5" r="2.5"/></svg></div><div class="tool-txt"><div class="tool-name">VENUE</div><div class="tool-desc">오시는 길 · 길찾기</div></div><span class="tool-wm"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21s7-6.2 7-11.5A7 7 0 0 0 5 9.5C5 14.8 12 21 12 21z"/><circle cx="12" cy="9.5" r="2.5"/></svg></span></button>
-        <button type="button" class="tool t5" data-go="sponsors"><div class="tool-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><rect x="3.5" y="8" width="17" height="4" rx="1"/><path d="M5 12v8h14v-8"/><path d="M12 8v12"/><path d="M12 8c-1.5-3.5-5-3.5-5-1.2C7 8 9 8 12 8zM12 8c1.5-3.5 5-3.5 5-1.2C17 8 15 8 12 8z"/></svg></div><div class="tool-txt"><div class="tool-name">SPONSORS</div><div class="tool-desc">협찬 소개</div></div><span class="tool-wm"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><rect x="3.5" y="8" width="17" height="4" rx="1"/><path d="M5 12v8h14v-8"/><path d="M12 8v12"/><path d="M12 8c-1.5-3.5-5-3.5-5-1.2C7 8 9 8 12 8zM12 8c1.5-3.5 5-3.5 5-1.2C17 8 15 8 12 8z"/></svg></span></button>
-        <button type="button" class="tool t6" data-go="program"><div class="tool-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="5" width="16" height="15" rx="2"/><path d="M4 10h16M9 3v4M15 3v4"/></svg></div><div class="tool-txt"><div class="tool-name">PROGRAM</div><div class="tool-desc">행사 프로그램 전체</div></div><span class="tool-wm"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="5" width="16" height="15" rx="2"/><path d="M4 10h16M9 3v4M15 3v4"/></svg></span></button>
-      </div>
-
-      <!-- 리베라CC 클럽 카드 -->
-      <div class="nh-sec"><h2>The Club</h2></div>
-      <div class="club">
-        <div class="club-tag">OFFICIAL VENUE</div>
-        <div class="club-name">Riviera<br>Country Club</div>
-        <div class="club-ko">리베라CC</div>
-        <div class="club-courses"><span><i style="background:var(--valley)"></i>밸리코스</span><span><i style="background:var(--lake)"></i>레이크코스</span></div>
-        <div class="club-addr">경기도 화성시 동탄면 중리길 183<br>대표전화 031-8047-8000</div>
-        <div class="club-stats">
-          <div class="club-stat"><b>18</b><span>HOLES</span></div>
-          <div class="club-stat"><b>40</b><span>TEAMS</span></div>
-          <div class="club-stat"><b>160</b><span>PLAYERS</span></div>
-          <div class="club-stat"><b>13:00</b><span>SHOTGUN</span></div>
-        </div>
-        <div class="club-actions">
-          <button type="button" class="club-btn primary" data-go="location">길찾기</button>
-          <a class="club-btn ghost" href="tel:03180478000">전화하기</a>
-        </div>
-      </div>
-
-      <!-- 외부 링크 / 앱 설치 / 로그아웃 -->
-      <div class="nh-links">
-        <div class="quick-link-wrap">
-        <a href="https://www.koda.or.kr/main/" target="_blank" class="quick-link-btn">KODA HOME</a>
-        <a href="https://search.naver.com/search.naver?ssc=tab.news.all&query=%EB%94%94%EB%B2%A8%EB%A1%9C%ED%8D%BC%ED%98%91%ED%9A%8C&sm=tab_opt&sort=0&photo=0&field=0&pd=0&ds=2026.09.02&de=2026.09.02&docid=&qdt=0&related=0&mynews=0&office_type=0&office_section_code=0&news_office_checked=&nso=so%3Ar%2Cp%3Aall&is_sug_officeid=0&office_category=0&service_area=0" target="_blank" class="quick-link-btn">언론보도 현황</a>
-        <a href="https://www.youtube.com/@kodatv9717" target="_blank" class="quick-link-btn">KODA-TV</a>
-        <a href="https://kodaarp.kr/arp/" target="_blank" class="quick-link-btn">KODA-ARP</a>
-      </div>
-      </div>
-      <div class="home-action-row">
-        <button type="button" class="home-action-btn" id="installAppBtn">앱 설치</button>
-        <button type="button" class="home-action-btn" id="logoutBtn">로그아웃</button>
-      </div>
-      <div class="nh-org">주최 한국디벨로퍼협회 · 주관 KODA회원위원회<br>18홀 신페리오 · 참가 160인 / 40개팀</div>
-    </div>
-  </section>
-
-  <!-- ================= MY ROUND (내 라운드 탭) ================= -->
-  <section id="screen-myround" class="screen">
-    <div class="nh-scroll">
-      <div class="mrs-title"><h1>My Round</h1><div class="mrs-sync" id="mrsSync"></div></div>
-      <div id="myRoundHero"></div>
-
-      <div class="nh-sec"><h2>Team</h2></div>
-      <div class="roster" id="myRoster"></div>
-      <div class="mrs-actions">
-        <button type="button" class="primary" id="mrsDetailBtn">내 조 상세</button>
-        <button type="button" data-go="teams">전체 조편성</button>
-      </div>
-
-      <div class="nh-sec"><h2>Today's Flow</h2></div>
-      <div class="flow-wrap"><ol class="flow" id="flowFull"></ol></div>
-    </div>
-  </section>
-
-  <!-- ================= 전체 참석자 명단 ================= -->
-  <section id="screen-attendees" class="screen">
-    <div class="topbar"><div class="back-btn" data-back>←</div><div class="topbar-title">전체 참석자 명단</div><div class="sync-toggle-btn" id="attendeeRefreshBtn" onclick="manualRefreshAttendees()">🔄</div></div>
-    <div class="content">
-      <div class="attendee-filter-row" id="attendeeFilterRow">
-        <button type="button" class="attendee-filter-btn active" data-attendee-filter="전체">전체</button>
-        <button type="button" class="attendee-filter-btn" data-attendee-filter="협회(임원)">협회(임원)</button>
-        <button type="button" class="attendee-filter-btn" data-attendee-filter="회원사">회원사</button>
-        <button type="button" class="attendee-filter-btn" data-attendee-filter="ARP">ARP</button>
-        <button type="button" class="attendee-filter-btn" data-attendee-filter="외빈">외빈</button>
-      </div>
-      <div class="attendee-search-wrap"><div class="search-box"><span style="font-size:18px;">🔍</span><input id="attendeeSearch" type="text" placeholder="이름을 검색하세요" autocomplete="off"></div></div>
-      <div class="attendee-count" id="attendeeCount">참석 신청자 0명</div>
-      <div class="attendee-table-wrap">
-        <table class="attendee-table"><thead><tr><th>NO</th><th>이름</th><th>소속 및 직위</th><th>KODA</th></tr></thead><tbody id="attendeeBody"><tr><td colspan="4" class="attendee-empty">참석자 명단을 불러오는 중...</td></tr></tbody></table>
-      </div>
-    </div>
-  </section>
-
-  <!-- ================= 행사 프로그램 페이지 ================= -->
-  <section id="screen-program" class="screen">
-    <div class="topbar">
-      <div class="back-btn" data-back>←</div>
-      <div class="topbar-title">행사 프로그램</div>
-    </div>
-    <div class="content program-wrap">
-      <table class="prog-table">
-        <thead>
-          <tr><th style="width:30%">시간</th><th style="width:42%; text-align:center;">주요내용</th><th style="width:28%">비고</th></tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td>10:30 ~ 11:00</td>
-            <td>
-              <ul class="content-list">
-                <li>참가자 등록 및 명찰배부</li>
-                <li>포토존 촬영</li>
-              </ul>
-            </td>
-            <td>웰컴데스크<br>포토존</td>
-          </tr>
-          <tr>
-            <td>11:00 ~ 12:00</td>
-            <td>
-              <ul class="content-list">
-                <li>점심식사</li>
-                <li>참석자 간 네트워킹</li>
-              </ul>
-            </td>
-            <td>1층 백합홀</td>
-          </tr>
-          <tr>
-            <td>12:00 ~ 12:40</td>
-            <td>
-              <ul class="content-list">
-                <li>시타 이벤트</li>
-                <li>단체 기념촬영</li>
-              </ul>
-            </td>
-            <td>밸리 1번<br>티샷지점</td>
-          </tr>
-          <tr>
-            <td>12:40 ~ 13:00</td>
-            <td>
-              <ul class="content-list">
-                <li>카트 장소 집합<br>(샷건 동시출발 준비)</li>
-              </ul>
-            </td>
-            <td>클럽하우스<br>주차장</td>
-          </tr>
-          <tr>
-            <td>13:00 ~ 18:00</td>
-            <td>
-              <ul class="content-list">
-                <li>라운딩 (신페리오방식)</li>
-              </ul>
-            </td>
-            <td>레이크/밸리<br>코스</td>
-          </tr>
-          <tr>
-            <td>18:00 ~ 18:30</td>
-            <td>
-              <ul class="content-list">
-                <li>환복 및 샤워</li>
-                <li>만찬장소 이동</li>
-              </ul>
-            </td>
-            <td>-</td>
-          </tr>
-          <tr>
-            <td>18:30 ~ 18:35</td>
-            <td>
-              <ul class="content-list">
-                <li>개회</li>
-                <li>사회자 인사</li>
-              </ul>
-            </td>
-            <td>2층<br>에메랄드홀</td>
-          </tr>
-          <tr>
-            <td>18:35 ~ 18:45</td>
-            <td>
-              <ul class="content-list">
-                <li>협회장님 인사말씀</li>
-                <li>ARP 총동문회장님 인사말씀</li>
-              </ul>
-            </td>
-            <td>-</td>
-          </tr>
-          <tr>
-            <td>18:45 ~ 19:05</td>
-            <td>
-              <ul class="content-list">
-                <li>협회 소개(회원가입 안내 등)</li>
-                <li>행사 협찬사 소개 등 감사인사</li>
-              </ul>
-            </td>
-            <td>-</td>
-          </tr>
-          <tr>
-            <td>19:05 ~ 19:30</td>
-            <td>
-              <ul class="content-list">
-                <li>경기결과 발표<br>(우승, 메달리스트, 준우승 등 14개부문 시상)</li>
-              </ul>
-            </td>
-            <td>-</td>
-          </tr>
-          <tr>
-            <td>19:30 ~ 19:40</td>
-            <td>
-              <ul class="content-list">
-                <li>단체 기념촬영</li>
-              </ul>
-            </td>
-            <td>-</td>
-          </tr>
-          <tr>
-            <td>19:40 ~ 21:00</td>
-            <td>
-              <ul class="content-list">
-                <li>공식만찬 (상호교류)</li>
-              </ul>
-            </td>
-            <td>-</td>
-          </tr>
-          <tr>
-            <td>21:00 ~</td>
-            <td>
-              <ul class="content-list">
-                <li>폐회</li>
-              </ul>
-            </td>
-            <td>-</td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
-  </section>
-
-  <!-- ================= 오시는 길 (지도) ================= -->
-  <section id="screen-location" class="screen">
-    <div class="topbar">
-      <div class="back-btn" data-back>←</div>
-      <div class="topbar-title">찾아오시는 길</div>
-    </div>
-    <div class="content">
-      <iframe class="map-frame" loading="lazy" src="https://maps.google.com/maps?q=리베라CC&t=&z=14&ie=UTF8&iwloc=&output=embed"></iframe>
-      
-      <div class="map-info">
-        <b style="color:var(--blue-deep); font-size:17px; display:block; margin-bottom:8px;">리베라CC (밸리/레이크코스)</b>
-        경기도 화성시 동탄면 중리길 183<br>
-        대표전화: 031-8047-8000
-      </div>
-
-      <div class="navi-wrap">
-        <div class="navi-title">🚗 현위치에서 길찾기 (앱 바로가기)</div>
-        <div class="navi-buttons">
-          
-          <a href="tmap://route?goalname=리베라CC&goalx=127.1358&goaly=37.1902" class="navi-btn tmap">
-            <span class="navi-icon">T</span>
-            <span>티맵</span>
-          </a>
-          
-          <a href="https://map.kakao.com/link/to/리베라CC,37.1902,127.1358" target="_blank" class="navi-btn kakao">
-            <span class="navi-icon">K</span>
-            <span>카카오</span>
-          </a>
-          
-          <a href="nmap://route/car?dlat=37.1902&dlng=127.1358&dname=리베라CC&appname=koda-golf" class="navi-btn naver" onclick="setTimeout(function(){ window.open('https://map.naver.com/p/search/리베라CC'); }, 1500);">
-            <span class="navi-icon">N</span>
-            <span>네이버</span>
-          </a>
-          
-        </div>
-      </div>
-
-    </div>
-  </section>
-
-  <!-- ================= 협찬 소개 ================= -->
-  <section id="screen-sponsors" class="screen">
-    <div class="topbar"><div class="back-btn" data-back>←</div><div class="topbar-title">협찬 소개</div></div>
-    <div class="content" style="padding:24px 20px;">
-      <div class="card-detail">
-        <div style="display:flex;align-items:center;gap:10px;margin-bottom:18px;"><div style="font-size:18px;">🎁</div><div style="font-size:19px;font-weight:900;color:var(--blue-deep);">협찬에 감사드립니다</div></div>
-        <div id="sponsorContent" style="font-size:14.5px;line-height:1.8;color:var(--ink-soft);font-weight:600;white-space:pre-wrap;word-break:keep-all;">협찬 내용을 불러오는 중입니다.</div>
-      </div>
-    </div>
-  </section>
-
-  <!-- ================= 공지 및 기타사항 ================= -->
-  <section id="screen-notice" class="screen">
-    <div class="topbar"><div class="back-btn" data-back>←</div><div class="topbar-title">공지 및 기타사항</div></div>
-    <div class="content" style="padding:24px 20px;">
-      <div class="card-detail">
-        <div style="display:flex;align-items:center;gap:10px;margin-bottom:18px;"><div style="font-size:18px;">💡</div><div style="font-size:19px;font-weight:900;color:var(--blue-deep);">참가자 안내사항</div></div>
-        <div id="noticeGuideContent" style="font-size:14.5px;line-height:1.8;color:var(--ink-soft);font-weight:600;white-space:pre-wrap;word-break:keep-all;">내용을 불러오는 중입니다.</div>
-      </div>
-      <div class="card-detail" style="margin-bottom:30px;">
-        <div style="display:flex;align-items:center;gap:10px;margin-bottom:18px;"><div style="font-size:18px;">📞</div><div style="font-size:19px;font-weight:900;color:var(--blue-deep);">대회 관련 문의</div></div>
-        <div style="font-size:14.5px;line-height:1.8;color:var(--ink-soft);font-weight:600;white-space:pre-wrap;word-break:keep-all;" id="noticeContactContent">내용을 불러오는 중입니다.</div>
-      </div>
-    </div>
-  </section>
-
-  <!-- ================= 조편성 목록 ================= -->
-  <section id="screen-teams" class="screen">
-    <div class="topbar">
-      <div class="back-btn" data-back>←</div>
-      <div class="topbar-title">전체 조편성 명단</div>
-      <div class="sync-toggle-btn" id="syncRefreshBtn" onclick="manualRefresh()">🔄</div>
-    </div>
-    <div class="sync-status" id="syncStatus">
-      <span id="syncStatusText">불러오는 중...</span>
-      <button class="sync-status-btn" onclick="manualRefresh()">새로고침</button>
-    </div>
-    <div class="content">
-      <div class="search-wrap">
-        <div class="search-box">
-          <span style="font-size:18px;">🔍</span> <input id="teamSearch" type="text" placeholder="참가자 이름을 검색하세요" autocomplete="off">
-        </div>
-      </div>
-      <div class="legend">
-        <span><i class="dot green"></i>밸리코스</span>
-        <span><i class="dot blue"></i>레이크코스</span>
-      </div>
-      <div class="team-grid" id="teamGrid"><div class="team-grid-loading">조편성 명단을 불러오는 중...</div></div>
-    </div>
-  </section>
-
-  <!-- ================= 팀 상세 정보 ================= -->
-  <section id="screen-teamdetail" class="screen">
-    <div class="topbar">
-      <div class="back-btn" data-back>←</div>
-      <div class="topbar-title" id="detailTeamTitle" style="margin-right:6px;">V-1-1</div>
-      <div style="font-size:13.5px; color:var(--ink-soft); font-weight:600; white-space:nowrap; margin-top:2px;" id="detailTeamStart">(밸리코스 1번홀 시작, 13:00~)</div>
-    </div>
-    <div class="content" style="padding:24px 20px;">
-      <div id="detailPlayers"></div>
-    </div>
-  </section>
-
-  <!-- ================= 하단 고정 네비게이션 ================= -->
-  <nav class="bottom-nav hidden" id="bottomNav" aria-label="주요 메뉴">
-    <button type="button" class="bn active" data-tab="home"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M4 11l8-7 8 7"/><path d="M6 10v10h12V10"/></svg><span>HOME</span></button>
-    <button type="button" class="bn" data-tab="myround"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M6 21V4"/><path d="M6 4h11l-2.5 4L17 12H6"/></svg><span>MY ROUND</span></button>
-    <button type="button" class="bn" data-tab="attendees"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="8" r="3.2"/><path d="M3 20c0-3.3 2.7-6 6-6s6 2.7 6 6"/><circle cx="17" cy="9" r="2.4"/><path d="M17 14c2.4 0 4.2 1.9 4.2 4.5"/></svg><span>PEOPLE</span></button>
-    <button type="button" class="bn" data-tab="location"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21s7-6.2 7-11.5A7 7 0 0 0 5 9.5C5 14.8 12 21 12 21z"/><circle cx="12" cy="9.5" r="2.5"/></svg><span>VENUE</span></button>
-  </nav>
-
-</div>
-
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no" name="viewport"/>
+<title>한국디벨로퍼협회(KODA) 일정 안내</title>
+<!-- 카카오톡 등 SNS 공유 시 표시되는 정보 (Open Graph) -->
+<meta content="website" property="og:type"/>
+<meta content="KODA SCHEDULE APP" property="og:title"/>
+<meta content="한국디벨로퍼협회(KODA) 일정 안내" property="og:description"/>
+<meta content="https://kodanew.github.io/koda-planning/" property="og:url"/>
+<meta content="https://kodanew.github.io/koda-planning/share-image.png" property="og:image"/>
+<meta content="866" property="og:image:width"/>
+<meta content="283" property="og:image:height"/>
+<!-- 모바일 홈 화면(PWA) 및 iOS 앱 설정 -->
+<meta content="yes" name="apple-mobile-web-app-capable"/>
+<meta content="default" name="apple-mobile-web-app-status-bar-style"/>
+<meta content="KODA 일정" name="apple-mobile-web-app-title"/>
+<link href="로고.png" rel="apple-touch-icon"/>
+<link href="manifest.json" rel="manifest"/>
+<!-- 카카오톡 인앱 브라우저 강제 탈출 스크립트 -->
 <script>
-// 구글시트를 불러오지 못했을 때 사용할 예비 데이터(폴백)
-const FALLBACK_DATA = [{"no":1,"name":"김한모","org":"","title":"","mobile":"","teamId":"L-1-1","order":1},{"no":2,"name":"조영훈","org":"","title":"","mobile":"","teamId":"L-1-1","order":2},{"no":3,"name":"김대건","org":"","title":"","mobile":"","teamId":"L-1-1","order":3},{"no":4,"name":"김수경","org":"","title":"","mobile":"","teamId":"L-1-1","order":4},{"no":5,"name":"김영재","org":"","title":"","mobile":"","teamId":"L-1-2","order":1},{"no":6,"name":"김재승","org":"","title":"","mobile":"","teamId":"L-1-2","order":2},{"no":7,"name":"김창남","org":"","title":"","mobile":"","teamId":"L-1-2","order":3},{"no":8,"name":"노안수","org":"","title":"","mobile":"","teamId":"L-1-2","order":4},{"no":9,"name":"심태형","org":"","title":"","mobile":"","teamId":"L-2-1","order":1},{"no":10,"name":"안재홍","org":"","title":"","mobile":"","teamId":"L-2-1","order":2},{"no":11,"name":"양계호","org":"","title":"","mobile":"","teamId":"L-2-1","order":3},{"no":12,"name":"양병열","org":"","title":"","mobile":"","teamId":"L-2-1","order":4},{"no":13,"name":"오동식","org":"","title":"","mobile":"","teamId":"L-2-2","order":1},{"no":14,"name":"홍성윤","org":"","title":"","mobile":"","teamId":"L-2-2","order":2},{"no":15,"name":"황근호","org":"","title":"","mobile":"","teamId":"L-2-2","order":3},{"no":16,"name":"황영란","org":"","title":"","mobile":"","teamId":"L-2-2","order":4},{"no":17,"name":"김상국","org":"","title":"","mobile":"","teamId":"L-2-3","order":1},{"no":18,"name":"전주영","org":"","title":"","mobile":"","teamId":"L-2-3","order":2},{"no":19,"name":"황진성","org":"","title":"","mobile":"","teamId":"L-2-3","order":3},{"no":20,"name":"김상용","org":"","title":"","mobile":"","teamId":"L-2-3","order":4},{"no":21,"name":"문주현","org":"","title":"","mobile":"","teamId":"L-3-1","order":1},{"no":22,"name":"강철언","org":"","title":"","mobile":"","teamId":"L-3-1","order":2},{"no":23,"name":"구명완","org":"","title":"","mobile":"","teamId":"L-3-1","order":3},{"no":24,"name":"기세도","org":"","title":"","mobile":"","teamId":"L-3-1","order":4},{"no":25,"name":"류영찬","org":"","title":"","mobile":"","teamId":"L-3-2","order":1},{"no":26,"name":"문길주","org":"","title":"","mobile":"","teamId":"L-3-2","order":2},{"no":27,"name":"박민주","org":"","title":"","mobile":"","teamId":"L-3-2","order":3},{"no":28,"name":"박영광","org":"","title":"","mobile":"","teamId":"L-3-2","order":4},{"no":29,"name":"이락승","org":"","title":"","mobile":"","teamId":"L-4-1","order":1},{"no":30,"name":"이승현","org":"","title":"","mobile":"","teamId":"L-4-1","order":2},{"no":31,"name":"이승훈","org":"","title":"","mobile":"","teamId":"L-4-1","order":3},{"no":32,"name":"이우식","org":"","title":"","mobile":"","teamId":"L-4-1","order":4},{"no":33,"name":"이윤권","org":"","title":"","mobile":"","teamId":"L-4-2","order":1},{"no":34,"name":"김재연","org":"","title":"","mobile":"","teamId":"L-4-2","order":2},{"no":35,"name":"김재평","org":"","title":"","mobile":"","teamId":"L-4-2","order":3},{"no":36,"name":"김지영","org":"","title":"","mobile":"","teamId":"L-4-2","order":4},{"no":37,"name":"박수용","org":"","title":"","mobile":"","teamId":"L-5-1","order":1},{"no":38,"name":"전찬규","org":"","title":"","mobile":"","teamId":"L-5-1","order":2},{"no":39,"name":"이광준","org":"","title":"","mobile":"","teamId":"L-5-1","order":3},{"no":40,"name":"김봉현","org":"","title":"","mobile":"","teamId":"L-5-1","order":4},{"no":41,"name":"김승배","org":"","title":"","mobile":"","teamId":"L-5-2","order":1},{"no":42,"name":"김경탁","org":"","title":"","mobile":"","teamId":"L-5-2","order":2},{"no":43,"name":"김게현","org":"","title":"","mobile":"","teamId":"L-5-2","order":3},{"no":44,"name":"김관교","org":"","title":"","mobile":"","teamId":"L-5-2","order":4},{"no":45,"name":"박인복","org":"","title":"","mobile":"","teamId":"L-6-1","order":1},{"no":46,"name":"박진순","org":"","title":"","mobile":"","teamId":"L-6-1","order":2},{"no":47,"name":"박춘선","org":"","title":"","mobile":"","teamId":"L-6-1","order":3},{"no":48,"name":"박희성","org":"","title":"","mobile":"","teamId":"L-6-1","order":4},{"no":49,"name":"이은철","org":"","title":"","mobile":"","teamId":"L-6-2","order":1},{"no":50,"name":"이장원","org":"","title":"","mobile":"","teamId":"L-6-2","order":2},{"no":51,"name":"이종렬","org":"","title":"","mobile":"","teamId":"L-6-2","order":3},{"no":52,"name":"장은제","org":"","title":"","mobile":"","teamId":"L-6-2","order":4},{"no":53,"name":"장호익","org":"","title":"","mobile":"","teamId":"L-7-1","order":1},{"no":54,"name":"박원진","org":"","title":"","mobile":"","teamId":"L-7-1","order":2},{"no":55,"name":"박종화","org":"","title":"","mobile":"","teamId":"L-7-1","order":3},{"no":56,"name":"송영우","org":"","title":"","mobile":"","teamId":"L-7-1","order":4},{"no":57,"name":"신혜수","org":"","title":"","mobile":"","teamId":"L-7-2","order":1},{"no":58,"name":"차원주","org":"","title":"","mobile":"","teamId":"L-7-2","order":2},{"no":59,"name":"김병석","org":"","title":"","mobile":"","teamId":"L-7-2","order":3},{"no":60,"name":"이경동","org":"","title":"","mobile":"","teamId":"L-7-2","order":4},{"no":61,"name":"정춘보","org":"","title":"","mobile":"","teamId":"L-7-3","order":1},{"no":62,"name":"김동기","org":"","title":"","mobile":"","teamId":"L-7-3","order":2},{"no":63,"name":"김병석","org":"","title":"","mobile":"","teamId":"L-7-3","order":3},{"no":64,"name":"김승구","org":"","title":"","mobile":"","teamId":"L-7-3","order":4},{"no":65,"name":"손명익","org":"","title":"","mobile":"","teamId":"L-8-1","order":1},{"no":66,"name":"손병석","org":"","title":"","mobile":"","teamId":"L-8-1","order":2},{"no":67,"name":"손종구","org":"","title":"","mobile":"","teamId":"L-8-1","order":3},{"no":68,"name":"신민철","org":"","title":"","mobile":"","teamId":"L-8-1","order":4},{"no":69,"name":"정욱","org":"","title":"","mobile":"","teamId":"L-8-2","order":1},{"no":70,"name":"정일천","org":"","title":"","mobile":"","teamId":"L-8-2","order":2},{"no":71,"name":"주용국","org":"","title":"","mobile":"","teamId":"L-8-2","order":3},{"no":72,"name":"최봉욱","org":"","title":"","mobile":"","teamId":"L-8-2","order":4},{"no":73,"name":"최창욱","org":"","title":"","mobile":"","teamId":"L-9-1","order":1},{"no":74,"name":"유병호","org":"","title":"","mobile":"","teamId":"L-9-1","order":2},{"no":75,"name":"이동훈","org":"","title":"","mobile":"","teamId":"L-9-1","order":3},{"no":76,"name":"이성규","org":"","title":"","mobile":"","teamId":"L-9-1","order":4},{"no":77,"name":"장명관","org":"","title":"","mobile":"","teamId":"L-9-2","order":1},{"no":78,"name":"채창호","org":"","title":"","mobile":"","teamId":"L-9-2","order":2},{"no":79,"name":"박영필","org":"","title":"","mobile":"","teamId":"L-9-2","order":3},{"no":80,"name":"이슬빛나","org":"","title":"","mobile":"","teamId":"L-9-2","order":4},{"no":81,"name":"김도현","org":"","title":"","mobile":"","teamId":"V-1-1","order":1},{"no":82,"name":"김민석","org":"","title":"","mobile":"","teamId":"V-1-1","order":2},{"no":83,"name":"김성호","org":"","title":"","mobile":"","teamId":"V-1-1","order":3},{"no":84,"name":"김정훈","org":"","title":"","mobile":"","teamId":"V-1-1","order":4},{"no":85,"name":"김태윤","org":"","title":"","mobile":"","teamId":"V-1-2","order":1},{"no":86,"name":"김현우","org":"","title":"","mobile":"","teamId":"V-1-2","order":2},{"no":87,"name":"김형준","org":"","title":"","mobile":"","teamId":"V-1-2","order":3},{"no":88,"name":"김호진","org":"","title":"","mobile":"","teamId":"V-1-2","order":4},{"no":89,"name":"박건우","org":"","title":"","mobile":"","teamId":"V-2-1","order":1},{"no":90,"name":"박경수","org":"","title":"","mobile":"","teamId":"V-2-1","order":2},{"no":91,"name":"박동현","org":"","title":"","mobile":"","teamId":"V-2-1","order":3},{"no":92,"name":"박성민","org":"","title":"","mobile":"","teamId":"V-2-1","order":4},{"no":93,"name":"박준영","org":"","title":"","mobile":"","teamId":"V-2-2","order":1},{"no":94,"name":"박현수","org":"","title":"","mobile":"","teamId":"V-2-2","order":2},{"no":95,"name":"박현준","org":"","title":"","mobile":"","teamId":"V-2-2","order":3},{"no":96,"name":"박태준","org":"","title":"","mobile":"","teamId":"V-2-2","order":4},{"no":97,"name":"이건우","org":"","title":"","mobile":"","teamId":"V-3-1","order":1},{"no":98,"name":"이도윤","org":"","title":"","mobile":"","teamId":"V-3-1","order":2},{"no":99,"name":"이민재","org":"","title":"","mobile":"","teamId":"V-3-1","order":3},{"no":100,"name":"이상훈","org":"","title":"","mobile":"","teamId":"V-3-1","order":4},{"no":101,"name":"이성민","org":"","title":"","mobile":"","teamId":"V-3-2","order":1},{"no":102,"name":"이정민","org":"","title":"","mobile":"","teamId":"V-3-2","order":2},{"no":103,"name":"이정훈","org":"","title":"","mobile":"","teamId":"V-3-2","order":3},{"no":104,"name":"이준호","org":"","title":"","mobile":"","teamId":"V-3-2","order":4},{"no":105,"name":"이태현","org":"","title":"","mobile":"","teamId":"V-3-3","order":1},{"no":106,"name":"임성호","org":"","title":"","mobile":"","teamId":"V-3-3","order":2},{"no":107,"name":"임재현","org":"","title":"","mobile":"","teamId":"V-3-3","order":3},{"no":108,"name":"임준혁","org":"","title":"","mobile":"","teamId":"V-3-3","order":4},{"no":109,"name":"정민수","org":"","title":"","mobile":"","teamId":"V-4-1","order":1},{"no":110,"name":"정성훈","org":"","title":"","mobile":"","teamId":"V-4-1","order":2},{"no":111,"name":"정재현","org":"","title":"","mobile":"","teamId":"V-4-1","order":3},{"no":112,"name":"정현우","org":"","title":"","mobile":"","teamId":"V-4-1","order":4},{"no":113,"name":"조민석","org":"","title":"","mobile":"","teamId":"V-4-2","order":1},{"no":114,"name":"조성진","org":"","title":"","mobile":"","teamId":"V-4-2","order":2},{"no":115,"name":"조현우","org":"","title":"","mobile":"","teamId":"V-4-2","order":3},{"no":116,"name":"최민석","org":"","title":"","mobile":"","teamId":"V-4-2","order":4},{"no":117,"name":"최성호","org":"","title":"","mobile":"","teamId":"V-5-1","order":1},{"no":118,"name":"최영준","org":"","title":"","mobile":"","teamId":"V-5-1","order":2},{"no":119,"name":"최재현","org":"","title":"","mobile":"","teamId":"V-5-1","order":3},{"no":120,"name":"최정훈","org":"","title":"","mobile":"","teamId":"V-5-1","order":4},{"no":121,"name":"한상훈","org":"","title":"","mobile":"","teamId":"V-5-2","order":1},{"no":122,"name":"한승우","org":"","title":"","mobile":"","teamId":"V-5-2","order":2},{"no":123,"name":"한정우","org":"","title":"","mobile":"","teamId":"V-5-2","order":3},{"no":124,"name":"한태민","org":"","title":"","mobile":"","teamId":"V-5-2","order":4},{"no":125,"name":"윤상현","org":"","title":"","mobile":"","teamId":"V-6-1","order":1},{"no":126,"name":"윤성민","org":"","title":"","mobile":"","teamId":"V-6-1","order":2},{"no":127,"name":"윤정호","org":"","title":"","mobile":"","teamId":"V-6-1","order":3},{"no":128,"name":"윤태영","org":"","title":"","mobile":"","teamId":"V-6-1","order":4},{"no":129,"name":"서민재","org":"","title":"","mobile":"","teamId":"V-6-2","order":1},{"no":130,"name":"서정훈","org":"","title":"","mobile":"","teamId":"V-6-2","order":2},{"no":131,"name":"서현우","org":"","title":"","mobile":"","teamId":"V-6-2","order":3},{"no":132,"name":"송민호","org":"","title":"","mobile":"","teamId":"V-6-2","order":4},{"no":133,"name":"송재현","org":"","title":"","mobile":"","teamId":"V-6-3","order":1},{"no":134,"name":"송준호","org":"","title":"","mobile":"","teamId":"V-6-3","order":2},{"no":135,"name":"신동현","org":"","title":"","mobile":"","teamId":"V-6-3","order":3},{"no":136,"name":"신성호","org":"","title":"","mobile":"","teamId":"V-6-3","order":4},{"no":137,"name":"신재현","org":"","title":"","mobile":"","teamId":"V-7-1","order":1},{"no":138,"name":"신정훈","org":"","title":"","mobile":"","teamId":"V-7-1","order":2},{"no":139,"name":"오세훈","org":"","title":"","mobile":"","teamId":"V-7-1","order":3},{"no":140,"name":"오정민","org":"","title":"","mobile":"","teamId":"V-7-1","order":4},{"no":141,"name":"오현석","org":"","title":"","mobile":"","teamId":"V-7-2","order":1},{"no":142,"name":"유민석","org":"","title":"","mobile":"","teamId":"V-7-2","order":2},{"no":143,"name":"유성호","org":"","title":"","mobile":"","teamId":"V-7-2","order":3},{"no":144,"name":"유정훈","org":"","title":"","mobile":"","teamId":"V-7-2","order":4},{"no":145,"name":"장민석","org":"","title":"","mobile":"","teamId":"V-8-1","order":1},{"no":146,"name":"장성호","org":"","title":"","mobile":"","teamId":"V-8-1","order":2},{"no":147,"name":"장재현","org":"","title":"","mobile":"","teamId":"V-8-1","order":3},{"no":148,"name":"장준혁","org":"","title":"","mobile":"","teamId":"V-8-1","order":4},{"no":149,"name":"권민석","org":"","title":"","mobile":"","teamId":"V-8-2","order":1},{"no":150,"name":"권성훈","org":"","title":"","mobile":"","teamId":"V-8-2","order":2},{"no":151,"name":"권재현","org":"","title":"","mobile":"","teamId":"V-8-2","order":3},{"no":152,"name":"권현우","org":"","title":"","mobile":"","teamId":"V-8-2","order":4},{"no":153,"name":"배성민","org":"","title":"","mobile":"","teamId":"V-9-1","order":1},{"no":154,"name":"배정훈","org":"","title":"","mobile":"","teamId":"V-9-1","order":2},{"no":155,"name":"배준호","org":"","title":"","mobile":"","teamId":"V-9-1","order":3},{"no":156,"name":"남성민","org":"","title":"","mobile":"","teamId":"V-9-1","order":4},{"no":157,"name":"류현석","org":"","title":"","mobile":"","teamId":"V-9-2","order":1},{"no":158,"name":"문태현","org":"","title":"","mobile":"","teamId":"V-9-2","order":2},{"no":159,"name":"백승현","org":"","title":"","mobile":"","teamId":"V-9-2","order":3},{"no":160,"name":"허정민","org":"","title":"","mobile":"","teamId":"V-9-2","order":4}];
-
-// ===== 구글시트 설정 =====
-const SHEET_ID = '1RWExniINhCCEBcSPHguiOjZGvtd7IpGvJlUQ0CL5mrk';
-
-// 참가자 로그인용 시트2 (B열=이름, E열=핸드폰)
-const MEMBER_AUTH_CSV_URL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vSsQ6MEUklH5tySre2h-bJz_JOWVDPw9RVZh04fp3g_yxBb1SRMC-fYd8Yjvgxy4HOTmLvtpEnnPm2s/pub?gid=1550391915&single=true&output=csv';
-// 협찬/공지용 시트3은 동일하게 게시된 Google Sheets에서 '시트3' 탭의 gid를 자동으로 찾아 불러옵니다.
-const PUBLISHED_WORKBOOK_URL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vSsQ6MEUklH5tySre2h-bJz_JOWVDPw9RVZh04fp3g_yxBb1SRMC-fYd8Yjvgxy4HOTmLvtpEnnPm2s/pubhtml';
-const SHEET_TAB_NAME = '시트1'; // 조편성
-const ATTENDEE_SHEET_TAB_NAME = '시트2'; // 참석 신청 명단 
-const SHEET_CSV_URL = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:csv&sheet=${encodeURIComponent(SHEET_TAB_NAME)}`;
-const ATTENDEE_CSV_URL = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:csv&sheet=${encodeURIComponent(ATTENDEE_SHEET_TAB_NAME)}`;
-const CACHE_KEY = 'koda_golf_players_cache_v2';
-const AUTO_REFRESH_MS = 20000;
-const ATTENDEE_CACHE_KEY = 'koda_golf_attendees_cache_v1';
-let ATTENDEES = [];
-let ATTENDEE_FILTER = '전체';
-let isAttendeeFetching = false; 
-
-let PLAYERS = [];
-let TEAMS = [];
-let CURRENT_TEAM_ID = null;
-let isFetching = false;
-let lastUpdatedAt = null;
-
-function escapeHtml(str){
-  return String(str==null?'':str).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#39;');
-}
-
-function parseCSV(text){
-  const rows = [];
-  let row = [], field = '', inQuotes = false;
-  for(let i=0; i<text.length; i++){
-    const c = text[i], next = text[i+1];
-    if(inQuotes){
-      if(c === '"' && next === '"'){ field += '"'; i++; }
-      else if(c === '"'){ inQuotes = false; }
-      else field += c;
-    } else {
-      if(c === '"'){ inQuotes = true; }
-      else if(c === ','){ row.push(field); field=''; }
-      else if(c === '\r'){ /* skip */ }
-      else if(c === '\n'){ row.push(field); rows.push(row); row=[]; field=''; }
-      else field += c;
-    }
+  var userAgent = navigator.userAgent.toLowerCase();
+  if(userAgent.indexOf('kakaotalk') > -1){
+    location.href = 'kakaotalk://web/openExternal?url=' + encodeURIComponent(location.href);
   }
-  if(field.length > 0 || row.length > 0){ row.push(field); rows.push(row); }
-  return rows;
-}
-
-function rowsToPlayers(rows){
-  const players = [];
-  for(let i=1; i<rows.length; i++){ 
-    const r = rows[i];
-    if(!r) continue;
-    const name = (r[3]||'').trim();
-    const teamId = (r[5]||'').trim();
-    if(!name || !teamId) continue; 
-    players.push({
-      no: parseInt(r[0]) || (i),
-      org: (r[1]||'').trim(),
-      title: (r[2]||'').trim(),
-      name: name,
-      mobile: (r[4]||'').trim(),
-      teamId: teamId,
-      order: parseInt(r[6]) || 1
-    });
+</script>
+<style>
+  * {
+    box-sizing: border-box;
   }
-  return players;
-}
 
-function rebuildTeams(){
-  const mapData = {};
-  PLAYERS.forEach(p => {
-    if(!mapData[p.teamId]) {
-      mapData[p.teamId] = { id: p.teamId, course: p.teamId[0], hole: parseInt(p.teamId.split('-')[1]), members: [] };
-    }
-    mapData[p.teamId].members.push(p);
-  });
-  Object.values(mapData).forEach(t => t.members.sort((a,b)=> a.order - b.order));
-  TEAMS = Object.values(mapData).sort((a,b) => {
-    if(a.course !== b.course) return a.course === 'V' ? -1 : 1;
-    const ha = a.hole, hb = b.hole;
-    const ga = parseInt(a.id.split('-')[2]), gb = parseInt(b.id.split('-')[2]);
-    if(ha !== hb) return ha - hb;
-    return ga - gb;
-  });
-}
-
-function teamLabel(t) { return `(${t.course==='V'?'밸리코스':'레이크코스'} ${t.hole}번홀 시작, 13:00~)`; }
-
-function renderTeams(list){
-  const grid = document.getElementById('teamGrid');
-  if(!list || list.length === 0) {
-    const msg = PLAYERS.length === 0 ? '조편성 명단을 불러오는 중...' : '검색 결과가 없습니다.';
-    grid.innerHTML = `<div class="team-grid-loading">${msg}</div>`;
-    return;
+  :root {
+    --primary-color: #0052cc; 
+    --accent-color: #c5a977; 
+    --bg-color: #f4f6f9;
+    --card-bg: #ffffff;
+    --text-dark: #1a202c;
+    --text-muted: #718096;
+    --border-color: #e2e8f0;
+    --today-color: #e53e3e; 
   }
-  grid.innerHTML = list.map(t=>`
-    <button class="team-btn" onclick="showTeamDetail('${t.id}')">
-      <div class="team-code ${t.course==='L'?'blue':'green'}">${t.id}</div>
-      <div class="team-start">${teamLabel(t)}</div>
-      <div class="team-members">${t.members.map(m=>escapeHtml(m.name)).join(', <span style="margin-right:2px;"></span>')}</div>
-    </button>`).join('');
-}
 
-function currentSearchQuery(){
-  const el = document.getElementById('teamSearch');
-  return el ? el.value.trim() : '';
-}
-function renderTeamsWithSearch(){
-  const q = currentSearchQuery();
-  renderTeams(q ? TEAMS.filter(t=> t.members.some(m=> m.name.includes(q))) : TEAMS);
-}
-
-document.getElementById('teamSearch').addEventListener('input', ()=>{
-  renderTeamsWithSearch();
-});
-
-// ===== 구글시트 연동 상태 =====
-function setSyncStatus(state, text){
-  const box = document.getElementById('syncStatus');
-  const textEl = document.getElementById('syncStatusText');
-  box.classList.toggle('error', state === 'error');
-  textEl.textContent = text;
-}
-function formatTime(d){
-  return d.toLocaleTimeString('ko-KR', {hour:'2-digit', minute:'2-digit'});
-}
-function setSpinning(on){
-  document.getElementById('syncRefreshBtn').classList.toggle('spinning', on);
-}
-
-async function fetchPlayersFromSheet(isManual){
-  if(isFetching) return;
-  isFetching = true;
-  setSpinning(true);
-  if(isManual) setSyncStatus('ok', '새로고침 중...');
-  try{
-    const res = await fetch(SHEET_CSV_URL + '&_ts=' + Date.now());
-    if(!res.ok) throw new Error('HTTP ' + res.status);
-    const text = await res.text();
-    const rows = parseCSV(text);
-    const players = rowsToPlayers(rows);
-    if(players.length === 0) throw new Error('empty');
-
-    PLAYERS = players;
-    rebuildTeams();
-    try{ localStorage.setItem(CACHE_KEY, JSON.stringify(PLAYERS)); }catch(e){}
-    lastUpdatedAt = new Date();
-    setSyncStatus('ok', `구글시트 실시간 연동됨 · ${formatTime(lastUpdatedAt)} 업데이트`);
-    renderTeamsWithSearch();
-    if(CURRENT_TEAM_ID) renderTeamDetail();
-  }catch(err){
-    if(PLAYERS.length === 0){
-      let fallback = null;
-      try{
-        const cached = localStorage.getItem(CACHE_KEY);
-        if(cached) fallback = JSON.parse(cached);
-      }catch(e){}
-      PLAYERS = fallback && fallback.length ? fallback : JSON.parse(JSON.stringify(FALLBACK_DATA));
-      rebuildTeams();
-      renderTeamsWithSearch();
-      if(CURRENT_TEAM_ID) renderTeamDetail();
-    }
-    setSyncStatus('error', '구글시트를 불러오지 못했습니다. 새로고침을 눌러주세요.');
-  } finally {
-    isFetching = false;
-    setSpinning(false);
+  body {
+    font-family: 'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif;
+    background-color: var(--bg-color);
+    margin: 0;
+    padding: 0;
+    color: var(--text-dark);
+    font-size: 13px;
+    -webkit-font-smoothing: antialiased;
+    user-select: none; 
+    -webkit-user-select: none;
+    width: 100%;
+    overflow-x: hidden;
   }
-}
-window.manualRefresh = function(){ fetchPlayersFromSheet(true); };
 
-fetchPlayersFromSheet(false);
-setInterval(()=> fetchPlayersFromSheet(false), AUTO_REFRESH_MS);
-
-// ===== 시트2 참석자 명단 =====
-function normalizeHeader(v){ return String(v||'').replace(/\s+/g,'').toLowerCase(); }
-function rowsToAttendees(rows){
-  if(!rows || !rows.length) return [];
-  const header=rows[0].map(normalizeHeader);
-  const findCol=(...names)=>{for(const n of names){const i=header.indexOf(normalizeHeader(n));if(i>=0)return i;}return -1;};
-  let noCol=findCol('NO','번호','순번'), nameCol=findCol('이름','성명','참석자'),
-      orgCol=findCol('소속 및 직위','소속·직위','소속직위','소속','직위'),
-      noteCol=findCol('비고','기타','메모');
-  const hasHeader=nameCol>=0||noCol>=0||orgCol>=0||noteCol>=0;
-  if(!hasHeader){noCol=0;nameCol=1;orgCol=2;noteCol=3;}
-  else {if(noCol<0)noCol=0;if(nameCol<0)nameCol=1;if(orgCol<0)orgCol=2;if(noteCol<0)noteCol=3;}
-
-  // 시트2 F열의 KODA 필터값을 사용합니다.
-  // 1행은 헤더로 보고, 161행까지만 참석자 대상으로 사용합니다.
-  const startRow=hasHeader?1:0, maxRow=Math.min(rows.length-1,160), out=[];
-  for(let i=startRow;i<=maxRow;i++){
-    const r=rows[i]||[], name=String(r[nameCol]||'').trim();
-    if(!name) continue;
-    out.push({
-      no:String(r[noCol]||'').trim()||String(out.length+1),
-      name,
-      org:String(r[orgCol]||'').trim(),
-      note:String(r[noteCol]||'').trim(),
-      koda:String(r[5]||'').trim()
-    });
+  .app-container {
+    width: 100%;
+    max-width: 600px;
+    margin: 0 auto;
+    background: var(--bg-color);
   }
-  return out;
-}
-function renderAttendees(){
-  const body=document.getElementById('attendeeBody'),count=document.getElementById('attendeeCount'); if(!body||!count)return;
-  const q=(document.getElementById('attendeeSearch')?.value||'').trim();
-  const baseList = ATTENDEE_FILTER==='전체'
-    ? ATTENDEES
-    : ATTENDEES.filter(a=>String(a.koda||'').trim()===ATTENDEE_FILTER);
-  const list=q?baseList.filter(a=>a.name.includes(q)):baseList;
-  count.textContent=`${ATTENDEE_FILTER==='전체'?'참석 신청자':'['+ATTENDEE_FILTER+'] 참석자'} ${baseList.length}명${q?` · 검색결과 ${list.length}명`:''}`;
-  if(!list.length){body.innerHTML=`<tr><td colspan="4" class="attendee-empty">${ATTENDEES.length?'검색 결과가 없습니다.':'참석자 명단이 없습니다.'}</td></tr>`;return;}
-  body.innerHTML=list.map((a,i)=>`<tr><td>${escapeHtml(a.no||i+1)}</td><td><span class="attendee-name">${escapeHtml(a.name)}</span></td><td>${escapeHtml(a.org)||'-'}</td><td>${escapeHtml(a.note)||'-'}</td></tr>`).join('');
-}
-async function fetchAttendeesFromSheet(){
-  if(isAttendeeFetching)return; isAttendeeFetching=true;
-  const btn=document.getElementById('attendeeRefreshBtn'); if(btn)btn.classList.add('spinning');
-  try{
-    const res=await fetch(ATTENDEE_CSV_URL+'&_ts='+Date.now(),{cache:'no-store'});
-    if(!res.ok)throw new Error('참석자 시트 응답 오류');
-    const dataRows=parseCSV(await res.text());
-    ATTENDEES=rowsToAttendees(dataRows);
-    try{localStorage.setItem(ATTENDEE_CACHE_KEY,JSON.stringify(ATTENDEES));}catch(e){}
-    renderAttendees();
-  }catch(err){
-    if(!ATTENDEES.length){try{const cached=localStorage.getItem(ATTENDEE_CACHE_KEY);if(cached)ATTENDEES=JSON.parse(cached);}catch(e){}}
-    renderAttendees();
-    console.error('참석자/필터 연동 오류:',err);
-  }finally{isAttendeeFetching=false;if(btn)btn.classList.remove('spinning');}
-}
-window.manualRefreshAttendees=function(){fetchAttendeesFromSheet();};
-document.querySelectorAll('[data-attendee-filter]').forEach(btn=>btn.addEventListener('click',()=>{
-  ATTENDEE_FILTER=btn.dataset.attendeeFilter||'전체';
-  document.querySelectorAll('[data-attendee-filter]').forEach(b=>b.classList.toggle('active',b===btn));
-  renderAttendees();
-}));
-document.getElementById('attendeeSearch').addEventListener('input',renderAttendees);
-fetchAttendeesFromSheet();
-setInterval(fetchAttendeesFromSheet,AUTO_REFRESH_MS);
 
-
-// ===== 입장 인증 : 시트2 B열(이름) + E열(핸드폰) =====
-let AUTH_MEMBERS = [];
-let authLoading = false;
-
-function normalizePhoneGolf(v){
-  return String(v || '').replace(/[^0-9]/g,'');
-}
-function parseGolfAuthCSV(csv){
-  const rows = parseCSV(csv);
-  const list = [];
-  for(let i=1;i<rows.length;i++){
-    const r=rows[i]||[];
-    const name=String(r[1]||'').trim();   // B열
-    const phone=normalizePhoneGolf(r[4]||''); // E열
-    if(name && phone) list.push({name,phone});
+  /* 헤더 영역 */
+  .header {
+    background-color: transparent;
+    padding: 10px 12px;
+    text-align: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+    width: 100%;
   }
-  return list;
-}
-async function loadGolfAuthMembers(){
-  if(authLoading) return;
-  authLoading=true;
-  try{
-    const res=await fetch(MEMBER_AUTH_CSV_URL+'&_ts='+Date.now(),{cache:'no-store'});
-    if(!res.ok) throw new Error('인증 시트 응답 오류');
-    AUTH_MEMBERS=parseGolfAuthCSV(await res.text());
-  }finally{
-    authLoading=false;
-  }
-}
-function isGolfAuthorized(name,phone){
-  const n=String(name||'').trim();
-  const p=normalizePhoneGolf(phone);
-  return AUTH_MEMBERS.some(m=>m.name===n && m.phone===p);
-}
-window.attemptGolfLogin=async function(){
-  const nameEl=document.getElementById('loginName');
-  const phoneEl=document.getElementById('loginPhone');
-  const err=document.getElementById('loginError');
-  const btn=document.getElementById('enterBtn');
-  const name=nameEl.value.trim(), phone=phoneEl.value.trim();
-
-  err.style.display='none';
-  if(!name || !phone){
-    err.textContent='이름과 핸드폰 번호를 모두 입력해주세요.';
-    err.style.display='block';
-    return;
-  }
-  btn.disabled=true; btn.textContent='확인 중...';
-  try{
-    if(!AUTH_MEMBERS.length) await loadGolfAuthMembers();
-    if(isGolfAuthorized(name,phone)){
-      localStorage.setItem('koda_golf_auth',JSON.stringify({name,phone:normalizePhoneGolf(phone)}));
-      navigateTo('home');
-      loadGolfSheet3Content();
-    }else{
-      err.textContent='등록된 참가자 정보와 일치하지 않습니다. 다시 확인해주세요.';
-      err.style.display='block';
-    }
-  }catch(e){
-    err.textContent='참가자 정보를 확인하지 못했습니다. 잠시 후 다시 시도해주세요.';
-    err.style.display='block';
-  }finally{
-    btn.disabled=false; btn.textContent='입장하기';
-  }
-};
-
-// ===== 시트3 B2/B3/B5 연동 =====
-let sheet3Gid = null;
-function escapeRegex(v){ return String(v).replace(/[.*+?^${}()|[\]\\]/g,'\\$&'); }
-
-const SHEET3_GID = '683652578';
-
-async function loadGolfSheet3Content(){
-  const sponsorEl=document.getElementById('sponsorContent');
-  const guideEl=document.getElementById('noticeGuideContent');
-  const contactEl=document.getElementById('noticeContactContent');
-  if(!sponsorEl || !guideEl || !contactEl) return;
-
-  try{
-    const gid=SHEET3_GID;
-    const csvUrl=`https://docs.google.com/spreadsheets/d/e/2PACX-1vSsQ6MEUklH5tySre2h-bJz_JOWVDPw9RVZh04fp3g_yxBb1SRMC-fYd8Yjvgxy4HOTmLvtpEnnPm2s/pub?gid=${gid}&single=true&output=csv`;
-    const res=await fetch(csvUrl+'&_ts='+Date.now(),{cache:'no-store'});
-    if(!res.ok) throw new Error('시트3 CSV 응답 오류');
-    const rows=parseCSV(await res.text());
-    const b2=String((rows[1]||[])[1]||'').trim();
-    const c2=String((rows[1]||[])[2]||'').trim();
-    const b3=String((rows[2]||[])[1]||'').trim();
-    const c3=String((rows[2]||[])[2]||'').trim();
-    const b5=String((rows[4]||[])[1]||'').trim();
-
-    sponsorEl.textContent=b5 || '등록된 협찬 내용이 없습니다.';
-    guideEl.textContent=c2 || '등록된 참가자 안내사항이 없습니다.';
-    contactEl.textContent=c3 || '등록된 대회 관련 문의사항이 없습니다.';
-  }catch(e){
-    sponsorEl.textContent='협찬 내용을 불러오지 못했습니다.';
-    guideEl.textContent='참가자 안내사항을 불러오지 못했습니다.';
-    contactEl.textContent='대회 관련 문의사항을 불러오지 못했습니다.';
-    console.error('시트3 연동 오류:',e);
-  }
-}
-
-// ===== 서비스워커 등록 (PWA 설치 조건 충족을 위해 필요) =====
-if ('serviceWorker' in navigator) {
-  window.addEventListener('load', () => {
-    navigator.serviceWorker.register('sw.js').catch(err => console.log('SW 등록 실패:', err));
-  });
-}
-
-// ===== 앱 설치 (PWA) 기능 =====
-let deferredPrompt;
-
-// 브라우저가 PWA 설치 조건을 만족하면 beforeinstallprompt 이벤트를 발생시킵니다.
-window.addEventListener('beforeinstallprompt', (e) => {
-  // 기본 팝업이 바로 뜨지 않도록 방지
-  e.preventDefault();
-  // 이벤트를 보관해두었다가 나중에 버튼 클릭 시 트리거
-  deferredPrompt = e;
-});
-
-document.getElementById('installAppBtn').addEventListener('click', async () => {
-  // 아이폰(iOS) 접속 체크 (사파리 등에서는 PWA 다이렉트 설치 프롬프트를 미지원하므로 별도 안내)
-  const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
-  if (isIOS) {
-    alert("아이폰에서는 화면 하단의 '공유[↑]' 버튼을 누른 후, '홈 화면에 추가'를 선택하여 앱을 설치해주세요.");
-    return;
+  .header img {
+    height: 26px; 
+    width: auto;
+    max-width: 55%;
+    object-fit: contain;
   }
   
-  // 안드로이드 / 크롬 브라우저 처리 (직접 설치 팝업 호출)
-  if (deferredPrompt) {
-    // 보관해둔 이벤트를 호출하여 안드로이드 하단 설치 팝업을 즉시 띄웁니다.
-    deferredPrompt.prompt();
-    
-    // 유저가 설치를 수락했는지 거절했는지 확인
-    const { outcome } = await deferredPrompt.userChoice;
-    if (outcome === 'accepted') {
-      console.log('앱 설치가 진행됩니다.');
+  .refresh-btn {
+    position: absolute;
+    left: 20px;
+    top: 15px;
+    background-color: transparent;
+    color: #718096;
+    border: 1px solid #e2e8f0;
+    padding: 6px 10px;
+    border-radius: 8px;
+    font-size: 0.72rem;
+    font-weight: 600;
+    cursor: pointer;
+  }
+  .refresh-btn:active {
+    color: #1a202c;
+  }
+
+  .header-right {
+    position: absolute;
+    right: 20px;
+    top: 50%;
+    transform: translateY(-50%);
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+.notify-btn:active {
+    color: #718096;
+  }
+.install-btn {
+    top: 25px;
+    background-color: transparent;
+    color: #718096;
+    border: 1px solid #e2e8f0;
+    padding: 6px 10px;
+    border-radius: 8px;
+    font-size: 0.72rem;
+    font-weight: 600;
+    cursor: pointer;
+  }
+
+  .logout-btn {
+    top: 25px;
+    background-color: transparent;
+    color: #718096;
+    border: 1px solid #e2e8f0;
+    padding: 3px 6px;
+    border-radius: 6px;
+    font-size: 0.6rem;
+    font-weight: 600;
+    cursor: pointer;
+  }
+  .logout-btn:active {
+    color: #1a202c;
+  }
+
+  /* 오늘 날짜 · 날씨 */
+  .today-weather-bar{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:12px;
+    width:calc(100% - 20px);
+    margin:0 10px 4px;
+    padding:2px 3px 0;
+  }
+  .today-date-info{display:flex;align-items:baseline;gap:7px;min-width:0;}
+  .today-date{font-size:1.05rem;font-weight:800;color:#123b70;letter-spacing:-.03em;white-space:nowrap;}
+  .today-weekday{font-size:.84rem;font-weight:700;color:#4f6f95;white-space:nowrap;}
+  .today-weather{display:flex;align-items:center;gap:6px;color:#4f6f95;font-size:.78rem;font-weight:700;white-space:nowrap;}
+  .today-weather-icon{font-size:1.05rem;line-height:1;}
+  .today-weather-temp{color:#123b70;font-weight:800;}
+  @media(max-width:360px){.today-weather-bar{gap:7px}.today-date{font-size:.98rem}.today-weekday,.today-weather{font-size:.72rem}}
+
+  /* 달력 영역 */
+  .calendar-wrapper {
+    background: var(--card-bg);
+    margin: 10px;
+    border-radius: 12px;
+    padding: 10px;
+    border: 1.5px solid #2b73d2;
+    box-shadow: 0 5px 18px rgba(0,82,204,0.08);
+    overflow: hidden; 
+  }
+  .cal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+    font-weight: 700;
+    font-size: 1rem;
+  }
+  .cal-nav-btn {
+    width: 30px;
+    height: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #eef5ff;
+    border: 1px solid #c9ddfb;
+    border-radius: 9px;
+    font-size: 1.15rem;
+    line-height: 1;
+    font-weight: 800;
+    color: #0756c9;
+    cursor: pointer;
+    padding: 0;
+    box-shadow: 0 3px 8px rgba(0,82,204,.10);
+  }
+  .cal-nav-btn:active { transform: scale(.95); background:#dcecff; }
+  
+  .cal-grid {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 2px;
+    text-align: center;
+    animation: fadeIn 0.3s ease-out;
+  }
+  @keyframes fadeIn {
+    from { opacity: 0.3; transform: translateX(5px); }
+    to { opacity: 1; transform: translateX(0); }
+  }
+
+  .cal-day-name {
+    font-size: 0.65rem;
+    color: var(--text-muted);
+    padding-bottom: 3px;
+    font-weight: 600;
+  }
+  .cal-cell {
+    min-height: 48px;
+    border-radius: 4px;
+    background: #fdfdfd;
+    border: 1px solid #f0f0f0;
+    display: flex;
+    flex-direction: column;
+    padding: 2px;
+    text-align: left;
+    position: relative;
+    overflow: hidden;
+  }
+  .cal-cell.empty { background: transparent; border: none; }
+  
+  /* 오늘 표시: 셀 배경/테두리는 그대로 두고 날짜 숫자만 검은 원으로 표시 */
+  .cal-cell.today {
+    background: #fdfdfd;
+    border: 1px solid #f0f0f0;
+  }
+  .today-circle {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    box-sizing: border-box;
+    min-width: 17px;
+    height: 17px;
+    padding: 0 2px;
+    margin: -1px 0 -1px -2px;
+    border-radius: 999px;
+    background: #111111;
+    color: #ffffff !important;
+    font-size: 0.65rem;
+    font-weight: 800;
+    line-height: 1;
+  }
+  
+  .cal-date-num {
+    font-size: 0.65rem;
+    font-weight: 700;
+    color: var(--text-dark);
+    margin-bottom: 2px;
+    padding-left: 1px;
+    display: flex;
+    align-items: center;
+  }
+  
+  .text-red { color: #e53e3e !important; }
+  .text-blue { color: #3182ce !important; }
+
+  
+  .cal-event-chip {
+    font-size: 0.55rem;
+    padding: 2px 2px;
+    border-radius: 3px;
+    margin-bottom: 2px;
+    color: #000000;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    background-color: #ffffff;
+    border: 1px solid #e5e7eb;
+    font-weight: 600;
+    cursor: pointer;
+  }
+  .cal-event-chip.chairman {
+    background-color: #d0e1fd;
+    border: 1px solid #d0e1fd;
+    color: #000000;
+  }
+
+  /* ✨ 모던 일정 배너 ✨ */
+  .schedule-banner {
+    margin-top:0!important;
+    position: relative;
+    width: calc(100% - 20px);
+    margin: 0 10px 10px;
+    min-height: 112px;
+    border-radius: 20px;
+    overflow: hidden;
+    color: #fff;
+    background:
+      radial-gradient(circle at 92% 15%, rgba(110,190,255,.28) 0, rgba(110,190,255,0) 34%),
+      radial-gradient(circle at 10% 100%, rgba(38,111,255,.30) 0, rgba(38,111,255,0) 35%),
+      linear-gradient(135deg, #073b8f 0%, #0756c9 52%, #0878d9 100%);
+    border: 1px solid rgba(255,255,255,.16);
+    box-shadow: 0 10px 26px rgba(0,61,145,.20);
+    touch-action: pan-y;
+  }
+  .schedule-banner::before,
+  .schedule-banner::after {
+    content: '';
+    position: absolute;
+    border-radius: 50%;
+    pointer-events: none;
+    border: 1px solid rgba(255,255,255,.10);
+  }
+  .schedule-banner::before { width: 110px; height: 110px; right: -35px; top: -55px; }
+  .schedule-banner::after { width: 72px; height: 72px; left: -34px; bottom: -42px; }
+  .schedule-banner-track { position: relative; min-height: 112px; z-index: 1; }
+  .schedule-banner-slide {
+    display: none;
+    min-height: 112px;
+    padding: 15px 18px 25px;
+    box-sizing: border-box;
+    animation: bannerFade .28s ease;
+  }
+  .schedule-banner-slide.active { display: flex; flex-direction: column; justify-content: center; }
+  @keyframes bannerFade {
+    from { opacity: 0; transform: translateX(10px); }
+    to { opacity: 1; transform: translateX(0); }
+  }
+  .banner-heading {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    margin-bottom: 4px;
+  }
+  .banner-kicker {
+    display: inline-flex;
+    align-items: center;
+    min-height: 20px;
+    padding: 0 8px;
+    border-radius: 999px;
+    background: rgba(255,255,255,.16);
+    border: 1px solid rgba(255,255,255,.18);
+    color: rgba(255,255,255,.92);
+    font-size: .60rem;
+    font-weight: 800;
+    letter-spacing: -.01em;
+  }
+  .banner-title { display:none; }
+  .banner-list { display:flex; flex-direction:column; gap:0; width:100%; }
+  .banner-event {
+    width:100%;
+    padding:0;
+    border:0;
+    background:transparent;
+    color:#fff;
+    text-align:left;
+    cursor:pointer;
+  }
+  .banner-event-line1 {
+    display:block;
+    width:100%;
+    overflow:hidden;
+    text-overflow:ellipsis;
+    white-space:nowrap;
+    color:rgba(255,255,255,.84);
+    font-size:.80rem;
+    line-height:1.35;
+    font-weight:650;
+    letter-spacing:-.025em;
+  }
+  .banner-event-line2 {
+    display:block;
+    width:100%;
+    margin-top:3px;
+    overflow:hidden;
+    text-overflow:ellipsis;
+    white-space:nowrap;
+    color:#fff;
+    font-size:1.08rem;
+    line-height:1.35;
+    font-weight:800;
+    letter-spacing:-.035em;
+  }
+  .banner-empty { padding:18px 8px; font-size:.78rem; color:rgba(255,255,255,.78); text-align:center; }
+  .banner-nav { display:none !important; }
+  .banner-dots {
+    position:absolute;
+    right:42px;
+    bottom:9px;
+    display:flex;
+    align-items:center;
+    justify-content:flex-end;
+    gap:5px;
+    z-index:3;
+  }
+  .banner-dot {
+    width:6px;
+    height:6px;
+    padding:0;
+    border:0;
+    border-radius:50%;
+    background:rgba(255,255,255,.42);
+    cursor:pointer;
+  }
+  .banner-dot.active { width:7px; height:7px; background:#fff; box-shadow:0 0 0 2px rgba(255,255,255,.16); }
+  .banner-pause-btn {
+    position:absolute;
+    right:11px;
+    bottom:6px;
+    width:24px;
+    height:24px;
+    padding:0;
+    border:1px solid rgba(255,255,255,.28);
+    border-radius:8px;
+    background:rgba(255,255,255,.13);
+    color:#fff;
+    font-size:.65rem;
+    line-height:22px;
+    font-weight:900;
+    z-index:4;
+    cursor:pointer;
+    backdrop-filter:blur(6px);
+  }
+  .banner-pause-btn.paused { background:#fff; color:#0756c9; }
+
+  /* 상단 메뉴바 */
+  .quick-menu-container,
+  .sub-menu-container {
+    display:grid;
+    grid-template-columns:repeat(5,1fr);
+    gap:4px;
+    padding:0 8px 9px;
+    width:100%;
+    box-sizing:border-box;
+    align-items:start;
+  }
+  .quick-btn {
+    min-height:78px;
+    padding:0;
+    background:transparent !important;
+    border:0;
+    color:var(--text-dark);
+    text-align:center;
+    text-decoration:none;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    justify-content:flex-start;
+    box-shadow:none;
+    word-break:keep-all;
+    cursor:pointer;
+    box-sizing:border-box;
+  }
+  .quick-icon {
+    width:50px;
+    height:50px;
+    border-radius:14px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    background:#fff;
+    border:1px solid #e6edf7;
+    box-shadow:0 5px 14px rgba(22,52,95,.08);
+    overflow:hidden;
+    transition:transform .15s, box-shadow .15s;
+  }
+  .quick-icon img { width:72%; height:72%; object-fit:contain; display:block; }
+  .quick-icon svg { width:31px; height:31px; display:block; }
+  .quick-btn:hover .quick-icon { transform:translateY(-2px); box-shadow:0 8px 18px rgba(22,52,95,.12); }
+  .quick-label {
+    margin-top:6px;
+    font-size:.66rem;
+    font-weight:750;
+    line-height:1.15;
+    white-space:normal;
+  }
+  .sub-menu-container { padding-top:1px; padding-bottom:10px; }
+  .sub-menu-container .quick-btn { min-height:78px; }
+
+  /* 일정 리스트 영역 */
+  .schedule-container {
+    padding: 0 10px 30px 10px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    width: 100%;
+  }
+
+  .schedule-section-header {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: baseline;
+    padding: 5px 5px 10px 5px;
+    margin-top: 5px;
+    margin-bottom: 0px;
+    width: 100%;
+    row-gap: 4px;
+  }
+  
+  .schedule-title-wrapper {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    gap: clamp(4px, 2vw, 8px);
+    margin-left: clamp(4px, 3vw, 12px);
+    min-width: 0;
+  }
+
+  .schedule-section-title {
+    font-size: clamp(0.95rem, 4.2vw, 1.15rem);
+    font-weight: 800;
+    color: var(--text-dark);
+    white-space: nowrap;
+  }
+
+  .schedule-section-subtitle {
+    font-size: clamp(0.68rem, 3vw, 0.85rem); 
+    color: #a0aec0; 
+    font-weight: 500;
+  }
+
+  .past-schedule-btn {
+    background: none;
+    border: none;
+    font-size: clamp(0.62rem, 2.8vw, 0.75rem);
+    color: var(--text-muted);
+    text-decoration: none; 
+    cursor: pointer;
+    padding: 0 2px 2px 0;
+    font-weight: 600;
+    white-space: nowrap;
+    flex-shrink: 0;
+  }
+  .past-schedule-btn:hover {
+    color: var(--text-dark);
+  }
+
+  .schedule-list-wrapper {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    width: 100%;
+  }
+  #pastScheduleList {
+    margin-bottom: 20px;
+    padding-bottom: 15px;
+    border-bottom: 1px dashed var(--border-color);
+  }
+
+  /* 이벤트 카드 */
+  .event-card {
+    background: var(--card-bg);
+    border-radius: 10px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.03);
+    border: 1px solid rgba(0,0,0,0.04);
+    overflow: hidden;
+    position: relative;
+  }
+
+  .event-card.today-card {
+    border: 2.5px solid #e53e3e;
+  }
+
+  .event-header {
+    display: flex;
+    flex-direction: column;
+    padding: 12px 70px 12px 15px; 
+    cursor: pointer;
+    background: transparent;
+    border: none;
+    width: 100%;
+    text-align: left;
+  }
+
+  .card-actions {
+    position: absolute;
+    top: 10px;
+    right: 8px;
+    z-index: 5;
+    display: flex;
+    align-items: center;
+    gap: 2px;
+  }
+
+  .icon-btn {
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: #cbd5e0;
+    width: 28px;
+    height: 28px;
+    padding: 0;
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .icon-btn svg {
+    width: 18px;
+    height: 18px;
+    display: block;
+  }
+
+  .share-btn:active {
+      color: #718096;
+  }
+
+  .star-btn.starred {
+    color: #d69e2e;
+  }
+
+  .event-meta {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    gap: 5px; 
+    width: 100%;
+    margin-bottom: 5px;
+    flex-wrap: wrap;
+  }
+
+  .event-date {
+    font-size: 0.9rem;
+    font-weight: 800;
+    color: #000000;
+  }
+  
+  .event-divider {
+    font-size: 0.85rem;
+    color: #cbd5e0;
+    font-weight: 700;
+  }
+
+  .event-location {
+    font-size: 0.8rem;
+    color: var(--text-muted);
+    font-weight: 600;
+    text-align: left;
+  }
+
+  .event-title {
+    font-size: 1rem; 
+    font-weight: 600;
+    color: var(--text-dark);
+    line-height: 1.35;
+    word-break: keep-all;
+    margin-top: 2px;
+  }
+  
+  .event-title.chairman {
+    color: var(--primary-color);
+    font-weight: 800;
+  }
+
+  /* 팝업(모달) 스타일 */
+  .modal-overlay {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.55);
+    z-index: 1000;
+    align-items: center;
+    justify-content: center;
+    padding: 12px;
+    box-sizing: border-box;
+  }
+
+  .modal-content {
+    background: #ffffff;
+    width: 100%;
+    max-width: 400px;
+    border-radius: 14px;
+    padding: 18px;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+    position: relative;
+    animation: slideUp 0.3s ease-out;
+    max-height: 90vh;
+    overflow-y: auto;
+  }
+
+  @keyframes slideUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .modal-close {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background: none;
+    border: none;
+    font-size: 1.3rem;
+    cursor: pointer;
+    color: #a0aec0;
+    z-index: 10;
+  }
+  
+  .day-events-modal-content { max-width: 400px; }
+  .day-events-title { font-size: 1.05rem; font-weight: 800; margin-bottom: 4px; }
+  .day-events-subtitle { font-size: 0.72rem; color: var(--text-muted); margin-bottom: 12px; }
+  .day-event-list { display: flex; flex-direction: column; gap: 7px; }
+  
+  /* 리스트 공통(일정, 자료, 직원) 버튼 아이템 */
+  .day-event-item {
+    width: 100%; text-align: left; background: #ffffff;
+    border: 1px solid #e5e7eb; border-radius: 9px;
+    padding: 10px 11px; cursor: pointer;
+  }
+  .day-event-item:active { background: #f8fafc; }
+  .day-event-item-title { font-size: 0.82rem; font-weight: 700; line-height: 1.35; word-break: keep-all; }
+  .day-event-item-title .chairman-mark {
+    font-size: 0.58rem;
+    vertical-align: super;
+    line-height: 0;
+    margin-left: 2px;
+    color: #c08a22;
+    font-weight: 800;
+  }
+  .day-event-item-meta { margin-top: 4px; font-size: 0.68rem; color: var(--text-muted); line-height: 1.3; }
+  .day-event-item.chairman { border-color: #d0e1fd; background: #f5f9ff; }
+
+  /* 직원 목록용 뱃지 스타일 */
+  .staff-badge {
+    display: inline-block;
+    background: #e2e8f0;
+    color: #4a5568;
+    font-size: 0.6rem;
+    padding: 2px 6px;
+    border-radius: 4px;
+    margin-right: 6px;
+    font-weight: 700;
+    vertical-align: middle;
+  }
+  .staff-badge.executive {
+    background: #ebf8ff;
+    color: #3182ce;
+  }
+
+  /* 협회공지 목록/상세용 뱃지 (임직원현황 뱃지와 동일한 디자인 언어) */
+  .news-badge {
+    display: inline-block;
+    vertical-align: middle;
+    font-size: 0.62rem;
+    font-weight: 800;
+    padding: 2px 7px;
+    border-radius: 999px;
+    margin-right: 6px;
+    background: #edf2f7;
+    color: #4a5568;
+  }
+  .news-badge-sale { background: #ebf8ff; color: #3182ce; }
+  .news-badge-wedding { background: #fff5f7; color: #d53f8c; }
+  .news-badge-obituary { background: #edf1f5; color: #4a5568; }
+  .news-badge-etc { background: #f7fafc; color: #718096; }
+
+  .day-event-item.news-card-item {
+    display:flex;
+    flex-direction:row;
+    align-items:center;
+    justify-content:space-between;
+    gap:10px;
+  }
+  .news-card-item .day-event-item-title {
+    display:block;
+    flex:1 1 auto;
+    min-width:0;
+    line-height:1.35;
+  }
+  .news-card-item .day-event-item-meta {
+    flex:0 0 auto;
+    margin-top:0;
+    margin-left:auto;
+    text-align:right;
+    white-space:nowrap;
+  }
+
+  .modal-title-area {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 10px;
+    padding-right: 25px;
+  }
+
+  .modal-title {
+    font-size: 1.1rem;
+    font-weight: 800;
+    color: var(--text-dark);
+    line-height: 1.35;
+    word-break: keep-all;
+  }
+  .modal-title.chairman {
+    color: var(--primary-color);
+  }
+
+  .modal-star {
+    background: none;
+    border: none;
+    font-size: 1.4rem;
+    cursor: pointer;
+    color: #cbd5e0;
+    margin-left: 10px;
+    flex-shrink: 0;
+  }
+  .modal-star.starred {
+    color: #d69e2e;
+  }
+
+  .modal-detail-row {
+    margin-bottom: 7px;
+    display: flex;
+    font-size: 0.82rem;
+    line-height: 1.45;
+  }
+  .modal-label {
+    font-weight: 700;
+    color: var(--text-muted);
+    width: 70px;
+    flex-shrink: 0;
+  }
+  .modal-value {
+    color: var(--text-dark);
+    flex-grow: 1;
+    word-break: keep-all;
+  }
+  .modal-inline-image {
+    display: block;
+    max-width: 100%;
+    width: 100%;
+    height: auto;
+    border-radius: 8px;
+    margin: 6px 0;
+    border: 1px solid var(--border-color);
+    background: #f4f6f9;
+    cursor: zoom-in;
+  }
+  .modal-value a {
+    color: var(--primary-color);
+    word-break: break-all;
+  }
+
+  /* 버튼 그룹 (상세 모달용) */
+  .action-btn-group {
+    display: flex; gap: 8px; margin-top: 15px; padding-top: 15px; border-top: 1px dashed var(--border-color);
+  }
+  .action-btn {
+    flex: 1; padding: 10px 0; text-align: center; border-radius: 8px;
+    font-weight: 700; color: #fff; text-decoration: none; font-size: 0.75rem;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1); display: block;
+  }
+  .action-btn:active { opacity: 0.8; }
+  .btn-call { background-color: #38a169; }
+  .btn-sms { background-color: #3182ce; }
+  .btn-email { background-color: #d69e2e; }
+  /* 풀스크린 전용 페이지 */
+  
+  .association-news-grid{display:grid;grid-template-columns:1fr;gap:12px;padding:14px 12px 28px;overflow:auto;}
+  .association-news-card{background:#fff;border:1.5px solid #cfe0f8;border-radius:16px;padding:14px;min-height:150px;box-shadow:0 6px 18px rgba(25,74,135,.08);cursor:pointer;}
+  .association-card-head{display:flex;align-items:center;gap:9px;border-bottom:1px solid #edf3fb;padding-bottom:10px;margin-bottom:10px;}
+  .association-card-icon{font-size:1.45rem;width:38px;height:38px;border-radius:11px;background:#edf5ff;display:flex;align-items:center;justify-content:center;}
+  .association-card-head h3{font-size:.95rem;margin:0;color:#12345a;flex:1;}
+  .association-more{font-size:1.4rem;color:#1769d2;}
+  .association-preview{font-size:.78rem;line-height:1.55;color:#64748b;display:-webkit-box;-webkit-line-clamp:4;-webkit-box-orient:vertical;overflow:hidden;}
+  @media(min-width:700px){.association-news-grid{grid-template-columns:repeat(3,1fr);align-items:stretch}.association-news-card{min-height:210px}}
+.fullscreen-screen {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: var(--bg-color);
+    z-index: 1500;
+    display: none;
+    flex-direction: column;
+    overflow-y: auto;
+  }
+  
+  .fullscreen-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 12px 15px;
+    background: #ffffff;
+    border-bottom: 1px solid var(--border-color);
+    flex-shrink: 0;
+  }
+  
+  .fullscreen-back-btn {
+    background: none;
+    border: none;
+    font-size: 0.95rem;
+    font-weight: 700;
+    color: var(--text-dark);
+    cursor: pointer;
+    padding: 0;
+  }
+
+  .fullscreen-title {
+    font-size: 1.1rem;
+    font-weight: 800;
+    color: var(--text-dark);
+  }
+  
+  .fullscreen-dummy { width: 60px; } 
+
+  /* 가로 스크롤 탭 영역 */
+  .fullscreen-tabs {
+    display: flex;
+    gap: 8px;
+    padding: 12px 15px 4px 15px;
+    overflow-x: auto;
+    white-space: nowrap;
+    -webkit-overflow-scrolling: touch; 
+  }
+  .fullscreen-tabs::-webkit-scrollbar { display: none; }
+  .fullscreen-tabs { -ms-overflow-style: none; scrollbar-width: none; }
+
+  .month-tab {
+    padding: 7px 16px;
+    border-radius: 20px;
+    border: 1px solid #cbd5e0;
+    background: #ffffff;
+    color: #4a5568;
+    font-weight: 700;
+    font-size: 0.8rem;
+    cursor: pointer;
+    flex-shrink: 0;
+  }
+  .month-tab.active {
+    background: var(--primary-color);
+    color: #ffffff;
+    border-color: var(--primary-color);
+  }
+
+  .fullscreen-content {
+    padding: 10px 15px 30px 15px;
+    flex-grow: 1;
+  }
+
+  /* 이미지(JPG) 뷰어 */
+  .material-viewer-content {
+    max-width: 480px;
+    padding: 14px;
+    text-align: center;
+  }
+  .material-viewer-img {
+    width: 100%;
+    border-radius: 8px;
+    margin-bottom: 12px;
+    display: block;
+  }
+  .material-download-btn {
+    display: inline-block;
+    background: var(--primary-color);
+    color: #ffffff;
+    padding: 10px 18px;
+    border-radius: 8px;
+    font-size: 0.85rem;
+    font-weight: 700;
+    text-decoration: none;
+  }
+
+  .material-viewer-nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 12px;
+  }
+  .material-viewer-nav-btn {
+    background: none;
+    border: 1px solid var(--border-color);
+    border-radius: 6px;
+    padding: 6px 12px;
+    font-size: 0.78rem;
+    font-weight: 700;
+    color: var(--primary-color);
+    cursor: pointer;
+  }
+  .material-viewer-nav-btn:disabled {
+    color: #cbd5e0;
+    border-color: #f0f0f0;
+    cursor: not-allowed;
+  }
+  .material-viewer-page-indicator {
+    font-size: 0.78rem;
+    color: var(--text-muted);
+    font-weight: 700;
+  }
+
+  .pdf-viewer-content {
+    max-width: 560px;
+    width: 94%;
+    padding: 14px;
+  }
+  .pdf-viewer-frame {
+    width: 100%;
+    height: 72vh;
+    border: none;
+    border-radius: 8px;
+    background: #f4f6f9;
+    display: block;
+  }
+  .pdf-viewer-actions {
+    display: flex;
+    gap: 8px;
+    margin-top: 12px;
+    justify-content: center;
+    flex-wrap: wrap;
+  }
+
+  .loading-msg {
+    text-align: center;
+    padding: 30px;
+    color: var(--primary-color);
+    font-size: 0.95rem;
+    font-weight: bold;
+  }
+  .no-data {
+    text-align: center;
+    padding: 30px;
+    color: var(--text-muted);
+    font-size: 0.85rem;
+  }
+
+  /* 로그인 화면 */
+  #appRoot {
+    display: none;
+  }
+  .login-screen {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: var(--bg-color);
+    z-index: 2000;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+  }
+  .login-box {
+    background: var(--card-bg);
+    width: 100%;
+    max-width: 340px;
+    border-radius: 14px;
+    padding: 32px 24px;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.08);
+    text-align: center;
+  }
+  .login-logo {
+    height: 30px;
+    margin-bottom: 16px;
+  }
+  .login-title {
+    font-size: 1.05rem;
+    font-weight: 800;
+    color: var(--text-dark);
+    margin-bottom: 4px;
+  }
+  .login-subtitle {
+    font-size: 0.78rem;
+    color: var(--text-muted);
+    margin-bottom: 20px;
+    line-height: 1.4;
+  }
+  .login-btn {
+    width: 100%;
+    background-color: var(--primary-color);
+    color: #ffffff;
+    border: none;
+    border-radius: 8px;
+    padding: 12px;
+    font-size: 0.95rem;
+    font-weight: 700;
+    cursor: pointer;
+    margin-bottom: 16px;
+  }
+  .login-btn:disabled {
+    background-color: #a0aec0;
+    cursor: not-allowed;
+  }
+  .login-input {
+    width: 100%;
+    padding: 11px 12px;
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    font-size: 0.85rem;
+    margin-bottom: 10px;
+    outline: none;
+    box-sizing: border-box;
+    font-family: inherit;
+  }
+  .login-input:focus {
+    border-color: var(--primary-color);
+  }
+  .login-error {
+    color: var(--today-color);
+    font-size: 0.75rem;
+    margin-top: 4px;
+    line-height: 1.45;
+    display: none;
+  }
+
+  /* 임직원현황 컴팩트 카드형 디자인 */
+  #staffList { display:grid !important; grid-template-columns:repeat(2,minmax(0,1fr)); gap:8px; }
+  #staffList .day-event-item { min-height:0 !important; padding:10px 10px !important; border-radius:10px !important; text-align:left; }
+  #staffList .day-event-item-title { font-size:.82rem !important; line-height:1.25 !important; }
+  #staffList .day-event-item-meta { font-size:.68rem !important; line-height:1.3 !important; margin-top:4px; }
+  #staffList .staff-badge { font-size:.55rem !important; padding:1px 4px !important; margin-right:3px !important; }
+  #staffList .staff-phone { font-size:.68rem !important; }
+  #staffList .staff-detail-label { font-size:.62rem !important; }
+  @media (min-width:700px){ #staffList{grid-template-columns:repeat(3,minmax(0,1fr));} }
+  #staffDetailModal, #dayEventsModal { z-index:1700 !important; }
+
+  /* 2026-09-09 UI refinements */
+  .calendar-refresh-btn {
+    display:flex; align-items:center; justify-content:center;
+    width:32px; height:32px; margin:7px 1px 0 auto;
+    padding:0; border:0; background:transparent;
+    color:#1769d2; font-size:1.45rem; line-height:1;
+    font-weight:800; cursor:pointer;
+  }
+  .calendar-refresh-btn:active { transform:rotate(-35deg) scale(.94); }
+  .association-card-head h3 { font-size:1.08rem; }
+  .association-preview { font-size:.84rem; }
+  #staffTabs .month-tab { font-size:.9rem; padding:8px 15px; }
+  #staffList .day-event-item-title { font-size:.88rem; }
+
+
+/* Mobile screen refinement */
+html,body{background:#eef2f6;}
+body{padding:0 10px 18px;box-sizing:border-box;}
+.app-container{max-width:430px!important;margin:0 auto!important;background:#fff;min-height:100vh;box-shadow:0 0 24px rgba(15,45,80,.08);}
+.header{padding:14px 16px!important;}
+.main-content{padding:12px 14px 24px!important;}
+.calendar-wrapper{margin:0 10px 14px!important;border-radius:16px!important;padding:12px 10px 9px!important;}
+.calendar-header{padding:2px 5px 10px!important;}
+.calendar-header h2{font-size:1.05rem!important;}
+.calendar-grid{gap:4px!important;}
+.calendar-day{min-height:48px!important;border-radius:9px!important;padding:4px 3px!important;}
+.schedule-banner{min-height:104px!important;border-radius:14px!important;margin-bottom:10px!important;}
+.schedule-banner-track,.schedule-banner-slide{min-height:104px!important;}
+.schedule-banner-slide{padding:13px 15px 18px!important;}
+.event-card{border-radius:12px!important;padding:10px 12px!important;}
+.association-news{margin-top:14px!important;}
+.news-grid{gap:9px!important;}
+.news-card{border-radius:14px!important;padding:14px 13px!important;min-height:86px!important;}
+.news-card .title{font-size:1rem!important;}
+.news-card .preview{font-size:.8rem!important;line-height:1.45!important;}
+.staff-tabs{gap:6px!important;margin-bottom:10px!important;}
+.staff-tab{min-height:42px!important;padding:9px 6px!important;border-radius:10px!important;font-size:.92rem!important;}
+.screen-content{padding:14px!important;}
+.screen-header{padding:10px 2px 12px!important;}
+.screen-header h2{font-size:1.12rem!important;}
+.back-btn{font-size:0!important;width:40px!important;height:40px!important;}
+.back-btn::before{content:'←';font-size:1.35rem;}
+.calendar-refresh-btn{width:36px!important;height:36px!important;font-size:1.5rem!important;margin-top:1px!important;}
+button,.nav-btn,.action-btn{min-height:44px;}
+@media(max-width:360px){body{padding-left:5px;padding-right:5px}.main-content{padding-left:10px!important;padding-right:10px!important}.calendar-day{min-height:44px!important}.calendar-grid{gap:3px!important}.news-grid{gap:7px!important;}}
+
+/* Final mobile touch-size corrections */
+.logout-btn{min-height:0!important;height:auto!important;line-height:1.2!important;padding:4px 8px!important;font-size:.72rem!important;border-radius:7px!important;display:inline-flex!important;align-items:center!important;justify-content:center!important;box-sizing:border-box!important;}
+.banner-dot{min-height:0!important;width:7px!important;height:7px!important;min-width:7px!important;max-width:7px!important;padding:0!important;flex:0 0 7px!important;}
+.banner-dot.active{width:8px!important;height:8px!important;min-width:8px!important;max-width:8px!important;flex-basis:8px!important;}
+.banner-pause-btn{min-height:0!important;width:26px!important;height:26px!important;min-width:26px!important;max-width:26px!important;padding:0!important;line-height:24px!important;flex:0 0 26px!important;border-radius:50%!important;font-size:.66rem!important;}
+.banner-dots{right:45px!important;bottom:8px!important;height:10px!important;}
+.schedule-banner-slide{padding-bottom:22px!important;}
+.schedule-container{gap:7px!important;padding-bottom:24px!important;}
+.event-card{padding:0!important;}
+.event-header{padding:9px 58px 9px 12px!important;}
+.event-meta{gap:4px!important;margin-bottom:3px!important;}
+.event-date{font-size:.86rem!important;line-height:1.2!important;}
+.event-divider{font-size:.78rem!important;line-height:1.2!important;}
+.event-location{font-size:.75rem!important;line-height:1.2!important;}
+.event-title{font-size:.94rem!important;line-height:1.28!important;margin-top:1px!important;}
+.card-actions{top:7px!important;right:6px!important;}
+.icon-btn{width:27px!important;height:27px!important;min-height:27px!important;}
+@media(max-width:360px){
+  .logout-btn{font-size:.68rem!important;padding:3px 7px!important;}
+  .event-header{padding:8px 54px 8px 10px!important;}
+  .event-title{font-size:.9rem!important;}
+  .event-date{font-size:.82rem!important;}
+  .event-location{font-size:.72rem!important;}
+  .banner-pause-btn{width:24px!important;height:24px!important;min-width:24px!important;max-width:24px!important;flex-basis:24px!important;line-height:22px!important;}
+  .banner-dots{right:41px!important;}
+}
+
+/* 2026-09-09 final mobile layout refinement */
+.cal-header{display:grid!important;grid-template-columns:32px minmax(0,1fr) auto!important;align-items:center!important;column-gap:6px!important;margin-bottom:8px!important;}
+.cal-header > #calMonthDisplay{min-width:0!important;text-align:center!important;white-space:nowrap!important;}
+.cal-header-right{display:flex!important;align-items:center!important;gap:5px!important;}
+.cal-header .cal-nav-btn{width:30px!important;height:30px!important;min-width:30px!important;min-height:30px!important;}
+.calendar-refresh-btn{width:30px!important;height:30px!important;min-width:30px!important;min-height:30px!important;margin:0!important;padding:0!important;font-size:1.28rem!important;flex:0 0 30px!important;}
+.calendar-wrapper{padding:10px 10px 9px!important;}
+
+.association-news-grid{grid-template-columns:1fr!important;grid-template-rows:repeat(4,minmax(0,1fr))!important;gap:10px!important;padding:12px 12px 18px!important;overflow:hidden!important;flex:1!important;min-height:0!important;}
+.association-news-card{min-height:0!important;height:100%!important;padding:0!important;border-radius:16px!important;display:flex!important;align-items:center!important;justify-content:center!important;position:relative!important;}
+.association-card-title{width:100%!important;display:flex!important;align-items:center!important;justify-content:center!important;gap:10px!important;padding:18px!important;}
+.association-card-title h3{font-size:1.12rem!important;margin:0!important;color:#12345a!important;font-weight:800!important;flex:0 1 auto!important;}
+.association-card-icon{width:42px!important;height:42px!important;font-size:1.5rem!important;flex:0 0 42px!important;}
+.association-more{position:absolute!important;right:16px!important;font-size:1.6rem!important;line-height:1!important;}
+.association-coming-soon{background:#f8fafc!important;border-style:dashed!important;cursor:default!important;}
+.association-coming-soon .association-card-title h3{color:#94a3b8!important;}
+.association-coming-soon .association-card-icon{background:#eef2f7!important;filter:grayscale(.2)!important;}
+.association-preview,.association-card-head{display:none!important;}
+
+/* 2026-09-09 mobile polish: calendar + association news */
+.cal-header{
+  position:relative!important;
+  display:flex!important;
+  align-items:center!important;
+  justify-content:center!important;
+  min-height:32px!important;
+  margin-bottom:8px!important;
+  padding:0 68px!important;
+}
+.cal-header > #calMonthDisplay{
+  position:relative!important;
+  left:auto!important;
+  text-align:center!important;
+  font-size:1.06rem!important;
+  font-weight:800!important;
+  white-space:nowrap!important;
+  line-height:1.2!important;
+}
+.cal-header > .cal-nav-btn:first-child{
+  position:absolute!important;
+  left:3px!important;
+  top:50%!important;
+  transform:translateY(-50%)!important;
+}
+.cal-header-right{
+  position:absolute!important;
+  right:3px!important;
+  top:50%!important;
+  transform:translateY(-50%)!important;
+  display:flex!important;
+  align-items:center!important;
+  gap:2px!important;
+}
+.cal-header .cal-nav-btn,
+.cal-header .calendar-refresh-btn{
+  width:30px!important;
+  height:30px!important;
+  min-width:30px!important;
+  min-height:30px!important;
+  padding:0!important;
+  margin:0!important;
+  border:0!important;
+  background:transparent!important;
+  box-shadow:none!important;
+  border-radius:50%!important;
+}
+.cal-header .cal-nav-btn{
+  color:#1769d2!important;
+  font-size:1.12rem!important;
+}
+.cal-header .cal-nav-btn:active{
+  background:#edf5ff!important;
+}
+.cal-header .calendar-refresh-btn{
+  color:#1769d2!important;
+  font-size:1.28rem!important;
+}
+
+/* 일정 제목과 목록 사이를 컴팩트하게 */
+.schedule-container{padding-top:0!important;gap:5px!important;}
+.schedule-section-header{margin-top:6px!important;padding-top:3px!important;padding-bottom:6px!important;}
+
+/* 협회공지: 실제 휴대폰 화면에 맞춘 카드형 전체 화면 */
+  /* ===== KODA 임직원현황 : 기존 헤더 유지 + 모바일 최적화 ===== */
+  #staffScreen{
+    display:none; position:fixed; inset:0; z-index:1500;
+    overflow-y:auto; -webkit-overflow-scrolling:touch;
+    background:#f4f7fb; padding:0 10px 18px; box-sizing:border-box;
+  }
+  #staffScreen::after{content:'';display:block;min-height:18px;}
+  #staffScreen .staff-mobile-header,
+  #staffScreen .fullscreen-tabs,
+  #staffScreen .fullscreen-content{
+    width:100%; max-width:430px; margin-left:auto; margin-right:auto;
+  }
+  #staffScreen .staff-mobile-header{
+    height:54px; position:sticky; top:0; z-index:30;
+    background:#fff; border-bottom:1px solid #edf2f7;
+    box-shadow:0 3px 14px rgba(25,67,110,.055);
+    display:grid; grid-template-columns:54px minmax(0,1fr) 72px;
+    align-items:center; padding:0 16px; box-sizing:border-box;
+  }
+  #staffScreen .fullscreen-back-btn{
+    width:42px; height:42px; min-height:42px; padding:0;
+    display:flex; align-items:center; justify-content:center;
+    border:0; border-radius:14px; background:#f1f6fd; color:#1769d2;
+    font-size:1.55rem; font-weight:700; line-height:1;
+  }
+  #staffScreen .fullscreen-title{
+    display:block; text-align:center; color:#173f70;
+    font-size:1.12rem; font-weight:850; letter-spacing:-.045em;
+    white-space:nowrap;
+  }
+  #staffScreen .staff-date-weather,
+  #staffScreen .staff-header-logo{display:none;}
+  #staffScreen .fullscreen-tabs{
+    display:grid; grid-template-columns:repeat(5,minmax(0,1fr));
+    gap:5px; padding:12px 0 0; box-sizing:border-box;
+  }
+  #staffScreen .month-tab{
+    min-width:0; width:100%; height:56px; min-height:56px; padding:0 2px;
+    border:1px solid #dce6f2; border-radius:15px; background:#fff;
+    color:#5d7089; font-size:.88rem; font-weight:850; letter-spacing:-.055em;
+    box-shadow:0 3px 11px rgba(24,71,120,.05); white-space:nowrap;
+  }
+  #staffScreen .month-tab.active{
+    color:#fff; border-color:#1769d2;
+    background:linear-gradient(135deg,#1769d2,#3182ce);
+    box-shadow:0 5px 13px rgba(23,105,210,.18);
+  }
+  #staffScreen .fullscreen-content{box-sizing:border-box;padding:15px 0 26px;}
+  #staffScreen .staff-content-heading{
+    display:flex;align-items:flex-end;justify-content:space-between;gap:10px;
+    margin:2px 4px 10px;
+  }
+  #staffScreen .staff-content-title{font-size:1.02rem;font-weight:850;color:#183b63;letter-spacing:-.04em;}
+  #staffScreen .staff-content-count{font-size:.7rem;font-weight:750;color:#8a9aaf;white-space:nowrap;}
+  #staffScreen .staff-search-wrap{position:relative;margin:0 0 11px;}
+  #staffScreen .staff-search{
+    width:100%; height:46px; box-sizing:border-box; border:1px solid #dce6f2;
+    border-radius:14px; background:#fff; padding:0 42px 0 42px;
+    color:#1d3858; font-size:.86rem; font-weight:650; outline:none;
+    box-shadow:0 3px 11px rgba(24,71,120,.045);
+  }
+  #staffScreen .staff-search:focus{border-color:#6fa4df;box-shadow:0 0 0 3px rgba(23,105,210,.08);}
+  #staffScreen .staff-search::placeholder{color:#9aaabd;font-weight:600;}
+  #staffScreen .staff-search-icon{
+    position:absolute;left:15px;top:50%;transform:translateY(-50%);
+    color:#1769d2;font-size:1.05rem;pointer-events:none;
+  }
+  #staffScreen .staff-search-clear{
+    display:none;position:absolute;right:9px;top:50%;transform:translateY(-50%);
+    width:30px;height:30px;border:0;border-radius:50%;background:#f0f4f8;color:#718096;
+    font-size:.9rem;line-height:30px;padding:0;
+  }
+  #staffScreen .staff-search-clear.show{display:block;}
+  #staffList{
+    display:grid !important; grid-template-columns:repeat(2,minmax(0,1fr));
+    gap:9px; width:100%; box-sizing:border-box;
+  }
+  #staffList .day-event-item{
+    min-width:0; min-height:94px !important; box-sizing:border-box;
+    padding:13px 11px !important; border:1px solid #e2eaf4 !important;
+    border-radius:15px !important; background:#fff;
+    box-shadow:0 4px 12px rgba(28,70,120,.055);
+  }
+  #staffList .day-event-item:active{transform:scale(.985);background:#f8fbff;}
+  #staffList .day-event-item-title{display:flex;align-items:center;min-width:0;font-size:.86rem !important;line-height:1.3 !important;color:#17385f;white-space:nowrap;overflow:hidden;}
+  #staffList .day-event-item-title strong{min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-size:1rem;}
+  #staffList .day-event-item-meta{margin-top:6px !important;color:#657a96;font-size:.72rem !important;line-height:1.3 !important;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+  #staffList .staff-phone{margin-top:5px;color:#9aaabd;font-size:.67rem !important;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+  #staffList .staff-badge{flex-shrink:0;font-size:.57rem !important;font-weight:800;padding:2px 5px !important;margin-right:5px !important;border-radius:999px;background:#edf5ff;color:#1769d2;}
+  #staffList .staff-badge.executive{background:#e8f1ff;color:#0756c9;}
+  #staffScreen .loading-msg,#staffScreen .no-data{
+    grid-column:1 / -1;padding:30px 12px;text-align:center;color:#7a8da7;font-size:.78rem;background:#fff;border-radius:15px;border:1px solid #e2eaf4;
+  }
+  @media(max-width:360px){
+    #staffScreen{padding:0 6px 14px;}
+    #staffScreen .staff-mobile-header{height:68px;padding:0 10px;grid-template-columns:48px minmax(0,1fr) 64px;}
+    #staffScreen .fullscreen-back-btn{width:40px;height:40px;min-height:40px;border-radius:13px;}
+    #staffScreen .fullscreen-title{font-size:1rem;}
+    #staffScreen .fullscreen-tabs{gap:5px;padding-top:9px;}
+    #staffScreen .month-tab{height:50px;min-height:50px;font-size:.84rem;border-radius:13px;}
+    #staffScreen .fullscreen-content{padding-top:13px;}
+    #staffList{gap:6px;}
+    #staffList .day-event-item{min-height:88px !important;padding:11px 8px !important;border-radius:13px !important;}
+    #staffList .day-event-item-title strong{font-size:.9rem;}
+    #staffList .day-event-item-meta{font-size:.64rem !important;}
+    #staffList .staff-phone{font-size:.61rem !important;}
+  }
+
+  /* ===== 임직원 미리보기 한 줄 정보 ===== */
+  #staffScreen #staffTabs{display:grid !important;grid-template-columns:repeat(5,minmax(0,1fr)) !important;visibility:visible !important;opacity:1 !important;}
+  #staffScreen #staffTabs .month-tab{display:flex !important;align-items:center;justify-content:center;visibility:visible !important;opacity:1 !important;}
+  #staffList .staff-main-line{display:flex !important;align-items:baseline !important;gap:4px !important;min-width:0 !important;overflow:hidden !important;white-space:nowrap !important;}
+  #staffList .staff-main-line .staff-badge{margin-right:1px !important;}
+  #staffList .staff-main-line strong{flex:0 0 auto !important;max-width:38% !important;color:#1769d2 !important;font-size:.9rem !important;font-weight:850 !important;overflow:hidden;text-overflow:ellipsis;}
+  #staffList .staff-org-role{flex:1 1 auto;min-width:0;color:#47698f;font-size:.67rem;font-weight:700;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+  #staffList .staff-phone{margin-top:7px !important;color:#98aabd;font-size:.68rem !important;}
+  @media(max-width:360px){
+    #staffList .staff-main-line{gap:3px !important;}
+    #staffList .staff-main-line strong{font-size:.82rem !important;max-width:34% !important;}
+    #staffList .staff-org-role{font-size:.61rem !important;}
+    #staffList .staff-badge{font-size:.5rem !important;padding:2px 4px !important;}
+  }
+
+  /* 메인 헤더: 한국디벨로퍼협회 2줄 + 초소형 도시 실루엣 */
+  .app-container > .header .header-left-brand{left:29px;top:10px;gap:1px;}
+  .app-container > .header .brand-title-ko{color:#173f70;font-size:.72rem;font-weight:900;letter-spacing:-.055em;line-height:1.2;}
+  .app-container > .header .brand-title-en{color:#1769d2;font-size:.39rem;font-weight:900;letter-spacing:.065em;line-height:1.2;white-space:nowrap;}
+  .app-container > .header .brand-line{width:86px;height:1.5px;margin-top:3px;background:linear-gradient(90deg,#1769d2,#c7ddf3 78%,transparent);}
+  .app-container > .header .city-silhouette{display:flex;align-items:flex-end;gap:2px;height:10px;margin-top:0;width:108px;opacity:.5;}
+  .app-container > .header .city-silhouette i{display:block;width:5px;background:linear-gradient(180deg,#b8cee5,#e2ebf5);border-radius:1px 1px 0 0;}
+  .app-container > .header .city-silhouette i:nth-child(1){height:5px;width:4px}.app-container > .header .city-silhouette i:nth-child(2){height:8px;width:6px}.app-container > .header .city-silhouette i:nth-child(3){height:4px;width:8px}.app-container > .header .city-silhouette i:nth-child(4){height:10px;width:6px}.app-container > .header .city-silhouette i:nth-child(5){height:6px;width:9px}.app-container > .header .city-silhouette i:nth-child(6){height:9px;width:5px}.app-container > .header .city-silhouette i:nth-child(7){height:4px;width:7px}
+  @media(max-width:360px){.app-container > .header .header-left-brand{left:24px}.app-container > .header .brand-title-ko{font-size:.68rem}.app-container > .header .brand-title-en{font-size:.35rem}.app-container > .header .city-silhouette{width:92px;transform:scale(.9);transform-origin:left bottom}}
+
+  /* 임직원 미리보기: 이름 아래 전화번호, 오른쪽 소속·직위 */
+  #staffScreen #staffTabs .month-tab{height:42px!important;min-height:42px!important;padding:0 3px!important;}
+  #staffList .day-event-item.staff-card-compact{min-height:78px!important;padding:10px 10px!important;}
+  #staffList .staff-main-line{display:grid!important;grid-template-columns:auto auto minmax(0,1fr)!important;align-items:start!important;column-gap:5px!important;min-width:0!important;overflow:hidden!important;white-space:normal!important;}
+  #staffList .staff-main-line .staff-badge{align-self:start!important;margin-top:1px!important;}
+  #staffList .staff-name-block{min-width:0!important;display:flex!important;flex-direction:column!important;align-items:flex-start!important;}
+  #staffList .staff-main-line strong{display:block!important;max-width:100%!important;overflow:hidden!important;text-overflow:ellipsis!important;white-space:nowrap!important;color:#1769d2!important;font-size:.91rem!important;font-weight:850!important;line-height:1.2!important;}
+  #staffList .staff-name-block .staff-phone{margin:3px 0 0!important;color:#8298b1!important;font-size:.66rem!important;font-weight:650!important;line-height:1.15!important;white-space:nowrap!important;}
+  #staffList .staff-org-role{min-width:0!important;overflow:hidden!important;text-overflow:ellipsis!important;white-space:nowrap!important;color:#47698f!important;font-size:.67rem!important;font-weight:700!important;line-height:1.25!important;padding-top:2px!important;}
+  @media(max-width:360px){
+    #staffScreen #staffTabs .month-tab{height:39px!important;min-height:39px!important;font-size:.77rem!important;}
+    #staffList .day-event-item.staff-card-compact{min-height:72px!important;padding:9px 8px!important;}
+    #staffList .staff-main-line{column-gap:4px!important;}
+    #staffList .staff-main-line strong{font-size:.82rem!important;}
+    #staffList .staff-name-block .staff-phone{font-size:.59rem!important;}
+    #staffList .staff-org-role{font-size:.59rem!important;}
+  }
+
+  /* ===== 첫 페이지 헤더 새 디자인 ===== */
+  .app-container > .header{
+    position:relative; height:78px; box-sizing:border-box;
+    display:grid; grid-template-columns:1fr auto 1fr; align-items:center;
+    padding:8px 18px 5px !important; background:#fff;
+    border-bottom:0;
+  }
+  .app-container > .header::after{
+    content:''; position:absolute; left:18px; right:18px; bottom:0; height:1px;
+    background:linear-gradient(90deg,transparent,#dce8f5 18%,#dce8f5 82%,transparent);
+  }
+  .app-container > .header::before{
+    content:''; position:absolute; left:18px; top:18px; width:3px; height:38px;
+    border-radius:3px; background:linear-gradient(180deg,#1769d2,#9cc4e9);
+  }
+  .app-container > .header .header-left-brand{
+    position:absolute; left:29px; top:13px; display:flex; flex-direction:column;
+    align-items:flex-start; gap:0; pointer-events:none;
+  }
+  .app-container > .header .brand-kicker{
+    color:#1769d2; font-size:.42rem; font-weight:900; letter-spacing:.22em; line-height:1.1;
+  }
+  .app-container > .header .brand-title{
+    color:#173f70; font-size:.72rem; font-weight:900; letter-spacing:.11em; line-height:1.15;
+  }
+  .app-container > .header .brand-subtitle{
+    color:#8aa0b8; font-size:.39rem; font-weight:800; letter-spacing:.075em; line-height:1.25; margin-top:2px;
+  }
+  .app-container > .header .brand-line{
+    width:52px; height:2px; margin-top:5px; border-radius:2px; background:linear-gradient(90deg,#1769d2,#c7ddf3);
+  }
+  .app-container > .header img{
+    grid-column:2; height:43px; max-width:150px; width:auto; object-fit:contain;
+  }
+  .app-container > .header .header-right{
+    position:static; grid-column:3; justify-self:end; transform:none;
+    display:flex; align-items:center; gap:5px;
+  }
+  .app-container > .header .install-btn{
+    display:none; border:0; background:transparent; color:#1769d2;
+    padding:0 2px; font-size:.66rem; font-weight:850; line-height:1.2;
+    letter-spacing:-.03em; cursor:pointer;
+  }
+  .app-container > .header .header-right{
+    flex-direction:column; align-items:flex-end; justify-content:center;
+    gap:2px; padding-top:9px;
+  }
+  .app-container > .header .logout-btn{transform:none !important;}
+  .app-container > .header .logout-btn{
+    border:0 !important; background:transparent !important; color:#73849a !important;
+    padding:6px 2px !important; font-size:.74rem !important; font-weight:750 !important;
+    letter-spacing:-.03em;
+    transform:translateY(10px);
+  }
+  .app-container > .today-weather-bar{
+    width:calc(100% - 36px); margin:0 18px 3px; padding:7px 0 0;
+  }
+  .app-container > .today-weather-bar .today-date{font-size:1.16rem;font-weight:850;color:#173f70;}
+  .app-container > .today-weather-bar .today-weekday{font-size:.88rem;font-weight:750;color:#617892;}
+  .app-container > .today-weather-bar .today-weather{font-size:.82rem;font-weight:750;color:#617892;}
+  .app-container > .today-weather-bar .today-weather-icon{font-size:1.15rem;}
+  .app-container > .today-weather-bar .today-weather-temp{font-size:.98rem;color:#173f70;font-weight:850;}
+  @media(max-width:360px){
+    .app-container > .header{height:70px;padding:7px 13px 4px !important;}
+    .app-container > .header::before{left:13px;top:16px;height:34px;}
+    .app-container > .header .header-left-brand{left:22px;top:12px;}
+    .app-container > .header .brand-kicker{font-size:.36rem;}
+    .app-container > .header .brand-title{font-size:.61rem;}
+    .app-container > .header .brand-subtitle{font-size:.33rem;}
+    .app-container > .header .brand-line{width:44px;margin-top:4px;}
+    .app-container > .header::after{left:13px;right:13px;}
+    .app-container > .header img{height:38px;max-width:128px;}
+    .app-container > .header .logout-btn{font-size:.68rem !important;}
+    .app-container > .today-weather-bar{width:calc(100% - 26px);margin:0 13px 8px;padding-top:7px;}
+    .app-container > .today-weather-bar .today-date{font-size:1rem;}
+    .app-container > .today-weather-bar .today-weekday{font-size:.76rem;}
+    .app-container > .today-weather-bar .today-weather{font-size:.7rem;}
+  }
+
+  /* 최종 요청 반영 */
+  .app-container > .header .header-right{
+    flex-direction:column!important; align-items:flex-end!important; justify-content:center!important;
+    gap:1px!important; padding-top:7px!important;
+  }
+  .app-container > .header .logout-btn{transform:translateY(7px)!important;}
+  .app-container > .header .install-btn{order:1!important;}
+  .app-container > .header .logout-btn{order:2!important;}
+  .app-container > .header .header-left-brand{top:10px!important;}
+  .app-container > .header .brand-title-ko{display:block!important;color:#173f70!important;font-size:.72rem!important;font-weight:900!important;letter-spacing:-.055em!important;line-height:1.18!important;}
+  .app-container > .header .brand-title-en{display:block!important;color:#1769d2!important;font-size:.39rem!important;font-weight:900!important;letter-spacing:.065em!important;line-height:1.2!important;white-space:nowrap!important;}
+  .app-container > .header .brand-line{width:88px!important;height:1.5px!important;margin-top:3px!important;}
+  .app-container > .header .city-silhouette{display:flex!important;align-items:flex-end!important;gap:2px!important;height:10px!important;margin-top:0!important;width:108px!important;opacity:.48!important;}
+  .app-container > .header .city-silhouette i{display:block!important;background:linear-gradient(180deg,#b8cee5,#e2ebf5)!important;border-radius:1px 1px 0 0!important;}
+  #staffScreen #staffTabs .month-tab{height:42px!important;min-height:42px!important;padding:0 3px!important;}
+  #staffList .day-event-item.staff-card-compact{min-height:78px!important;padding:10px 10px!important;}
+  #staffList .staff-main-line{display:grid!important;grid-template-columns:auto auto minmax(0,1fr)!important;align-items:start!important;column-gap:5px!important;min-width:0!important;overflow:hidden!important;white-space:normal!important;}
+  #staffList .staff-main-line .staff-badge{align-self:start!important;margin-top:1px!important;}
+  #staffList .staff-name-block{min-width:0!important;display:flex!important;flex-direction:column!important;align-items:flex-start!important;}
+  #staffList .staff-main-line strong{display:block!important;max-width:100%!important;overflow:hidden!important;text-overflow:ellipsis!important;white-space:nowrap!important;color:#1769d2!important;font-size:.91rem!important;font-weight:850!important;line-height:1.2!important;}
+  #staffList .staff-name-block .staff-phone{margin:3px 0 0!important;color:#8298b1!important;font-size:.66rem!important;font-weight:650!important;line-height:1.15!important;white-space:nowrap!important;}
+  #staffList .staff-org-role{min-width:0!important;overflow:hidden!important;text-overflow:ellipsis!important;white-space:nowrap!important;color:#47698f!important;font-size:.67rem!important;font-weight:700!important;line-height:1.25!important;padding-top:2px!important;}
+  @media(max-width:360px){
+    .app-container > .header .header-left-brand{left:24px!important;top:9px!important;}
+    .app-container > .header .brand-title-ko{font-size:.68rem!important;}
+    .app-container > .header .brand-title-en{font-size:.35rem!important;}
+    .app-container > .header .city-silhouette{width:92px!important;transform:scale(.9);transform-origin:left bottom;}
+    .app-container > .header .logout-btn{transform:translateY(5px)!important;}
+    #staffScreen #staffTabs .month-tab{height:39px!important;min-height:39px!important;font-size:.77rem!important;}
+    #staffList .day-event-item.staff-card-compact{min-height:72px!important;padding:9px 8px!important;}
+    #staffList .staff-main-line{column-gap:4px!important;}
+    #staffList .staff-main-line strong{font-size:.82rem!important;}
+    #staffList .staff-name-block .staff-phone{font-size:.59rem!important;}
+    #staffList .staff-org-role{font-size:.59rem!important;}
+  }
+
+#newsDetailContent a{color:#2563eb;text-decoration:underline;word-break:break-all}
+#newsDetailThumbnailLink{display:block}
+#newsDetailThumbnail{display:block;max-width:100%;height:auto}
+
+  /* 사무국/회원사 그룹 구분선 및 뱃지 수량 */
+  #staffList.executive-list .executive-group-title em,
+  #staffList.member-company-list .member-group-title em{
+    font-style:normal;font-weight:800;opacity:.9;
+  }
+  #staffList.member-company-list{display:block !important;}
+  #staffList.member-company-list .member-badge-group{margin-bottom:12px;}
+  #staffList.member-company-list .member-badge-group:last-child{margin-bottom:0;}
+  #staffList.member-company-list .member-group-title{
+    display:flex;align-items:center;gap:8px;margin:2px 0 7px;
+    font-size:.72rem;font-weight:850;color:#315b8d;
+  }
+  #staffList.member-company-list .member-group-title::after{
+    content:"";flex:1;height:1px;background:#d9e6f4;
+  }
+  #staffList.member-company-list .member-group-title .staff-badge{margin:0 !important;}
+  #staffList.member-company-list .member-group-cards{display:grid;grid-template-columns:1fr;gap:8px;}
+
+  /* 임직원현황 탭 인원수: 본문보다 한 포인트 작게 */
+  #staffTabs .month-tab .tab-count{font-size:.78em;font-weight:700;opacity:.9;margin-left:2px;}
+  /* 사무국도 7대 임원처럼 이름 왼쪽에 KODA 뱃지 복원 */
+  #staffList.executive-list .office-badge-group .staff-main-line{display:grid!important;grid-template-columns:auto minmax(0,1fr)!important;align-items:start!important;column-gap:5px!important;}
+  #staffList.executive-list .office-badge-group .staff-main-line > .staff-badge{display:inline-block!important;}
+
+/* ===== 2026-09-16 회의자료 UI : KODA 임직원현황과 동일한 버튼/헤더 규격 ===== */
+#meetingScreen{
+  display:none;
+  position:fixed;
+  inset:0;
+  z-index:1500;
+  overflow-y:auto;
+  -webkit-overflow-scrolling:touch;
+  background:#f4f7fb;
+  padding:0 10px 18px;
+  box-sizing:border-box;
+}
+#meetingScreen::after{content:'';display:block;min-height:18px;}
+#meetingScreen .staff-mobile-header,
+#meetingScreen .fullscreen-tabs,
+#meetingScreen .fullscreen-content{
+  width:100%;
+  max-width:430px;
+  margin-left:auto;
+  margin-right:auto;
+}
+#meetingScreen .staff-mobile-header{
+  height:54px;
+  position:sticky;
+  top:0;
+  z-index:30;
+  background:#fff;
+  border-bottom:1px solid #edf2f7;
+  box-shadow:0 3px 14px rgba(25,67,110,.055);
+  display:grid;
+  grid-template-columns:54px minmax(0,1fr) 72px;
+  align-items:center;
+  padding:0 16px;
+  box-sizing:border-box;
+}
+#meetingScreen .fullscreen-back-btn{
+  width:42px;
+  height:42px;
+  min-height:42px;
+  padding:0;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  border:0;
+  border-radius:14px;
+  background:#f1f6fd;
+  color:#1769d2;
+  font-size:1.55rem;
+  font-weight:700;
+  line-height:1;
+}
+#meetingScreen .fullscreen-title{
+  display:block;
+  text-align:center;
+  color:#173f70;
+  font-size:1.12rem;
+  font-weight:850;
+  letter-spacing:-.045em;
+  white-space:nowrap;
+}
+#meetingScreen .fullscreen-tabs{
+  display:grid;
+  grid-template-columns:repeat(5,minmax(0,1fr));
+  gap:5px;
+  padding:12px 0 0;
+  box-sizing:border-box;
+  overflow:visible;
+}
+#meetingScreen .month-tab{
+  min-width:0;
+  width:100%;
+  height:56px;
+  min-height:56px;
+  padding:0 2px;
+  border:1px solid #dce6f2;
+  border-radius:15px;
+  background:#fff;
+  color:#5d7089;
+  font-size:.88rem;
+  font-weight:850;
+  letter-spacing:-.055em;
+  box-shadow:0 3px 11px rgba(24,71,120,.05);
+  white-space:nowrap;
+}
+#meetingScreen .month-tab.active{
+  color:#fff;
+  border-color:#1769d2;
+  background:linear-gradient(135deg,#1769d2,#3182ce);
+  box-shadow:0 5px 13px rgba(23,105,210,.18);
+}
+#meetingScreen .fullscreen-content{
+  box-sizing:border-box;
+  padding:15px 0 26px !important;
+}
+/* 임직원현황과 같은 제목/상하 여백 */
+#meetingScreen .meeting-content-heading{
+  display:flex;
+  align-items:flex-end;
+  justify-content:space-between;
+  gap:10px;
+  margin:2px 4px 10px;
+}
+#meetingScreen #meetingList{
+  width:100%;
+}
+#meetingScreen .meeting-empty{
+  background:#fff;
+  border:1px dashed #dce6f2;
+  border-radius:14px;
+  padding:24px 14px;
+  text-align:center;
+  color:#8a9aaf;
+  font-size:.82rem;
+  line-height:1.55;
+}
+/* 화면 폭이 좁아도 5개 버튼이 임직원현황과 동일한 한 줄 규격을 유지 */
+@media(max-width:360px){
+  #meetingScreen .staff-mobile-header{padding:0 12px;}
+  #meetingScreen .fullscreen-tabs{gap:4px;}
+  #meetingScreen .month-tab{
+    font-size:.76rem;
+    letter-spacing:-.07em;
+    padding:0 1px;
+    border-radius:13px;
+  }
+}
+
+
+/* 2026-09-20: 긴급공지 + 정부국회 페이지 */
+.emergency-notice-wrap{
+  width:calc(100% - 20px);
+  margin:0 10px 10px;
+  display:none;
+}
+.emergency-notice{
+  position:relative;
+  width:100%;
+  height:40px;
+  border:2px solid transparent;
+  border-radius:12px;
+  background:
+    linear-gradient(#f1f3f5,#f1f3f5) padding-box,
+    linear-gradient(90deg,#c62828 0%,#8b4513 52%,#c62828 100%) border-box;
+  box-shadow:0 4px 12px rgba(90,45,20,.08);
+  display:flex;
+  align-items:center;
+  gap:7px;
+  padding:0 10px;
+  overflow:hidden;
+}
+.emergency-icon{font-size:.9rem;flex:0 0 auto;line-height:1;}
+.emergency-badge{
+  flex:0 0 auto;
+  padding:4px 8px;
+  border-radius:999px;
+  background:linear-gradient(135deg,#c62828,#8b4513);
+  color:#fff;
+  font-size:.68rem;
+  font-weight:850;
+  line-height:1;
+  white-space:nowrap;
+}
+.emergency-marquee{
+  min-width:0;
+  flex:1 1 auto;
+  overflow:hidden;
+  white-space:nowrap;
+  color:#9b321e;
+  font-size:.84rem;
+  font-weight:800;
+  letter-spacing:-.035em;
+}
+.emergency-badge,
+.emergency-marquee{align-self:center;}
+.emergency-marquee-inner{
+  display:inline-block;
+  padding-left:100%;
+  animation:emergencyMarquee 15s linear infinite;
+}
+.emergency-marquee-inner.no-marquee{
+  padding-left:0;
+  animation:none;
+}
+@keyframes emergencyMarquee{
+  0%{transform:translateX(0)}
+  100%{transform:translateX(-100%)}
+}
+
+
+/* 2026-09-21: 중요공지 바로 아래 GIF 1행 2열 */
+.employee-gif-notice-wrap{width:calc(100% - 20px);margin:8px 10px 12px;display:none;}
+.employee-gif-notice-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;width:100%;}
+.employee-gif-notice-card{min-width:0;border:0;background:#fff;padding:0;margin:0;text-align:left;cursor:pointer;overflow:hidden;}
+.employee-gif-notice-badge-line{display:flex;align-items:center;width:100%;height:22px;margin:0 0 6px;}
+.employee-gif-notice-badge{display:inline-flex;align-items:center;max-width:72%;height:20px;padding:0 7px;border-radius:10px;background:#f1f4f7;color:#59636e;font-size:.59rem;font-weight:800;line-height:1;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.employee-gif-notice-badge-divider{flex:1;height:1px;margin-left:7px;background:#e7ebef;}
+.employee-gif-notice-media{display:block;width:100%;aspect-ratio:16 / 9;object-fit:cover;border-radius:8px;background:#eef2f6;border:1px solid #e3e9f1;}
+.employee-gif-notice-media.is-broken{display:none;}
+.employee-gif-notice-title{display:-webkit-box;-webkit-box-orient:vertical;-webkit-line-clamp:2;overflow:hidden;margin-top:6px;padding:0 2px;color:#1a202c;font-size:.76rem;font-weight:800;line-height:1.35;word-break:keep-all;}
+.employee-gif-notice-card:active .employee-gif-notice-media{transform:scale(.985);}
+@media(max-width:360px){.employee-gif-notice-grid{gap:6px;}.employee-gif-notice-title{font-size:.7rem;}}
+
+</style>
+<style id="final-staff-header-fixes">
+/* 최종 UI 보정 */
+.app-container > .header .header-left-brand{
+  top:18px!important;
+  left:29px!important;
+  gap:1px!important;
+}
+.app-container > .header .brand-title-ko{
+  line-height:1.15!important;
+}
+.app-container > .header .brand-title-en{
+  line-height:1.05!important;
+  letter-spacing:.055em!important;
+  font-size:.36rem!important;
+}
+.app-container > .header .brand-line{margin-top:3px!important;}
+.app-container > .header .city-silhouette{
+  position:absolute!important;
+  left:-2px!important;
+  top:27px!important;
+  width:112px!important;
+  height:20px!important;
+  margin:0!important;
+  opacity:.22!important;
+  z-index:0!important;
+  pointer-events:none!important;
+}
+.app-container > .header .header-left-brand > .brand-title-ko,
+.app-container > .header .header-left-brand > .brand-title-en,
+.app-container > .header .header-left-brand > .brand-line{position:relative;z-index:2;}
+
+#staffScreen .staff-content-heading{display:none!important;}
+#staffScreen .fullscreen-tabs{display:grid!important;visibility:visible!important;opacity:1!important;}
+#staffScreen #staffTabs{display:grid!important;grid-template-columns:repeat(5,minmax(0,1fr))!important;visibility:visible!important;opacity:1!important;}
+#staffScreen #staffTabs .month-tab{display:flex!important;visibility:visible!important;opacity:1!important;}
+#staffList .staff-main-line{
+  display:grid!important;
+  grid-template-columns:auto minmax(0,1fr)!important;
+  align-items:start!important;
+  column-gap:6px!important;
+  min-width:0!important;
+}
+#staffList .staff-info-block{
+  min-width:0!important;
+  display:flex!important;
+  flex-direction:column!important;
+  align-items:flex-start!important;
+}
+#staffList .staff-name-role{
+  min-width:0!important; width:100%!important;
+  display:flex!important; align-items:baseline!important; gap:6px!important;
+  white-space:nowrap!important; overflow:hidden!important;
+}
+#staffList .staff-name-role strong{
+  flex:0 0 auto!important; max-width:38%!important;
+  overflow:hidden!important; text-overflow:ellipsis!important; white-space:nowrap!important;
+}
+#staffList .staff-name-role .staff-org-role{
+  flex:1 1 auto!important; min-width:0!important;
+  overflow:hidden!important; text-overflow:ellipsis!important; white-space:nowrap!important;
+  padding-top:0!important; line-height:1.2!important;
+}
+#staffList .staff-info-block .staff-phone{
+  margin:2px 0 0!important; line-height:1.05!important;
+}
+#staffList .day-event-item.staff-card-compact{
+  min-height:0!important; height:auto!important;
+  padding:7px 10px!important;
+  margin-bottom:5px!important;
+}
+@media(max-width:360px){
+  .app-container > .header .header-left-brand{left:25px!important;top:18px!important;}
+  .app-container > .header .brand-title-ko{font-size:.66rem!important;}
+  .app-container > .header .brand-title-en{font-size:.33rem!important;}
+  #staffList .staff-name-role{gap:4px!important;}
+}
+</style>
+<style id="koda-final-overlap-fix">
+/* 최종 헤더/임직원 탭 고정 보정 */
+.app-container > .header .header-left-brand{left:29px!important;top:10px!important;align-items:flex-start!important;gap:0!important;}
+.app-container > .header .brand-title-ko{font-size:.72rem!important;line-height:1.15!important;}
+.app-container > .header .brand-title-en{font-size:.44rem!important;line-height:1.08!important;letter-spacing:.045em!important;margin:0!important;display:block!important;}
+.app-container > .header .brand-line{display:none!important;}
+.app-container > .header .city-silhouette{margin-top:2px!important;}
+
+/* 임직원현황: 헤더 → 5개 탭 → 검색창 순서와 간격을 절대 고정 */
+#staffScreen{display:none;flex-direction:column!important;overflow:hidden!important;}
+#staffScreen .staff-mobile-header{position:relative!important;flex:0 0 auto!important;height:54px!important;min-height:54px!important;display:flex!important;align-items:center!important;padding:0 15px!important;}
+#staffScreen #staffTabs{position:relative!important;top:auto!important;left:auto!important;right:auto!important;flex:0 0 54px!important;height:54px!important;min-height:54px!important;width:100%!important;display:grid!important;grid-template-columns:repeat(5,minmax(0,1fr))!important;gap:5px!important;padding:7px 10px!important;margin:0!important;overflow:visible!important;transform:none!important;}
+#staffScreen #staffTabs .month-tab{display:flex!important;height:40px!important;min-height:40px!important;margin:0!important;padding:0 2px!important;align-items:center!important;justify-content:center!important;transform:none!important;}
+#staffScreen .fullscreen-content{position:relative!important;top:auto!important;flex:1 1 auto!important;min-height:0!important;padding:8px 15px 30px!important;margin:0!important;overflow-y:auto!important;transform:none!important;}
+#staffScreen .staff-search-wrap{position:relative!important;top:auto!important;margin:0 0 10px!important;transform:none!important;}
+#staffScreen .staff-search{transform:none!important;}
+#staffScreen .staff-mobile-header + #staffTabs + .fullscreen-content{margin-top:0!important;}
+@media(max-width:360px){
+ .app-container > .header .header-left-brand{left:24px!important;top:9px!important;}
+ .app-container > .header .brand-title-en{font-size:.39rem!important;}
+ #staffScreen .staff-mobile-header{height:52px!important;min-height:52px!important;}
+ #staffScreen #staffTabs{flex-basis:50px!important;height:50px!important;min-height:50px!important;padding:5px 7px!important;gap:3px!important;}
+ #staffScreen #staffTabs .month-tab{height:40px!important;min-height:40px!important;font-size:.77rem!important;}
+ #staffScreen .fullscreen-content{padding:7px 10px 25px!important;}
+}
+</style>
+<style id="koda-final-layout-fix-20260909">
+/* 1) 메인 첫 화면 좌측 브랜드 장식 완전 제거 */
+.app-container > .header .header-left-brand{display:none!important;}
+.app-container > .header::before{display:none!important;}
+
+/* 2) 임직원현황: 화면 전체를 기준으로 버튼/검색/명단을 정확히 가운데 정렬 */
+#staffScreen{
+  align-items:center!important;
+  justify-content:flex-start!important;
+  width:100vw!important;
+  max-width:none!important;
+  padding:0 0 18px!important;
+  box-sizing:border-box!important;
+}
+#staffScreen .staff-mobile-header,
+#staffScreen #staffTabs,
+#staffScreen .fullscreen-content{
+  width:min(430px, calc(100% - 20px))!important;
+  max-width:430px!important;
+  margin-left:auto!important;
+  margin-right:auto!important;
+  box-sizing:border-box!important;
+}
+#staffScreen .staff-mobile-header{
+  flex:0 0 54px!important;
+  height:54px!important;
+  min-height:54px!important;
+}
+#staffScreen #staffTabs{
+  flex:0 0 54px!important;
+  height:54px!important;
+  min-height:54px!important;
+  padding:7px 0!important;
+}
+#staffScreen .fullscreen-content{
+  flex:1 1 auto!important;
+  min-height:0!important;
+  padding:8px 0 30px!important;
+  overflow-y:auto!important;
+}
+#staffScreen .staff-search-wrap,
+#staffScreen #staffList{
+  width:100%!important;
+  box-sizing:border-box!important;
+}
+
+/* 카테고리 버튼을 눌러도 페이지가 위로 끌려 올라가지 않도록 고정 */
+#staffScreen .fullscreen-tabs,
+#staffScreen .month-tab,
+#staffScreen .fullscreen-back-btn{
+  transform:none!important;
+  scroll-margin-top:0!important;
+}
+@media(max-width:360px){
+  #staffScreen .staff-mobile-header,
+  #staffScreen #staffTabs,
+  #staffScreen .fullscreen-content{
+    width:calc(100% - 14px)!important;
+  }
+  #staffScreen #staffTabs{padding:5px 0!important;}
+  #staffScreen .fullscreen-content{padding:7px 0 25px!important;}
+}
+</style>
+<style id="koda-banner-and-staff-title-final-fix">
+
+/* 임직원현황 제목: 화면 전체 기준 정중앙 */
+#staffScreen .staff-mobile-header{
+  position:relative!important;
+}
+#staffScreen .fullscreen-title{
+  position:absolute!important;
+  left:50%!important;
+  top:50%!important;
+  transform:translate(-50%,-50%)!important;
+  width:max-content!important;
+  margin:0!important;
+  text-align:center!important;
+  z-index:2!important;
+}
+#staffScreen .fullscreen-back-btn{
+  position:relative!important;
+  z-index:3!important;
+}
+
+/* 일정 배너: 텍스트 영역에 맞춘 컴팩트 레이아웃 */
+.schedule-banner{
+  min-height:88px!important;
+  height:88px!important;
+  margin-bottom:10px!important;
+}
+.schedule-banner-track,
+.schedule-banner-slide{
+  min-height:88px!important;
+  height:88px!important;
+}
+.schedule-banner-slide{
+  padding:10px 15px 18px!important;
+  justify-content:center!important;
+}
+.banner-heading{
+  display:flex!important;
+  align-items:center!important;
+  gap:3px!important;
+  margin-bottom:5px!important;
+  min-height:21px!important;
+  white-space:nowrap!important;
+  overflow:hidden!important;
+}
+.banner-kicker{
+  flex:0 0 auto!important;
+  min-height:20px!important;
+  height:20px!important;
+  padding:0 8px!important;
+  font-size:.60rem!important;
+  line-height:20px!important;
+}
+.banner-meta{
+  display:block!important;
+  min-width:0!important;
+  overflow:hidden!important;
+  text-overflow:ellipsis!important;
+  white-space:nowrap!important;
+  color:rgba(255,255,255,.88)!important;
+  font-size:.76rem!important;
+  line-height:1.3!important;
+  font-weight:650!important;
+  letter-spacing:-.025em!important;
+}
+.banner-event-line2{
+  margin-top:0!important;
+  font-size:1.02rem!important;
+  line-height:1.3!important;
+}
+.schedule-banner::before{width:90px!important;height:90px!important;right:-30px!important;top:-45px!important;}
+.schedule-banner::after{width:58px!important;height:58px!important;left:-28px!important;bottom:-34px!important;}
+
+@media(max-width:360px){
+  .schedule-banner,
+  .schedule-banner-track,
+  .schedule-banner-slide{
+    min-height:84px!important;
+    height:84px!important;
+  }
+  .schedule-banner-slide{padding:9px 12px 16px!important;}
+  .banner-heading{gap:6px!important;margin-bottom:4px!important;}
+  .banner-kicker{font-size:.56rem!important;padding:0 7px!important;}
+  .banner-meta{font-size:.69rem!important;}
+  .banner-event-line2{font-size:.94rem!important;}
+}
+
+</style>
+<style id="koda-banner-spacing-final-fix">
+/* 배너: 기존처럼 정보와 행사명 사이를 촘촘하게 */
+.schedule-banner{
+  height:auto!important;
+  min-height:0!important;
+}
+.schedule-banner-track,
+.schedule-banner-slide{
+  height:auto!important;
+  min-height:0!important;
+}
+.schedule-banner-slide{
+  padding:9px 15px 14px!important;
+  justify-content:center!important;
+}
+.banner-heading{
+  gap:7px!important;
+  margin-bottom:2px!important;
+  min-height:20px!important;
+  height:20px!important;
+  align-items:center!important;
+}
+.banner-kicker{
+  height:20px!important;
+  min-height:20px!important;
+  line-height:20px!important;
+}
+.banner-meta{
+  font-size:.76rem!important;
+  line-height:1.2!important;
+}
+.banner-event-line2{
+  margin-top:1px!important;
+  font-size:1.02rem!important;
+  line-height:1.25!important;
+}
+
+/* 배너의 실제 텍스트 높이만큼만 여백을 유지 */
+.schedule-banner .banner-event{
+  line-height:1.25!important;
+}
+
+@media(max-width:360px){
+  .schedule-banner-slide{
+    padding:8px 12px 12px!important;
+  }
+  .banner-heading{
+    margin-bottom:1px!important;
+  }
+  .banner-meta{
+    font-size:.69rem!important;
+  }
+  .banner-event-line2{
+    font-size:.94rem!important;
+  }
+}
+</style>
+<!-- 🔥 새로 추가/수정된 사용자 맞춤 스타일 🔥 -->
+<style id="custom-modifications-applied">
+  /* 1. <오늘 일정> 라인과 목록 간격 축소 */
+  .schedule-section-header {
+    padding-bottom: 0px !important;
+    margin-bottom: 0px !important;
+  }
+  .schedule-container {
+    gap: 1px !important;
+    padding-top: 5px !important; 
+  }
+  #pastScheduleList {
+    margin-bottom: 5px !important;
+    padding-bottom: 5px !important;
+  }
+
+  /* 2. 5개 버튼아이콘과 <오늘 일정> 사이 그라데이션 라인 */
+  .schedule-container::before {
+    content: '';
+    display: block;
+    width: 94%;
+    height: 0.5px;
+    margin: 0 auto 15px auto;
+    background: linear-gradient(90deg, transparent, #a0aec0, transparent);
+  }
+
+  /* 3. 배너 안 Pause 기호 수정 및 위치 조정 */
+  .banner-pause-btn {
+    border: none !important;
+    background: transparent !important;
+    box-shadow: none !important;
+    backdrop-filter: none !important;
+    width: 14px !important;
+    height: 14px !important;
+    min-width: 14px !important;
+    max-width: 14px !important;
+    flex-basis: 14px !important;
+    font-size: 0.65rem !important;
+    line-height: 14px !important;
+    right: 20px !important; 
+    bottom: 5.5px !important;
+    color: rgba(255, 255, 255, 0.7) !important;
+    padding: 0 !important;
+  }
+  .banner-pause-btn.paused {
+    background: transparent !important;
+    color: #ffffff !important;
+  }
+  .banner-dots {
+    right: 38px !important; 
+  }
+  @media(max-width:360px){
+    .banner-pause-btn { right: 18px !important; }
+    .banner-dots { right: 34px !important; }
+  }
+
+  /* 4. 관심일정 터치 시 활성화 배경 */
+  .active-bookmark .quick-icon {
+    background-color: #FFF1E6 !important;
+    border-color: #F2C6A0 !important;
+  }
+</style>
+<style id="layout-spacing-fixes">
+  .schedule-section-header {
+    padding-bottom: 4px !important;
+    margin-bottom: 4px !important;
+  }
+  .schedule-list-wrapper {
+    margin-top: 0 !important;
+  }
+  .schedule-container {
+    gap: 0 !important; 
+  }
+  .schedule-list-wrapper {
+    display: flex;
+    flex-direction: column;
+    gap: 8px !important; 
+  }
+  .banner-heading {
+    margin-bottom: 0px !important; 
+    min-height: 18px !important;
+  }
+  .banner-event-line2 {
+    margin-top: 0px !important; 
+    line-height: 1.3 !important; 
+    padding: 1px 0 !important;
+  }
+  .schedule-banner-slide {
+    padding: 11px 15px 10px !important;
+  }
+  @media(max-width:360px) {
+    .banner-heading {
+      margin-bottom: 0px !important; 
     }
-    // 프롬프트는 한 번만 사용할 수 있으므로 초기화
-    deferredPrompt = null;
-  } else {
-    // 이미 앱이 설치되어 있거나, 매니페스트/서비스워커 설정이 누락되어 설치 요건을 충족하지 못했을 때
-    alert("현재 기기에서는 이미 앱이 설치되어 있거나 브라우저 팝업을 지원하지 않습니다.\n브라우저 설정 메뉴에서 '홈 화면에 추가'를 직접 선택해주세요.");
-  }
-});
-
-// 팀 상세 페이지로 이동
-window.showTeamDetail = function(id) {
-  CURRENT_TEAM_ID = id;
-  renderTeamDetail();
-  navigateTo('teamdetail');
-}
-
-function renderTeamDetail(){
-  const t = TEAMS.find(x=>x.id===CURRENT_TEAM_ID);
-  const detailPlayers = document.getElementById('detailPlayers');
-  if(!t){
-    detailPlayers.innerHTML = '<div style="text-align:center; padding:30px; color:var(--ink-faint);">이 조 정보를 찾을 수 없습니다.<br>구글시트에서 조ID가 변경되었을 수 있습니다.</div>';
-    return;
-  }
-  document.getElementById('detailTeamTitle').textContent = t.id;
-  document.getElementById('detailTeamStart').textContent = teamLabel(t);
-  detailPlayers.innerHTML = t.members.map(m=>`
-    <div class="card-detail" style="margin-bottom:14px; padding:20px;">
-      <div style="font-size:18px; font-weight:900; margin-bottom:12px;">${escapeHtml(m.name)}</div>
-      <div style="display:flex; padding:8px 0; font-size:14.5px;"><div style="width:70px; flex-shrink:0; color:var(--ink-faint); font-weight:600;">소속·직위</div><div style="font-weight:700; color:var(--ink);">${escapeHtml(m.org) || '-'}</div></div>
-      <div style="display:flex; padding:8px 0; font-size:14.5px;"><div style="width:70px; flex-shrink:0; color:var(--ink-faint); font-weight:600;">KODA</div><div style="font-weight:700; color:var(--ink);">${escapeHtml(m.title) || '-'}</div></div>
-      <div style="display:flex; padding:8px 0; font-size:14.5px;"><div style="width:70px; flex-shrink:0; color:var(--ink-faint); font-weight:600;">핸드폰</div><div style="font-weight:700; color:var(--ink);">${escapeHtml(m.mobile) || '-'}</div></div>
-    </div>
-  `).join('') || '<div style="text-align:center; padding:30px; color:var(--ink-faint);">이 조에 남은 인원이 없습니다.</div>';
-}
-
-// 라우팅
-function applyScreen(name){
-  document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
-  document.getElementById('screen-'+name).classList.add('active');
-}
-function navigateTo(name){
-  window.history.pushState({screen:name}, '', '#'+name);
-  applyScreen(name);
-}
-window.history.replaceState({screen:'cover'}, '', '#cover');
-document.querySelectorAll('[data-go]').forEach(el => el.addEventListener('click', () => navigateTo(el.dataset.go)));
-document.querySelectorAll('[data-back]').forEach(el => el.addEventListener('click', () => window.history.back()));
-document.getElementById('enterBtn').addEventListener('click', () => attemptGolfLogin());
-const logoutBtn=document.getElementById('logoutBtn'); if(logoutBtn) logoutBtn.addEventListener('click',()=>{ localStorage.removeItem('koda_golf_auth'); window.history.replaceState({screen:'cover'},'', '#cover'); applyScreen('cover'); document.getElementById('loginName').value=''; document.getElementById('loginPhone').value=''; });
-// 공지/협찬 화면 진입 시 최신 시트3 내용을 다시 반영
-['sponsors','notice'].forEach(name=>{
-  const el=document.querySelector(`[data-go="${name}"]`);
-  if(el) el.addEventListener('click',()=>loadGolfSheet3Content());
-});
-loadGolfSheet3Content();
-window.addEventListener('popstate', (e) => applyScreen((e.state && e.state.screen) ? e.state.screen : 'cover'));
-
-
-// =====================================================================
-// NEW UI LAYER — 기존 데이터(PLAYERS/TEAMS)·로그인·화면 라우팅을 그대로 읽어서 그린다
-// =====================================================================
-(function(){
-  const EVENT_YMD = [2026, 10, 26];
-  const TEE_OFF = '13:00';
-  const $ = id => document.getElementById(id);
-
-  function getAuth(){ try{ return JSON.parse(localStorage.getItem('koda_golf_auth')||'null'); }catch(e){ return null; } }
-  function digits(v){ return String(v||'').replace(/[^0-9]/g,''); }
-  function courseName(c){ return c==='V' ? '밸리코스' : '레이크코스'; }
-  function kstNow(){ return new Date(Date.now() + 9*3600*1000); }
-
-  // 시트1의 핸드폰 칸이 비어 있어도 동작: 전화 일치 → 이름 1건 → 저장된 선택(동명이인) 순
-  function candidates(){
-    const a = getAuth(); if(!a || !PLAYERS.length) return [];
-    return PLAYERS.filter(p => p.name===a.name);
-  }
-  function getPick(){ try{ return JSON.parse(localStorage.getItem('koda_golf_myteam')||'null'); }catch(e){ return null; } }
-  function findMe(){
-    const a = getAuth(); const c = candidates(); if(!a || !c.length) return null;
-    const byPhone = c.filter(p => digits(p.mobile) && digits(p.mobile)===digits(a.phone));
-    if(byPhone.length===1) return byPhone[0];
-    if(c.length===1) return c[0];
-    const pick = getPick();
-    if(pick && pick.name===a.name){ const m = c.find(p => p.teamId===pick.teamId); if(m) return m; }
-    return null;   // 동명이인 → 선택 필요
-  }
-  function isAmbiguous(){ return !findMe() && candidates().length > 1; }
-  // 시트1 소속·직위가 비어 있으면 시트2(참석자 명단)의 소속을 보충
-  function orgOf(m){
-    if(m.org || m.title) return [m.org, m.title].filter(Boolean).join(' · ');
-    const a = (typeof ATTENDEES!=='undefined' ? ATTENDEES : []).find(x => x.name===m.name);
-    return a && a.org ? a.org : '';
-  }
-  window.pickMyTeam = function(teamId){
-    const a = getAuth(); if(!a) return;
-    localStorage.setItem('koda_golf_myteam', JSON.stringify({name:a.name, teamId}));
-    renderMyRound();
-  };
-
-  // ---------- D-day / 인사 ----------
-  function renderTop(){
-    const n = kstNow();
-    const today = Date.UTC(n.getUTCFullYear(), n.getUTCMonth(), n.getUTCDate());
-    const ev = Date.UTC(EVENT_YMD[0], EVENT_YMD[1]-1, EVENT_YMD[2]);
-    const d = Math.round((ev - today)/86400000);
-    $('nhDday').textContent = d>0 ? 'D-'+d : d===0 ? 'TODAY' : '대회 종료';
-    const a = getAuth();
-    $('nhHello').innerHTML = (a && a.name ? '안녕하세요, <b>'+escapeHtml(a.name)+'</b>님' : '안녕하세요');
-  }
-
-  // ---------- MY ROUND 카드 ----------
-  function heroHTML(clickable){
-    const me = findMe();
-    const team = me ? TEAMS.find(t => t.id===me.teamId) : null;
-    const loading = !PLAYERS.length;
-    const cls = team ? (team.course==='V'?'v':'l') : '';
-    let facts, mates;
-    if(team){
-      const mate = team.members.filter(m => m !== me);
-      facts = `<div class="mr-course-block"><span>출발 코스</span><b>${courseName(team.course)} ${team.hole}번홀</b></div>`;
-      mates = `<div class="mr-mates"><span>동반자</span><div class="mr-mate-list">${
-        mate.length ? mate.map(m=>'<div class="mr-mate">'+escapeHtml(m.name)+'</div>').join('') : '<div class="mr-mate">-</div>'}</div></div>`;
-    } else {
-      facts = '';
-      if(isAmbiguous()){
-        mates = `<div class="mr-empty">같은 이름의 참가자가 ${candidates().length}명 있습니다. 본인 조를 선택해주세요.
-          <div class="mr-pick">${candidates().map(c=>`<button type="button" onclick="pickMyTeam('${escapeHtml(c.teamId)}')">
-            <b>${escapeHtml(c.teamId)}</b><span>${courseName(c.teamId[0])} ${escapeHtml(c.teamId.split('-')[1])}번홀${orgOf(c)?' · '+escapeHtml(orgOf(c)):''}</span></button>`).join('')}</div></div>`;
-      } else {
-        mates = `<div class="mr-empty">${loading ? '조편성 정보를 불러오는 중입니다.' :
-          '아직 배정된 조가 없습니다. 조편성이 확정되면 이곳에 나의 조와 동반자가 표시됩니다.'}</div>`;
-      }
+    .banner-event-line2 {
+      margin-top: 0px !important;
     }
-    return `<div class="mr-card${clickable?' clickable':''}" ${clickable?'data-go-tab="myround"':''}>
-      <div class="mr-head"><div class="mr-label">MY ROUND</div>
-        ${team?`<div class="mr-course">나의 조 <b>${escapeHtml(team.id)}</b></div>`:''}</div>
-      <div class="mr-tee"><div class="mr-tee-lab">TEE OFF</div><div class="mr-tee-time">${TEE_OFF}</div></div>
-      ${facts}${mates}
-      ${clickable?'<div class="mr-more">내 라운드 자세히 보기 ›</div>':''}
-    </div>`;
   }
-
-  // ---------- 조 명단 (MY ROUND 탭) ----------
-  function renderRoster(){
-    const me = findMe();
-    const team = me ? TEAMS.find(t => t.id===me.teamId) : null;
-    const box = $('myRoster'), btn = $('mrsDetailBtn');
-    if(!team){
-      box.innerHTML = '<div class="rost"><div class="rost-body"><div class="rost-org">'+(!PLAYERS.length?'불러오는 중...':isAmbiguous()?'위 카드에서 본인 조를 선택해주세요.':'배정된 조가 없습니다.')+'</div></div></div>';
-      btn.style.display='none'; return;
+</style>
+<style id="past-schedule-spacing-fix">
+  .schedule-section-header + .schedule-list-wrapper {
+    margin-top: 4px !important; 
+  }
+</style>
+<style id="upcoming-schedule-spacing-fix">
+  #scheduleContainer > .schedule-list-wrapper:last-child {
+    margin-top: 4px !important; 
+  }
+</style>
+<style id="today-header-spacing-fix">
+  .schedule-section-header {
+    align-items: flex-end !important; 
+    padding-bottom: 0px !important;   
+    margin-bottom: 2px !important; 
+  }
+  .past-schedule-btn {
+    line-height: 1 !important;
+    padding: 0 !important;
+    margin-bottom: 2px !important; 
+  }
+  .schedule-section-subtitle {
+    line-height: 1.1 !important;
+  }
+</style>
+<style id="card-today-badge-style">
+  .card-today-badge {
+    position: absolute;
+    bottom: 0px;  
+    right: 0px;   
+    background-color: #e53e3e; 
+    color: #ffffff;
+    font-size: 0.55rem;
+    font-weight: 800;
+    padding: 3px 7px;
+    border-radius: 8px 0 8px 0; 
+    z-index: 5;
+    line-height: 1.1;
+    pointer-events: none; 
+    box-shadow: -1px -1px 4px rgba(229, 62, 62, 0.15); 
+  }
+  @media(max-width:360px) {
+    .card-today-badge {
+      bottom: 0px;
+      right: 0px;
+      font-size: 0.5rem;
+      padding: 2px 5px;
+      border-radius: 6px 0 10px 0; 
     }
-    btn.style.display='';
-    box.innerHTML = team.members.map((m,i)=>`
-      <div class="rost${m===me?' me':''}">
-        <div class="rost-no">${i+1}</div>
-        <div class="rost-body">
-          <div class="rost-name">${escapeHtml(m.name)}${m===me?'<em>나</em>':''}</div>
-          <div class="rost-org">${escapeHtml(orgOf(m)||'-')}</div>
-        </div>
-        ${m!==me && digits(m.mobile) ? '<a class="rost-call" href="tel:'+digits(m.mobile)+'" aria-label="'+escapeHtml(m.name)+' 전화"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M5 4h4l2 5-2.5 1.5a11 11 0 0 0 5 5L15 13l5 2v4a2 2 0 0 1-2 2A16 16 0 0 1 3 6a2 2 0 0 1 2-2z"/></svg></a>':''}
-      </div>`).join('');
+  }
+</style>
+<style id="card-next-badge-style">
+  .card-next-badge {
+    position:absolute; bottom:0; right:0; background:#1769d2; color:#fff;
+    font-size:.55rem; font-weight:800; padding:3px 7px;
+    border-radius:8px 0 8px 0; z-index:5; line-height:1.1; pointer-events:none;
+    box-shadow:-1px -1px 4px rgba(23,105,210,.15);
+  }
+  @media(max-width:360px){.card-next-badge{font-size:.5rem;padding:2px 5px;border-radius:6px 0 10px 0;}}
+</style>
+<style id="news-screen-staff-style-match">
+
+/* 회의자료 화면 - 협회공지와 동일한 디자인 언어 */
+#meetingScreen{
+  display:none; position:fixed; inset:0; z-index:1500;
+  overflow-y:auto; -webkit-overflow-scrolling:touch;
+  background:#f4f7fb; padding:0 10px 18px; box-sizing:border-box;
+}
+#meetingScreen .staff-mobile-header,
+#meetingScreen .fullscreen-tabs,
+#meetingScreen .fullscreen-content{
+  width:100%; max-width:430px; margin-left:auto; margin-right:auto;
+}
+#meetingScreen .staff-mobile-header{
+  height:54px; position:sticky; top:0; z-index:30;
+  background:#fff; border-bottom:1px solid #edf2f7;
+  box-shadow:0 3px 14px rgba(25,67,110,.055);
+  display:grid; grid-template-columns:54px minmax(0,1fr) 72px;
+  align-items:center; padding:0 16px; box-sizing:border-box;
+}
+#meetingScreen .fullscreen-back-btn{
+  width:42px; height:42px; min-height:42px; padding:0;
+  display:flex; align-items:center; justify-content:center;
+  border:0; border-radius:14px; background:#f1f6fd; color:#1769d2;
+  font-size:1.55rem; font-weight:700; line-height:1;
+}
+#meetingScreen .fullscreen-title{
+  display:block; text-align:center; color:#173f70;
+  font-size:1.12rem; font-weight:850; letter-spacing:-.045em;
+  white-space:nowrap;
+}
+#meetingScreen .fullscreen-tabs{
+  display:grid; grid-template-columns:repeat(4,minmax(0,1fr));
+  gap:5px; padding:12px 0 0; box-sizing:border-box;
+}
+#meetingScreen .month-tab{
+  min-width:0; width:100%; height:56px; min-height:56px; padding:0 2px;
+  border:1px solid #dce6f2; border-radius:15px; background:#fff;
+  color:#5d7089; font-size:.78rem; font-weight:850; letter-spacing:-.055em;
+  box-shadow:0 3px 11px rgba(24,71,120,.05); white-space:normal;
+}
+#meetingScreen .month-tab.active{
+  color:#fff; border-color:#173f70;
+  background:linear-gradient(135deg,#173f70,#245d91);
+  box-shadow:0 5px 13px rgba(23,63,112,.18);
+}
+#meetingScreen .fullscreen-content{
+  box-sizing:border-box; padding:15px 0 26px;
+}
+#meetingList{
+  display:flex; flex-direction:column; gap:8px;
+}
+.meeting-card{
+  width:100%; text-align:left; background:#fff;
+  border:1px solid #e1e9f2; border-radius:12px;
+  padding:13px 14px; cursor:default;
+  box-shadow:0 3px 11px rgba(24,71,120,.045);
+}
+.meeting-card-title{
+  display:flex; align-items:center; gap:7px;
+  color:#173f70; font-size:.88rem; font-weight:800;
+  line-height:1.35;
+}
+.meeting-card-meta{
+  margin-top:5px; color:#8494a8; font-size:.7rem; line-height:1.35;
+}
+.meeting-empty{
+  background:#fff; border:1px dashed #cfd9e6; border-radius:14px;
+  padding:42px 20px; text-align:center; color:#8a9aaf;
+}
+.meeting-empty-icon{
+  display:block; width:48px; height:48px; margin:0 auto 10px;
+}
+.meeting-empty-title{font-size:.9rem; font-weight:800; color:#64748b;}
+.meeting-empty-text{margin-top:5px; font-size:.72rem; line-height:1.5;}
+@media(max-width:360px){
+  #meetingScreen .month-tab{font-size:.7rem;}
+}
+
+/* 협회공지(newsScreen / newsDetailScreen) 스타일 */
+#newsScreen, #newsDetailScreen{
+  display:none; position:fixed; inset:0; z-index:1500;
+  overflow-y:auto; -webkit-overflow-scrolling:touch;
+  background:#f4f7fb; padding:0 10px 18px; box-sizing:border-box;
+}
+#newsDetailScreen{ z-index:1600; }
+#newsScreen::after, #newsDetailScreen::after{content:'';display:block;min-height:18px;}
+#newsScreen .staff-mobile-header,
+#newsScreen .fullscreen-tabs,
+#newsScreen .fullscreen-content,
+#newsDetailScreen .staff-mobile-header,
+#newsDetailScreen .fullscreen-content{
+  width:100%; max-width:430px; margin-left:auto; margin-right:auto; box-sizing:border-box;
+}
+#newsScreen .staff-mobile-header,
+#newsDetailScreen .staff-mobile-header{
+  position:sticky!important; top:0!important; z-index:30;
+  flex:0 0 auto!important; height:54px!important; min-height:54px!important;
+  display:flex!important; align-items:center!important; padding:0 15px!important;
+  background:#fff; border-bottom:1px solid #edf2f7;
+  box-shadow:0 3px 14px rgba(25,67,110,.055);
+}
+#newsScreen .fullscreen-back-btn,
+#newsDetailScreen .fullscreen-back-btn{
+  position:relative!important; z-index:3;
+  width:42px; height:42px; min-height:42px; padding:0;
+  display:flex; align-items:center; justify-content:center;
+  border:0; border-radius:14px; background:#f1f6fd; color:#1769d2;
+  font-size:1.4rem; font-weight:700; line-height:1;
+}
+#newsScreen .fullscreen-title,
+#newsDetailScreen .fullscreen-title{
+  position:absolute!important; left:50%!important; top:50%!important;
+  transform:translate(-50%,-50%)!important; width:max-content!important; margin:0!important;
+  text-align:center; color:#173f70; font-size:1.12rem; font-weight:850;
+  letter-spacing:-.045em; white-space:nowrap; z-index:2;
+}
+#newsScreen #newsTabs{
+  position:relative!important; top:auto!important; flex:0 0 54px!important;
+  height:54px!important; min-height:54px!important; width:100%!important;
+  display:grid!important; grid-template-columns:repeat(5,minmax(0,1fr))!important;
+  gap:5px!important; padding:7px 0!important; margin:0!important;
+}
+#newsScreen .month-tab{
+  min-width:0; width:100%; height:100%; padding:0 2px;
+  border:1px solid #dce6f2; border-radius:14px; background:#fff;
+  color:#5d7089; font-size:.78rem; font-weight:850; letter-spacing:-.05em;
+  box-shadow:0 3px 11px rgba(24,71,120,.05); white-space:nowrap;
+  display:flex; align-items:center; justify-content:center;
+}
+#newsScreen .month-tab.active{
+  color:#fff; border-color:#1769d2;
+  background:linear-gradient(135deg,#1769d2,#3182ce);
+  box-shadow:0 5px 13px rgba(23,105,210,.18);
+}
+#newsScreen .fullscreen-content{
+  flex:1 1 auto!important; min-height:0; padding:12px 0 30px!important; overflow-y:visible;
+}
+#newsDetailScreen .fullscreen-content{
+  padding:20px 6px 40px!important;
+}
+#newsList{ display:flex; flex-direction:column; gap:9px; width:100%; box-sizing:border-box; }
+#newsList .day-event-item{
+  min-width:0; box-sizing:border-box;
+  padding:13px 12px!important; border:1px solid #e2eaf4!important;
+  border-radius:15px!important; background:#fff;
+  box-shadow:0 4px 12px rgba(28,70,120,.055);
+}
+#newsList .day-event-item:active{ transform:scale(.985); background:#f8fbff; }
+#newsList .day-event-item-title{ font-size:.9rem!important; line-height:1.4!important; color:#17385f; }
+#newsList .day-event-item-meta{ margin-top:6px!important; color:#657a96; font-size:.72rem!important; }
+#newsScreen .loading-msg, #newsScreen .no-data{
+  padding:30px 12px; text-align:center; color:#7a8da7; font-size:.78rem;
+  background:#fff; border-radius:15px; border:1px solid #e2eaf4;
+}
+.news-badge{
+  font-size:.6rem!important; font-weight:800; padding:2px 6px!important;
+  border-radius:999px; margin-right:5px!important; background:#edf5ff; color:#1769d2;
+}
+#newsDetailScreen #newsDetailTitle{ color:#17385f; }
+#newsDetailScreen #newsDetailDate{ font-size:.78rem!important; }
+#newsDetailScreen #newsDetailLink.day-event-item{
+  border-radius:15px!important; border:1px solid #e2eaf4!important;
+  box-shadow:0 4px 12px rgba(28,70,120,.055);
+}
+@media(max-width:360px){
+  #newsScreen .staff-mobile-header, #newsDetailScreen .staff-mobile-header{ height:52px!important; min-height:52px!important; }
+  #newsScreen #newsTabs{ flex-basis:50px!important; height:50px!important; min-height:50px!important; gap:3px!important; }
+  #newsScreen .month-tab{ font-size:.73rem; }
+}
+</style>
+<style id="final-news-menu-fix">
+  #newsScreen #newsTabs{
+    width:100%!important;
+    max-width:none!important;
+    box-sizing:border-box!important;
+    display:grid!important;
+    grid-template-columns:repeat(5,minmax(0,1fr))!important;
+    gap:5px!important;
+    padding:7px 0!important;
+    margin:0!important;
+    justify-items:stretch!important;
+    align-items:stretch!important;
+  }
+  #newsScreen #newsTabs .month-tab{
+    width:100%!important;
+    min-width:0!important;
+    max-width:none!important;
+    margin:0!important;
+    box-sizing:border-box!important;
+    display:flex!important;
+    align-items:center!important;
+    justify-content:center!important;
+  }
+  .news-quick-icon svg{
+    width:31px!important;
+    height:31px!important;
+    display:block!important;
+  }
+  .news-quick-icon{
+    background:#ffffff!important;
+    border-color:#e2e8f0!important;
+  }
+</style>
+<style id="final-news-ui-fix">
+  #newsScreen #newsTabs{
+    width:100%!important;
+    max-width:430px!important;
+    padding:8px 0!important;
+    margin:0 auto!important;
+    display:grid!important;
+    grid-template-columns:repeat(5,minmax(0,1fr))!important;
+    gap:4px!important;
+    overflow:visible!important;
+    white-space:normal!important;
+  }
+  #newsScreen #newsTabs .month-tab{
+    width:100%!important;
+    min-width:0!important;
+    max-width:none!important;
+    margin:0!important;
+    padding:7px 2px!important;
+    font-size:clamp(10px,2.8vw,12px)!important;
+    line-height:1.2!important;
+    white-space:nowrap!important;
+    overflow:hidden!important;
+    text-overflow:clip!important;
+  }
+  @media(max-width:360px){
+    #newsScreen #newsTabs{gap:3px!important;padding-left:0!important;padding-right:0!important;}
+    #newsScreen #newsTabs .month-tab{padding:7px 1px!important;font-size:10px!important;}
+  }
+  #newsDetailThumbnailArea{
+    display:none;
+    margin-top:28px;
+    padding-top:18px;
+    border-top:1px dashed var(--border-color);
+  }
+  #newsDetailThumbnailLink{
+    display:block;
+    width:100%;
+    text-decoration:none;
+    border-radius:12px;
+    overflow:hidden;
+    background:#f7fafc;
+    border:1px solid #edf2f7;
+  }
+  #newsDetailThumbnail{
+    display:block;
+    width:100%;
+    height:auto;
+    max-height:360px;
+    object-fit:contain;
+    background:#f7fafc;
   }
 
-  // ---------- Today's Flow : 기존 '행사 프로그램' 표를 데이터 소스로 사용 ----------
-  function cellText(el){
-    const c = el.cloneNode(true);
-    c.querySelectorAll('br').forEach(b => b.replaceWith(' '));
-    return c.textContent.replace(/\s+/g,' ').trim();
+  /* ===== 2026-09-15 회원사 목록 한 줄 텍스트 표시 고정 CSS ===== */
+  #staffList.member-company-list{
+    display:grid !important;
+    grid-template-columns:1fr !important;
+    gap:9px !important;
   }
-  function readProgram(){
-    return Array.from(document.querySelectorAll('#screen-program tbody tr')).map(tr=>{
-      const td = tr.querySelectorAll('td'); if(td.length<2) return null;
-      const time = cellText(td[0]);
-      const m = time.match(/(\d{1,2}):(\d{2})\s*~\s*(?:(\d{1,2}):(\d{2}))?/);
-      const s = m ? (+m[1])*60+(+m[2]) : 0;
-      const e = m && m[3] ? (+m[3])*60+(+m[4]) : s+30;
-      const items = Array.from(td[1].querySelectorAll('li')).map(cellText);
-      const place = td[2] ? cellText(td[2]) : '';
-      const parts = time.split('~').map(x=>x.trim());
-      return { s, e, start:parts[0], end:parts[1]||'', items, place: place==='-'?'':place,
-               tee: items.join(' ').includes('라운딩') };
-    }).filter(Boolean);
+  #staffList.member-company-list .staff-card-compact{
+    width:100% !important; min-height:0 !important; box-sizing:border-box !important;
+    padding:11px 12px !important;
   }
-  let flowOpen = false;
-  function flowStatus(rows){
-    const n = kstNow();
-    const isDay = n.getUTCFullYear()===EVENT_YMD[0] && n.getUTCMonth()+1===EVENT_YMD[1] && n.getUTCDate()===EVENT_YMD[2];
-    const past = Date.UTC(n.getUTCFullYear(),n.getUTCMonth(),n.getUTCDate()) > Date.UTC(EVENT_YMD[0],EVENT_YMD[1]-1,EVENT_YMD[2]);
-    const min = n.getUTCHours()*60 + n.getUTCMinutes();
-    return rows.map(r => past ? 'done' : !isDay ? 'next' : min>=r.e ? 'done' : min>=r.s ? 'now' : 'next');
+  #staffList.member-company-list .member-company-main{width:100%;text-align:left;}
+  
+  /* 한 줄 배치 설정 */
+  #staffList.member-company-list .member-company-head{
+    display:flex !important;
+    align-items:baseline !important;
+    min-width:0 !important;
+    gap:5px !important;
+    line-height:1.25 !important;
+    white-space:nowrap !important;
   }
-  function flowItemHTML(r, st){
-    const cls = [st==='done'?'is-done':'', st==='now'?'is-now':'', r.tee?'is-tee':''].join(' ');
-    return `<li class="flow-item ${cls}">
-      <div class="flow-time">${escapeHtml(r.start)}${r.end?'<small>~ '+escapeHtml(r.end)+'</small>':'<small>~</small>'}</div>
-      <div class="flow-rail"><div class="flow-dot"></div></div>
-      <div><div class="flow-title">${escapeHtml(r.items[0]||'')}</div>
-        ${r.items.length>1?'<div class="flow-sub">'+escapeHtml(r.items.slice(1).join(' · '))+'</div>':''}
-        ${r.place && !r.tee ?'<span class="flow-place">'+escapeHtml(r.place)+'</span>':''}</div></li>`;
+  #staffList.member-company-list .member-company-head .staff-badge{
+    flex:0 0 auto !important; margin:0 !important;
   }
-  function renderFlow(){
-    const rows = readProgram(); if(!rows.length) return;
-    const st = flowStatus(rows);
-    let first = st.findIndex(x => x!=='done'); if(first<0) first = Math.max(0, rows.length-4);
-    const start = flowOpen ? 0 : first, end = flowOpen ? rows.length : Math.min(rows.length, first+5);
-    $('flowHome').innerHTML = rows.slice(start,end).map((r,i)=>flowItemHTML(r, st[start+i])).join('');
-    $('flowFull').innerHTML = rows.map((r,i)=>flowItemHTML(r, st[i])).join('');
-    $('flowToggle').textContent = flowOpen ? '접기' : '전체 일정 보기 ('+rows.length+')';
-    $('flowToggle').style.display = rows.length>5 ? '' : 'none';
+  #staffList.member-company-list .member-company-slash{
+    flex:0 0 auto !important;color:#47698f !important;font-weight:700 !important;
   }
-  $('flowToggle').addEventListener('click', ()=>{ flowOpen = !flowOpen; renderFlow(); });
+  
+  /* 법인명 */
+  #staffList.member-company-list .member-company-head strong{
+    min-width:0 !important;
+    flex:0 1 auto !important;
+    color:#1769d2 !important;
+    font-size:.9rem !important;
+    font-weight:850 !important;
+    overflow:hidden !important;
+    text-overflow:ellipsis !important;
+  }
+  /* 지정대표자 */
+  #staffList.member-company-list .member-company-representative-inline{
+    flex:0 1 auto !important;
+    min-width:0 !important;
+    color:#47698f !important;
+    font-size:.76rem !important;
+    font-weight:700 !important;
+    overflow:hidden !important;
+    text-overflow:ellipsis !important;
+  }
+  /* 지역 (주소 첫단어) */
+  #staffList.member-company-list .member-company-region-inline{
+    flex:0 1 auto !important;
+    min-width:0 !important;
+    color:#47698f !important;
+    font-size:.76rem !important;
+    font-weight:700 !important;
+    overflow:hidden !important;
+    text-overflow:ellipsis !important;
+  }
+  /* 가입일자 */
+  #staffList.member-company-list .member-company-join{
+    flex:0 0 auto !important;
+    color:#7d91a9 !important;
+    font-size:.67rem !important;
+    font-weight:650 !important;
+  }
 
-  // ---------- 전체 갱신 ----------
-  window.renderMyRound = function(){
-    renderTop();
-    $('homeRound').innerHTML = heroHTML(true);
-    $('myRoundHero').innerHTML = '<div style="margin:0 0 0">'+heroHTML(false)+'</div>';
-    renderRoster();
-    renderFlow();
-    const t = (typeof lastUpdatedAt!=='undefined' && lastUpdatedAt) ? formatTime(lastUpdatedAt)+' 업데이트' : '';
-    $('mrsSync').textContent = t;
-  };
-  // 카드 탭 → MY ROUND
-  document.addEventListener('click', e=>{
-    const c = e.target.closest('[data-go-tab]'); if(c) navigateTo(c.dataset.goTab);
-  });
-  $('mrsDetailBtn').addEventListener('click', ()=>{
-    const me = findMe(); if(me){ showTeamDetail(me.teamId); }
-  });
+  /* ARP / ARPY 기수 바로가기 */
+  #arpCohortFilters{display:none;grid-template-columns:repeat(6,minmax(0,1fr));gap:6px;margin:0 0 12px;}
+  #arpCohortFilters.show{display:grid;}
+  #arpCohortFilters .arp-cohort-btn{
+    appearance:none;border:1px solid #d7e4f3;background:#f7fbff;color:#315b8d;
+    border-radius:9px;height:34px;padding:0 4px;font-size:.72rem;font-weight:800;cursor:pointer;
+  }
+  #arpCohortFilters .arp-cohort-btn:hover,#arpCohortFilters .arp-cohort-btn:active{background:#eaf3ff;border-color:#a9c9ed;}
+  #staffList.arp-list{display:block !important;}
+  #staffList.arp-list .arp-cohort-group{margin:2px 0 13px;scroll-margin-top:12px;}
+  #staffList.arp-list .arp-cohort-title{
+    display:flex;align-items:center;gap:8px;margin:2px 0 7px;font-size:.72rem;font-weight:850;color:#315b8d;
+  }
+  #staffList.arp-list .arp-cohort-title::after{content:"";flex:1;height:1px;background:#d9e6f4;}
+  #staffList.arp-list .arp-cohort-title .staff-badge{margin:0 !important;}
+  #staffList.arp-list .arp-cohort-cards{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;}
+  #staffList.arp-list .arp-cohort-cards .staff-card-compact{width:100% !important;min-width:0;box-sizing:border-box;}
+  @media(max-width:520px){#arpCohortFilters{gap:5px;}#arpCohortFilters .arp-cohort-btn{height:32px;font-size:.68rem;}#staffList.arp-list .arp-cohort-cards{gap:6px;}}
 
-  // ---------- 하단 네비 ----------
-  const TAB_OF = { home:'home', program:'home', sponsors:'home', notice:'home',
-                   myround:'myround', teams:'myround', teamdetail:'myround',
-                   attendees:'attendees', location:'location' };
-  const nav = $('bottomNav');
-  let current = 'cover';
-  nav.querySelectorAll('.bn').forEach(b => b.addEventListener('click', ()=>{
-    if(current !== b.dataset.tab) navigateTo(b.dataset.tab);
-  }));
-  const _apply = applyScreen;
-  applyScreen = function(name){
-    _apply(name); current = name;
-    nav.classList.toggle('hidden', name==='cover');
-    nav.querySelectorAll('.bn').forEach(b => b.classList.toggle('active', b.dataset.tab===TAB_OF[name]));
-    if(name!=='cover') renderMyRound();
-  };
-  // 조편성 데이터가 (재)계산될 때마다 MY ROUND 갱신
-  const _rebuild = rebuildTeams;
-  rebuildTeams = function(){ _rebuild(); renderMyRound(); };
+  #staffList.executive-list{display:block !important;}
+  #staffList.executive-list .executive-badge-group{margin-bottom:12px;}
+  #staffList.executive-list .executive-badge-group:last-child{margin-bottom:0;}
+  #staffList.executive-list .executive-group-title{
+    display:flex;align-items:center;gap:8px;margin:2px 0 7px;
+    font-size:.72rem;font-weight:850;color:#315b8d;
+  }
+  #staffList.executive-list .executive-group-title::after{
+    content:"";flex:1;height:1px;background:#d9e6f4;
+  }
+  #staffList.executive-list .executive-group-title .staff-badge{margin:0 !important;}
+  #staffList.executive-list .executive-group-cards{
+    display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;
+  }
+  #staffList.executive-list .executive-group-cards .staff-card-compact{
+    width:100% !important;min-width:0;min-height:0 !important;box-sizing:border-box !important;
+  }
+  #staffList.executive-list .staff-main-line{
+    display:grid !important;grid-template-columns:auto minmax(0,1fr) !important;
+    align-items:start !important;column-gap:5px !important;white-space:normal !important;overflow:visible !important;
+  }
+  #staffList.executive-list .staff-main-line > .staff-badge{display:inline-block !important;}
+  #staffList.executive-list .staff-info-block{flex:1 1 auto !important;min-width:0 !important;}
 
-  $('logoutBtn').addEventListener('click', ()=>{ localStorage.removeItem('koda_golf_myteam'); });
-  const _ra = renderAttendees; renderAttendees = function(){ _ra(); renderMyRound(); };
-  // 로그인 유지: 저장된 로그인이 있으면 새로고침(당겨서 새로고침 포함)해도 로그인 화면을 건너뜀
-  (function restoreSession(){
-    const a = getAuth();
-    if(!a || !a.name || !a.phone) return;
-    const OK = ['home','myround','attendees','location','teams','program','sponsors','notice'];
-    let h = window.__INIT_HASH || '';
-    if(!OK.includes(h)) h = 'home';
-    history.replaceState({screen:h}, '', '#'+h);
-    applyScreen(h);
-  })();
-  renderMyRound();
-  setInterval(renderFlow, 60000);
-})();
-</script>
-</body>
-</html>
+  #memberCompanyDetailModal{z-index:2100 !important;}
+  #memberCompanyDetailModal .modal-content{max-width:400px;}
+  #memberCompanyDetailModal .member-detail-title{color:#173f70;font-size:1.12rem;font-weight:850;line-height:1.35;margin-bottom:14px;padding-right:28px;}
+  #memberCompanyDetailModal .member-detail-badge{margin-right:6px;vertical-align:middle;}
+  #memberCompanyDetailModal .member-detail-row{display:flex;align-items:flex-start;margin-bottom:7px;font-size:.8rem;line-height:1.45;}
+  #memberCompanyDetailModal .member-detail-label{width:76px;flex:0 0 76px;color:#718096;font-weight:750;}
+  #memberCompanyDetailModal .member-detail-value{flex:1;min-width:0;color:#1a202c;word-break:break-all;}
+
+  @media(max-width:360px){
+    #staffList.member-company-list{gap:6px !important;}
+    #staffList.member-company-list .member-company-head strong{font-size:.82rem !important;}
+    #staffList.member-company-list .member-company-region-inline{font-size:.76rem !important;}
+    #staffList.member-company-list .member-company-join{font-size:.59rem !important;}
+    #staffList.member-company-list .member-company-representative-inline{font-size:.64rem !important;}
+    #staffList.executive-list .executive-group-cards{gap:6px;}
+    #staffList.executive-list .staff-badge{font-size:.5rem !important;padding:2px 4px !important;}
+  }
+</style>
+<style id="koda-member-final-fixes">
+#staffList.member-company-list .member-company-head{margin-bottom:0!important;}
+#staffScreen #staffTabs .tab-count{font-size:calc(.9em - 1pt)!important;font-weight:650!important;margin-left:2px!important;opacity:.82!important;}
+</style>
+<style id="user-request-final-ui-fix">
+/* KODA 임직원현황 5개 버튼 글자 크기 = 협회공지 버튼 */
+#staffScreen #staffTabs .month-tab{
+  font-size:0.8rem !important;
+}
+
+/* 회의자료 제목 헤더 높이/상하 여백 = 협회공지 */
+#meetingScreen .staff-mobile-header{
+  height:54px !important;
+  min-height:54px !important;
+  padding:0 16px !important;
+  box-sizing:border-box !important;
+}
+
+/* 회의자료 5개 버튼: 1열 5개 */
+#meetingScreen .fullscreen-tabs{
+  display:grid !important;
+  grid-template-columns:repeat(5,minmax(0,1fr)) !important;
+  gap:5px !important;
+  padding:12px 0 0 !important;
+  overflow:visible !important;
+  white-space:normal !important;
+}
+#meetingScreen .fullscreen-tabs .month-tab{
+  width:100% !important;
+  min-width:0 !important;
+  height:56px !important;
+  min-height:56px !important;
+  padding:0 2px !important;
+  font-size:0.8rem !important;
+  border-radius:15px !important;
+  white-space:nowrap !important;
+}
+
+/* 좁은 화면에서도 5개 한 줄 */
+@media(max-width:360px){
+  #meetingScreen .fullscreen-tabs{
+    grid-template-columns:repeat(5,minmax(0,1fr)) !important;
+    gap:4px !important;
+  }
+  #meetingScreen .fullscreen-tabs .month-tab{
+    font-size:0.7rem !important;
+    padding:0 1px !important;
+    letter-spacing:-.07em !important;
+  }
+}
+</style>
+<style id="meeting-news-wrap-fix">
+/* 회의자료 5개 버튼이 항상 한 줄에 모두 표시되도록 고정 */
+#meetingTabs {
+  display:grid !important;
+  grid-template-columns:repeat(5,minmax(0,1fr)) !important;
+  gap:4px !important;
+  width:100% !important;
+  box-sizing:border-box !important;
+  overflow:visible !important;
+  white-space:normal !important;
+  padding-left:0 !important; padding-right:0 !important;
+}
+#meetingTabs .month-tab {
+  min-width:0 !important; width:100% !important;
+  padding:8px 2px !important;
+  font-size:.68rem !important;
+  white-space:nowrap !important;
+  overflow:hidden !important;
+  text-overflow:ellipsis !important;
+}
+
+/* 협회공지: 뱃지와 제목을 별도 열로 분리하여 제목 줄바꿈이 제목 첫 글자 아래에서 시작 */
+#newsList .news-card-item {
+  display:grid !important;
+  grid-template-columns:minmax(0,1fr) auto !important;
+  align-items:start !important;
+  column-gap:10px !important;
+}
+#newsList .news-title-row {
+  display:grid !important;
+  grid-template-columns:auto minmax(0,1fr) !important;
+  align-items:start !important;
+  column-gap:6px !important;
+  min-width:0 !important;
+}
+#newsList .news-title-row .news-badge {
+  margin-right:0 !important;
+  white-space:nowrap !important;
+}
+#newsList .news-title-text {
+  min-width:0 !important;
+  overflow-wrap:anywhere !important;
+  word-break:keep-all !important;
+}
+#newsList .news-card-item .day-event-item-meta {
+  margin:0 !important;
+  white-space:nowrap !important;
+  text-align:right !important;
+  align-self:start !important;
+}
+
+/* 회의자료도 동일한 줄 정리 */
+.meeting-card {
+  display:grid !important;
+  grid-template-columns:minmax(0,1fr) auto !important;
+  align-items:start !important;
+  column-gap:10px !important;
+}
+.meeting-title-row {
+  display:grid !important;
+  grid-template-columns:auto minmax(0,1fr) !important;
+  align-items:start !important;
+  column-gap:6px !important;
+  min-width:0 !important;
+}
+.meeting-title-row .news-badge {
+  margin-right:0 !important;
+  white-space:nowrap !important;
+}
+.meeting-title-text {
+  min-width:0 !important;
+  overflow-wrap:anywhere !important;
+  word-break:keep-all !important;
+}
+.meeting-card-meta {
+  margin:0 !important;
+  white-space:nowrap !important;
+  text-align:right !important;
+  align-self:start !important;
+}
+@media (max-width:360px){
+  #meetingTabs .month-tab { font-size:.62rem !important; padding-left:1px !important; padding-right:1px !important; }
+}
+</style>
+<style id="date-title-layout-20260921">
+/* 협회공지: 뱃지와 날짜를 같은 줄, 제목은 다음 줄에서 뱃지 시작점과 정렬 */
+#newsList .news-card-item{display:block!important;}
+#newsList .news-meta-row{display:flex!important;align-items:center!important;justify-content:space-between!important;width:100%!important;gap:8px!important;min-width:0!important;}
+#newsList .news-meta-row .news-badge{margin-left:auto!important;flex:0 0 auto!important;white-space:nowrap!important;}
+#newsList .news-date-text{margin-right:auto!important;white-space:nowrap!important;color:#8494a8!important;font-size:.70rem!important;line-height:1.35!important;font-weight:600!important;}
+#newsList .news-title-text{display:block!important;width:100%!important;margin-top:5px!important;min-width:0!important;padding:0!important;overflow-wrap:anywhere!important;word-break:keep-all!important;text-align:left!important;font-size:.82rem!important;line-height:1.35!important;font-weight:700!important;color:var(--text-dark)!important;}
+/* 코다자료: 등록일자 문구 없이 날짜만 표시 */
+#meetingScreen .meeting-card-meta{margin:5px 0 0!important;white-space:nowrap!important;text-align:right!important;align-self:start!important;color:#8494a8!important;font-size:.70rem!important;line-height:1.35!important;}
+</style>
+<style id="koda-business-card-ui">
+/* ===== 나의 명함 ===== */
+.app-container > .header{
+  grid-template-columns:1fr auto 1fr !important;
+}
+.app-container > .header > img{
+  grid-column:2 !important;
+  grid-row:1 !important;
+  position:relative !important;
+  z-index:2 !important;
+}
+.app-container > .header .header-left{
+  grid-column:1 !important;
+  grid-row:1 !important;
+  justify-self:start !important;
+  display:flex !important;
+  align-items:center !important;
+  min-width:0 !important;
+  z-index:4 !important;
+}
+.app-container > .header .header-right{
+  grid-column:3 !important;
+  grid-row:1 !important;
+  position:static !important;
+  transform:none !important;
+  justify-self:end !important;
+  display:flex !important;
+  align-items:center !important;
+  gap:5px !important;
+  z-index:4 !important;
+}
+.my-business-card-btn{
+  appearance:none;
+  border:1px solid #d9e5f3;
+  background:#f8fbff;
+  color:#1769d2;
+  border-radius:7px;
+  padding:5px 8px;
+  min-height:0 !important;
+  height:auto !important;
+  line-height:1.2;
+  font-size:.67rem;
+  font-weight:800;
+  letter-spacing:-.04em;
+  white-space:nowrap;
+  cursor:pointer;
+  box-shadow:0 2px 7px rgba(23,105,210,.07);
+}
+.my-business-card-btn:active{transform:scale(.97);background:#edf5ff;}
+.business-card-overlay{
+  display:none; position:fixed; inset:0; z-index:2600;
+  background:rgba(8,25,48,.68);
+  padding:18px; box-sizing:border-box;
+  align-items:center; justify-content:center;
+}
+.business-card-modal{
+  position:relative; width:min(100%,430px); max-height:94vh; overflow:auto;
+  background:#f4f7fb; border-radius:18px; padding:18px 14px 15px;
+  box-shadow:0 20px 60px rgba(0,0,0,.28);
+}
+.business-card-close{
+  position:absolute; top:7px; right:8px; z-index:5; width:34px; height:34px;
+  border:0; border-radius:50%; background:rgba(255,255,255,.9); color:#60738c;
+  font-size:1.45rem; line-height:1; cursor:pointer;
+}
+.business-card-modal-title{
+  text-align:center; color:#173f70; font-size:1rem; font-weight:850;
+  margin:1px 38px 12px; letter-spacing:-.04em;
+}
+.business-card-preview-wrap{
+  width:100%
