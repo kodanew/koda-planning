@@ -9326,7 +9326,8 @@ function createEventCard(event, isNext=false) {
       const noticeText = String(row2[4] || '').trim();
 
       if (category === '중요공지' && noticeText) {
-        badge.textContent = badgeText || '중요공지';
+        /* Sheet6 D열에 숫자/관리용 값이 들어가더라도 홈의 배지는 항상 '중요공지'로 표시 */
+        badge.textContent = '중요공지';
         textEl.textContent = noticeText;
         textEl.classList.remove('no-marquee');
         // 짧은 문구는 정지 상태로 표시
@@ -10867,6 +10868,7 @@ window.addEventListener('pageshow',function(e){if(e.persisted)kodaSplashShow()})
   const KODA_EVENT_ID='KODA-20261013-WB';
   let kisPeer=null, kisConn=null, kisRecognition=null, kisTranslating=false, kisLive=false, kisFinalText='', kisAudienceSpeech=false;
   let kisMode='entry', kisLastTranslated='';
+  let kisSentenceBuffer='', kisSentenceTimer=null, kisTranslateQueue=Promise.resolve();
   const qs=id=>document.getElementById(id);
   function panel(){return qs('kisPanel');}
   function escapeHtml(v){return String(v??'').replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[m]));}
@@ -10884,7 +10886,7 @@ window.addEventListener('pageshow',function(e){if(e.persisted)kodaSplashShow()})
     const s=qs('kodaInterpretationScreen'); if(s){s.classList.remove('active');s.setAttribute('aria-hidden','true');}
   };
   function renderEntry(){
-    render(`<div class="kis-card"><div class="kis-event">KODA 동시통역 입장</div><div class="kis-event-meta">행사코드 <b>${KODA_EVENT_ID}</b><br>미국인 발표자의 영어를 한국어로 실시간 통역합니다.</div><div class="kis-mode-grid"><button class="kis-mode primary" onclick="kisStartAudience()"><strong>청중으로 입장</strong><span>한국어 자막과 음성으로 듣기</span></button><button class="kis-mode" onclick="kisStartSpeaker()"><strong>발표자 모드</strong><span>영어 음성을 받아 송출하기</span></button></div></div><div class="kis-card"><div class="kis-label">이 시스템의 흐름</div><div class="kis-mini">영어 음성 → 영어 STT → 영어·한국어 자막 → 한국어 음성 → 청중 기기로 실시간 전달</div><div class="kis-note">발표자는 Chrome 계열 브라우저에서 마이크 권한을 허용해 주세요. 청중은 입장 후 「음성 켜기」를 한 번 눌러야 모바일 브라우저에서 한국어 음성이 재생됩니다.</div></div>`);
+    render(`<div class="kis-card"><div class="kis-event">KODA 동시통역 입장</div><div class="kis-event-meta">행사코드 <b>${KODA_EVENT_ID}</b><br>미국인 발표자의 영어를 문장 단위로 한국어에 자연스럽게 통역합니다.</div><div class="kis-mode-grid"><button class="kis-mode primary" onclick="kisStartAudience()"><strong>청중으로 입장</strong><span>한국어 자막과 음성으로 듣기</span></button><button class="kis-mode" onclick="kisStartSpeaker()"><strong>발표자 모드</strong><span>영어 음성을 받아 송출하기</span></button></div></div><div class="kis-card"><div class="kis-label">이 시스템의 흐름</div><div class="kis-mini">영어 음성 → 문장 단위 영어 STT → 문장 단위 한국어 번역 → 한국어 음성 → 청중 기기로 실시간 전달</div><div class="kis-note">발표자는 Chrome 계열 브라우저에서 마이크 권한을 허용해 주세요. 청중은 입장 후 「음성 켜기」를 한 번 눌러야 모바일 브라우저에서 한국어 음성이 재생됩니다.</div></div>`);
   }
   window.kisStartSpeaker=function(){
     kisMode='speaker';
@@ -10932,18 +10934,69 @@ window.addEventListener('pageshow',function(e){if(e.persisted)kodaSplashShow()})
     try{
       kisRecognition=new SR();kisRecognition.lang='en-US';kisRecognition.continuous=true;kisRecognition.interimResults=true;
       kisRecognition.onstart=()=>{kisLive=true;setStatus('LIVE · 영어 음성 수신 중');const b=qs('kisMicBtn');if(b)b.textContent='⏹ 통역 중지';};
-      kisRecognition.onresult=async e=>{
-        let interim='',final='';
-        for(let i=e.resultIndex;i<e.results.length;i++){const txt=e.results[i][0].transcript;if(e.results[i].isFinal)final+=txt+' ';else interim+=txt;}
-        const en=(final||interim).trim(); if(!en)return;
-        const el=qs('kisEn');if(el)el.textContent=en;
-        if(final){kisFinalText=(kisFinalText+' '+final).trim(); const ko=await translateEnglishToKorean(kisFinalText.slice(-900)); if(ko){if(qs('kisKo'))qs('kisKo').textContent=ko;kisLastTranslated=ko;sendToAudience({type:'live',en:kisFinalText.slice(-900),ko});}}
-        else {sendToAudience({type:'live',en,ko:kisLastTranslated||'번역 중…'});}
+      kisRecognition.onresult=e=>{
+        let interim='', final='';
+        for(let i=e.resultIndex;i<e.results.length;i++){
+          const txt=(e.results[i][0].transcript||'').trim();
+          if(e.results[i].isFinal) final += (final?' ':'') + txt;
+          else interim += (interim?' ':'') + txt;
+        }
+
+        /* 화면에는 현재 말하고 있는 문장을 보여주되, 번역은 완성된 문장 단위로 처리 */
+        const liveText=(kisSentenceBuffer+' '+interim).trim();
+        if(liveText && qs('kisEn')) qs('kisEn').textContent=liveText;
+
+        if(final){
+          kisSentenceBuffer=(kisSentenceBuffer+' '+final).trim();
+          kisFinalText=(kisFinalText+' '+final).trim();
+          clearTimeout(kisSentenceTimer);
+
+          /* 마침표/물음표/느낌표가 나오면 즉시 한 문장으로 확정.
+             음성인식이 구두점을 주지 않는 경우에는 짧은 말멈춤을 문장 경계로 사용. */
+          processCompletedSentences(false);
+          kisSentenceTimer=setTimeout(()=>processCompletedSentences(true),1500);
+        }
       };
       kisRecognition.onerror=e=>setStatus('음성인식 오류: '+e.error);kisRecognition.onend=()=>{if(kisLive){try{kisRecognition.start()}catch(x){}}};kisRecognition.start();
     }catch(e){setStatus('마이크 시작 실패');}
   }
-  function stopSpeaker(){if(kisRecognition){kisLive=false;try{kisRecognition.stop()}catch(e){}kisRecognition=null;}const b=qs('kisMicBtn');if(b)b.textContent='🎙 영어 통역 시작';}
+  function processCompletedSentences(forceRemainder){
+    if(!kisSentenceBuffer.trim()) return;
+    const parts=[];
+    let rest=kisSentenceBuffer.trim();
+    /* 영어 문장의 일반적인 종결부호 기준으로 분리 */
+    const re=/([\s\S]*?[.!?](?:[\"”’')\]]+)?)(?:\s+|$)/g;
+    let m, last=0;
+    while((m=re.exec(rest))!==null){
+      const sentence=m[1].trim();
+      if(sentence) parts.push(sentence);
+      last=re.lastIndex;
+    }
+    if(parts.length) rest=rest.slice(last).trim();
+    if(forceRemainder && rest){parts.push(rest);rest='';}
+    kisSentenceBuffer=rest;
+    if(!parts.length) return;
+
+    parts.forEach(sentence=>{
+      kisTranslateQueue=kisTranslateQueue.then(async()=>{
+        const ko=await translateEnglishToKorean(sentence);
+        if(!ko) return;
+        if(qs('kisEn')) qs('kisEn').textContent=sentence;
+        if(qs('kisKo')) qs('kisKo').textContent=ko;
+        kisLastTranslated=ko;
+        sendToAudience({type:'live',en:sentence,ko});
+      }).catch(()=>{});
+    });
+  }
+
+  function stopSpeaker(){
+    kisLive=false;
+    clearTimeout(kisSentenceTimer);
+    /* 마지막으로 남아 있는 문장도 번역 */
+    processCompletedSentences(true);
+    if(kisRecognition){try{kisRecognition.stop()}catch(e){}kisRecognition=null;}
+    const b=qs('kisMicBtn');if(b)b.textContent='🎙 영어 통역 시작';
+  }
   async function translateEnglishToKorean(text){
     if(!text)return '';
     if(kisTranslating)return kisLastTranslated||'';
