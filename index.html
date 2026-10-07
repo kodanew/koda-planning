@@ -6053,6 +6053,42 @@ button,.nav-btn,.action-btn{min-height:44px;}
 }
 </style>
 
+<style id="koda-home-refresh-and-pull-fix">
+/* 휴대폰 화면을 아래로 당길 때 브라우저 자체 새로고침이 발생하지 않도록 방지 */
+html, body { overscroll-behavior-y: none !important; }
+body { overscroll-behavior: none !important; }
+.app-container { overscroll-behavior-y: none !important; }
+
+/* 홈 상단: 새로고침 → 나의 명함을 세로로 배치 */
+.app-container > .header .home-action-stack {
+  flex-direction:column !important;
+  align-items:flex-end !important;
+  justify-content:center !important;
+  gap:4px !important;
+}
+.home-refresh-btn {
+  color:#718096 !important;
+  background:#fff !important;
+  border-color:#d9e5f3 !important;
+}
+.home-refresh-btn:active { background:#edf5ff !important; }
+#myBusinessCardBtn { margin-top:1px !important; }
+
+/* 11~15번째 퀵버튼 */
+.quick-menu-row-3 { padding-top:1px !important; padding-bottom:10px !important; }
+.coming-soon-quick { cursor:default !important; opacity:.72; }
+.coming-soon-quick .quick-icon {
+  border-style:dashed; background:#f8fafc; box-shadow:none;
+}
+.quick-placeholder {
+  font-size:.58rem; font-weight:800; color:#a0aec0;
+}
+#simultaneousInterpretationBtn .quick-icon svg { width:37px !important; height:37px !important; }
+
+@media (max-width:360px){
+  .app-container > .header .home-action-stack { gap:3px !important; }
+}
+</style>
 <style id="koda-splash-style">
 #koda-splash{position:fixed;inset:0;z-index:2147483000;background:#fff;display:flex;align-items:center;justify-content:center;--w:min(88vw,320px);transition:opacity .5s ease,visibility .5s;overflow:hidden;-webkit-tap-highlight-color:transparent}
 #koda-splash.hide{opacity:0;visibility:hidden}
@@ -6120,7 +6156,8 @@ button,.nav-btn,.action-btn{min-height:44px;}
 </div>
 <div aria-hidden="true" class="header-spacer"></div>
 <img alt="KODA 로고" src="koda-logo-re.png"/>
-<div class="header-right">
+<div class="header-right home-action-stack">
+<button class="my-business-card-btn home-refresh-btn" id="homeRefreshBtn" onclick="manualHomeRefresh()" type="button">새로고침</button>
 <button class="my-business-card-btn" id="myBusinessCardBtn" onclick="openMyBusinessCard()" type="button">나의 명함</button>
 </div>
 </div>
@@ -6195,6 +6232,16 @@ button,.nav-btn,.action-btn{min-height:44px;}
 <span class="quick-icon"><svg aria-hidden="true" viewbox="0 0 52 52"><rect fill="#315b8d" height="15" rx="3" width="15" x="8" y="8"></rect><rect fill="#6f8fb4" height="15" rx="3" width="15" x="29" y="8"></rect><rect fill="#6f8fb4" height="15" rx="3" width="15" x="8" y="29"></rect><rect fill="#315b8d" height="15" rx="3" width="15" x="29" y="29"></rect></svg></span>
 <span class="quick-label">전체메뉴</span>
 </button></div>
+<div class="sub-menu-container quick-menu-row-3">
+<a aria-label="동시통역" class="quick-btn" id="simultaneousInterpretationBtn" href="#" onclick="openKodaInterpretation();return false;">
+<span class="quick-icon"><svg aria-hidden="true" viewbox="0 0 52 52"><circle cx="26" cy="26" r="21" fill="#eef5ff" stroke="#1769d2" stroke-width="2"></circle><path d="M15 19h16a5 5 0 0 1 5 5v5a5 5 0 0 1-5 5h-7l-5 5v-5h-4a5 5 0 0 1-5-5v-5a5 5 0 0 1 5-5Z" fill="#1769d2"></path><path d="M29 16h7a5 5 0 0 1 5 5v4" fill="none" stroke="#6fa4df" stroke-width="2" stroke-linecap="round"></path></svg></span>
+<span class="quick-label">동시통역</span>
+</a>
+<button aria-label="준비중 12" class="quick-btn coming-soon-quick" type="button" disabled><span class="quick-icon"><span class="quick-placeholder">준비</span></span><span class="quick-label">준비중</span></button>
+<button aria-label="준비중 13" class="quick-btn coming-soon-quick" type="button" disabled><span class="quick-icon"><span class="quick-placeholder">준비</span></span><span class="quick-label">준비중</span></button>
+<button aria-label="준비중 14" class="quick-btn coming-soon-quick" type="button" disabled><span class="quick-icon"><span class="quick-placeholder">준비</span></span><span class="quick-label">준비중</span></button>
+<button aria-label="준비중 15" class="quick-btn coming-soon-quick" type="button" disabled><span class="quick-icon"><span class="quick-placeholder">준비</span></span><span class="quick-label">준비중</span></button>
+</div>
 <div class="schedule-container" id="scheduleContainer">
 <div class="loading-msg">최신 일정을 불러오는 중입니다...⏳</div>
 </div>
@@ -9006,9 +9053,11 @@ function createEventCard(event, isNext=false) {
       document.getElementById('newsDetailContent').innerText = item.content;
     }
 
-    // 본문 하단에 Sheet6 F열(관련링크) 및 G열(썸네일) 표시
+    // 상세페이지에서는 Sheet6 G열(GIF/썸네일)을 표시하지 않습니다.
+    // F열 관련링크만 기존처럼 표시합니다.
     setNewsDetailRelatedLink(item);
-    setNewsDetailThumbnail(item);
+    const detailThumbArea = document.getElementById('newsDetailThumbnailArea');
+    if (detailThumbArea) detailThumbArea.style.display = 'none';
 
     document.getElementById('newsDetailScreen').style.display = 'flex';
     document.body.style.overflow = 'hidden';
@@ -10731,6 +10780,41 @@ function createEventCard(event, isNext=false) {
   font-family:inherit; font-size:.9rem; font-weight:700; cursor:pointer;
 }
 </style>
+<script id="koda-home-refresh-script">
+/* 홈 전용 새로고침: 현재 화면을 스플래시/로그인으로 되돌리지 않고 데이터만 갱신 */
+window.manualHomeRefresh = async function(){
+  try {
+    const btn=document.getElementById('homeRefreshBtn');
+    if(btn){ btn.disabled=true; btn.textContent='새로고침 중'; }
+    if (typeof loadData === 'function') await loadData();
+    if (typeof renderCalendar === 'function') renderCalendar();
+    if (typeof loadTodayWeather === 'function') await loadTodayWeather();
+    if (typeof loadEmergencyNotice === 'function') await loadEmergencyNotice();
+    if (typeof loadEmployeeGifNotices === 'function') await loadEmployeeGifNotices();
+  } catch(e) {
+    console.warn('홈 새로고침 실패:',e);
+  } finally {
+    const btn=document.getElementById('homeRefreshBtn');
+    if(btn){ btn.disabled=false; btn.textContent='새로고침'; }
+  }
+};
+
+/* Android Chrome 계열의 pull-to-refresh 방지. 내부 화면 스크롤은 허용 */
+(function(){
+  let startY=0;
+  document.addEventListener('touchstart',function(e){
+    if(e.touches && e.touches.length===1) startY=e.touches[0].clientY;
+  },{passive:true});
+  document.addEventListener('touchmove',function(e){
+    if(!e.touches || e.touches.length!==1) return;
+    const y=e.touches[0].clientY, dy=y-startY;
+    if(dy<=0) return;
+    const target=e.target && e.target.closest ? e.target.closest('.fullscreen-screen, #staffScreen, #dailyTrendScreen, #dailyTrendDetailScreen, .modal-content') : null;
+    if(target) return;
+    if(window.scrollY<=0){ e.preventDefault(); }
+  },{passive:false});
+})();
+</script>
 <script id="koda-splash-script">
 var __kodaTpl=(document.getElementById('koda-splash')||{}).outerHTML||'';
 function kodaSplashClose(){var s=document.getElementById('koda-splash');if(!s||s.dataset.c)return;s.dataset.c=1;s.classList.add('hide');setTimeout(function(){s.remove()},600)}
@@ -10746,5 +10830,137 @@ document.addEventListener('visibilitychange',function(){
   else if(hiddenAt&&Date.now()-hiddenAt>60000){kodaSplashShow()}});
 window.addEventListener('pageshow',function(e){if(e.persisted)kodaSplashShow()})})();
 </script>
+
+<style id="koda-integrated-interpretation-style">
+/* ===== KODA 통합 동시통역 ===== */
+#kodaInterpretationScreen{position:fixed;inset:0;z-index:2147482500;display:none;background:#f5f8fc;color:#172033;overflow:hidden;overscroll-behavior:none;}
+#kodaInterpretationScreen.active{display:flex;flex-direction:column;}
+.kis-head{height:58px;flex:0 0 58px;background:#fff;border-bottom:1px solid #dfe7f0;display:flex;align-items:center;justify-content:space-between;padding:0 14px;box-sizing:border-box;box-shadow:0 2px 10px rgba(20,50,90,.05)}
+.kis-brand{display:flex;align-items:center;gap:8px;min-width:0}.kis-brand-mark{width:31px;height:31px;border-radius:9px;background:#1769d2;color:#fff;display:grid;place-items:center;font-weight:900;font-size:.68rem}.kis-brand-text{min-width:0}.kis-title{font-size:.88rem;font-weight:900;letter-spacing:-.04em}.kis-sub{font-size:.58rem;color:#718096;margin-top:1px;white-space:nowrap}
+.kis-close{border:1px solid #d8e2ed;background:#fff;color:#334155;border-radius:8px;height:32px;padding:0 10px;font-size:.67rem;font-weight:800}
+.kis-body{flex:1;overflow:auto;padding:12px 12px 24px;box-sizing:border-box;overscroll-behavior:contain}
+.kis-panel{max-width:680px;margin:0 auto}.kis-card{background:#fff;border:1px solid #dfe7f0;border-radius:15px;box-shadow:0 5px 18px rgba(35,65,100,.06);padding:14px;margin-bottom:10px}
+.kis-event{font-size:1rem;font-weight:900;letter-spacing:-.045em}.kis-event-meta{margin-top:5px;color:#718096;font-size:.65rem;line-height:1.45}
+.kis-mode-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:12px}.kis-mode{border:1px solid #cfdbea;background:#fff;border-radius:12px;padding:13px 10px;text-align:left;cursor:pointer}.kis-mode strong{display:block;font-size:.8rem}.kis-mode span{display:block;margin-top:3px;color:#718096;font-size:.59rem}.kis-mode.primary{border-color:#1769d2;background:#f1f7ff}
+.kis-label{font-size:.63rem;font-weight:900;color:#4a5568;margin-bottom:6px}.kis-input{width:100%;height:42px;border:1px solid #cfdbea;border-radius:9px;padding:0 11px;box-sizing:border-box;font-size:.78rem;outline:none}.kis-input:focus{border-color:#1769d2;box-shadow:0 0 0 3px rgba(23,105,210,.08)}
+.kis-btn{border:0;border-radius:9px;height:40px;padding:0 14px;background:#1769d2;color:#fff;font-size:.72rem;font-weight:900;cursor:pointer}.kis-btn.secondary{background:#edf3fa;color:#24507c}.kis-btn.danger{background:#fff0f0;color:#c53030;border:1px solid #f2caca}.kis-row{display:flex;gap:7px;align-items:center;flex-wrap:wrap}.kis-status{display:inline-flex;align-items:center;gap:5px;font-size:.61rem;font-weight:900;color:#718096}.kis-dot{width:7px;height:7px;border-radius:50%;background:#a0aec0}.kis-dot.live{background:#e53e3e;box-shadow:0 0 0 4px rgba(229,62,62,.1)}
+.kis-live-grid{display:grid;grid-template-columns:1fr;gap:9px}.kis-live-box{background:#fff;border:1px solid #dfe7f0;border-radius:14px;padding:12px}.kis-live-box.original{background:#f9fbfd}.kis-live-heading{font-size:.58rem;font-weight:900;color:#718096;margin-bottom:7px}.kis-live-text{font-size:1rem;line-height:1.48;min-height:66px;word-break:break-word}.kis-live-text.ko{font-size:1.13rem;font-weight:800;letter-spacing:-.035em}.kis-mini{font-size:.58rem;color:#718096;line-height:1.45}.kis-big-actions{display:grid;grid-template-columns:1fr 1fr;gap:7px;margin-top:9px}.kis-big-actions .kis-btn{height:45px}.kis-speaker-controls{display:grid;grid-template-columns:1fr 1fr;gap:7px;margin-top:9px}.kis-toggle{height:38px;border:1px solid #d7e1ec;border-radius:9px;background:#fff;font-size:.64rem;font-weight:800;color:#40546b}.kis-toggle.on{background:#eef7ff;border-color:#9bc6f5;color:#1769d2}
+.kis-users{font-size:.7rem;font-weight:900;color:#40546b}.kis-note{background:#fffaf0;border:1px solid #f3dfb0;color:#765b22;border-radius:10px;padding:9px;font-size:.6rem;line-height:1.5;margin-top:8px}
+.kis-audience-title{font-size:1.35rem;font-weight:900;letter-spacing:-.05em;margin:4px 0 10px}.kis-audience-ko{font-size:1.55rem;line-height:1.45;font-weight:900;letter-spacing:-.05em;min-height:130px;display:flex;align-items:center}.kis-audience-en{font-size:.78rem;line-height:1.5;color:#718096;min-height:55px}.kis-volume{width:100%;accent-color:#1769d2}
+@media(max-width:360px){.kis-head{padding:0 10px}.kis-body{padding:9px 9px 18px}.kis-card{padding:12px}.kis-live-text{font-size:.94rem}.kis-live-text.ko{font-size:1.05rem}}
+</style>
+
+
+<!-- KODA 통합 동시통역 화면: 별도 앱 없이 현재 index.html 내부에서 실행 -->
+<div id="kodaInterpretationScreen" aria-hidden="true">
+  <div class="kis-head">
+    <div class="kis-brand"><div class="kis-brand-mark">K</div><div class="kis-brand-text"><div class="kis-title">KODA 동시통역</div><div class="kis-sub">영어 발표 → 한국어 실시간 통역</div></div></div>
+    <button class="kis-close" type="button" onclick="closeKodaInterpretation()">닫기</button>
+  </div>
+  <div class="kis-body"><div class="kis-panel" id="kisPanel"></div></div>
+</div>
+
+
+<script src="https://unpkg.com/peerjs@1.5.4/dist/peerjs.min.js"></script>
+<script id="koda-integrated-interpretation-script">
+(function(){
+  const KODA_EVENT_ID='KODA-20261013-WB';
+  let kisPeer=null, kisConn=null, kisRecognition=null, kisTranslating=false, kisLive=false, kisFinalText='', kisAudienceSpeech=false;
+  let kisMode='entry', kisLastTranslated='';
+  const qs=id=>document.getElementById(id);
+  function panel(){return qs('kisPanel');}
+  function escapeHtml(v){return String(v??'').replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[m]));}
+  function render(html){panel().innerHTML=html;}
+  window.openKodaInterpretation=function(){
+    const s=qs('kodaInterpretationScreen'); if(!s)return;
+    s.classList.add('active'); s.setAttribute('aria-hidden','false'); kisMode='entry';
+    renderEntry();
+  };
+  window.closeKodaInterpretation=function(){
+    stopSpeaker();
+    if(kisConn){try{kisConn.close()}catch(e){}}
+    if(kisPeer){try{kisPeer.destroy()}catch(e){}}
+    kisConn=null;kisPeer=null;kisLive=false;
+    const s=qs('kodaInterpretationScreen'); if(s){s.classList.remove('active');s.setAttribute('aria-hidden','true');}
+  };
+  function renderEntry(){
+    render(`<div class="kis-card"><div class="kis-event">KODA 동시통역 입장</div><div class="kis-event-meta">행사코드 <b>${KODA_EVENT_ID}</b><br>미국인 발표자의 영어를 한국어로 실시간 통역합니다.</div><div class="kis-mode-grid"><button class="kis-mode primary" onclick="kisStartAudience()"><strong>청중으로 입장</strong><span>한국어 자막과 음성으로 듣기</span></button><button class="kis-mode" onclick="kisStartSpeaker()"><strong>발표자 모드</strong><span>영어 음성을 받아 송출하기</span></button></div></div><div class="kis-card"><div class="kis-label">이 시스템의 흐름</div><div class="kis-mini">영어 음성 → 영어 STT → 영어·한국어 자막 → 한국어 음성 → 청중 기기로 실시간 전달</div><div class="kis-note">발표자는 Chrome 계열 브라우저에서 마이크 권한을 허용해 주세요. 청중은 입장 후 「음성 켜기」를 한 번 눌러야 모바일 브라우저에서 한국어 음성이 재생됩니다.</div></div>`);
+  }
+  window.kisStartSpeaker=function(){
+    kisMode='speaker';
+    render(`<div class="kis-card"><div class="kis-row" style="justify-content:space-between"><div><div class="kis-event">발표자 모드</div><div class="kis-event-meta">행사코드 ${KODA_EVENT_ID}</div></div><div class="kis-status"><i class="kis-dot" id="kisDot"></i><span id="kisStatus">대기 중</span></div></div><div class="kis-live-grid" style="margin-top:12px"><div class="kis-live-box original"><div class="kis-live-heading">ENGLISH ORIGINAL</div><div class="kis-live-text" id="kisEn">마이크를 시작하면 영어 음성이 여기에 표시됩니다.</div></div><div class="kis-live-box"><div class="kis-live-heading">KOREAN TRANSLATION</div><div class="kis-live-text ko" id="kisKo">번역 대기 중</div></div></div><div class="kis-big-actions"><button class="kis-btn" id="kisMicBtn" onclick="kisToggleSpeaker()">🎙 영어 통역 시작</button><button class="kis-btn secondary" onclick="kisCopyAudienceLink()">청중 입장주소 복사</button></div><div class="kis-speaker-controls"><button class="kis-toggle on" id="kisAutoTranslate">자동 번역 ON</button><button class="kis-toggle" id="kisClearBtn" onclick="kisClearText()">자막 지우기</button></div><div class="kis-note">현재 페이지 하나에 통역 UI·영어 음성인식·번역·한국어 음성·실시간 전달 기능을 모두 넣었습니다. 여러 기기 간 전달에는 브라우저 P2P 연결을 사용합니다.</div></div><div class="kis-card"><div class="kis-label">청중 접속</div><div class="kis-users" id="kisUsers">청중 0명</div><div class="kis-mini" style="margin-top:5px">청중은 이 KODA 앱의 동시통역 버튼을 눌러 입장할 수 있습니다.</div></div>`);
+    createSpeakerPeer();
+  };
+  window.kisStartAudience=function(){
+    kisMode='audience';
+    render(`<div class="kis-card"><div class="kis-status"><i class="kis-dot" id="kisDot"></i><span id="kisStatus">통역 연결 중…</span></div><div class="kis-audience-title">KODA 실시간 동시통역</div><div class="kis-live-box original"><div class="kis-live-heading">ENGLISH</div><div class="kis-audience-en" id="kisAudEn">발표자의 영어 원문을 기다리는 중입니다.</div></div><div class="kis-live-box" style="margin-top:8px"><div class="kis-live-heading">한국어 통역</div><div class="kis-audience-ko" id="kisAudKo">통역 연결 중…</div></div><div class="kis-big-actions"><button class="kis-btn" id="kisVoiceBtn" onclick="kisEnableAudienceVoice()">🔊 한국어 음성 켜기</button><button class="kis-btn secondary" onclick="kisStartAudience()">다시 연결</button></div><div class="kis-label" style="margin-top:12px">한국어 음성 크기</div><input class="kis-volume" id="kisVolume" type="range" min="0.2" max="1" step="0.1" value="1" onchange="window.kisAudienceVolume=this.value"><div class="kis-note">발표자의 영어가 한국어 자막으로 표시됩니다. 음성을 사용하려면 위의 「한국어 음성 켜기」를 한 번 눌러주세요.</div></div>`);
+    connectAudiencePeer();
+  };
+  async function createSpeakerPeer(){
+    if(typeof Peer==='undefined'){setStatus('PeerJS 연결 모듈을 불러오지 못했습니다. 인터넷 연결을 확인해 주세요.');return;}
+    const peerId='KODA-LIVE-'+KODA_EVENT_ID.replace(/[^A-Za-z0-9]/g,'-');
+    try{
+      kisPeer=new Peer(peerId,{debug:0});
+      kisPeer.on('open',()=>setStatus('송출 대기 중'));
+      kisPeer.on('connection',conn=>{kisConn=conn;setStatus('청중 연결됨');conn.on('open',()=>{sendToAudience({type:'hello'});});conn.on('close',()=>setStatus('청중 연결 종료'));});
+      kisPeer.on('error',e=>setStatus('연결 오류: '+(e.type||'확인 필요')));
+    }catch(e){setStatus('발표자 연결을 시작하지 못했습니다.');}
+  }
+  function connectAudiencePeer(){
+    if(typeof Peer==='undefined'){setStatus('연결 모듈을 불러오지 못했습니다.');return;}
+    const peerId='KODA-LIVE-'+KODA_EVENT_ID.replace(/[^A-Za-z0-9]/g,'-');
+    try{
+      kisPeer=new Peer();
+      kisPeer.on('open',()=>{kisConn=kisPeer.connect(peerId,{reliable:true});kisConn.on('open',()=>setStatus('통역 연결 완료'));kisConn.on('data',receiveAudienceData);kisConn.on('close',()=>setStatus('발표자 연결이 종료되었습니다.'));});
+      kisPeer.on('error',e=>setStatus('발표자 연결 실패: '+(e.type||'행사 시작 전일 수 있습니다.')));
+    }catch(e){setStatus('청중 연결을 시작하지 못했습니다.');}
+  }
+  function sendToAudience(data){if(kisConn&&kisConn.open)try{kisConn.send(data)}catch(e){}}
+  function receiveAudienceData(d){
+    if(!d)return;
+    if(d.type==='live'){
+      if(qs('kisAudEn'))qs('kisAudEn').textContent=d.en||'';
+      if(qs('kisAudKo'))qs('kisAudKo').textContent=d.ko||'번역 중…';
+      if(d.ko&&d.ko!==kisLastTranslated){kisLastTranslated=d.ko;if(kisAudienceSpeech) speakKorean(d.ko);}
+    }
+  }
+  function setStatus(t){const el=qs('kisStatus');if(el)el.textContent=t;const dot=qs('kisDot');if(dot)dot.classList.toggle('live',/연결|LIVE|송출/.test(t));}
+  window.kisToggleSpeaker=function(){if(kisLive)stopSpeaker();else startSpeaker();};
+  function startSpeaker(){
+    const SR=window.SpeechRecognition||window.webkitSpeechRecognition;
+    if(!SR){setStatus('이 브라우저는 영어 음성인식을 지원하지 않습니다. Chrome 사용을 권장합니다.');return;}
+    try{
+      kisRecognition=new SR();kisRecognition.lang='en-US';kisRecognition.continuous=true;kisRecognition.interimResults=true;
+      kisRecognition.onstart=()=>{kisLive=true;setStatus('LIVE · 영어 음성 수신 중');const b=qs('kisMicBtn');if(b)b.textContent='⏹ 통역 중지';};
+      kisRecognition.onresult=async e=>{
+        let interim='',final='';
+        for(let i=e.resultIndex;i<e.results.length;i++){const txt=e.results[i][0].transcript;if(e.results[i].isFinal)final+=txt+' ';else interim+=txt;}
+        const en=(final||interim).trim(); if(!en)return;
+        const el=qs('kisEn');if(el)el.textContent=en;
+        if(final){kisFinalText=(kisFinalText+' '+final).trim(); const ko=await translateEnglishToKorean(kisFinalText.slice(-900)); if(ko){if(qs('kisKo'))qs('kisKo').textContent=ko;kisLastTranslated=ko;sendToAudience({type:'live',en:kisFinalText.slice(-900),ko});}}
+        else {sendToAudience({type:'live',en,ko:kisLastTranslated||'번역 중…'});}
+      };
+      kisRecognition.onerror=e=>setStatus('음성인식 오류: '+e.error);kisRecognition.onend=()=>{if(kisLive){try{kisRecognition.start()}catch(x){}}};kisRecognition.start();
+    }catch(e){setStatus('마이크 시작 실패');}
+  }
+  function stopSpeaker(){if(kisRecognition){kisLive=false;try{kisRecognition.stop()}catch(e){}kisRecognition=null;}const b=qs('kisMicBtn');if(b)b.textContent='🎙 영어 통역 시작';}
+  async function translateEnglishToKorean(text){
+    if(!text)return '';
+    if(kisTranslating)return kisLastTranslated||'';
+    kisTranslating=true;
+    try{
+      const url='https://translate.googleapis.com/translate_a/single?client=gtx&sl=en&tl=ko&dt=t&q='+encodeURIComponent(text);
+      const r=await fetch(url);if(!r.ok)throw new Error('translate');const d=await r.json();
+      const out=(d[0]||[]).map(x=>x[0]||'').join('').trim();if(out)kisLastTranslated=out;return out;
+    }catch(e){return '';}finally{kisTranslating=false;}
+  }
+  function speakKorean(text){if(!('speechSynthesis'in window)||!text)return;window.speechSynthesis.cancel();const u=new SpeechSynthesisUtterance(text);u.lang='ko-KR';u.rate=.95;u.volume=Number(window.kisAudienceVolume||1);const voices=speechSynthesis.getVoices();const v=voices.find(x=>/^ko(-|_)/i.test(x.lang));if(v)u.voice=v;speechSynthesis.speak(u);}
+  window.kisEnableAudienceVoice=function(){kisAudienceSpeech=true;const b=qs('kisVoiceBtn');if(b){b.textContent='🔊 한국어 음성 켜짐';b.classList.add('secondary')}const t=qs('kisAudKo')?.textContent;if(t&&t!=='통역 연결 중…')speakKorean(t);};
+  window.kisClearText=function(){kisFinalText='';kisLastTranslated='';if(qs('kisEn'))qs('kisEn').textContent='자막을 지웠습니다.';if(qs('kisKo'))qs('kisKo').textContent='번역 대기 중';sendToAudience({type:'live',en:'',ko:''});};
+  window.kisCopyAudienceLink=async function(){const url=location.href.split('#')[0]+'#koda-live-'+KODA_EVENT_ID;try{await navigator.clipboard.writeText(url);setStatus('청중 입장주소가 복사되었습니다.')}catch(e){prompt('청중에게 전달할 현재 앱 주소입니다.',url);}};
+  document.addEventListener('keydown',e=>{if(e.key==='Escape'&&qs('kodaInterpretationScreen')?.classList.contains('active'))closeKodaInterpretation();});
+})();
+</script>
+
 </body>
 </html>
